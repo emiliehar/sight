@@ -948,8 +948,12 @@ macro(fwLoadProperties)
     endif()
 
     # Generate batch script to ease the set of PATH in order to launch a Sight application on Windows.
-    if(WIN32 AND USE_CONAN)
-        configure_file(${FWCMAKE_RESOURCE_PATH}/install/windows/setpath.bat.in ${CMAKE_BINARY_DIR}/bin/setpath.bat @ONLY)
+    if(USE_CONAN)
+        if(WIN32)
+            configure_file(${FWCMAKE_RESOURCE_PATH}/install/windows/setpath.bat.in ${CMAKE_BINARY_DIR}/bin/setpath.bat @ONLY)
+        else()
+            configure_file(${FWCMAKE_RESOURCE_PATH}/install/linux/setpath.in ${CMAKE_BINARY_DIR}/bin/setpath @ONLY)
+        endif()
     endif()
 endmacro()
 

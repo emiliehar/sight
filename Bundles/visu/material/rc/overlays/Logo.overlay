@@ -31,3 +31,57 @@ overlay LogoOverlay
         }
     }
 }
+
+overlay Ircad_IHU_Bcom_Overlay
+{
+    overlay_element Ircad_IHU_Overlay/Main_Panel Panel
+    {
+        left 0
+        top 0.8
+        width 1
+        height 0.2
+
+        overlay_element Ircad_IHU_Overlay/Ircad_Panel Panel
+        {
+            metrics_mode pixels
+            horz_align right
+            vert_align bottom
+            left -220
+            top -95
+            width 210
+            height 75
+            material IrcadLogo
+        }
+
+        overlay_element Ircad_IHU_Overlay/IHU_Panel Panel
+        {
+            metrics_mode pixels
+            vert_align bottom
+            left 10
+            top -110
+            width 100
+            height 100
+            material IHULogo
+        }
+    }
+
+    overlay_element Bcom_Overlay/Main_Panel Panel
+    {
+        left 0
+        top 0
+        width 1
+        height 0.2
+
+        overlay_element Bcom_Overlay/Bcom_Panel Panel
+        {
+            metrics_mode pixels
+            vert_align top
+            horz_align right
+            left -144
+            top 10
+            width 374
+            height 100
+            material BcomLogo
+        }
+    }
+}

@@ -6,5 +6,5 @@ set( DEPENDENCIES fwCore fwData fwGui fwRuntime fwServices fwTools )
 set( REQUIREMENTS  )
 
 set( CONAN_DEPS
-    ${CONAN_QT}
+    SIGHT_CONAN_QT
 )

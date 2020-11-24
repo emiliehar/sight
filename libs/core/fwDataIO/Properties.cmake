@@ -11,10 +11,7 @@ set( DEPENDENCIES
 )
 set( REQUIREMENTS  )
 set( USE_PCH_FROM_TARGET pchData )
-
-if(WIN32)
-    set( CONAN_DEPS
-        ${CONAN_ZLIB}
-    )
-endif()
+set( CONAN_DEPS
+    SIGHT_CONAN_ZLIB
+)
 set( WARNINGS_AS_ERRORS ON)

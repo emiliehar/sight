@@ -1,4 +1,3 @@
-
 set( NAME registrationCV )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -13,11 +12,9 @@ set( DEPENDENCIES
     fwServices
     cvIO
 )
-
 set( REQUIREMENTS fwData
                   servicesReg
 )
-
 set( CONAN_DEPS
-    ${CONAN_OPENCV}
+    SIGHT_CONAN_OPENCV
 )

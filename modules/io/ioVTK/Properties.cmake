@@ -1,4 +1,3 @@
-
 set( NAME ioVTK )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -22,7 +21,6 @@ set( REQUIREMENTS
     fwData
     servicesReg
 )
-
 set( CONAN_DEPS
-    ${CONAN_VTK}
+    SIGHT_CONAN_VTK
 )

@@ -5,5 +5,5 @@ set( TYPE LIBRARY )
 set( DEPENDENCIES fwCamp fwCom fwTools )
 set( REQUIREMENTS  )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
+    SIGHT_CONAN_BOOST
 )

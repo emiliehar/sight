@@ -1,4 +1,3 @@
-
 set( NAME fwGdcmIOTest )
 set( VERSION  )
 set( TYPE TEST )
@@ -19,5 +18,5 @@ set( DEPENDENCIES
     )
 set( REQUIREMENTS )
 set( CONAN_DEPS
-    ${CONAN_GDCM}
+    SIGHT_CONAN_GDCM
 )

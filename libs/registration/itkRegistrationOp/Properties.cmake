@@ -10,7 +10,6 @@ set( DEPENDENCIES
     fwDataTools
 )
 set( REQUIREMENTS)
-
 set( CONAN_DEPS
-    ${CONAN_ITK}
+    SIGHT_CONAN_ITK
 )

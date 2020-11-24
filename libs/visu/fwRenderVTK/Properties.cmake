@@ -1,4 +1,3 @@
-
 set( NAME fwRenderVTK )
 set( VERSION 0.1 )
 set( TYPE LIBRARY )
@@ -13,8 +12,7 @@ set( DEPENDENCIES
     fwTools
     fwVtkIO
 )
-
 set( REQUIREMENTS  )
 set( CONAN_DEPS
-    ${CONAN_VTK}
+    SIGHT_CONAN_VTK
 )

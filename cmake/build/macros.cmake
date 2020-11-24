@@ -13,7 +13,7 @@ endif()
 
 # Define the path 'FW_EXTERNAL_LIBRARIES_DIR' used to find external libraries required by our applications
 macro(setExternalLibrariesDir)
-    if(NOT USE_SYSTEM_LIB)
+    if(NOT SIGHT_SYSTEM_LIB)
         if(FW_BUILD_EXTERNAL)
             if(WIN32)
                 set(FW_EXTERNAL_LIBRARIES_DIR "${Sight_BINARY_DIR}")
@@ -74,7 +74,7 @@ macro(configure_header_file FWPROJECT_NAME FILENAME)
         ${HEADER_FILE_DESTINATION}
         IMMEDIATE @ONLY)
 
-    if(BUILD_SDK)
+    if(SIGHT_BUILD_SDK)
         install(FILES ${HEADER_FILE_DESTINATION}
                 DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${FW_INSTALL_PATH_SUFFIX}/${FWPROJECT_NAME})
     endif()
@@ -124,11 +124,6 @@ macro(initProject PRJNAME )
     file(GLOB ${FWPROJECT_NAME}_CMAKE_FILES "${PRJ_SOURCE_DIR}/*.txt" "${PRJ_SOURCE_DIR}/*.cmake")
     set(${FWPROJECT_NAME}_CMAKE_FILES ${${FWPROJECT_NAME}_CMAKE_FILES} PARENT_SCOPE)
     set_source_files_properties(${${FWPROJECT_NAME}_CMAKE_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
-
-    if (APPLE)
-        set_source_files_properties(${${FWPROJECT_NAME}_RC_FILES} PROPERTIES XCODE_LAST_KNOWN_FILE_TYPE YES)
-        set_source_files_properties(${${FWPROJECT_NAME}_CMAKE_FILES} PROPERTIES XCODE_LAST_KNOWN_FILE_TYPE YES)
-    endif()
 
     groupMaker(${FWPROJECT_NAME})
 endmacro()
@@ -254,7 +249,7 @@ macro(fwExec FWPROJECT_NAME PROJECT_VERSION)
         createResourcesTarget( ${FWPROJECT_NAME}_rc "${PRJ_SOURCE_DIR}/rc" "${${FWPROJECT_NAME}_RC_BUILD_DIR}" )
         add_dependencies( ${FWPROJECT_NAME} ${FWPROJECT_NAME}_rc )
 
-        if(${FWPROJECT_NAME}_INSTALL OR BUILD_SDK)
+        if(${FWPROJECT_NAME}_INSTALL OR SIGHT_BUILD_SDK)
             createResourcesInstallTarget( "${${FWPROJECT_NAME}_RC_BUILD_DIR}" "${SIGHT_MODULE_RC_PREFIX}/${${FWPROJECT_NAME}_FULLNAME}" )
         endif()
     endif()
@@ -303,7 +298,7 @@ macro(fwExec FWPROJECT_NAME PROJECT_VERSION)
 
     endif()
 
-    if(${FWPROJECT_NAME}_INSTALL OR BUILD_SDK)
+    if(${FWPROJECT_NAME}_INSTALL OR SIGHT_BUILD_SDK)
         qt_plugins_setup(${FWPROJECT_NAME}) # search and setup qt plugins for each modules
         install(
             TARGETS ${FWPROJECT_NAME}
@@ -371,7 +366,7 @@ macro(fwCppunitTest FWPROJECT_NAME)
         createResourcesTarget( ${FWPROJECT_NAME}_rc "${TEST_RC_DIR}" "${${FWPROJECT_NAME}_RC_BUILD_DIR}" )
         add_dependencies( ${FWPROJECT_NAME} ${FWPROJECT_NAME}_rc )
 
-        if(${FWPROJECT_NAME}_INSTALL OR BUILD_SDK)
+        if(${FWPROJECT_NAME}_INSTALL OR SIGHT_BUILD_SDK)
             createResourcesInstallTarget( "${${FWPROJECT_NAME}_RC_BUILD_DIR}" "${SIGHT_MODULE_RC_PREFIX}/${TU_NAME}" )
         endif()
     endif()
@@ -403,7 +398,7 @@ macro(fwCppunitTest FWPROJECT_NAME)
             FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     endif()
 
-    if(TESTS_XML_OUTPUT)
+    if(SIGHT_TESTS_XML_OUTPUT)
         add_test(NAME ${FWPROJECT_NAME} COMMAND "${${FWPROJECT_NAME}_SCRIPT} --xml" WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
         set_tests_properties(${FWPROJECT_NAME} PROPERTIES TIMEOUT 240)
     else()
@@ -439,7 +434,7 @@ macro(fwLib FWPROJECT_NAME PROJECT_VERSION)
 
     setVersion(${FWPROJECT_NAME} ${PROJECT_VERSION})
 
-    if(ENABLE_PCH AND MSVC AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
+    if(SIGHT_PCH_ENABLED AND MSVC AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
         if(${${FWPROJECT_NAME}_PCH_TARGET} STREQUAL ${FWPROJECT_NAME})
             add_precompiled_header_cpp(${FWPROJECT_NAME})
         endif()
@@ -487,7 +482,7 @@ macro(fwLib FWPROJECT_NAME PROJECT_VERSION)
         createResourcesTarget( ${FWPROJECT_NAME}_rc "${PRJ_SOURCE_DIR}/rc" "${${FWPROJECT_NAME}_RC_BUILD_DIR}" )
         add_dependencies( ${FWPROJECT_NAME} ${FWPROJECT_NAME}_rc )
 
-        if(${FWPROJECT_NAME}_INSTALL OR BUILD_SDK)
+        if(${FWPROJECT_NAME}_INSTALL OR SIGHT_BUILD_SDK)
             createResourcesInstallTarget( "${${FWPROJECT_NAME}_RC_BUILD_DIR}" "${SIGHT_MODULE_RC_PREFIX}/${${FWPROJECT_NAME}_FULLNAME}" )
         endif()
 
@@ -500,7 +495,7 @@ macro(fwLib FWPROJECT_NAME PROJECT_VERSION)
 
     set(${FWPROJECT_NAME}_INCLUDE_INSTALL_DIR ${FW_INSTALL_PATH_SUFFIX}/${FWPROJECT_NAME} PARENT_SCOPE)
 
-    if(BUILD_SDK)
+    if(SIGHT_BUILD_SDK)
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${FWPROJECT_NAME}
                 DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${FW_INSTALL_PATH_SUFFIX})
 
@@ -590,15 +585,15 @@ macro(fwLib FWPROJECT_NAME PROJECT_VERSION)
     # Adds project into folder lib
     set_target_properties(${FWPROJECT_NAME} PROPERTIES FOLDER "lib")
 
-    if(ENABLE_PCH AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
+    if(SIGHT_PCH_ENABLED AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
         if(${${FWPROJECT_NAME}_PCH_TARGET} STREQUAL ${FWPROJECT_NAME})
             add_precompiled_header(${FWPROJECT_NAME} include/${FWPROJECT_NAME}/pch.hpp)
-            if(VERBOSE_PCH)
+            if(SIGHT_PCH_VERBOSE)
                 message(STATUS "Use custom precompiled header")
             endif()
         else()
             use_precompiled_header(${FWPROJECT_NAME} ${${FWPROJECT_NAME}_PCH_TARGET})
-            if(VERBOSE_PCH)
+            if(SIGHT_PCH_VERBOSE)
                 message(STATUS "Use ${${FWPROJECT_NAME}_PCH_TARGET} precompiled header")
             endif()
         endif()
@@ -612,7 +607,7 @@ macro(fwModule FWPROJECT_NAME PROJECT_VERSION)
     set(${FWPROJECT_NAME}_TYPE ${${FWPROJECT_NAME}_TYPE} PARENT_SCOPE)
     setVersion(${FWPROJECT_NAME} ${PROJECT_VERSION})
 
-    if(ENABLE_PCH AND MSVC AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
+    if(SIGHT_PCH_ENABLED AND MSVC AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
         if(${${FWPROJECT_NAME}_PCH_TARGET} STREQUAL ${FWPROJECT_NAME})
             add_precompiled_header_cpp(${FWPROJECT_NAME})
         endif()
@@ -653,7 +648,7 @@ macro(fwModule FWPROJECT_NAME PROJECT_VERSION)
             set_target_properties(${FWPROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${MODULE_DIR})
         endforeach()
 
-        if(${FWPROJECT_NAME}_INSTALL OR BUILD_SDK)
+        if(${FWPROJECT_NAME}_INSTALL OR SIGHT_BUILD_SDK)
             qt_plugins_setup(${FWPROJECT_NAME}) # search and setup qt plugins for each modules
             install(
                 TARGETS ${FWPROJECT_NAME}
@@ -672,15 +667,15 @@ macro(fwModule FWPROJECT_NAME PROJECT_VERSION)
         target_include_directories(${FWPROJECT_NAME} PUBLIC ${${FWPROJECT_NAME}_INCLUDE_DIR})
         target_include_directories(${FWPROJECT_NAME} PUBLIC "${CMAKE_BINARY_DIR}/${FWPROJECT_NAME}/include/")
 
-        if(ENABLE_PCH AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
+        if(SIGHT_PCH_ENABLED AND NOT ${FWPROJECT_NAME}_DISABLE_PCH)
             if(${${FWPROJECT_NAME}_PCH_TARGET} STREQUAL ${FWPROJECT_NAME})
                 add_precompiled_header(${FWPROJECT_NAME} include/${FWPROJECT_NAME}/pch.hpp)
-                if(VERBOSE_PCH)
+                if(SIGHT_PCH_VERBOSE)
                     message(STATUS "Use custom precompiled header")
                 endif()
             else()
                 use_precompiled_header(${FWPROJECT_NAME} ${${FWPROJECT_NAME}_PCH_TARGET})
-                if(VERBOSE_PCH)
+                if(SIGHT_PCH_VERBOSE)
                     message(STATUS "Use ${${FWPROJECT_NAME}_PCH_TARGET} precompiled header")
                 endif()
             endif()
@@ -756,7 +751,7 @@ macro(fwModule FWPROJECT_NAME PROJECT_VERSION)
         add_dependencies( ${FWPROJECT_NAME} ${FWPROJECT_NAME}_rc )
     endif()
 
-    if(${FWPROJECT_NAME}_INSTALL OR BUILD_SDK)
+    if(${FWPROJECT_NAME}_INSTALL OR SIGHT_BUILD_SDK)
         createResourcesInstallTarget( "${${FWPROJECT_NAME}_RC_BUILD_DIR}" "${SIGHT_MODULE_RC_PREFIX}/${${FWPROJECT_NAME}_FULLNAME}" )
     endif()
 
@@ -1083,7 +1078,7 @@ macro(addProject PROJECT)
             message(SEND_ERROR "<${PROJECT}> dir '' not found.")
         endif()
 
-        if(BUILD_SDK)
+        if(SIGHT_BUILD_SDK)
             # Store requirements for the SDK
             file(APPEND "${CMAKE_BINARY_DIR}/cmake/SightRequirements.cmake"
                 "set(${PROJECT}_EXTERNAL 1)\n"

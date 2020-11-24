@@ -1,4 +1,3 @@
-
 set( NAME vtkGdcmIO )
 set( VERSION 0.1 )
 set( TYPE LIBRARY )
@@ -14,6 +13,6 @@ set( DEPENDENCIES
 )
 set( REQUIREMENTS )
 set( CONAN_DEPS
-    ${CONAN_VTK}
-    ${CONAN_GDCM}
+    SIGHT_CONAN_VTK
+    SIGHT_CONAN_GDCM
 )

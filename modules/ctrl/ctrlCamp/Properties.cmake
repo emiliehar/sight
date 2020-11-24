@@ -1,5 +1,3 @@
-
-
 set( NAME ctrlCamp )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -14,8 +12,7 @@ set( DEPENDENCIES
     fwServices
     fwTools
 )
-
 set( REQUIREMENTS  )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
+    SIGHT_CONAN_BOOST
 )

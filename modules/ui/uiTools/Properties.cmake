@@ -1,4 +1,3 @@
-
 set( NAME uiTools )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -14,8 +13,7 @@ set( DEPENDENCIES
     fwCom
 )
 set( REQUIREMENTS )
-
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_QT}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_QT
 )

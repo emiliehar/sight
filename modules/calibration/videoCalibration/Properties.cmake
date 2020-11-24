@@ -1,4 +1,3 @@
-
 set( NAME videoCalibration )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -19,5 +18,5 @@ set( DEPENDENCIES
 )
 set( REQUIREMENTS fwData servicesReg)
 set( CONAN_DEPS
-    ${CONAN_OPENCV}
+    SIGHT_CONAN_OPENCV
 )

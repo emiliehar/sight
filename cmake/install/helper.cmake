@@ -24,7 +24,7 @@ macro(qt_plugins_setup PROJECT_NAME)
 
     # check if there is a PLUGINS variable in Properties.cmake of the current module
     if(${PROJECT_NAME}_PLUGINS)
-        if(NOT USE_SYSTEM_LIB)
+        if(NOT SIGHT_SYSTEM_LIB)
             if(FW_BUILD_EXTERNAL)
                 set(FW_QT5_LOCATION "${Sight_LIBRARY_DIR}/../..")
             else()
@@ -69,7 +69,7 @@ macro(install_qt_plugins)
 
     #qt plugins setup
     if(QT_REQUIREMENTS) # set by helper.cmake -> qt_setup() macros
-        if(NOT USE_SYSTEM_LIB)
+        if(NOT SIGHT_SYSTEM_LIB)
             if(FW_BUILD_EXTERNAL)
                 set(FW_QT5_LOCATION "${Sight_LIBRARY_DIR}/../..")
             else()

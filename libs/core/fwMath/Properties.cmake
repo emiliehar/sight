@@ -6,5 +6,5 @@ set( DEPENDENCIES fwCore )
 set( REQUIREMENTS  )
 
 set( CONAN_DEPS
-    ${CONAN_GLM}
+    SIGHT_CONAN_GLM
 )

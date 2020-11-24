@@ -6,14 +6,13 @@ set( DEPENDENCIES
     fwRuntime
     fwServices
     fwPacsIO
-    )
+)
 set( REQUIREMENTS
     fwData
     servicesReg
     gui
     ioPacs
-    )
-
+)
 set( CONAN_DEPS
-    ${CONAN_CPPUNIT}
+    SIGHT_CONAN_CPPUNIT
 )

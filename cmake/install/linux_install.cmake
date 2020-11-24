@@ -49,7 +49,7 @@ macro(linux_install PRJ_NAME)
         install_qt_plugins()
     endif()
 
-    if(NOT USE_SYSTEM_LIB)
+    if(NOT SIGHT_SYSTEM_LIB)
         if(${PRJ_NAME} STREQUAL "sight")
             # Needed for fixup_bundle first argument
             set(LAUNCHER_PATH "bin/fwlauncher.bin-${fwlauncher_VERSION}")

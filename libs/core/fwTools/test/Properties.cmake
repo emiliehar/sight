@@ -6,7 +6,7 @@ set( DEPENDENCIES fwCore fwTools)
 set( REQUIREMENTS  )
 set( WARNINGS_AS_ERRORS ON)
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_CAMP} # Needed, loaded dynamically in the unit-test
-    ${CONAN_CPPUNIT}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_CAMP # Needed, loaded dynamically in the unit-test
+    SIGHT_CONAN_CPPUNIT
 )

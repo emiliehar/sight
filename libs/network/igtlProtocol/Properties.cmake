@@ -1,4 +1,3 @@
-
 set( NAME igtlProtocol )
 set( VERSION 0.1 )
 set( TYPE LIBRARY )
@@ -15,8 +14,7 @@ set( DEPENDENCIES
     fwDataTools
 )
 set( REQUIREMENTS  )
-
 set( CONAN_DEPS
-    ${CONAN_LIBARCHIVE}
-    ${CONAN_OPENIGTLINK}
+    SIGHT_CONAN_LIBARCHIVE
+    SIGHT_CONAN_OPENIGTLINK
 )

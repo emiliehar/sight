@@ -20,7 +20,6 @@ set( REQUIREMENTS fwData
                   servicesReg
                   arData
 )
-
 set( CONAN_DEPS
-    ${CONAN_OPENCV}
+    SIGHT_CONAN_OPENCV
 )

@@ -13,36 +13,24 @@ find_package(OpenGL QUIET REQUIRED)
 
 # This is a hack to copy plugins inside the build directory
 # Most developers executes apps inside the build directory so this is done as a convenience
-if(NOT APPLE)
-    if(WIN32)
-        file(GLOB OGRE_PLUGINS "${OGRE_CONFIG_DIR}/RenderSystem*.dll" "${OGRE_CONFIG_DIR}/Plugin_*.dll" "${OGRE_CONFIG_DIR}/Codec_*.dll")
-        set(FW_OGRE_PLUGINS_DIR "${PROJECT_BINARY_DIR}/ogreplugins/")
+if(WIN32)
+    file(GLOB OGRE_PLUGINS "${OGRE_CONFIG_DIR}/RenderSystem*.dll" "${OGRE_CONFIG_DIR}/Plugin_*.dll" "${OGRE_CONFIG_DIR}/Codec_*.dll")
+    set(FW_OGRE_PLUGINS_DIR "${PROJECT_BINARY_DIR}/ogreplugins/")
 
-        # This copies the plugins into the build directory
-        file(INSTALL ${OGRE_PLUGINS} DESTINATION "${FW_OGRE_PLUGINS_DIR}")
-
-        # This copies the plugins into the install directory
-        install(DIRECTORY "${FW_OGRE_PLUGINS_DIR}" DESTINATION "ogrePlugins/")
-    else()
-        file(GLOB OGRE_PLUGINS "${OGRE_PLUGIN_DIR}/*${CMAKE_SHARED_LIBRARY_SUFFIX}*")
-        set(FW_OGRE_PLUGINS_DIR "${PROJECT_BINARY_DIR}/lib/ogreplugins/")
-
-        # This copies the plugins into the build directory
-        file(INSTALL ${OGRE_PLUGINS} DESTINATION "${FW_OGRE_PLUGINS_DIR}")
-
-        # This copies the plugins into the install directory
-        install(DIRECTORY "${FW_OGRE_PLUGINS_DIR}" DESTINATION "lib/ogreplugins/")
-    endif()
-
-else()
-    # Ogre search frameworks plugings in /Contents/Plugins/
-    set(FRAMEWORKS_DIR "${PROJECT_BINARY_DIR}/bin/Contents/Plugins")
-    file(GLOB OGRE_PLUGINS "${OGRE_PLUGIN_DIR}/*")
-    file(INSTALL ${OGRE_PLUGINS} DESTINATION ${FRAMEWORKS_DIR})
+    # This copies the plugins into the build directory
+    file(INSTALL ${OGRE_PLUGINS} DESTINATION "${FW_OGRE_PLUGINS_DIR}")
 
     # This copies the plugins into the install directory
-    install(DIRECTORY ${FRAMEWORKS_DIR} DESTINATION "bin/Contents")
+    install(DIRECTORY "${FW_OGRE_PLUGINS_DIR}" DESTINATION "ogrePlugins/")
+else()
+    file(GLOB OGRE_PLUGINS "${OGRE_PLUGIN_DIR}/*${CMAKE_SHARED_LIBRARY_SUFFIX}*")
+    set(FW_OGRE_PLUGINS_DIR "${PROJECT_BINARY_DIR}/lib/ogreplugins/")
 
+    # This copies the plugins into the build directory
+    file(INSTALL ${OGRE_PLUGINS} DESTINATION "${FW_OGRE_PLUGINS_DIR}")
+
+    # This copies the plugins into the install directory
+    install(DIRECTORY "${FW_OGRE_PLUGINS_DIR}" DESTINATION "lib/ogreplugins/")
 endif()
 
 fwForwardInclude(
@@ -83,7 +71,7 @@ set(FWPROJECT_FULLNAME ${${FWPROJECT_NAME}_FULLNAME})
 configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/resources.cfg.in"
                 "${CMAKE_BINARY_DIR}/${SIGHT_MODULE_RC_PREFIX}/${${FWPROJECT_NAME}_FULLNAME}/resources.cfg" @ONLY)
 
-if(NOT USE_SYSTEM_LIB)
+if(NOT SIGHT_SYSTEM_LIB)
     # manage Ogre3D transitive dependencies
     fwForwardLink(
         CONAN_PKG::zzip

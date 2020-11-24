@@ -7,7 +7,6 @@ set( DEPENDENCIES
     fwGdcmIO
     )
 set( REQUIREMENTS )
-
 set( CONAN_DEPS
-    ${CONAN_BOOST}
+    SIGHT_CONAN_BOOST
 )

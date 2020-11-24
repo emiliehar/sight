@@ -18,9 +18,9 @@ set( DEPENDENCIES
     fwServices
     fwIO
     fwPreferences
-    )
+)
 set( REQUIREMENTS )
 set( CONAN_DEPS
-    ${CONAN_DCMTK}
-    ${CONAN_QT}
+    SIGHT_CONAN_DCMTK
+    SIGHT_CONAN_QT
 )

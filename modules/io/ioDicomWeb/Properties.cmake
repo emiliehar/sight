@@ -1,4 +1,3 @@
-
 set( NAME ioDicomWeb )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -19,12 +18,12 @@ set( DEPENDENCIES
     fwServices
     fwIO
     fwPreferences
-    )
+)
 set( REQUIREMENTS
     fwData
     servicesReg
-    )
+)
 set( CONAN_DEPS
-    ${CONAN_DCMTK}
-    ${CONAN_QT}
+    SIGHT_CONAN_DCMTK
+    SIGHT_CONAN_QT
 )

@@ -11,5 +11,5 @@ set( DEPENDENCIES
     fwVtkIO
 )
 set( CONAN_DEPS
-    ${CONAN_VTK}
+    SIGHT_CONAN_VTK
 )

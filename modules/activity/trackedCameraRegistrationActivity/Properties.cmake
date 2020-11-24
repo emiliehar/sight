@@ -15,8 +15,6 @@ set( REQUIREMENTS
     registrationCV
     trackerAruco
     uiIO
-    videoOpenni
-    videoVLC
     videoQt
     videoTools
     visuVTKAdaptor

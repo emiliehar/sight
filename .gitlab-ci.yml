@@ -102,10 +102,10 @@ build:debug-linux-clang:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Debug
-      -DBUILD_TESTS=ON
-      -DBUILD_DOCUMENTATION=OFF
-      -DSPYLOG_LEVEL=trace
-      -DENABLE_PCH=OFF
+      -DSIGHT_BUILD_TESTS=ON
+      -DSIGHT_BUILD_DOCUMENTATION=OFF
+      -DSIGHT_SPYLOG_LEVEL=trace
+      -DSIGHT_PCH_ENABLED=OFF
     - find . -type f -iname '*.?pp' -exec touch -t 197001010000 {} \;
     - ninja
     - ccache -s
@@ -131,10 +131,10 @@ build:debug-windows:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=%CI_PROJECT_DIR%/install
       -DCMAKE_BUILD_TYPE=Debug
-      -DBUILD_TESTS=ON
-      -DBUILD_DOCUMENTATION=OFF
-      -DSPYLOG_LEVEL=trace
-      -DENABLE_PCH=ON
+      -DSIGHT_BUILD_TESTS=ON
+      -DSIGHT_BUILD_DOCUMENTATION=OFF
+      -DSIGHT_SPYLOG_LEVEL=trace
+      -DSIGHT_PCH_ENABLED=ON
     - ninja
     # Run unit tests.
     - git clone --depth 1 https://gitlab-ci-token:%CI_JOB_TOKEN%@git.ircad.fr/Sight/sight-data.git -b "%EXTRA_BRANCH%"
@@ -159,9 +159,9 @@ build:release-windows:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=%CI_PROJECT_DIR%/install
       -DCMAKE_BUILD_TYPE=Release
-      -DBUILD_TESTS=ON
-      -DBUILD_DOCUMENTATION=OFF
-      -DENABLE_PCH=ON
+      -DSIGHT_BUILD_TESTS=ON
+      -DSIGHT_BUILD_DOCUMENTATION=OFF
+      -DSIGHT_PCH_ENABLED=ON
     - ninja
     # Run unit tests.
     - git clone --depth 1 https://gitlab-ci-token:%CI_JOB_TOKEN%@git.ircad.fr/Sight/sight-data.git -b %EXTRA_BRANCH%
@@ -209,9 +209,9 @@ build:debian:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Release
-      -DBUILD_TESTS=OFF
-      -DBUILD_DOCUMENTATION=OFF
-      -DENABLE_PCH=OFF
+      -DSIGHT_BUILD_TESTS=OFF
+      -DSIGHT_BUILD_DOCUMENTATION=OFF
+      -DSIGHT_PCH_ENABLED=OFF
       -DUSE_SYSTEM_LIB=ON
       -DPROJECTS_TO_BUILD=VRRender
     - ninja
@@ -229,8 +229,8 @@ doxygen:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Release
-      -DBUILD_TESTS=OFF
-      -DBUILD_DOCUMENTATION=ON
+      -DSIGHT_BUILD_TESTS=OFF
+      -DSIGHT_BUILD_DOCUMENTATION=ON
     - ninja doc
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
@@ -266,11 +266,11 @@ build:sdk-debug-linux:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Debug
-      -DBUILD_TESTS=ON
-      -DBUILD_DOCUMENTATION=OFF
-      -DENABLE_PCH=OFF
+      -DSIGHT_BUILD_TESTS=ON
+      -DSIGHT_BUILD_DOCUMENTATION=OFF
+      -DSIGHT_PCH_ENABLED=OFF
       -DBUILD_SDK=ON
-      -DSPYLOG_LEVEL=trace
+      -DSIGHT_SPYLOG_LEVEL=trace
     - find . -type f -iname '*.?pp' -exec touch -t 197001010000 {} \;
     - ninja
     # Run unit tests.
@@ -312,11 +312,11 @@ build:sdk-release-linux:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Release
-      -DBUILD_TESTS=ON
-      -DBUILD_DOCUMENTATION=OFF
-      -DENABLE_PCH=OFF
+      -DSIGHT_BUILD_TESTS=ON
+      -DSIGHT_BUILD_DOCUMENTATION=OFF
+      -DSIGHT_PCH_ENABLED=OFF
       -DBUILD_SDK=ON
-      -DSPYLOG_LEVEL=error
+      -DSIGHT_SPYLOG_LEVEL=error
     - find . -type f -iname '*.?pp' -exec touch -t 197001010000 {} \;
     - ninja
     # Run unit tests.
@@ -371,7 +371,7 @@ test:sdk-debug-linux:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Debug
-      -DENABLE_PCH=OFF
+      -DSIGHT_PCH_ENABLED=OFF
     - find . -type f -iname '*.?pp' -exec touch -t 197001010000 {} \;
     - ninja
     - ccache -s
@@ -418,7 +418,7 @@ test:sdk-release-linux:
       -G Ninja
       -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_DIR/install
       -DCMAKE_BUILD_TYPE=Release
-      -DENABLE_PCH=OFF
+      -DSIGHT_PCH_ENABLED=OFF
     - find . -type f -iname '*.?pp' -exec touch -t 197001010000 {} \;
     - ninja
     - ccache -s

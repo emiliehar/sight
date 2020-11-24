@@ -119,7 +119,6 @@
         <service uid="startVideo" type="::gui::action::SSlotCaller">
             <slots>
                 <slot>startVideo/setInexecutable</slot>
-                <slot>scanner/startCamera</slot>
                 <slot>stopVideo/setExecutable</slot>
                 <slot>startSlots/update</slot>
             </slots>
@@ -129,7 +128,6 @@
             <state executable="false" />
             <slots>
                 <slot>stopVideo/setInexecutable</slot>
-                <slot>scanner/stopCamera</slot>
                 <slot>startVideo/setExecutable</slot>
                 <slot>stopSlots/update</slot>
             </slots>
@@ -155,7 +153,6 @@
 
         <service uid="takeSnapshot" type="::gui::action::SSlotCaller">
             <slots>
-                <slot>scanner/takeSnapshot</slot>
                 <slot>actionRecord/update</slot>
             </slots>
         </service>
@@ -268,15 +265,7 @@
             </inout>
         </service>
 
-        <!-- Manages Sense camera configuration -->
-        <service uid="scanner" type="::videoOpenni::SScan" worker="scanWorker">
-            <inout key="frameTL" uid="frameTLColor" />
-            <inout key="depthTL" uid="depthTL" />
-            <inout key="snapshotTLDepth" uid="exportTLDepth" />
-            <inout key="snapshotTLColors" uid="exportTLColor" />
-            <inout key="snapshotTLIR" uid="exportTLIR" />
-        </service>
-
+        <!-- Manages Sense camera configuration -->        
         <service uid="actionRecord" type="::uiTools::action::STimestampSlotCaller">
             <slots>
                 <slot>depthRecorder/saveFrame</slot>
@@ -305,7 +294,6 @@
         <start uid="mainView" />
         <start uid="synchronizer" />
         <start uid="snapshotSynchronizer" />
-        <start uid="scanner" />
         <start uid="actionRecord" />
         <start uid="depthRecorder" />
         <start uid="rgbRecorder" />

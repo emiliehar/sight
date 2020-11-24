@@ -14,15 +14,13 @@ set( DEPENDENCIES
         fwMedData
         arServices
         cvIO
-
-        )
+)
 set( REQUIREMENTS fwData
         servicesReg
         arData
-        )
-
+)
 set( CONAN_DEPS
-        ${CONAN_OPENCV}
-        ${CONAN_IPPE}
-        ${CONAN_HYBRIDMARKERTRACKER}
-        )
+        SIGHT_CONAN_OPENCV
+        SIGHT_CONAN_IPPE
+        SIGHT_CONAN_HYBRID-MARKER-TRACKER
+)

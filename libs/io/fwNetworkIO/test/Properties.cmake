@@ -14,5 +14,5 @@ set( DEPENDENCIES
     )
 set( REQUIREMENTS )
 set( CONAN_DEPS
-    ${CONAN_QT}
+    SIGHT_CONAN_QT
 )

@@ -1,4 +1,3 @@
-
 set( NAME ctrlSelection )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -15,7 +14,6 @@ set( DEPENDENCIES
     fwServices
 )
 set( REQUIREMENTS  )
-
 set( CONAN_DEPS
-    ${CONAN_BOOST}
+    SIGHT_CONAN_BOOST
 )

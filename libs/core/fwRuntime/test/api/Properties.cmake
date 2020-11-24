@@ -6,5 +6,5 @@ set( REQUIREMENTS fwData servicesReg )
 set( WARNINGS_AS_ERRORS ON )
 
 set( CONAN_DEPS
-    ${CONAN_CPPUNIT}
+    SIGHT_CONAN_CPPUNIT
 )

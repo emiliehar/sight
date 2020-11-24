@@ -8,10 +8,8 @@ set( DEPENDENCIES
     fwTools
 )
 set( REQUIREMENTS)
-
 set( CONAN_DEPS
-    ${CONAN_ITK}
-    ${CONAN_GLM}
+    SIGHT_CONAN_ITK
+    SIGHT_CONAN_GLM
 )
-
 set( USE_PCH_FROM_TARGET pchServicesOmp )

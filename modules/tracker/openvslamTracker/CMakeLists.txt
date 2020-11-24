@@ -19,7 +19,7 @@ if(UNIX)
     target_include_directories(${FWPROJECT_NAME} PRIVATE ${DBoW2_INCLUDE_DIRS})
 
     # Download the vocabulary file (from owncloud)
-    if(NOT USE_SYSTEM_LIB)
+    if(NOT SIGHT_SYSTEM_LIB)
         message(STATUS "Downdload vocabulary file")
         file(DOWNLOAD "https://owncloud.ircad.fr/index.php/s/KodeswDPQpcJ0mS/download"
             "${CMAKE_BINARY_DIR}/${SIGHT_MODULE_RC_PREFIX}/${NAME}-${VERSION}/orb_vocab.dbow2"

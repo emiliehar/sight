@@ -6,5 +6,5 @@ set( DEPENDENCIES fwCore fwThread fwJobs)
 set( REQUIREMENTS )
 
 set( CONAN_DEPS
-    ${CONAN_CPPUNIT}
+    SIGHT_CONAN_CPPUNIT
 )

@@ -1,4 +1,3 @@
-
 set( NAME videoPCL )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -16,6 +15,6 @@ set( DEPENDENCIES
 )
 set( REQUIREMENTS  )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_PCL}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_PCL
 )

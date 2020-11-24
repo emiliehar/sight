@@ -26,6 +26,6 @@ set( REQUIREMENTS
     ctrlSelection
     )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_QT}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_QT
 )

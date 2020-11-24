@@ -24,7 +24,7 @@ endif()
 project (sight)
 
 if(APPLE)
-    message(WARNING "macOS is no more officially supported and complete support will be removed in sight 21.0")
+    message(FATAL "macOS is no more supported.")
 endif()
 
 enable_testing()
@@ -41,21 +41,21 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/build/linux/modu
 # User options
 ########################################################################################################################
 
-option(BUILD_SDK "Build Sight as a SDK" OFF)
+option(SIGHT_BUILD_SDK "Build Sight as a SDK" OFF)
 
 # Tests build / run options
-set(BUILD_TESTS ON CACHE BOOL "Configures projects associated tests (<project>Test projects)")
-set(TESTS_XML_OUTPUT OFF CACHE BOOL "Tests will generate an xml output, suitable for CI integration")
-mark_as_advanced(TESTS_XML_OUTPUT)
-set(TESTS_FILTER "" CACHE STRING "Allows to only build/run tests whose path contains the filter string.")
-mark_as_advanced(TESTS_FILTER)
+set(SIGHT_BUILD_TESTS ON CACHE BOOL "Configures projects associated tests (<project>Test projects)")
+set(SIGHT_TESTS_XML_OUTPUT OFF CACHE BOOL "Tests will generate an xml output, suitable for CI integration")
+mark_as_advanced(SIGHT_TESTS_XML_OUTPUT)
+set(SIGHT_TESTS_FILTER "" CACHE STRING "Allows to only build/run tests whose path contains the filter string.")
+mark_as_advanced(SIGHT_TESTS_FILTER)
 
 set(SET_API_VERSION ON)
 
-option(ENABLE_PCH "Use pre-compiled headers to speedup the compilation" ON)
-option(VERBOSE_PCH "Display debug messages to help debugging PCH" OFF)
-mark_as_advanced(ENABLE_PCH)
-mark_as_advanced(VERBOSE_PCH)
+option(SIGHT_PCH_ENABLED "Use pre-compiled headers to speedup the compilation" ON)
+option(SIGHT_PCH_VERBOSE "Display debug messages to help debugging PCH" OFF)
+mark_as_advanced(SIGHT_PCH_ENABLED)
+mark_as_advanced(SIGHT_PCH_VERBOSE)
 
 # QML_IMPORT_PATH allows qtCreator to find the qml modules created in our modules
 set(QML_IMPORT_PATH "" CACHE STRING "Path of the Qml modules." FORCE)
@@ -101,13 +101,13 @@ endif()
 # External libraries management
 ########################################################################################################################
 
-if(UNIX AND NOT APPLE)
-    option(USE_SYSTEM_LIB "Use system libraries to compile sight" OFF)
+if(UNIX)
+    option(SIGHT_SYSTEM_LIB "Use system libraries to compile sight" OFF)
 endif()
 
 set(FWCMAKE_RESOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
 
-if(USE_SYSTEM_LIB)
+if(SIGHT_SYSTEM_LIB)
     # Append our 'FindPackages.cmake' to CMAKE_MODULE_PATH and include BinPkgs config file
     list(APPEND CMAKE_PREFIX_PATH ${FWCMAKE_RESOURCE_PATH}/modules)
     list(APPEND CMAKE_MODULE_PATH ${FWCMAKE_RESOURCE_PATH}/modules)
@@ -120,8 +120,8 @@ if(USE_SYSTEM_LIB)
         include("${LIB_CONFIG}")
     endforeach()
 else()
-    option(CONAN_BUILD_MISSING "Build missing conan package automatically (experimental)" OFF)
-    mark_as_advanced(CONAN_BUILD_MISSING)
+    option(SIGHT_CONAN_BUILD_ENABLED "Build missing conan package automatically (experimental)" OFF)
+    mark_as_advanced(SIGHT_CONAN_BUILD_ENABLED)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/conan/conan-deps.cmake)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/conan/conan.cmake)
 endif()
@@ -141,8 +141,8 @@ foreach(REPOSITORY ${ADDITIONAL_REPOSITORIES_FILES})
         get_filename_component(REPO_DIR ${REPOSITORY} DIRECTORY)
         get_filename_component(REPO_DIR ${REPO_DIR} ABSOLUTE)
 
-        option(BUILD_${REPO_NAME} "Enable ${REPO_NAME} repository" ON)
-        list(APPEND ADDITIONAL_REPOSITORIES_OPTION BUILD_${REPO_NAME})
+        option(SIGHT_BUILD_${REPO_NAME} "Enable ${REPO_NAME} repository" ON)
+        list(APPEND ADDITIONAL_REPOSITORIES_OPTION SIGHT_BUILD_${REPO_NAME})
         list(APPEND ADDITIONAL_REPOSITORIES_NAME ${REPO_RAW_NAME})
         list(APPEND ADDITIONAL_REPOSITORIES ${REPO_DIR})
     endif()
@@ -259,7 +259,7 @@ foreach(PROPERTIES_FILE ${PROJECTS_PROPERTIES})
     set(${NAME}_GENERATE_OBJECT_LIB "${GENERATE_OBJECT_LIB}")
 
     # Get the pch target, test the existence of type variable to exclude unbuilt projects
-    if(ENABLE_PCH AND TYPE AND NOT ${NAME}_DISABLE_PCH)
+    if(SIGHT_PCH_ENABLED AND TYPE AND NOT ${NAME}_DISABLE_PCH)
         set(${NAME}_PROJECT_DIR "${PROJECT_DIR}")
 
         getPchTarget(${NAME} ${PROJECT_DIR} ${TYPE} ${USE_PCH_FROM_TARGET})
@@ -311,7 +311,7 @@ if(PROJECTS_TO_BUILD)
     list(APPEND CPACK_SOURCE_INSTALLED_DIRECTORIES ${PACKAGE_SRC_DIR} "." "${CMAKE_SOURCE_DIR}/cmake" "./cmake")
 
     message(STATUS "Project configuration is restricted to : ${PROJECTS_TO_BUILD}")
-elseif(BUILD_SDK)
+elseif(SIGHT_BUILD_SDK)
     foreach(PROJECT ${PROJECT_LIST})
         set(${PROJECT}_INSTALL 1)
     endforeach()
@@ -323,18 +323,18 @@ if(PROJECT_TESTS)
     list(REMOVE_ITEM PROJECT_LIST ${PROJECT_TESTS})
 endif()
 
-findTests("${PROJECT_LIST}" "${TESTS_FILTER}" PROJECT_TESTS)
+findTests("${PROJECT_LIST}" "${SIGHT_TESTS_FILTER}" PROJECT_TESTS)
 findAllDependencies("${PROJECT_TESTS}" PROJECT_TESTS_DEPS)
 list(REMOVE_DUPLICATES PROJECT_TESTS_DEPS)
 
-# Add all test sources to the source package. Needed to make the package buildable without setting BUILD_TESTS=OFF.
+# Add all test sources to the source package. Needed to make the package buildable without setting SIGHT_BUILD_TESTS=OFF.
 foreach(PROJECT ${PROJECT_TESTS_DEPS})
     findProjectSubdirectory("${${PROJECT}_DIR}" "${REPOSITORIES_DIRECTORIES}" SOURCE_INSTALL_DIR)
     list(APPEND CPACK_SOURCE_INSTALLED_DIRECTORIES ${${PROJECT}_DIR} ${SOURCE_INSTALL_DIR})
 endforeach()
 
 # Append tests to the project list
-if(BUILD_TESTS)
+if(SIGHT_BUILD_TESTS)
     list(APPEND PROJECT_LIST ${PROJECT_TESTS_DEPS})
     list(REMOVE_DUPLICATES PROJECT_LIST)
 endif()
@@ -343,14 +343,14 @@ endif()
 # Conan packages and definition
 ########################################################################################################################
 
-if(NOT USE_SYSTEM_LIB)
-    findConanDeps("${PROJECT_LIST}" CONAN_DEPS_LIST)
-    installConanDeps("${CONAN_DEPS_LIST}")
+if(NOT SIGHT_SYSTEM_LIB)
+    findConanDeps("${PROJECT_LIST}" SIGHT_CONAN_DEPS_LIST)
+    installConanDeps("${SIGHT_CONAN_DEPS_LIST}")
     add_definitions(${CONAN_DEFINES})
 endif()
 
 ########################################################################################################################
-# Compiler flags (We assume that we use the same flags fo C and C++ and we do only C++ here)
+# Compiler flags
 ########################################################################################################################
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/build/flags.cmake)
@@ -370,7 +370,7 @@ endforeach()
 # Export and install targets
 ########################################################################################################################
 
-if(BUILD_SDK)
+if(SIGHT_BUILD_SDK)
     # Create the SightConfig.cmake file
     set(FWCONFIG_FILE ${CMAKE_SOURCE_DIR}/cmake/build/SightConfig.cmake.in)
 
@@ -385,7 +385,7 @@ if(BUILD_SDK)
       COMPATIBILITY AnyNewerVersion
     )
 
-    if(NOT USE_SYSTEM_LIB)
+    if(NOT SIGHT_SYSTEM_LIB)
         file(APPEND "${CMAKE_BINARY_DIR}/cmake/SightRequirements.cmake"
              "set(CONAN_DEFINES ${CONAN_DEFINES})\n")
     endif()
@@ -435,41 +435,8 @@ if(BUILD_SDK)
       COMPONENT
         dev
     )
-
-    if(APPLE)
-        install(
-          FILES
-            "${CMAKE_SOURCE_DIR}/cmake/install/osx_install.cmake"
-          DESTINATION
-            ${FWCONFIG_PACKAGE_LOCATION}/install
-          COMPONENT
-            dev
-        )
-        install(
-          FILES
-            "${CMAKE_SOURCE_DIR}/cmake/install/macos/rc/app.icns"
-          DESTINATION
-            ${FWCONFIG_PACKAGE_LOCATION}/install/macos/rc
-          COMPONENT
-            dev
-        )
-        install(
-          FILES
-          "${CMAKE_SOURCE_DIR}/cmake/install/macos/osx_install_name_tool.py"
-          DESTINATION
-            ${FWCONFIG_PACKAGE_LOCATION}/install/macos/
-          COMPONENT
-            dev
-        )
-        install(
-          FILES
-          "${CMAKE_SOURCE_DIR}/cmake/build/linux/template.sh.in"
-          DESTINATION
-            ${FWCONFIG_PACKAGE_LOCATION}/build/linux
-          COMPONENT
-            dev
-        )
-    elseif(WIN32)
+    
+    if(WIN32)
         install(
           FILES
             "${CMAKE_SOURCE_DIR}/cmake/install/win_install.cmake"
@@ -544,21 +511,21 @@ endif()
 ########################################################################################################################
 
 # Doxygen documentation
-option(BUILD_DOCUMENTATION "Build the doxygen documentation" OFF)
-if(BUILD_DOCUMENTATION)
-    option(BUILD_DOCSET "Build a Dash/Zeal/XCode docset" OFF)
+option(SIGHT_BUILD_DOCUMENTATION "Build the doxygen documentation" OFF)
+if(SIGHT_BUILD_DOCUMENTATION)
+    option(SIGHT_BUILD_DOCSET "Build a Dash/Zeal/XCode docset" OFF)
     include(${FWCMAKE_RESOURCE_PATH}doxygen/doxygen_generator.cmake)
     doxygenGenerator(${PROJECT_LIST})
-    if(BUILD_DOCSET)
+    if(SIGHT_BUILD_DOCSET)
         docsetGenerator(${PROJECT_LIST})
     endif()
 else()
-    unset(BUILD_DOCSET CACHE)
+    unset(SIGHT_BUILD_DOCSET CACHE)
 endif()
 
 # VS Code project
-option(GENERATE_VSCODE_WS "Generate VS Code workspace" OFF)
-if(GENERATE_VSCODE_WS)
+option(SIGHT_GENERATE_VSCODE_WS "Generate VS Code workspace" OFF)
+if(SIGHT_GENERATE_VSCODE_WS)
     include(${FWCMAKE_RESOURCE_PATH}vscode/vscode_generator.cmake)
     vscodeGenerator(${PROJECT_LIST})
 endif()
@@ -566,7 +533,7 @@ endif()
 ########################################################################################################################
 # Packaging for the SDK
 ########################################################################################################################
-if(BUILD_SDK)
+if(SIGHT_BUILD_SDK)
     set(FWPROJECT_NAME sight)
     generic_install()
 endif()

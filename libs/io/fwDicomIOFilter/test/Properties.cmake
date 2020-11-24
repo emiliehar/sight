@@ -1,4 +1,3 @@
-
 set( NAME fwDicomIOFilterTest )
 set( VERSION  )
 set( TYPE TEST )
@@ -17,6 +16,6 @@ set( REQUIREMENTS
 
     )
 set( CONAN_DEPS
-    ${CONAN_GDCM}
-    ${CONAN_DCMTK}
+    SIGHT_CONAN_GDCM
+    SIGHT_CONAN_DCMTK
 )

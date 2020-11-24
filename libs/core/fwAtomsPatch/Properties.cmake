@@ -6,6 +6,6 @@ set( DEPENDENCIES fwAtomConversion fwAtoms fwCore fwTools fwRuntime )
 set( REQUIREMENTS  )
 set( USE_PCH_FROM_TARGET fwAtomConversion )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_CAMP}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_CAMP
 )

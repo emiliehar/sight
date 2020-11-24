@@ -20,7 +20,7 @@
  *
  ***********************************************************************/
 
-#if (SPYLOG_LEVEL >= 4 )
+#if (SIGHT_SPYLOG_LEVEL >= 4 )
 #include <fwCore/HiResTimer.hpp>
 #endif
 
@@ -78,14 +78,14 @@ void SeriesDBLazyReaderTest::readSeriesDBTest()
 
     CPPUNIT_ASSERT( ::fwTest::DicomReaderTest::checkSeriesJMSGenou( series ) );
 
-#if (SPYLOG_LEVEL >= 4 ) // Log level info
+#if (SIGHT_SPYLOG_LEVEL >= 4 ) // Log level info
     ::fwCore::HiResTimer timer;
     timer.start();
 #endif
 
     const auto dumpLock = series->getImage()->lock();
 
-    #if (SPYLOG_LEVEL >= 4 )
+    #if (SIGHT_SPYLOG_LEVEL >= 4 )
     timer.stop();
     SLM_INFO( "Time in to read data : " << timer.getElapsedTimeInMilliSec() );
 #endif

@@ -16,9 +16,8 @@ set( DEPENDENCIES
     eigenTools
     calibration3d
 )
-
 set( REQUIREMENTS )
 set( CONAN_DEPS
-    ${CONAN_EIGEN}
-    ${CONAN_OPENCV}
+    SIGHT_CONAN_EIGEN
+    SIGHT_CONAN_OPENCV
 )

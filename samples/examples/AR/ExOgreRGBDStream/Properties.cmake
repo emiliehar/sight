@@ -26,7 +26,6 @@ set( REQUIREMENTS
 
     # Grabber
     videoQt
-    videoOpenni
     videoOpenCV
 
     # Services

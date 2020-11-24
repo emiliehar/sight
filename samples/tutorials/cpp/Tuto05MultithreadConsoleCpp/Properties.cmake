@@ -39,5 +39,5 @@ moduleParam(
 ) # Main application's configuration to launch
 
 set( CONAN_DEPS
-    ${CONAN_BOOST}
+    SIGHT_CONAN_BOOST
 )

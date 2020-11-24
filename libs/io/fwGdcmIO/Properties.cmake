@@ -1,4 +1,3 @@
-
 set( NAME fwGdcmIO )
 set( VERSION 0.1 )
 set( TYPE LIBRARY )
@@ -15,6 +14,6 @@ set( DEPENDENCIES
     )
 set( REQUIREMENTS )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_GDCM}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_GDCM
 )

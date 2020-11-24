@@ -1,4 +1,3 @@
-
 set( NAME videoOpenCV )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -17,7 +16,7 @@ set( DEPENDENCIES
 )
 set( REQUIREMENTS  )
 set( CONAN_DEPS
-    ${CONAN_BOOST}
-    ${CONAN_OPENCV}
-    ${CONAN_FFMPEG}
+    SIGHT_CONAN_BOOST
+    SIGHT_CONAN_OPENCV
+    SIGHT_CONAN_FFMPEG
 )

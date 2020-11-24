@@ -32,5 +32,5 @@ if(NOT ${ENABLE_QML_APPLICATION})
     add_definitions ( -DKEEP_OLD_SERVICE )
 endif()
 set( CONAN_DEPS
-    ${CONAN_QT}
+    SIGHT_CONAN_QT
     )

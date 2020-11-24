@@ -17,7 +17,7 @@ set( REQUIREMENTS
     servicesReg
 )
 set( CONAN_DEPS
-    ${CONAN_QT}
+    SIGHT_CONAN_QT
 )
 set( WARNINGS_AS_ERRORS ON )
 

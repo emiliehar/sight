@@ -1,4 +1,3 @@
-
 set( NAME basicRegistration )
 set( VERSION 0.1 )
 set( TYPE MODULE )
@@ -10,7 +9,7 @@ set( DEPENDENCIES
 )
 set( REQUIREMENTS  )
 set( CONAN_DEPS
-    ${CONAN_VTK}
-    ${CONAN_QT}
-    ${CONAN_ITK}
+    SIGHT_CONAN_VTK
+    SIGHT_CONAN_QT
+    SIGHT_CONAN_ITK
 )

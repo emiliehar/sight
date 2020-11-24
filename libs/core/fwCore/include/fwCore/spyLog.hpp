@@ -34,7 +34,7 @@
  * -# Debug
  * -# Trace
  *
- * Log level is set by defining SPYLOG_LEVEL to N where 0 < N <= 6. If log
+ * Log level is set by defining SIGHT_SPYLOG_LEVEL to N where 0 < N <= 6. If log
  * level is set to N, every log level lesser than N will be enabled, the other
  * macro will be define but won't have any effect.
  *

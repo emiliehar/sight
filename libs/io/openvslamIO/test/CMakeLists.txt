@@ -2,7 +2,7 @@
 if(UNIX)
     fwLoadProperties()
 
-    find_package(FFMPEG QUIET REQUIRED)
+    find_package(FFmpeg QUIET REQUIRED)
     target_link_libraries(${FWPROJECT_NAME} PRIVATE ${FFMPEG_LIBRARIES})
 
     find_package(Qt5 QUIET COMPONENTS Test REQUIRED)

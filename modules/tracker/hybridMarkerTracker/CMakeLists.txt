@@ -3,7 +3,7 @@ fwLoadProperties()
 find_package(OpenCV QUIET REQUIRED COMPONENTS opencv_highgui)
 target_link_libraries(${FWPROJECT_NAME} PRIVATE opencv_highgui)
 
-find_package(Ippe QUIET REQUIRED)
+find_package(IPPE QUIET REQUIRED)
 
 find_library(PATTERN_TRACKER_LIBRARY NAMES patterntracker patterntrackerd PATHS
         "${CONAN_HYBRID_MARKER_TRACKER_ROOT}/lib/")

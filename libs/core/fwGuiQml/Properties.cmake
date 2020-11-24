@@ -6,5 +6,5 @@ set( DEPENDENCIES fwCore fwData fwGui fwQml fwRuntime fwServices fwThread fwTool
 set( REQUIREMENTS  )
 set( USE_PCH_FROM_TARGET pchServices)
 set( CONAN_DEPS
-    ${CONAN_QT}
+    SIGHT_CONAN_QT
 )

@@ -61,10 +61,7 @@ if(MSVC)
 
     # Use external/system includes available from Visual Studio 15.6
     # source https://gitlab.kitware.com/cmake/cmake/issues/17904
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.28)
-        add_compile_options("/external:W0;/external:anglebrackets")
-        set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "/external:I ")
-    elseif(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.14)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.14)
         add_compile_options("/experimental:external;/external:W0")
         set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "/external:I ")
     endif()

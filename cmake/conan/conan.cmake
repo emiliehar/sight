@@ -57,46 +57,18 @@ macro(installConanDeps SIGHT_CONAN_DEPS_LIST)
 
     option(SIGHT_CONAN_VERBOSE "Verbose conan output" ON)
 
-    unset(DEFAULT_GENERATORS_DEPS)
-    unset(CUSTOM_GENERATORS_DEPS)
+    unset(SIGHT_CONAN_DEPS)
 
     # Try to triage packages
-    foreach(CONAN_DEP ${SIGHT_CONAN_DEPS_LIST})
-        if(${CONAN_DEP}_GENERATORS)
-            list(APPEND CUSTOM_GENERATORS_DEPS ${CONAN_DEP})
-        else()
-            # Dereference immediatly to have the conan reference 
-            list(APPEND DEFAULT_GENERATORS_DEPS ${${CONAN_DEP}})
-        endif()
-    endforeach()
-
-    # For each package with custom generators
-    foreach(CONAN_DEP ${CUSTOM_GENERATORS_DEPS})
-        if(SIGHT_CONAN_VERBOSE)
-            conan_cmake_run(
-                REQUIRES ${${CONAN_DEP}}
-                BASIC_SETUP CMAKE_TARGETS NO_OUTPUT_DIRS
-                GENERATORS ${${CONAN_DEP}_GENERATORS}
-                OPTIONS ${CONAN_OPTIONS}
-                BUILD ${CONAN_BUILD_OPTION}
-                SETTINGS ${CONAN_SETTINGS}
-            )
-        else()
-            conan_cmake_run(
-                REQUIRES ${${CONAN_DEP}}
-                BASIC_SETUP CMAKE_TARGETS NO_OUTPUT_DIRS OUTPUT_QUIET
-                GENERATORS ${${CONAN_DEP}_GENERATORS}
-                OPTIONS ${CONAN_OPTIONS}
-                BUILD ${CONAN_BUILD_OPTION}
-                SETTINGS ${CONAN_SETTINGS}
-            )
-        endif()
-    endforeach()
+    foreach(SIGHT_CONAN_DEP ${SIGHT_CONAN_DEPS_LIST})
+        # Dereference immediatly to have the conan reference 
+        list(APPEND SIGHT_CONAN_DEPS ${${SIGHT_CONAN_DEP}})      
+    endforeach()    
 
     # Install package with default generator
     if(SIGHT_CONAN_VERBOSE)
         conan_cmake_run(
-            REQUIRES ${DEFAULT_GENERATORS_DEPS}
+            REQUIRES ${SIGHT_CONAN_DEPS}
             BASIC_SETUP CMAKE_TARGETS NO_OUTPUT_DIRS
             GENERATORS "cmake;cmake_find_package"
             OPTIONS ${CONAN_OPTIONS}
@@ -105,7 +77,7 @@ macro(installConanDeps SIGHT_CONAN_DEPS_LIST)
         )
     else()
         conan_cmake_run(
-            REQUIRES ${DEFAULT_GENERATORS_DEPS}
+            REQUIRES ${SIGHT_CONAN_DEPS}
             BASIC_SETUP CMAKE_TARGETS NO_OUTPUT_DIRS OUTPUT_QUIET
             GENERATORS "cmake;cmake_find_package"
             OPTIONS ${CONAN_OPTIONS}
@@ -114,8 +86,12 @@ macro(installConanDeps SIGHT_CONAN_DEPS_LIST)
         )
     endif()
 
-    unset(DEFAULT_GENERATORS_DEPS)
-    unset(CUSTOM_GENERATORS_DEPS)
+    # Pitiful workaround to remove unwanted generated FindPackage()
+    # We shall always prefer own cmake FindPackage().
+    # Unfortunately, conan don't let us easily choose which package use generators or not
+    file(REMOVE "${CMAKE_BINARY_DIR}/FindOGRE.cmake")
+
+    unset(SIGHT_CONAN_DEPS)
 endmacro()
 
 macro(installConanDepsForSDK)

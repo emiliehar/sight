@@ -2,7 +2,7 @@ fwLoadProperties()
 
 find_package(Boost QUIET COMPONENTS iostreams REQUIRED)
 
-target_link_libraries(${FWPROJECT_NAME} PUBLIC Boost::iostreams)
+target_link_libraries(${FWPROJECT_NAME} PUBLIC boost_iostreams)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     #TODO write FindPsAPI ...

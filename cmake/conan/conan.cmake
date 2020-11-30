@@ -69,7 +69,7 @@ macro(installConanDeps SIGHT_CONAN_DEPS_LIST)
     if(SIGHT_CONAN_VERBOSE)
         conan_cmake_run(
             REQUIRES ${SIGHT_CONAN_DEPS}
-            BASIC_SETUP CMAKE_TARGETS NO_OUTPUT_DIRS
+            BASIC_SETUP NO_OUTPUT_DIRS
             GENERATORS "cmake;cmake_find_package"
             OPTIONS ${CONAN_OPTIONS}
             BUILD ${CONAN_BUILD_OPTION}
@@ -78,7 +78,7 @@ macro(installConanDeps SIGHT_CONAN_DEPS_LIST)
     else()
         conan_cmake_run(
             REQUIRES ${SIGHT_CONAN_DEPS}
-            BASIC_SETUP CMAKE_TARGETS NO_OUTPUT_DIRS OUTPUT_QUIET
+            BASIC_SETUP NO_OUTPUT_DIRS OUTPUT_QUIET
             GENERATORS "cmake;cmake_find_package"
             OPTIONS ${CONAN_OPTIONS}
             BUILD ${CONAN_BUILD_OPTION}
@@ -90,6 +90,12 @@ macro(installConanDeps SIGHT_CONAN_DEPS_LIST)
     # We shall always prefer own cmake FindPackage().
     # Unfortunately, conan don't let us easily choose which package use generators or not
     file(REMOVE "${CMAKE_BINARY_DIR}/FindOGRE.cmake")
+    file(REMOVE "${CMAKE_BINARY_DIR}/FindBoost.cmake")
+    file(REMOVE "${CMAKE_BINARY_DIR}/Finddbow2.cmake")
+    file(REMOVE "${CMAKE_BINARY_DIR}/FindCAMP.cmake")
+    file(REMOVE "${CMAKE_BINARY_DIR}/FindPCL.cmake")
+    file(REMOVE "${CMAKE_BINARY_DIR}/FindLibXml2.cmake")
+    file(REMOVE "${CMAKE_BINARY_DIR}/FindOpenCV.cmake")
 
     unset(SIGHT_CONAN_DEPS)
 endmacro()

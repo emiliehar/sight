@@ -7,7 +7,7 @@ fwForwardInclude(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${GLM_INCLUDE_DIRS}
+    ${glm_INCLUDE_DIRS}
 )
 
 fwLink(

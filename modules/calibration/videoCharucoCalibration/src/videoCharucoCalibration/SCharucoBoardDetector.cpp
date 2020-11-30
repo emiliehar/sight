@@ -349,11 +349,11 @@ void SCharucoBoardDetector::updateCharucoBoardSize()
         }
         else if (tl->getNumberOfComponents() == 3)
         {
-            ::cv::cvtColor(img, grayImg, CV_RGB2GRAY);
+            ::cv::cvtColor(img, grayImg, ::cv::COLOR_RGB2GRAY);
         }
         else if(tl->getNumberOfComponents() == 4)
         {
-            ::cv::cvtColor(img, grayImg, CV_RGBA2GRAY);
+            ::cv::cvtColor(img, grayImg, ::cv::COLOR_RGBA2GRAY);
         }
         else
         {

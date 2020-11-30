@@ -308,7 +308,7 @@ void generatePhoto(const cv::Mat& K, const cv::Mat& T0, const std::vector<cv::Ma
 {
     const ::cv::Mat inImgt = ::cv::imread(boardFile);
     ::cv::Mat inImg;
-    ::cv::cvtColor(inImgt, inImg, CV_RGB2GRAY);
+    ::cv::cvtColor(inImgt, inImg, ::cv::COLOR_RGB2GRAY);
     ::cv::GaussianBlur(inImg, inImg, ::cv::Size(5, 5), 1);
 
     ::cv::Mat R0(T0.colRange(0, 3).rowRange(0, 3)), c0(T0.col(3).rowRange(0, 3)), cameraCenter;

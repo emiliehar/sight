@@ -13,7 +13,7 @@ if(UNIX)
     target_link_libraries(${FWPROJECT_NAME} PRIVATE Eigen3::Eigen)
 
     target_link_libraries(${FWPROJECT_NAME} PRIVATE openvslam::openvslam ${DBoW2_LIBS})
-    target_link_libraries(${FWPROJECT_NAME} PRIVATE boost_serialization)
+    target_link_libraries(${FWPROJECT_NAME} PRIVATE Boost::serialization)
 
     # FIXME: headers of DBoW2.
     target_include_directories(${FWPROJECT_NAME} PRIVATE ${DBoW2_INCLUDE_DIRS})

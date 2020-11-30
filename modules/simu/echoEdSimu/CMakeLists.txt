@@ -3,6 +3,6 @@ fwLoadProperties()
 find_package(glm QUIET REQUIRED)
 
 fwForwardInclude(
-    ${GLM_INCLUDE_DIRS}
+    ${glm_INCLUDE_DIRS}
 )
 

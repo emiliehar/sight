@@ -43,21 +43,49 @@ public:
 
     SIGHT_DECLARE_CLASS(WriteZipArchive, IWriteArchive)
 
+    enum CompressionMethod
+    {
+        STORE   = 0,
+        DEFLATE = 8,
+        ZSTD    = 93
+    };
+
+    enum CompressionLevel
+    {
+        DEFAULT = -1,
+        FAST    = 2,
+        BEST    = 9
+    };
+
     //------------------------------------------------------------------------------
 
-    static sptr New(const std::filesystem::path& archive, const std::string& comment = "", const std::string& key = "")
+    static sptr New(const std::filesystem::path& archive,
+                    const std::string& comment = "",
+                    const std::string& key     = "",
+                    CompressionMethod method   = CompressionMethod::ZSTD,
+                    CompressionLevel level     = CompressionLevel::DEFAULT)
     {
-        return std::make_shared<WriteZipArchive>(archive, comment, key);
+        return std::make_shared<WriteZipArchive>(archive, comment, key, method, level);
     }
 
     /**
      * @brief Constructors. Initializes archive path, comment and key.
      *
      */
-    IO_ZIP_API WriteZipArchive(const std::filesystem::path& archive, const std::string& comment = "",
-                               const std::string& key = "");
+    WriteZipArchive(const std::filesystem::path& archive,
+                    const std::string& comment = "",
+                    const std::string& key     = "",
+                    CompressionMethod method   = CompressionMethod::ZSTD,
+                    CompressionLevel level     = CompressionLevel::DEFAULT) :
+        m_archive(archive),
+        m_comment(comment),
+        m_key(key),
+        m_method(method),
+        m_level(level)
+    {
+    }
 
-    IO_ZIP_API ~WriteZipArchive();
+    IO_ZIP_API ~WriteZipArchive() = default;
 
     /**
      * @brief Creates a new file entry in archive and returns output stream for this file.
@@ -102,6 +130,12 @@ private:
 
     /// Key used to encrypt files
     std::string m_key;
+
+    /// Compression method used globally
+    CompressionMethod m_method {CompressionMethod::ZSTD};
+
+    /// Compression level used globally
+    CompressionLevel m_level {CompressionLevel::DEFAULT};
 };
 
 }

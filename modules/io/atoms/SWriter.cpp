@@ -443,14 +443,34 @@ void SWriter::updating()
             }
             else if ( extension == ".jsonz")
             {
-                writeArchive    = sight::io::zip::WriteZipArchive::New(tmpFilePath.string());
+                writeArchive = sight::io::zip::WriteZipArchive::New(
+                    tmpFilePath.string(),
+                    "",
+                    "",
+                    sight::io::zip::WriteZipArchive::CompressionMethod::DEFLATE
+                    );
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
             }
             else if ( extension == ".cpz" )
             {
-                writeArchive = sight::io::zip::WriteZipArchive::New(tmpFilePath.string(), "",
-                                                                    sight::ui::base::preferences::getPassword());
+                writeArchive = sight::io::zip::WriteZipArchive::New(
+                    tmpFilePath.string(),
+                    "",
+                    sight::ui::base::preferences::getPassword(),
+                    sight::io::zip::WriteZipArchive::CompressionMethod::DEFLATE
+                    );
+                archiveRootName = "root.json";
+                format          = sight::io::atoms::JSON;
+            }
+            else if ( extension == ".sight" )
+            {
+                writeArchive = sight::io::zip::WriteZipArchive::New(
+                    tmpFilePath.string(),
+                    "",
+                    sight::ui::base::preferences::getPassword(),
+                    sight::io::zip::WriteZipArchive::CompressionMethod::ZSTD
+                    );
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
             }

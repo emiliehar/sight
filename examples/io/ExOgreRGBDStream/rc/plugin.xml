@@ -300,7 +300,7 @@
             <!-- The videoSelectorSrv creates 2 empty ::sight::data::Camera so we can use it without any prior calibration -->
             <service uid="videoSelectorSrv" type="sight::module::ui::qt::video::SCamera" >
                 <inout key="cameraSeries" uid="RGBDCameraSeries" />
-                <videoSupport>yes</videoSupport>
+                <videoSupport>true</videoSupport>
                 <createCameraNumber>2</createCameraNumber>
             </service>
 

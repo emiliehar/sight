@@ -255,7 +255,7 @@
 
             <service uid="meshAdp" type="sight::module::viz::scene3d::adaptor::SModelSeries" autoConnect="true" >
                 <in key="model" uid="modelSeries" />
-                <config layer="default" transform="id" autoresetcamera="no" />
+                <config layer="default" transform="id" autoresetcamera="false" />
             </service>
 
             <service uid="videoARAdp" type="sight::module::viz::scene3d::adaptor::SVideo" autoConnect="true" >
@@ -307,7 +307,7 @@
             <service uid="videoSelectorSrv" type="sight::module::ui::qt::video::SCamera" >
                 <inout key="cameraSeries" uid="RGBDCameraSeries" />
                 <createCameraNumber>2</createCameraNumber>
-                <videoSupport>yes</videoSupport>
+                <videoSupport>true</videoSupport>
             </service>
 
             <!-- To get frames from the RealSense camera -->

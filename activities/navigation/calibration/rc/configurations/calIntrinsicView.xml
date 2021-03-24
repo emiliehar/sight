@@ -340,7 +340,7 @@
 
         <service uid="videoSelectorSrv" type="sight::module::ui::qt::video::SCamera">
             <inout key="camera" uid="${camera}" />
-            <videoSupport>yes</videoSupport>
+            <videoSupport>true</videoSupport>
             <label></label>
         </service>
 

@@ -477,7 +477,7 @@
             <service uid="videoSelectorSrv" type="sight::module::ui::qt::video::SCamera" >
                 <inout key="cameraSeries" uid="RGBDCameraSeries" />
                 <createCameraNumber>2</createCameraNumber>
-                <videoSupport>yes</videoSupport>
+                <videoSupport>true</videoSupport>
             </service>
 
             <!-- Manages Sense camera configuration -->

@@ -279,7 +279,7 @@
 
             <service uid="modelseriesAdp" type="sight::module::viz::scene3d::adaptor::SModelSeries" autoConnect="true" >
                 <in key="model" uid="modelseries" />
-                <config layer="default" autoresetcamera="no" />
+                <config layer="default" autoresetcamera="false" />
             </service>
 
             <service uid="cameraAdp" type="sight::module::viz::scene3d::adaptor::SCamera" autoConnect="true" >
@@ -384,7 +384,7 @@
             <!-- GUI to select camera (device, file, or stream) -->
             <service uid="videoSelectorSrv" type="sight::module::ui::qt::video::SCamera" >
                 <inout key="camera" uid="cameraRGB" />
-                <videoSupport>yes</videoSupport>
+                <videoSupport>true</videoSupport>
             </service>
 
             <!-- Grab image from camera device and fill a frame timeline -->

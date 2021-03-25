@@ -53,7 +53,7 @@ public:
      * @brief Display the dialog
      * @return the ILocation selected or null sptr if user cancel the operation
      */
-    UI_BASE_API data::location::ILocation::sptr show() override;
+    UI_BASE_API core::location::ILocation::sptr show() override;
 
     /// allow to set option to the file dialog mode=READ/WRITE, check=FILE_MUST_EXIST
     UI_BASE_API ui::base::dialog::ILocationDialog& setOption( ui::base::dialog::ILocationDialog::Options option)
@@ -77,13 +77,13 @@ public:
     UI_BASE_API const std::string& getTitle() override;
 
     /// Set the initial location for the dialog
-    UI_BASE_API void setDefaultLocation( data::location::ILocation::sptr loc) override;
+    UI_BASE_API void setDefaultLocation(core::location::ILocation::sptr loc) override;
 
     /// Gets the default location for the dialog (from preferences or specified by user)
-    UI_BASE_API const std::filesystem::path getDefaultLocation() override;
+    UI_BASE_API const core::location::ILocation::sptr getDefaultLocation() override;
 
     /// Save the specified default location for the dialog in preferences (if available)
-    UI_BASE_API void saveDefaultLocation(data::location::ILocation::sptr loc) override;
+    UI_BASE_API void saveDefaultLocation(core::location::ILocation::sptr loc) override;
 
     /// Gets the current extension file selection
     UI_BASE_API std::string getCurrentSelection() const override;

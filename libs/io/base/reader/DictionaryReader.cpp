@@ -270,8 +270,7 @@ std::pair<bool, std::string> parse(std::string& buf, std::vector<io::base::line>
 
 //------------------------------------------------------------------------------
 
-DictionaryReader::DictionaryReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< IObjectReader >(this)
+DictionaryReader::DictionaryReader(io::base::reader::IObjectReader::Key)
 {
 }
 
@@ -285,8 +284,7 @@ DictionaryReader::~DictionaryReader()
 
 void DictionaryReader::read()
 {
-    assert( std::dynamic_pointer_cast< data::location::SingleFile >(m_location) );
-    std::filesystem::path path = std::dynamic_pointer_cast< data::location::SingleFile >(m_location)->getPath();
+    std::filesystem::path path = this->getFile();
 
     SIGHT_INFO( "[DictionaryReader::read] dictionary file: " << path.string());
     SIGHT_ASSERT("Empty path for dictionary file", !path.empty());

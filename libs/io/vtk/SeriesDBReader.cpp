@@ -95,7 +95,6 @@ void initSeries(data::Series::sptr series, const std::string& instanceUID)
 //------------------------------------------------------------------------------
 
 SeriesDBReader::SeriesDBReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableMultiFiles< io::base::reader::IObjectReader >(this),
     m_job(core::jobs::Observer::New("SeriesDB reader")),
     m_lazyMode(true)
 {
@@ -371,12 +370,12 @@ void SeriesDBReader::read()
 {
     data::SeriesDB::sptr seriesDB = this->getConcreteObject();
 
-    const data::location::ILocation::VectPathType files = this->getFiles();
-    const std::string instanceUID                       = core::tools::UUID::generateUUID();
+    const std::vector<std::filesystem::path>& files = this->getFiles();
+    const std::string instanceUID                   = core::tools::UUID::generateUUID();
 
     data::ModelSeries::ReconstructionVectorType recs;
     std::vector< std::string > errorFiles;
-    for(const data::location::ILocation::VectPathType::value_type& file :  files)
+    for(const auto& file :  files)
     {
         vtkSmartPointer< vtkDataObject  > obj;
         data::Image::sptr img;

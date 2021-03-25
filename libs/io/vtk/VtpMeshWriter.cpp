@@ -42,7 +42,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 VtpMeshWriter::VtpMeshWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this),
     m_job(core::jobs::Observer::New("VTP Mesh writer"))
 {
 }

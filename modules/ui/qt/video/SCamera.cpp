@@ -26,12 +26,12 @@
 
 #include <core/com/Signal.hxx>
 #include <core/com/Slots.hxx>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/runtime/operations.hpp>
 #include <core/tools/pathDifference.hpp>
 
 #include <data/CameraSeries.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/mt/ObjectReadLock.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 #include <data/Object.hpp>
@@ -208,10 +208,10 @@ void SCamera::onChooseFile()
     // Check preferences
     const std::filesystem::path videoDirPreferencePath(sight::ui::base::preferences::getVideoDir());
 
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.addFilter("All files", "*.*");
     dialogFile.addFilter("videos", "*.avi *.m4v *.mkv *.mp4 *.ogv");
     dialogFile.addFilter("images", "*.bmp *.jpeg *.jpg *.png *.tiff");
@@ -287,13 +287,12 @@ void SCamera::onChooseFile()
         {
             dialogFile.setTitle("Choose a file to load for video source #" + std::to_string(count++));
 
-            data::location::SingleFile::sptr result;
-            result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+            auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
             if (result)
             {
-                _sDefaultPath = result->getPath().parent_path();
-                dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
-                videoPath = result->getPath();
+                defautDirectory->setFolder(result->getFile().parent_path());
+                dialogFile.saveDefaultLocation(defautDirectory);
+                videoPath = result->getFile();
             }
         }
 

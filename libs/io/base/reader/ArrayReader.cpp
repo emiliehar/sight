@@ -39,9 +39,7 @@ namespace reader
 
 //------------------------------------------------------------------------------
 
-ArrayReader::ArrayReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile<
-        IObjectReader >(this)
+ArrayReader::ArrayReader(io::base::reader::IObjectReader::Key)
 {
 }
 
@@ -55,8 +53,7 @@ ArrayReader::~ArrayReader()
 
 void ArrayReader::read()
 {
-    assert( data::location::SingleFile::dynamicCast(m_location) );
-    std::filesystem::path file = data::location::SingleFile::dynamicCast(m_location)->getPath();
+    std::filesystem::path file = this->getFile();
 
     data::Array::sptr array = this->getConcreteObject();
 

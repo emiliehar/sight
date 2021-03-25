@@ -25,7 +25,8 @@
 #include "io/base/config.hpp"
 #include "io/base/reader/GenericObjectReader.hpp"
 
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
+
 #include <data/StructureTraitsDictionary.hpp>
 
 #include <filesystem>
@@ -50,7 +51,7 @@ namespace reader
  */
 class IO_BASE_CLASS_API DictionaryReader :
     public GenericObjectReader< data::StructureTraitsDictionary>,
-    public data::location::enableSingleFile< IObjectReader >
+    public core::location::SingleFile
 
 {
 

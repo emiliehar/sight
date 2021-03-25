@@ -24,7 +24,8 @@
 
 #include "io/vtk/config.hpp"
 
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
+
 #include <data/Mesh.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
@@ -47,8 +48,8 @@ namespace sight::io::vtk
  */
 
 class IO_VTK_CLASS_API MeshWriter :
-    public io::base::writer::GenericObjectWriter< data::Mesh >,
-    public data::location::enableSingleFile< io::base::writer::IObjectWriter >
+    public base::writer::GenericObjectWriter< data::Mesh >,
+    public core::location::SingleFile
 {
 
 public:

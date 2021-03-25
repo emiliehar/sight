@@ -42,7 +42,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 StlMeshWriter::StlMeshWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this),
     m_job(core::jobs::Observer::New("STL Mesh writer"))
 {
 }

@@ -24,11 +24,11 @@
 
 #include <core/com/Signal.hxx>
 #include <core/com/Slots.hxx>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/Profiling.hpp>
 #include <core/runtime/operations.hpp>
 
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/mt/ObjectReadLock.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 
@@ -302,9 +302,9 @@ void SOpenvslam::stopTracking()
         // Save trajectories at stop.
         if(m_trajectoriesSavePath)
         {
-            const std::string folder       = m_trajectoriesSavePath->getPath().remove_filename().string();
+            const std::string folder       = m_trajectoriesSavePath->getFile().remove_filename().string();
             const std::string baseFilename =
-                m_trajectoriesSavePath->getPath().filename().replace_extension("").string();
+                m_trajectoriesSavePath->getFile().filename().replace_extension("").string();
 
             m_slamSystem->save_frame_trajectory(folder + "/" + baseFilename + "_frames_traj.txt", m_trajectoriesFormat);
             m_slamSystem->save_frame_trajectory(folder + "/" + baseFilename +"_keyframes_traj.txt",
@@ -483,23 +483,24 @@ void SOpenvslam::setEnumParameter(std::string _val, std::string _key)
 
 void SOpenvslam::loadMap()
 {
-    static std::filesystem::path sDefaultPath("");
+    static auto defaultDirectory = core::location::SingleFolder::New();
+
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select openvslam map file");
-    dialogFile.setDefaultLocation( data::location::Folder::New(sDefaultPath) );
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("openvlsam map files", "*.map");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
 
-    const data::location::SingleFile::csptr result =
-        data::location::SingleFile::dynamicCast( dialogFile.show() );
-    if (result)
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
+
+    if(result)
     {
         m_sigMapLoaded->asyncEmit();
 
-        sDefaultPath = result->getPath().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(sDefaultPath) );
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
         this->stopTracking();
-        const std::string mapFile = result->getPath().string();
+        const std::string mapFile = result->getFile().string();
         this->startTracking(mapFile);
     }
 }
@@ -508,24 +509,23 @@ void SOpenvslam::loadMap()
 
 void SOpenvslam::saveMap()
 {
-    static std::filesystem::path sDefaultPath("");
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Choose a file to save Openvslam map");
-    dialogFile.setDefaultLocation( data::location::Folder::New(sDefaultPath) );
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("openvslam files", "*.map");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
-    const data::location::SingleFile::csptr result =
-        data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (!result)
     {
         return;
     }
 
-    sDefaultPath = result->getPath().parent_path();
-    dialogFile.saveDefaultLocation( data::location::Folder::New(sDefaultPath) );
-    m_saveMapPath = result->getPath().string();
+    defaultDirectory->setFolder(result->getFile().parent_path());
+    dialogFile.saveDefaultLocation(defaultDirectory);
+    m_saveMapPath = result->getFile().string();
 
     const std::unique_lock< std::mutex > lock(m_slamLock);
 
@@ -558,19 +558,19 @@ void SOpenvslam::saveMap()
 
 void SOpenvslam::saveTrajectories()
 {
-    static std::filesystem::path sDefaultPath("");
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFolder;
     dialogFolder.setTitle("Choose a folder & name to save trajectories files.");
     // Use SINGLE_FILE type, so we can use filters, only the basename of files will be used.
     dialogFolder.setType(ui::base::dialog::LocationDialog::SINGLE_FILE);
-    dialogFolder.setDefaultLocation( data::location::Folder::New(sDefaultPath) );
+    dialogFolder.setDefaultLocation(defaultDirectory);
     dialogFolder.setOption(ui::base::dialog::ILocationDialog::WRITE);
     // Use filter to store the format (matrix or vector & quaternions).
     dialogFolder.addFilter("Matrix Format", " KITTI");
     dialogFolder.addFilter("Vector & Quat Format", " TUM");
 
-    const auto result = data::location::SingleFile::dynamicCast( dialogFolder.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFolder.show());
 
     if (!result)
     {
@@ -578,10 +578,10 @@ void SOpenvslam::saveTrajectories()
     }
 
     m_trajectoriesSavePath = result;
-    sDefaultPath           = result->getPath().remove_filename();
-    dialogFolder.saveDefaultLocation( data::location::Folder::New(sDefaultPath) );
-    const std::string trajFolder   = result->getPath().remove_filename().string();
-    const std::string trajFilename = result->getPath().filename().replace_extension("").string();   // keep only the
+    defaultDirectory->setFolder(result->getFile().remove_filename());
+    dialogFolder.saveDefaultLocation(defaultDirectory);
+    const std::string trajFolder   = result->getFile().remove_filename().string();
+    const std::string trajFilename = result->getFile().filename().replace_extension("").string();   // keep only the
                                                                                                     // base filename.
     m_trajectoriesFormat = dialogFolder.getCurrentSelection();
 

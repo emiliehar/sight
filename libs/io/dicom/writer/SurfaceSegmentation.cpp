@@ -50,7 +50,6 @@ namespace writer
 //------------------------------------------------------------------------------
 
 SurfaceSegmentation::SurfaceSegmentation(io::base::writer::IObjectWriter::Key key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this),
     m_logger(core::log::Logger::New()),
     m_writerJob(core::jobs::Observer::New("Writing DICOM file"))
 {

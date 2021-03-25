@@ -25,9 +25,9 @@
 #include "io/dicom/config.hpp"
 #include "io/dicom/writer/Series.hpp"
 
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/ProgressAdviser.hpp>
 
-#include <data/location/Folder.hpp>
 #include <data/Series.hpp>
 #include <data/SeriesDB.hpp>
 
@@ -43,7 +43,7 @@ namespace writer
  * @brief   This class manages patient writing, in DICOM file format.
  */
 class SeriesDB : public io::base::writer::GenericObjectWriter< data::SeriesDB >,
-                 public data::location::enableFolder< io::base::writer::IObjectWriter >,
+                 public core::location::SingleFolder,
                  public core::tools::ProgressAdviser
 {
 

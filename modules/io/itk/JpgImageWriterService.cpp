@@ -23,9 +23,9 @@
 #include "JpgImageWriterService.hpp"
 
 #include <core/base.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <data/Image.hpp>
-#include <data/location/Folder.hpp>
 
 #include <io/base/service/IWriter.hpp>
 #include <io/itk/JpgImageWriter.hpp>
@@ -77,21 +77,20 @@ void JpgImageWriterService::configureWithIHM()
 
 void JpgImageWriterService::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a directory to save image" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
-    result = data::location::Folder::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getFolder();
         this->setFolder(result->getFolder());
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        defautDirectory = result;
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {
@@ -125,9 +124,7 @@ void JpgImageWriterService::saveImage(const std::filesystem::path& imgPath, cons
     auto writer = sight::io::itk::JpgImageWriter::New();
     sight::ui::base::dialog::ProgressDialog progressMeterGUI("Saving image... ");
 
-    data::location::Folder::sptr loc = data::location::Folder::New();
-    loc->setFolder(imgPath);
-    writer->setLocation(loc);
+    writer->setFolder(imgPath);
     writer->setObject(img);
 
     try

@@ -40,8 +40,7 @@ namespace writer
 
 //------------------------------------------------------------------------------
 
-GzBufferImageWriter::GzBufferImageWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this)
+GzBufferImageWriter::GzBufferImageWriter(io::base::writer::IObjectWriter::Key)
 {
 }
 
@@ -55,7 +54,7 @@ GzBufferImageWriter::~GzBufferImageWriter()
 
 void GzBufferImageWriter::write()
 {
-    assert( getFile().empty() == false );
+    SIGHT_ASSERT("File path is empty.", getFile().empty() == false );
 
     data::Image::csptr image = getConcreteObject();
 

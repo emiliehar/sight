@@ -29,11 +29,11 @@
 #include <core/com/Signal.hxx>
 #include <core/jobs/Aggregator.hpp>
 #include <core/jobs/Job.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/System.hpp>
 
 #include <data/Composite.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/reflection/visitor/RecursiveLock.hpp>
 
 #include <io/atoms/patch/PatchingManager.hpp>
@@ -576,13 +576,13 @@ void SWriter::configureWithIHM()
 
 void SWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     if( !m_useAtomsPatcher || versionSelection() )
     {
         sight::ui::base::dialog::LocationDialog dialogFile;
         dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);
-        dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        dialogFile.setDefaultLocation(defautDirectory);
         dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
         dialogFile.setType(ui::base::dialog::LocationDialog::SINGLE_FILE);
 
@@ -591,15 +591,14 @@ void SWriter::openLocationDialog()
             dialogFile.addFilter(m_allowedExtLabels[ext], "*" + ext);
         }
 
-        data::location::SingleFile::sptr result
-            = data::location::SingleFile::dynamicCast( dialogFile.show() );
+        auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
 
         if (result)
         {
+            this->setFile(result->getFile());
             m_selectedExtension = dialogFile.getCurrentSelection();
-            _sDefaultPath       = result->getPath();
-            this->setFile( _sDefaultPath );
-            dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath.parent_path()) );
+            defautDirectory->setFolder(result->getFile().parent_path());
+            dialogFile.saveDefaultLocation(defautDirectory);
         }
         else
         {

@@ -29,9 +29,9 @@
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
 #include <core/jobs/IJob.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/UUID.hpp>
 
-#include <data/location/Folder.hpp>
 #include <data/Mesh.hpp>
 #include <data/ModelSeries.hpp>
 #include <data/Reconstruction.hpp>
@@ -81,17 +81,17 @@ void SModelSeriesWriter::configureWithIHM()
 
 void SModelSeriesWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath("");
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialog;
     dialog.setTitle(m_windowTitle.empty() ? "Choose a directory to save meshes" : m_windowTitle);
-    dialog.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialog.setDefaultLocation(defautDirectory);
     dialog.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialog.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
+    core::location::SingleFolder::sptr result;
 
-    while ((result = data::location::Folder::dynamicCast( dialog.show() )))
+    while ((result = core::location::SingleFolder::dynamicCast( dialog.show() )))
     {
         if( std::filesystem::is_empty(result->getFolder()) )
         {
@@ -112,9 +112,9 @@ void SModelSeriesWriter::openLocationDialog()
 
     if (result)
     {
-        _sDefaultPath = result->getFolder().parent_path();
-        dialog.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
         this->setFolder(result->getFolder());
+        defautDirectory->setFolder(result->getFolder().parent_path());
+        dialog.saveDefaultLocation(defautDirectory);
 
         if(m_selectedExtension.empty())
         {
@@ -143,7 +143,6 @@ void SModelSeriesWriter::openLocationDialog()
             const auto selected = extensionDialog.show();
             m_selectedExtension = descriptionToExtension[selected];
         }
-
     }
     else
     {

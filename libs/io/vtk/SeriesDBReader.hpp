@@ -24,7 +24,8 @@
 
 #include "io/vtk/config.hpp"
 
-#include <data/location/MultiFiles.hpp>
+#include <core/location/MultipleFiles.hpp>
+
 #include <data/Series.hpp>
 #include <data/SeriesDB.hpp>
 
@@ -47,7 +48,7 @@ namespace sight::io::vtk
  */
 class IO_VTK_CLASS_API SeriesDBReader :
     public io::base::reader::GenericObjectReader< data::SeriesDB >,
-    public data::location::enableMultiFiles< io::base::reader::IObjectReader >
+    public core::location::MultipleFiles
 {
 
 public:

@@ -24,7 +24,7 @@
 
 #include "io/dicom/config.hpp"
 
-#include <data/location/Folder.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
@@ -63,7 +63,7 @@ class DicomAnonymizer;
  * If the DicomSeries contains the paths of the DICOM files, a simple copy (or zip) is performed.
  */
 class DicomSeriesWriter : public io::base::writer::GenericObjectWriter< data::DicomSeries >,
-                          public data::location::enableFolder< io::base::writer::IObjectWriter >
+                          public core::location::SingleFolder
 {
 
 public:

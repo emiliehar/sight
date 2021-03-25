@@ -57,8 +57,6 @@ namespace reader
 //------------------------------------------------------------------------------
 
 SeriesDB::SeriesDB(io::base::reader::IObjectReader::Key key) :
-    data::location::enableFolder< IObjectReader >(this),
-    data::location::enableMultiFiles< IObjectReader >(this),
     m_isDicomdirActivated(false),
     m_dicomFilterType(""),
     m_logger(core::log::Logger::New()),
@@ -216,9 +214,6 @@ void SeriesDB::readDicomSeries()
 
 void SeriesDB::readDicom()
 {
-    SIGHT_ASSERT("This reader only work on folder selection.",
-                 (data::location::have < data::location::Folder, io::base::reader::IObjectReader > (this)));
-
     // DICOMDIR
     auto dicomdir = io::dicom::helper::DicomDir::findDicomDir(this->getFolder());
     if(m_isDicomdirActivated && std::filesystem::exists(dicomdir))

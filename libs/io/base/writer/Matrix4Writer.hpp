@@ -25,7 +25,8 @@
 #include "io/base/config.hpp"
 #include "io/base/writer/GenericObjectWriter.hpp"
 
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
+
 #include <data/Matrix4.hpp>
 
 namespace sight::io::base
@@ -43,7 +44,7 @@ namespace writer
  */
 class IO_BASE_CLASS_API Matrix4Writer :
     public GenericObjectWriter< data::Matrix4>,
-    public data::location::enableSingleFile< io::base::writer::IObjectWriter >
+    public core::location::SingleFile
 {
 
 public:

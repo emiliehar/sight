@@ -59,20 +59,6 @@ core::tools::Object::csptr IObjectWriter::getObject() const
 
 //------------------------------------------------------------------------------
 
-void IObjectWriter::setLocation( const data::location::ILocation::sptr _location )
-{
-    m_location = _location;
-}
-
-//------------------------------------------------------------------------------
-
-data::location::ILocation::sptr IObjectWriter::getLocation()
-{
-    return m_location;
-}
-
-//------------------------------------------------------------------------------
-
 std::string IObjectWriter::extension()
 {
     return std::string();

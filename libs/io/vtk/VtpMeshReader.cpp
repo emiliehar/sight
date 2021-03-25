@@ -42,7 +42,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 VtpMeshReader::VtpMeshReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< io::base::reader::IObjectReader >(this),
     m_job(core::jobs::Observer::New("VTP Mesh reader"))
 {
 }

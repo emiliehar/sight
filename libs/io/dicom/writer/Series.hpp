@@ -26,10 +26,10 @@
 #include "io/dicom/container/DicomInstance.hpp"
 #include "io/dicom/exception/Failed.hpp"
 
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/ProgressAdviser.hpp>
 
 #include <data/ImageSeries.hpp>
-#include <data/location/Folder.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
@@ -44,7 +44,7 @@ namespace writer
  * It manages all related data of one patient.
  */
 class IO_DICOM_CLASS_API Series : public io::base::writer::GenericObjectWriter< data::Series >,
-                                  public data::location::enableFolder< io::base::writer::IObjectWriter >,
+                                  public core::location::SingleFolder,
                                   public core::tools::ProgressAdviser
 {
 

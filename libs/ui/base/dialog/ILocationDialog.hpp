@@ -25,8 +25,9 @@
 #include "ui/base/config.hpp"
 #include "ui/base/GuiBaseObject.hpp"
 
+#include <core/location/ILocation.hpp>
+
 #include <data/Composite.hpp>
-#include <data/location/ILocation.hpp>
 
 #include <filesystem>
 #include <string>
@@ -66,7 +67,8 @@ public:
     UI_BASE_API static const FactoryRegistryKeyType REGISTRY_KEY;
 
     UI_BASE_API static const std::string SOFTWARE_UI;
-    UI_BASE_API static const std::string DLG_DEFAULT_LOCATION;
+    UI_BASE_API static const std::string DLG_DEFAULT_FILE;
+    UI_BASE_API static const std::string DLG_DEFAULT_DIRECTORY;
 
     UI_BASE_API virtual ~ILocationDialog();
 
@@ -79,13 +81,13 @@ public:
     UI_BASE_API virtual const std::string& getTitle();
 
     /// set the initial location for the dialog
-    UI_BASE_API virtual void setDefaultLocation( data::location::ILocation::sptr loc);
+    UI_BASE_API virtual void setDefaultLocation(core::location::ILocation::sptr loc);
 
     /// get the default location for the dialog (from preferences or specified by user)
-    UI_BASE_API virtual const std::filesystem::path getDefaultLocation();
+    UI_BASE_API virtual const core::location::ILocation::sptr getDefaultLocation();
 
     /// save the specified default location for the dialog in preferences (if available)
-    UI_BASE_API virtual void saveDefaultLocation(data::location::ILocation::sptr loc);
+    UI_BASE_API virtual void saveDefaultLocation(core::location::ILocation::sptr loc);
 
     /// set the type of location for the dialog (SINGLE_FILE, FORLDER, MULTI_FILES)
     UI_BASE_API virtual void setType( Types type ) = 0;
@@ -105,7 +107,7 @@ public:
      * Display the dialog
      * @return the ILocation selected or null sptr if user cancel the operation
      */
-    UI_BASE_API virtual data::location::ILocation::sptr show() = 0;
+    UI_BASE_API virtual core::location::ILocation::sptr show() = 0;
 
     /// Gets the current extension file selection
     UI_BASE_API virtual std::string getCurrentSelection() const = 0;
@@ -121,7 +123,7 @@ protected:
 private:
 
     std::string m_title;
-    data::location::ILocation::sptr m_defaultLocaction;
+    core::location::ILocation::sptr m_defaultLocaction;
 };
 
 } //namespace dialog

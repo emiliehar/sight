@@ -22,19 +22,19 @@
 
 #include "SSurfaceSegmentationWriter.hpp"
 
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/ProgressToLogger.hpp>
 
 #include <data/DicomSeries.hpp>
-#include <data/location/Folder.hpp>
 #include <data/Series.hpp>
 #include <data/Vector.hpp>
-
-#include <service/macros.hpp>
 
 #include <io/base/service/IWriter.hpp>
 #include <io/dicom/helper/Fiducial.hpp>
 #include <io/dicom/writer/Series.hpp>
 #include <io/dicom/writer/SurfaceSegmentation.hpp>
+
+#include <service/macros.hpp>
 
 #include <ui/base/Cursor.hpp>
 #include <ui/base/dialog/LocationDialog.hpp>
@@ -46,7 +46,6 @@
 
 namespace sight::module::io::dicom
 {
-
 
 //------------------------------------------------------------------------------
 
@@ -71,21 +70,20 @@ void SSurfaceSegmentationWriter::configureWithIHM()
 
 void SSurfaceSegmentationWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a directory for DICOM images" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
-    result = data::location::Folder::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getFolder();
-        this->setFolder( result->getFolder() );
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        defautDirectory->setFolder(result->getFolder());
+        this->setFolder(result->getFolder());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {
@@ -175,10 +173,7 @@ void SSurfaceSegmentationWriter::saveSurfaceSegmentation( const std::filesystem:
     auto writer = sight::io::dicom::writer::SurfaceSegmentation::New();
 
     writer->setObject(model);
-
-    data::location::SingleFile::sptr location = data::location::SingleFile::New();
-    location->setPath(filename);
-    writer->setLocation(location);
+    writer->setFile(filename);
 
     try
     {

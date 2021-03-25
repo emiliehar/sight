@@ -24,7 +24,7 @@
 
 #include "io/vtk/config.hpp"
 
-#include <data/location/Folder.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
@@ -54,7 +54,7 @@ namespace sight::io::vtk
  * Write a data::Reconstruction as .obj file using the VTK lib and the obj format.
  */
 class ModelSeriesObjWriter : public io::base::writer::GenericObjectWriter< data::ModelSeries >,
-                             public data::location::enableFolder< io::base::writer::IObjectWriter >
+                             public core::location::SingleFolder
 {
 
 public:

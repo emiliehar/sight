@@ -58,7 +58,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 ObjMeshWriter::ObjMeshWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this),
     m_job(core::jobs::Observer::New("OBJ Mesh writer"))
 {
 
@@ -149,10 +148,10 @@ void ObjMeshWriter::write()
     vtkSmartPointer< vtkRenderWindow > renderWindow = vtkSmartPointer< vtkRenderWindow >::New();
     renderWindow->AddRenderer(renderer);
 
-    data::location::ILocation::PathType file = this->getFile();
-    const std::string filename               = file.extension() == ".obj"
-                                               ? file.replace_extension().string()
-                                               : file.string();
+    std::filesystem::path file = this->getFile();
+    const std::string filename = file.extension() == ".obj"
+                                 ? file.replace_extension().string()
+                                 : file.string();
 
     vtkSmartPointer< vtkOBJExporter > exporter = vtkSmartPointer< vtkOBJExporter >::New();
     exporter->SetRenderWindow(renderWindow);

@@ -24,18 +24,18 @@
 
 #include "io/itk/config.hpp"
 
+#include <core/location/SingleFile.hpp>
 #include <core/tools/ProgressAdviser.hpp>
 
 #include <data/Image.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
 namespace sight::io::itk
 {
 
-class ImageWriter : public io::base::writer::GenericObjectWriter< data::Image >,
-                    public data::location::enableSingleFile< io::base::writer::IObjectWriter >,
+class ImageWriter : public base::writer::GenericObjectWriter< data::Image >,
+                    public core::location::SingleFile,
                     public core::tools::ProgressAdviser
 {
 

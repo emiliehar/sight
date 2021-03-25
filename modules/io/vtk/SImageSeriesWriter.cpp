@@ -30,12 +30,12 @@
 #include <core/com/Signal.hxx>
 #include <core/jobs/IJob.hpp>
 #include <core/jobs/Job.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/Failed.hpp>
 
 #include <data/Image.hpp>
 #include <data/ImageSeries.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <io/base/reader/IObjectReader.hpp>
 #include <io/base/service/IWriter.hpp>
@@ -80,23 +80,22 @@ void SImageSeriesWriter::configureWithIHM()
 
 void SImageSeriesWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath("");
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose an file to save an image" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.addFilter("Vtk", "*.vtk");
     dialogFile.addFilter("Vti", "*.vti");
     dialogFile.addFilter("MetaImage", "*.mhd");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
-    data::location::SingleFile::sptr result;
-    result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getPath().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
-        this->setFile(result->getPath());
+        defautDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
+        this->setFile(result->getFile());
     }
     else
     {

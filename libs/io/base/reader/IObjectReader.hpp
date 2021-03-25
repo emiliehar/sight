@@ -30,8 +30,6 @@
 #include <core/jobs/IJob.hpp>
 #include <core/tools/Object.hpp>
 
-#include <data/location/ILocation.hpp>
-
 #include <cstdint>
 #include <filesystem>
 #include <functional>
@@ -102,19 +100,6 @@ public:
      */
     IO_BASE_API virtual core::tools::Object::sptr getObject();
 
-    /**
-     * @brief m_location setter.
-     * @param[in] _location set location where object will be read
-     */
-    IO_BASE_API virtual void setLocation( const data::location::ILocation::sptr _location );
-
-    /**
-     * @brief m_location getter.
-     *
-     * @return m_location
-     */
-    IO_BASE_API virtual data::location::ILocation::sptr getLocation();
-
     IO_BASE_API virtual std::string extension() = 0;
 
     /**
@@ -142,10 +127,6 @@ protected:
      * This object is given in parameter of setObject method but it is conserved with a weakptr.
      */
     core::tools::Object::wptr m_object;
-
-    /// Object location ( file path, directory path, url, etc )
-    data::location::ILocation::sptr m_location;
-
 };
 
 } // namespace reader

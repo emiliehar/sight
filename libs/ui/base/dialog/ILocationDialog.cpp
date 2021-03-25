@@ -22,8 +22,10 @@
 
 #include "ui/base/dialog/ILocationDialog.hpp"
 
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
+
+#include <data/String.hpp>
 
 #include <service/IService.hpp>
 #include <service/registry/ObjectService.hpp>
@@ -37,8 +39,9 @@ namespace dialog
 
 const ILocationDialog::FactoryRegistryKeyType ILocationDialog::REGISTRY_KEY = "::ui::base::dialog::LocationDialog";
 
-const std::string ILocationDialog::SOFTWARE_UI          = "SOFTWARE_UI";
-const std::string ILocationDialog::DLG_DEFAULT_LOCATION = "DLG_DEFAULT_LOCATION";
+const std::string ILocationDialog::SOFTWARE_UI           = "SOFTWARE_UI";
+const std::string ILocationDialog::DLG_DEFAULT_FILE      = "DLG_DEFAULT_FILE";
+const std::string ILocationDialog::DLG_DEFAULT_DIRECTORY = "DLG_DEFAULT_DIRECTORY";
 
 //-----------------------------------------------------------------------------
 
@@ -68,27 +71,37 @@ const std::string& ILocationDialog::getTitle()
 
 //------------------------------------------------------------------------------
 
-void ILocationDialog::setDefaultLocation( data::location::ILocation::sptr loc)
+void ILocationDialog::setDefaultLocation(core::location::ILocation::sptr loc)
 {
-    data::location::SingleFile::csptr singleFile = data::location::SingleFile::dynamicConstCast(loc);
-    data::location::Folder::csptr folder         = data::location::Folder::dynamicConstCast(loc);
-    SIGHT_FATAL_IF( "Unsupported location",  !singleFile && !folder );
     m_defaultLocaction = loc;
 }
 
 //------------------------------------------------------------------------------
 
-const std::filesystem::path ILocationDialog::getDefaultLocation()
+const core::location::ILocation::sptr ILocationDialog::getDefaultLocation()
 {
-    std::filesystem::path defaultPath;
     data::Composite::sptr prefUI = this->getPreferenceUI();
-    data::location::ILocation::sptr location;
+    core::location::ILocation::sptr location;
+
     if(prefUI)
     {
-        if ( prefUI->find( ILocationDialog::DLG_DEFAULT_LOCATION ) != prefUI->end() )
+        // This code is temporary
+        // @TODO: find a better way to serialize in preferences
+        if( prefUI->find( ILocationDialog::DLG_DEFAULT_FILE ) != prefUI->end() )
         {
-            location = data::location::ILocation::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_LOCATION ] );
-            SIGHT_ASSERT("LOCATION not correct", location);
+            const auto stringLocation =
+                data::String::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_FILE ] );
+            core::location::SingleFile::sptr singleFile = core::location::SingleFile::New();
+            singleFile->setFile(stringLocation->getValue());
+            location = singleFile;
+        }
+        else if( prefUI->find( ILocationDialog::DLG_DEFAULT_DIRECTORY ) != prefUI->end() )
+        {
+            const auto stringLocation =
+                data::String::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_DIRECTORY ] );
+            core::location::SingleFolder::sptr singleDirectory = core::location::SingleFolder::New();
+            singleDirectory->setFolder(stringLocation->getValue());
+            location = singleDirectory;
         }
     }
 
@@ -97,28 +110,30 @@ const std::filesystem::path ILocationDialog::getDefaultLocation()
         location = m_defaultLocaction;
     }
 
-    data::location::SingleFile::csptr singleFile = data::location::SingleFile::dynamicConstCast(location);
-    data::location::Folder::csptr folder         = data::location::Folder::dynamicConstCast(location);
-    if (singleFile)
-    {
-        defaultPath = singleFile->getPath();
-    }
-    else if (folder)
-    {
-        defaultPath = folder->getFolder();
-    }
-
-    return defaultPath;
+    return location;
 }
 
 //-----------------------------------------------------------------------------
 
-void ILocationDialog::saveDefaultLocation(data::location::ILocation::sptr loc)
+void ILocationDialog::saveDefaultLocation(core::location::ILocation::sptr loc)
 {
     data::Composite::sptr prefUI = this->getPreferenceUI();
     if(prefUI && loc)
     {
-        (*prefUI)[ ILocationDialog::DLG_DEFAULT_LOCATION ] = loc;
+        // This code is temporary
+        // @TODO: find a better way to serialize in preferences
+        auto stringLocation = data::String::New();
+
+        if(auto singleFile = core::location::SingleFile::dynamicCast(loc))
+        {
+            stringLocation->setValue(singleFile->getFile().string());
+            (*prefUI)[ ILocationDialog::DLG_DEFAULT_FILE ] = stringLocation;
+        }
+        else if(auto singleDirectory = core::location::SingleFolder::dynamicCast(loc))
+        {
+            stringLocation->setValue(singleDirectory->getFolder().string());
+            (*prefUI)[ ILocationDialog::DLG_DEFAULT_DIRECTORY ] = stringLocation;
+        }
     }
 }
 

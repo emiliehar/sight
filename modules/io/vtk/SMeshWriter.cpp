@@ -27,9 +27,9 @@
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
 #include <core/jobs/IJob.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/Mesh.hpp>
 
 #include <io/vtk/MeshWriter.hpp>
@@ -75,11 +75,11 @@ void SMeshWriter::configureWithIHM()
 
 void SMeshWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath("");
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a vtk file to save Mesh" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.addFilter("OBJ File(.obj)", "*.obj");
     dialogFile.addFilter("PLY File(.ply)", "*.ply");
     dialogFile.addFilter("STL File(.stl)", "*.stl");
@@ -87,14 +87,13 @@ void SMeshWriter::openLocationDialog()
     dialogFile.addFilter("VTK Polydata File(.vtp)", "*.vtp");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
-    data::location::SingleFile::sptr result;
-    result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
+        this->setFile(result->getFile());
         m_selectedExtension = dialogFile.getCurrentSelection();
-        _sDefaultPath       = result->getPath().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
-        this->setFile(result->getPath());
+        defautDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {

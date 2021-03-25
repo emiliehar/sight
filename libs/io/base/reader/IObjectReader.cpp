@@ -22,8 +22,6 @@
 
 #include "io/base/reader/IObjectReader.hpp"
 
-#include <data/location/ILocation.hpp>
-
 namespace sight::io::base
 {
 
@@ -56,20 +54,6 @@ core::tools::Object::sptr IObjectReader::getObject()
     auto object = m_object.lock();
     SIGHT_ASSERT( "Object is null", object );
     return object;
-}
-
-//------------------------------------------------------------------------------
-
-void IObjectReader::setLocation( const data::location::ILocation::sptr _location )
-{
-    m_location = _location;
-}
-
-//------------------------------------------------------------------------------
-
-data::location::ILocation::sptr IObjectReader::getLocation()
-{
-    return m_location;
 }
 
 //------------------------------------------------------------------------------

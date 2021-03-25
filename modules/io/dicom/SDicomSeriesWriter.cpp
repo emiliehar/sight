@@ -28,15 +28,15 @@
 #include <core/com/Signals.hpp>
 #include <core/jobs/IJob.hpp>
 #include <core/jobs/Observer.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/ProgressToLogger.hpp>
 
 #include <data/DicomSeries.hpp>
-#include <data/location/Folder.hpp>
-
-#include <service/macros.hpp>
 
 #include <io/base/service/IWriter.hpp>
 #include <io/dicom/helper/DicomSeriesWriter.hpp>
+
+#include <service/macros.hpp>
 
 #include <ui/base/Cursor.hpp>
 #include <ui/base/dialog/LocationDialog.hpp>
@@ -45,7 +45,6 @@
 
 namespace sight::module::io::dicom
 {
-
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
@@ -73,21 +72,20 @@ void SDicomSeriesWriter::configureWithIHM()
 
 void SDicomSeriesWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a directory for DICOM images" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
-    result = data::location::Folder::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getFolder();
-        this->setFolder( result->getFolder() );
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        defautDirectory->setFolder(result->getFolder());
+        this->setFolder(result->getFolder());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {
@@ -180,9 +178,7 @@ void SDicomSeriesWriter::saveDicomSeries( const std::filesystem::path folder,
     auto writer = sight::io::dicom::helper::DicomSeriesWriter::New();
 
     writer->setObject(series);
-    data::location::Folder::sptr loc = data::location::Folder::New();
-    loc->setFolder(folder);
-    writer->setLocation(loc);
+    writer->setFolder(folder);
     m_sigJobCreated->emit(writer->getJob());
 
     try

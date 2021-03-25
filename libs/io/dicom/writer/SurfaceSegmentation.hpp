@@ -26,10 +26,10 @@
 #include "io/dicom/container/DicomInstance.hpp"
 #include "io/dicom/exception/Failed.hpp"
 
+#include <core/location/SingleFile.hpp>
 #include <core/log/Logger.hpp>
 
 #include <data/ImageSeries.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/ModelSeries.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
@@ -55,7 +55,7 @@ namespace writer
  */
 class IO_DICOM_CLASS_API SurfaceSegmentation :
     public io::base::writer::GenericObjectWriter< data::ModelSeries >,
-    public data::location::enableSingleFile< io::base::writer::IObjectWriter >
+    public core::location::SingleFile
 {
 
 public:

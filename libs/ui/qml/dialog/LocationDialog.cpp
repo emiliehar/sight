@@ -22,11 +22,10 @@
 
 #include "ui/qml/dialog/LocationDialog.hpp"
 
+#include <core/location/MultipleFiles.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/runtime/operations.hpp>
-
-#include <data/location/Folder.hpp>
-#include <data/location/MultiFiles.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <ui/base/dialog/ILocationDialog.hpp>
 #include <ui/base/dialog/InputDialog.hpp>
@@ -55,29 +54,11 @@ LocationDialog::LocationDialog(ui::base::GuiBaseObject::Key key)
 
 //------------------------------------------------------------------------------
 
-data::location::ILocation::sptr LocationDialog::show()
+core::location::ILocation::sptr LocationDialog::show()
 {
-    // If we don't create an alternative by creating an input dialog to save file,
-    // The application freeze without opening the FileDialog
-    // sight issue: https://git.ircad.fr/Sight/sight/issues/365
-    // for more information: https://bugreports.qt.io/browse/QTBUG-77781
-#ifdef __APPLE__
-    if ( !(m_style& ui::base::dialog::ILocationDialog::READ) &&
-         !(m_style& ui::base::dialog::ILocationDialog::FILE_MUST_EXIST))
-    {
-        const std::string& result = ui::base::dialog::InputDialog::showInputDialog(
-            this->getTitle(), "This is a temporary dialog to save file under macOS. Write below the path of the file you want to save:",
-            QDir::homePath().toStdString());
-        std::filesystem::path bpath( result);
-        m_location = data::location::SingleFile::New(bpath);
-        return m_location;
-    }
-#endif
-
-    const QString& caption                  = QString::fromStdString(this->getTitle());
-    const std::filesystem::path defaultPath = this->getDefaultLocation();
-    const QString& path                     = QString::fromStdString(defaultPath.string());
-    const QStringList& filter               = this->fileFilters();
+    const QString& caption    = QString::fromStdString(this->getTitle());
+    const QString& path       = QString::fromStdString(this->getDefaultLocation()->toString());
+    const QStringList& filter = this->fileFilters();
 
     // get the qml engine QmlApplicationEngine
     SPTR(ui::qml::QmlEngine) engine = ui::qml::QmlEngine::getDefault();
@@ -126,16 +107,8 @@ data::location::ILocation::sptr LocationDialog::show()
     connect(dialog, SIGNAL(accepted()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
     QMetaObject::invokeMethod(dialog, "open");
-    // If we don't make NoneModal the FileDialog is not render so we simulate a Modal behaviour
-    // by creating a filter of event to prevent all event that are not inside the dialog
-    // for more information: https://bugreports.qt.io/browse/QTBUG-76102
-#ifdef __APPLE__
-    qGuiApp->installEventFilter(this);
-#endif
+
     loop.exec();
-#ifdef __APPLE__
-    qGuiApp->removeEventFilter(this);
-#endif
     delete dialog;
 
     return m_location;
@@ -155,26 +128,33 @@ void LocationDialog::resultDialog(const QVariant& msg)
     // get the list of selected files or folder
     QList<QUrl> files = msg.value<QList<QUrl> >();
     m_wildcard = m_filterSelected.toStdString();
-    if (!files.isEmpty() && !files.first().isEmpty())
+    if(!files.isEmpty() && !files.first().isEmpty())
     {
         // convert all selected location into boost filesystem and add it in m_location
-        if (m_type == ui::base::dialog::ILocationDialog::MULTI_FILES)
+        if(m_type == ui::base::dialog::ILocationDialog::MULTI_FILES)
         {
-            data::location::MultiFiles::sptr multifiles = data::location::MultiFiles::New();
             std::vector< std::filesystem::path > paths;
-            for (const QUrl& filename : files)
+            for(const QUrl& filename : files)
             {
                 std::filesystem::path bpath( filename.toLocalFile().toStdString() );
                 paths.push_back(bpath);
             }
-            multifiles->setPaths(paths);
-            m_location = multifiles;
+
+            auto multipleFiles = core::location::MultipleFiles::New();
+            multipleFiles->setFiles(paths);
+            m_location = multipleFiles;
         }
-        else if (m_type == ui::base::dialog::ILocationDialog::SINGLE_FILE ||
-                 m_type == ui::base::dialog::ILocationDialog::FOLDER)
+        else if(m_type == ui::base::dialog::ILocationDialog::SINGLE_FILE)
         {
-            std::filesystem::path bpath( files.first().toLocalFile().toStdString());
-            m_location = data::location::SingleFile::New(bpath);
+            auto singleFile = core::location::SingleFile::New();
+            singleFile->setFile(files.first().toLocalFile().toStdString());
+            m_location = singleFile;
+        }
+        else if(m_type == ui::base::dialog::ILocationDialog::FOLDER)
+        {
+            auto singleDirectory = core::location::SingleFolder::New();
+            singleDirectory->setFolder(files.first().toLocalFile().toStdString());
+            m_location = singleDirectory;
         }
     }
 }

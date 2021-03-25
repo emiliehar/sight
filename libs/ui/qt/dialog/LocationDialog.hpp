@@ -51,7 +51,7 @@ public:
 
     UI_QT_API LocationDialog(ui::base::GuiBaseObject::Key key);
 
-    UI_QT_API data::location::ILocation::sptr show() override;
+    UI_QT_API core::location::ILocation::sptr show() override;
 
     UI_QT_API void setType( ui::base::dialog::ILocationDialog::Types type ) override;
 

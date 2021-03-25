@@ -24,7 +24,6 @@
 
 #include "modules/io/vtk/config.hpp"
 
-#include <data/location/ILocation.hpp>
 #include <data/Mesh.hpp>
 
 #include <io/base/service/IReader.hpp>
@@ -157,7 +156,7 @@ private:
      *
      * This method is used to load a mesh using the file path.
      */
-    void loadSeriesDB( const data::location::ILocation::VectPathType& vtkFiles,
+    void loadSeriesDB( const std::vector<std::filesystem::path>& vtkFiles,
                        const SPTR(data::SeriesDB)& seriesDB );
 
     SPTR(JobCreatedSignalType) m_sigJobCreated;

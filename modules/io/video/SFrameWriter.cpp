@@ -28,9 +28,9 @@
 #include <core/com/Slot.hxx>
 #include <core/com/Slots.hpp>
 #include <core/com/Slots.hxx>
+#include <core/location/SingleFolder.hpp>
 
 #include <data/Composite.hpp>
-#include <data/location/Folder.hpp>
 
 #include <service/macros.hpp>
 
@@ -111,20 +111,19 @@ void SFrameWriter::configureWithIHM()
 
 void SFrameWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath("");
+    static auto defautDirectory = core::location::SingleFolder::New();
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a folder to save the frames" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
-    result = data::location::Folder::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getFolder().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
         this->setFolder(result->getFolder());
+        defautDirectory->setFolder(result->getFolder().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {

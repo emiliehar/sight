@@ -24,8 +24,9 @@
 
 #include "io/vtk/config.hpp"
 
+#include <core/location/SingleFile.hpp>
+
 #include <data/Image.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
@@ -44,8 +45,8 @@ namespace sight::io::vtk
  *
  * Write a VTK Image using the VTK lib
  */
-class VtiImageWriter : public io::base::writer::GenericObjectWriter< data::Image >,
-                       public data::location::enableSingleFile< io::base::writer::IObjectWriter >
+class VtiImageWriter : public base::writer::GenericObjectWriter< data::Image >,
+                       public core::location::SingleFile
 {
 
 public:

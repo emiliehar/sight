@@ -43,7 +43,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 VtiImageReader::VtiImageReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< io::base::reader::IObjectReader >(this),
     m_job(core::jobs::Observer::New("Vti image reader"))
 {
 }

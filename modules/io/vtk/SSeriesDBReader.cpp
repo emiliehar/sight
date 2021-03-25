@@ -27,15 +27,15 @@
 #include <core/com/Signal.hxx>
 #include <core/jobs/IJob.hpp>
 #include <core/jobs/Job.hpp>
+#include <core/location/SingleFolder.hpp>
 
-#include <data/location/Folder.hpp>
+#include <data/helper/SeriesDB.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 #include <data/SeriesDB.hpp>
-#include <data/helper/SeriesDB.hpp>
-
-#include <service/macros.hpp>
 
 #include <io/vtk/SeriesDBReader.hpp>
+
+#include <service/macros.hpp>
 
 #include <ui/base/Cursor.hpp>
 #include <ui/base/dialog/LocationDialog.hpp>
@@ -46,7 +46,6 @@
 
 namespace sight::module::io::vtk
 {
-
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
@@ -74,10 +73,10 @@ void SSeriesDBReader::configureWithIHM()
 
 void SSeriesDBReader::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath("");
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setType(ui::base::dialog::ILocationDialog::MULTI_FILES);
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose vtk files to load Series" : m_windowTitle);
     dialogFile.addFilter("All supported files", "*.vtk *.vtp *.vti *.mhd *.vtu *.obj *.ply *.stl");
@@ -92,15 +91,14 @@ void SSeriesDBReader::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
-    data::location::MultiFiles::sptr result;
-    result = data::location::MultiFiles::dynamicCast( dialogFile.show() );
+    auto result = core::location::MultipleFiles::dynamicCast(dialogFile.show());
     if (result)
     {
-        const data::location::ILocation::VectPathType paths = result->getPaths();
+        const std::vector<std::filesystem::path> paths = result->getFiles();
         if(!paths.empty())
         {
-            _sDefaultPath = paths[0].parent_path();
-            dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+            defautDirectory->setFolder(paths[0].parent_path());
+            dialogFile.saveDefaultLocation(defautDirectory);
         }
         this->setFiles(paths);
     }
@@ -138,7 +136,7 @@ void SSeriesDBReader::info(std::ostream& _sstream )
 
 //------------------------------------------------------------------------------
 
-void SSeriesDBReader::loadSeriesDB( const data::location::ILocation::VectPathType& vtkFiles,
+void SSeriesDBReader::loadSeriesDB( const std::vector<std::filesystem::path>& vtkFiles,
                                     const data::SeriesDB::sptr& seriesDB )
 {
     auto reader = sight::io::vtk::SeriesDBReader::New();

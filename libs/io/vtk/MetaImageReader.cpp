@@ -42,7 +42,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 MetaImageReader::MetaImageReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< io::base::reader::IObjectReader >(this),
     m_job(core::jobs::Observer::New("Meta image reader"))
 {
 }

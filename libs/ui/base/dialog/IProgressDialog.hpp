@@ -25,8 +25,6 @@
 #include "ui/base/config.hpp"
 #include "ui/base/GuiBaseObject.hpp"
 
-#include <data/location/ILocation.hpp>
-
 #include <boost/signals2.hpp>
 
 #include <functional>

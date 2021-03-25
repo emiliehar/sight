@@ -25,10 +25,9 @@
 #include <core/base.hpp>
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
+#include <core/location/SingleFile.hpp>
 #include <core/runtime/ConfigurationElement.hpp>
 #include <core/runtime/operations.hpp>
-
-#include <data/location/SingleFile.hpp>
 
 #include <service/macros.hpp>
 
@@ -38,7 +37,6 @@ namespace sight::module::ui::base::viz
 {
 
 const core::com::Signals::SignalKeyType SSnapshot::s_SNAPPED_SIG = "snapped";
-
 
 SSnapshot::SSnapshot() noexcept
 {
@@ -113,11 +111,10 @@ std::string SSnapshot::requestFileName()
     dialogFile.addFilter("all", "*.*");
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::WRITE);
 
-    data::location::SingleFile::sptr result;
-    result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        fileName = result->getPath().string();
+        fileName = result->getFile().string();
     }
 
     return fileName;

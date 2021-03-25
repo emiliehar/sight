@@ -24,7 +24,7 @@
 
 #include "io/vtk/config.hpp"
 
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
@@ -48,8 +48,8 @@ namespace sight::io::vtk
  * @brief Writes a Mesh in .obj format using VTK library.
  */
 
-class ObjMeshWriter : public io::base::writer::GenericObjectWriter< data::Mesh >,
-                      public data::location::enableSingleFile< io::base::writer::IObjectWriter >
+class ObjMeshWriter : public base::writer::GenericObjectWriter< data::Mesh >,
+                      public core::location::SingleFile
 {
 
 public:

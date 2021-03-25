@@ -24,8 +24,8 @@
 
 #include "io/dicom/config.hpp"
 
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <io/base/writer/GenericObjectWriter.hpp>
 
@@ -51,9 +51,8 @@ class DicomAnonymizer;
 
 class IO_DICOM_CLASS_API DicomSeriesDBWriter :
     public io::base::writer::GenericObjectWriter< data::SeriesDB >,
-    public data::location::enableFolder< io::base::writer::IObjectWriter >,
-    public data::location::enableSingleFile< io::base::writer::IObjectWriter >
-
+    public core::location::SingleFolder,
+    public core::location::SingleFile
 {
 public:
 

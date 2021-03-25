@@ -41,7 +41,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 ImageWriter::ImageWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this),
     m_job(core::jobs::Observer::New("VTK Image Writer"))
 {
 }

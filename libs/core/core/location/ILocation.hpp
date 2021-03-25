@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -20,21 +20,32 @@
  *
  ***********************************************************************/
 
-#define CAMP_COMPILATION
+#pragma once
 
-#include "data/location/Folder.hpp"
+#include "core/config.hpp"
+#include "core/macros.hpp"
 
-#include "data/reflection/mapper.hpp"
-
-#include <core/reflection/UserObject.hpp>
-
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(location)(Folder))
+namespace sight::core::location
 {
-    builder
-    .tag("object_version", "1")
-    .tag("lib_name", "::sight::data")
-    .base< sight::data::Object>()
-    .property("folder", &sight::data::location::Folder::m_folder)
-    .property("recursive", &sight::data::location::Folder::m_isRecursive)
-    ;
-}
+/**
+ * @brief Abstract base class to define a location (file(s) path, directory, archive) that can be used in Sight reader /
+ * writer
+ */
+class CORE_CLASS_API ILocation
+{
+public:
+    SIGHT_DECLARE_CLASS(ILocation)
+
+    /// String serialization function
+    CORE_API virtual std::string toString() const = 0;
+
+protected:
+
+    /// Constructor
+    CORE_API ILocation() = default;
+
+    /// Destructor
+    CORE_API virtual ~ILocation() = default;
+};
+
+} // namespace sight::io::base::location

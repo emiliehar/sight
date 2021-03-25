@@ -25,11 +25,11 @@
 #include <core/com/Signal.hxx>
 #include <core/jobs/IJob.hpp>
 #include <core/jobs/Observer.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/log/Logger.hpp>
 #include <core/tools/ProgressToLogger.hpp>
 
 #include <data/helper/SeriesDB.hpp>
-#include <data/location/Folder.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 #include <data/SeriesDB.hpp>
 #include <data/String.hpp>
@@ -87,21 +87,20 @@ void SSeriesDBReader::configureWithIHM()
 
 void SSeriesDBReader::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? this->getSelectorDialogTitle() : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
-    result = data::location::Folder::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getFolder();
-        this->setFolder( _sDefaultPath );
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        this->setFolder(result->getFolder());
+        defautDirectory->setFolder(result->getFolder());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {

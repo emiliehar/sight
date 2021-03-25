@@ -23,6 +23,8 @@
 #include "SInrSeriesDBReader.hpp"
 
 #include <core/base.hpp>
+#include <core/location/MultipleFiles.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/dateAndTime.hpp>
 #include <core/tools/UUID.hpp>
 
@@ -30,8 +32,6 @@
 #include <data/helper/SeriesDB.hpp>
 #include <data/Image.hpp>
 #include <data/ImageSeries.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/MultiFiles.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 #include <data/Patient.hpp>
 #include <data/SeriesDB.hpp>
@@ -89,25 +89,24 @@ void SInrSeriesDBReader::configureWithIHM()
 
 void SInrSeriesDBReader::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose an Inrimage file" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.addFilter("Inrimage", "*.inr.gz");
     dialogFile.setType(ui::base::dialog::ILocationDialog::MULTI_FILES);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
-    data::location::MultiFiles::sptr result;
-    result = data::location::MultiFiles::dynamicCast( dialogFile.show() );
+    auto result = core::location::MultipleFiles::dynamicCast(dialogFile.show());
     if (result)
     {
-        const data::location::ILocation::VectPathType paths = result->getPaths();
+        const std::vector<std::filesystem::path> paths = result->getFiles();
         if(!paths.empty())
         {
-            _sDefaultPath = paths[0].parent_path();
-            dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+            defautDirectory->setFolder(paths[0].parent_path());
+            dialogFile.saveDefaultLocation(defautDirectory);
         }
         this->setFiles(paths);
     }

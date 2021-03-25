@@ -1,7 +1,6 @@
 /************************************************************************
  *
- * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2021 IHU Strasbourg
+ * Copyright (C) 2021 IRCAD France
  *
  * This file is part of Sight.
  *
@@ -20,26 +19,17 @@
  *
  ***********************************************************************/
 
-#include "data/location/ILocation.hpp"
+#include "SessionWriter.hpp"
 
-namespace sight::data
+namespace sight::io::base
 {
-namespace location
+namespace writer
 {
 
-//------------------------------------------------------------------------------
-
-ILocation::ILocation()
-{
-}
-
-//------------------------------------------------------------------------------
-
-ILocation::~ILocation()
+/// Write the file with standard iostream API.
+void SessionWriter::write()
 {
 }
 
-//------------------------------------------------------------------------------
-
-}
-}
+} // namespace writer
+} //namespace sight::io::base

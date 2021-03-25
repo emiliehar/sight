@@ -42,7 +42,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 PlyMeshWriter::PlyMeshWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this),
     m_job(core::jobs::Observer::New("PLY Mesh writer"))
 {
 }

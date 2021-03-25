@@ -37,8 +37,7 @@ namespace writer
 
 //------------------------------------------------------------------------------
 
-ArrayWriter::ArrayWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this)
+ArrayWriter::ArrayWriter(io::base::writer::IObjectWriter::Key)
 {
 }
 

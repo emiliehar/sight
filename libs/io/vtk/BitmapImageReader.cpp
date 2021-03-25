@@ -46,7 +46,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 BitmapImageReader::BitmapImageReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< io::base::reader::IObjectReader >(this),
     m_job(core::jobs::Observer::New("Bitmap image reader"))
 {
     /* Initialize the available extensions */

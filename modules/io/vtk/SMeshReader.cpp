@@ -27,9 +27,9 @@
 #include <core/com/Signal.hxx>
 #include <core/com/Signals.hpp>
 #include <core/jobs/IJob.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 
 #include <io/vtk/MeshReader.hpp>
@@ -76,11 +76,11 @@ void SMeshReader::configureWithIHM()
 
 void SMeshReader::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath("");
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a vtk file to load Mesh" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.addFilter("All supported files", "*.vtk *.vtp *.obj *.ply *.stl");
     dialogFile.addFilter("OBJ File(.obj)", "*.obj");
     dialogFile.addFilter("PLY File(.ply)", "*.ply");
@@ -90,13 +90,12 @@ void SMeshReader::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
-    data::location::SingleFile::sptr result;
-    result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getPath().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
-        this->setFile(result->getPath());
+        defautDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
+        this->setFile(result->getFile());
     }
     else
     {

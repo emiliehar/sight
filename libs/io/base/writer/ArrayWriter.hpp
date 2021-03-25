@@ -25,8 +25,9 @@
 #include "io/base/config.hpp"
 #include "io/base/writer/GenericObjectWriter.hpp"
 
+#include <core/location/SingleFile.hpp>
+
 #include <data/Array.hpp>
-#include <data/location/SingleFile.hpp>
 
 namespace sight::io::base
 {
@@ -40,7 +41,7 @@ namespace writer
  * Ircad writer to write a data::Array on filesystem in a raw format
  */
 class IO_BASE_CLASS_API ArrayWriter :  public GenericObjectWriter< data::Array >,
-                                       public data::location::enableSingleFile< io::base::writer::IObjectWriter >
+                                       public core::location::SingleFile
 {
 
 public:

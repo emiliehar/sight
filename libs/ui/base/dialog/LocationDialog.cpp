@@ -34,12 +34,12 @@ LocationDialog::LocationDialog()
 {
 
     core::thread::ActiveWorkers::getDefaultWorker()->postTask< void >(std::function< void() >(
-                                                                               [&]
+                                                                          [&]
             {
                 ui::base::GuiBaseObject::sptr guiObj = ui::base::factory::New(ILocationDialog::REGISTRY_KEY);
                 m_implementation = ui::base::dialog::ILocationDialog::dynamicCast(guiObj);
             })
-                                                                           ).wait();
+                                                                      ).wait();
 }
 
 //------------------------------------------------------------------------------
@@ -50,9 +50,9 @@ LocationDialog::~LocationDialog()
 
 //-----------------------------------------------------------------------------
 
-data::location::ILocation::sptr LocationDialog::show()
+core::location::ILocation::sptr LocationDialog::show()
 {
-    typedef SPTR (data::location::ILocation) R;
+    typedef SPTR (core::location::ILocation) R;
 
     std::function< R() > func = std::bind(&ILocationDialog::show, m_implementation);
     std::shared_future< R > f = core::thread::ActiveWorkers::getDefaultWorker()->postTask< R >(func);
@@ -98,21 +98,21 @@ const std::string& LocationDialog::getTitle()
 
 //-----------------------------------------------------------------------------
 
-void LocationDialog::setDefaultLocation(data::location::ILocation::sptr loc)
+void LocationDialog::setDefaultLocation(core::location::ILocation::sptr loc)
 {
     m_implementation->setDefaultLocation(loc);
 }
 
 //-----------------------------------------------------------------------------
 
-const std::filesystem::path LocationDialog::getDefaultLocation()
+const core::location::ILocation::sptr LocationDialog::getDefaultLocation()
 {
     return m_implementation->getDefaultLocation();
 }
 
 //-----------------------------------------------------------------------------
 
-void LocationDialog::saveDefaultLocation(data::location::ILocation::sptr loc)
+void LocationDialog::saveDefaultLocation(core::location::ILocation::sptr loc)
 {
     m_implementation->saveDefaultLocation(loc);
 }

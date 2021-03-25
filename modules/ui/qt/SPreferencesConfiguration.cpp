@@ -23,11 +23,11 @@
 
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <data/Composite.hpp>
 #include <data/Integer.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <service/macros.hpp>
 #include <service/registry/ObjectService.hpp>
@@ -379,20 +379,20 @@ void SPreferencesConfiguration::stopping()
 
 void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select Storage directory");
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::FOLDER);
 
-    const auto result = data::location::Folder::dynamicCast( dialogFile.show() );
+    const auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getFolder();
+        defautDirectory->setFolder(result->getFolder());
         lineEdit->setText( QString::fromStdString(result->getFolder().string()) );
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
 }
 
@@ -400,20 +400,20 @@ void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 
 void SPreferencesConfiguration::onSelectFile(QPointer<QLineEdit> lineEdit)
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select File");
-    dialogFile.setDefaultLocation( data::location::SingleFile::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::SINGLE_FILE);
 
-    const auto result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getPath().parent_path();
-        lineEdit->setText( QString::fromStdString(result->getPath().string()) );
-        dialogFile.saveDefaultLocation( data::location::SingleFile::New(_sDefaultPath) );
+        defautDirectory->setFolder(result->getFile().parent_path());
+        lineEdit->setText(QString::fromStdString(result->getFile().string()));
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
 }
 

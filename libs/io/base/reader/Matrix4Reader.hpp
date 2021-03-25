@@ -25,7 +25,8 @@
 #include "io/base/config.hpp"
 #include "io/base/reader/GenericObjectReader.hpp"
 
-#include <data/location/SingleFile.hpp>
+#include <core/location/SingleFile.hpp>
+
 #include <data/Matrix4.hpp>
 
 namespace sight::io::base
@@ -43,7 +44,7 @@ namespace reader
  */
 class IO_BASE_CLASS_API Matrix4Reader :
     public GenericObjectReader< data::Matrix4 >,
-    public data::location::enableSingleFile< IObjectReader >
+    public core::location::SingleFile
 {
 
 public:

@@ -23,10 +23,10 @@
 #include "SCalibrationInfoReader.hpp"
 
 #include <core/com/Slots.hxx>
+#include <core/location/SingleFolder.hpp>
 
 #include <data/CalibrationInfo.hpp>
 #include <data/Image.hpp>
-#include <data/location/Folder.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 
 #include <geometry/vision/helper.hpp>
@@ -79,21 +79,21 @@ void SCalibrationInfoReader::configureWithIHM()
 
 void SCalibrationInfoReader::openLocationDialog()
 {
-    static std::filesystem::path s_defaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Select a folder holding calibration inputs" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(s_defaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
-    data::location::Folder::sptr result = data::location::Folder::dynamicCast(dialogFile.show());
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
 
     if (result)
     {
-        s_defaultPath = result->getFolder().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(s_defaultPath) );
         this->setFolder(result->getFolder());
+        defautDirectory->setFolder(result->getFolder().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {

@@ -22,9 +22,9 @@
 
 #include "ui/qt/dialog/LocationDialog.hpp"
 
-#include <data/location/Folder.hpp>
-#include <data/location/MultiFiles.hpp>
-#include <data/location/SingleFile.hpp>
+#include <core/location/MultipleFiles.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <ui/base/dialog/ILocationDialog.hpp>
 #include <ui/base/registry/macros.hpp>
@@ -55,14 +55,13 @@ LocationDialog::LocationDialog(ui::base::GuiBaseObject::Key key) :
 
 //------------------------------------------------------------------------------
 
-data::location::ILocation::sptr LocationDialog::show()
+core::location::ILocation::sptr LocationDialog::show()
 {
-    QWidget* parent                         = qApp->activeWindow();
-    QString caption                         = QString::fromStdString(this->getTitle());
-    const std::filesystem::path defaultPath = this->getDefaultLocation();
-    QString path                            = QString::fromStdString(defaultPath.string());
-    QString filter                          = this->fileFilters();
-    data::location::ILocation::sptr location;
+    QWidget* parent = qApp->activeWindow();
+    QString caption = QString::fromStdString(this->getTitle());
+    QString path    = QString::fromStdString(this->getDefaultLocation()->toString());
+    QString filter  = this->fileFilters();
+    core::location::ILocation::sptr location;
 
     QFileDialog dialog;
     dialog.setDirectory(path);
@@ -93,15 +92,16 @@ data::location::ILocation::sptr LocationDialog::show()
         }
         if(!files.isEmpty())
         {
-            data::location::MultiFiles::sptr multifiles = data::location::MultiFiles::New();
             std::vector< std::filesystem::path > paths;
             for (QString filename : files)
             {
                 std::filesystem::path bpath( filename.toStdString() );
                 paths.push_back(bpath);
             }
-            multifiles->setPaths(paths);
-            location = multifiles;
+
+            auto multipleFiles = core::location::MultipleFiles::New();
+            multipleFiles->setFiles(paths);
+            location = multipleFiles;
         }
     }
     else if (m_type == ui::base::dialog::ILocationDialog::SINGLE_FILE)
@@ -128,8 +128,9 @@ data::location::ILocation::sptr LocationDialog::show()
         }
         if(!fileName.isNull())
         {
-            std::filesystem::path bpath( fileName.toStdString());
-            location = data::location::SingleFile::New(bpath);
+            auto singleFile = core::location::SingleFile::New();
+            singleFile->setFile(fileName.toStdString());
+            location = singleFile;
         }
     }
     else if (m_type == ui::base::dialog::ILocationDialog::FOLDER)
@@ -146,10 +147,12 @@ data::location::ILocation::sptr LocationDialog::show()
 
         if(!dir.isNull())
         {
-            std::filesystem::path bpath( dir.toStdString()  );
-            location = data::location::Folder::New(bpath);
+            auto singleDirectory = core::location::SingleFolder::New();
+            singleDirectory->setFolder(dir.toStdString());
+            location = singleDirectory;
         }
     }
+
     return location;
 }
 

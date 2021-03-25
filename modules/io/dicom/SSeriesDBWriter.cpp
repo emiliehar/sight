@@ -23,10 +23,10 @@
 #include "SSeriesDBWriter.hpp"
 
 #include <core/base.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/tools/ProgressToLogger.hpp>
 
 #include <data/helper/SeriesDB.hpp>
-#include <data/location/Folder.hpp>
 #include <data/Series.hpp>
 #include <data/SeriesDB.hpp>
 #include <data/Vector.hpp>
@@ -70,21 +70,20 @@ void SSeriesDBWriter::configureWithIHM()
 
 void SSeriesDBWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a directory for DICOM images" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
-    result = data::location::Folder::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result && this->selectFiducialsExportMode())
     {
-        _sDefaultPath = result->getFolder();
-        this->setFolder( result->getFolder() );
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+        defautDirectory->setFolder(result->getFolder());
+        this->setFolder(result->getFolder());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {
@@ -171,9 +170,7 @@ void SSeriesDBWriter::saveSeriesDB( const std::filesystem::path folder, data::Se
     auto writer = sight::io::dicom::writer::SeriesDB::New();
     writer->setObject(seriesDB);
     writer->setFiducialsExportMode(m_fiducialsExportMode);
-    data::location::Folder::sptr loc = data::location::Folder::New();
-    loc->setFolder(folder);
-    writer->setLocation(loc);
+    writer->setFolder(folder);
 
     try
     {

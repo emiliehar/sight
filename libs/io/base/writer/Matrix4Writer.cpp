@@ -39,8 +39,7 @@ namespace writer
 
 //------------------------------------------------------------------------------
 
-Matrix4Writer::Matrix4Writer(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this)
+Matrix4Writer::Matrix4Writer(io::base::writer::IObjectWriter::Key)
 {
 }
 

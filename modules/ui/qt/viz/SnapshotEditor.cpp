@@ -26,10 +26,9 @@
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
 #include <core/com/Signals.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/runtime/operations.hpp>
-
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <service/macros.hpp>
 
@@ -154,10 +153,12 @@ void SnapshotEditor::onSnapButton()
 
 std::string SnapshotEditor::requestFileName()
 {
-    std::string fileName = "";
+    static auto defaultDirectory = core::location::SingleFolder::New();
+    std::string fileName         = "";
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Save snapshot as");
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("Image file", "*.jpg *.jpeg *.bmp *.png *.tiff");
     dialogFile.addFilter("jpeg", "*.jpg *.jpeg");
     dialogFile.addFilter("bmp", "*.bmp");
@@ -166,12 +167,12 @@ std::string SnapshotEditor::requestFileName()
     dialogFile.addFilter("all", "*.*");
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::WRITE);
 
-    data::location::SingleFile::sptr result;
-    result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        fileName = result->getPath().string();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(result->getPath().parent_path()) );
+        fileName = result->getFile().string();
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
 
     return fileName;

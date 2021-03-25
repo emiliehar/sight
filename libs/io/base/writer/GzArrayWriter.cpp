@@ -38,8 +38,7 @@ namespace writer
 
 //------------------------------------------------------------------------------
 
-GzArrayWriter::GzArrayWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this)
+GzArrayWriter::GzArrayWriter(io::base::writer::IObjectWriter::Key)
 {
 }
 
@@ -53,7 +52,7 @@ GzArrayWriter::~GzArrayWriter()
 
 void GzArrayWriter::write()
 {
-    assert( getFile().empty() == false );
+    SIGHT_ASSERT("File path is empty.", getFile().empty() == false );
 
     data::Array::csptr array = this->getConcreteObject();
 

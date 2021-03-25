@@ -25,8 +25,9 @@
 #include "io/base/config.hpp"
 #include "io/base/reader/GenericObjectReader.hpp"
 
+#include <core/location/SingleFile.hpp>
+
 #include <data/Array.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <filesystem>
 
@@ -42,7 +43,7 @@ namespace reader
  * Ircad reader to read a data::Array on filesystem in a raw format.
  */
 class IO_BASE_CLASS_API ArrayReader :  public GenericObjectReader< data::Array >,
-                                       public data::location::enableSingleFile< IObjectReader >
+                                       public core::location::SingleFile
 {
 
 public:

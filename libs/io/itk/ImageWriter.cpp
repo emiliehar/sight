@@ -41,8 +41,7 @@ namespace sight::io::itk
 {
 //------------------------------------------------------------------------------
 
-ImageWriter::ImageWriter(io::base::writer::IObjectWriter::Key key) :
-    data::location::enableSingleFile< io::base::writer::IObjectWriter >(this)
+ImageWriter::ImageWriter(io::base::writer::IObjectWriter::Key key)
 {
 }
 

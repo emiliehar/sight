@@ -53,7 +53,7 @@ public:
     UI_QML_API LocationDialog(ui::base::GuiBaseObject::Key key);
 
     /// show the locationDialog to the user and wait selection from the user
-    UI_QML_API data::location::ILocation::sptr show() override;
+    UI_QML_API core::location::ILocation::sptr show() override;
 
     /// Set the type of locationDialog to open (multi selection, folder selection...)
     UI_QML_API void setType( ui::base::dialog::ILocationDialog::Types type ) override;
@@ -78,7 +78,7 @@ private:
     const QStringList fileFilters();
 
     std::string m_wildcard;
-    data::location::ILocation::sptr m_location;
+    core::location::ILocation::sptr m_location;
 
     /// the filter list and the current filter selected
     QString m_filterSelected;

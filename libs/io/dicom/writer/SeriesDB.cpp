@@ -41,7 +41,6 @@ namespace writer
 //------------------------------------------------------------------------------
 
 SeriesDB::SeriesDB(io::base::writer::IObjectWriter::Key key) :
-    data::location::enableFolder< io::base::writer::IObjectWriter >(this),
     m_fiducialsExportMode(io::dicom::writer::Series::SPATIAL_FIDUCIALS)
 {
 }

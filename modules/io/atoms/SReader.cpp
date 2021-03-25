@@ -27,12 +27,12 @@
 #include <core/com/Signal.hxx>
 #include <core/jobs/Aggregator.hpp>
 #include <core/jobs/Job.hpp>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <data/Array.hpp>
 #include <data/Composite.hpp>
 #include <data/helper/Composite.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <io/atoms/filter/factory/new.hpp>
 #include <io/atoms/filter/IFilter.hpp>
@@ -459,11 +459,11 @@ void SReader::configureWithIHM()
 
 void SReader::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.setType(ui::base::dialog::ILocationDialog::SINGLE_FILE);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setOption(ui::base::dialog::LocationDialog::FILE_MUST_EXIST);
@@ -475,14 +475,13 @@ void SReader::openLocationDialog()
         dialogFile.addFilter(m_allowedExtLabels[ext], "*" + ext);
     }
 
-    data::location::SingleFile::sptr result
-        = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
 
     if (result)
     {
-        _sDefaultPath = result->getPath();
-        this->setFile( _sDefaultPath );
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath.parent_path()) );
+        this->setFile(result->getFile());
+        defautDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
     }
     else
     {

@@ -26,6 +26,7 @@
 #include <core/com/Signal.hxx>
 #include <core/com/Slot.hxx>
 #include <core/com/Slots.hxx>
+#include <core/location/SingleFile.hpp>
 #include <core/runtime/ConfigurationElement.hpp>
 #include <core/runtime/operations.hpp>
 #include <core/tools/Type.hpp>
@@ -33,7 +34,6 @@
 #include <data/Camera.hpp>
 #include <data/CameraSeries.hpp>
 #include <data/FrameTL.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/Matrix4.hpp>
 #include <data/mt/ObjectWriteLock.hpp>
 
@@ -712,13 +712,12 @@ void SScan::configureRecordingPath()
 
     dial.addFilter("Bag files", "*.bag");
 
-    data::location::SingleFile::sptr result
-        = data::location::SingleFile::dynamicCast( dial.show() );
+    auto result = core::location::SingleFile::dynamicCast(dial.show());
 
     // If filename is ok.
     if(result)
     {
-        m_recordingFileName = result->getPath().string();
+        m_recordingFileName = result->getFile().string();
     }
 }
 

@@ -25,10 +25,10 @@
 #include "modules/io/itk/JpgImageWriterService.hpp"
 
 #include <core/base.hpp>
+#include <core/location/SingleFolder.hpp>
 
 #include <data/Image.hpp>
 #include <data/ImageSeries.hpp>
-#include <data/location/Folder.hpp>
 
 #include <io/base/service/IWriter.hpp>
 
@@ -79,22 +79,23 @@ void SJpgImageSeriesWriter::configureWithIHM()
 
 void SJpgImageSeriesWriter::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialog;
     dialog.setTitle(m_windowTitle.empty() ? "Choose a directory to save image" : m_windowTitle);
-    dialog.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialog.setDefaultLocation(defautDirectory);
     dialog.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialog.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
-    data::location::Folder::sptr result;
+    core::location::SingleFolder::sptr result;
 
-    while (result = data::location::Folder::dynamicCast( dialog.show() ))
+    while(result = core::location::SingleFolder::dynamicCast(dialog.show()))
     {
-        if( std::filesystem::is_empty(result->getFolder()) )
+        if(std::filesystem::is_empty(result->getFolder()))
         {
             break;
         }
+
         // message box
         sight::ui::base::dialog::MessageDialog messageBox;
         messageBox.setTitle("Overwrite confirmation");
@@ -108,11 +109,11 @@ void SJpgImageSeriesWriter::openLocationDialog()
         }
     }
 
-    if (result)
+    if(result)
     {
-        _sDefaultPath = result->getFolder().parent_path();
-        dialog.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
         this->setFolder(result->getFolder());
+        defautDirectory->setFolder(result->getFolder().parent_path());
+        dialog.saveDefaultLocation(defautDirectory);
     }
     else
     {

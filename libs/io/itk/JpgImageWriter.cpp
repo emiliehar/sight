@@ -52,8 +52,7 @@ namespace sight::io::itk
 
 //------------------------------------------------------------------------------
 
-JpgImageWriter::JpgImageWriter(io::base::writer::IObjectWriter::Key key) :
-    data::location::enableFolder< io::base::writer::IObjectWriter >(this)
+JpgImageWriter::JpgImageWriter(io::base::writer::IObjectWriter::Key key)
 {
 }
 
@@ -74,7 +73,7 @@ struct JpgITKSaverFunctor
     }
     struct Parameter
     {
-        std::string m_filename;
+        std::string m_directoryPath;
         data::Image::csptr m_dataImage;
         io::itk::JpgImageWriter::sptr m_fwWriter;
     };
@@ -107,7 +106,7 @@ struct JpgITKSaverFunctor
         // set observation (*2*)
         ::itk::LightProcessObject::Pointer castHelper = (::itk::LightProcessObject*)(imageIOWrite.GetPointer());
         assert( castHelper.IsNotNull() );
-        Progressor progress(castHelper, param.m_fwWriter, param.m_filename);
+        Progressor progress(castHelper, param.m_fwWriter, param.m_directoryPath);
 
         // create itk Image
         typename itkImageType::Pointer itkImage = io::itk::itkImageFactory<itkImageType>( image );
@@ -149,7 +148,7 @@ struct JpgITKSaverFunctor
 
         NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
 
-        std::string format = param.m_filename;
+        std::string format = param.m_directoryPath;
         format += "/%04d.jpg";
         nameGenerator->SetSeriesFormat( format.c_str() );
         nameGenerator->SetStartIndex( 1 );
@@ -173,9 +172,9 @@ void JpgImageWriter::write()
     assert( m_object.lock() );
 
     JpgITKSaverFunctor::Parameter saverParam;
-    saverParam.m_filename  = this->getFolder().string();
-    saverParam.m_dataImage = this->getConcreteObject();
-    saverParam.m_fwWriter  = this->getSptr();
+    saverParam.m_directoryPath = this->getFolder().string();
+    saverParam.m_dataImage     = this->getConcreteObject();
+    saverParam.m_fwWriter      = this->getSptr();
     assert( saverParam.m_dataImage );
 
     core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, JpgITKSaverFunctor >::invoke(

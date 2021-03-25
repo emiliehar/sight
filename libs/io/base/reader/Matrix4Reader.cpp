@@ -24,8 +24,6 @@
 
 #include "io/base/reader/registry/macros.hpp"
 
-#include <data/location/SingleFile.hpp>
-
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -37,8 +35,7 @@ namespace sight::io::base
 namespace reader
 {
 
-Matrix4Reader::Matrix4Reader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< IObjectReader >(this)
+Matrix4Reader::Matrix4Reader(io::base::reader::IObjectReader::Key)
 {
 }
 
@@ -52,9 +49,7 @@ Matrix4Reader::~Matrix4Reader()
 
 void Matrix4Reader::read()
 {
-    assert( ::std::dynamic_pointer_cast< data::location::SingleFile >(m_location) );
-    std::filesystem::path file =
-        ::std::dynamic_pointer_cast< data::location::SingleFile >(m_location)->getPath();
+    std::filesystem::path file = this->getFile();
 
     assert( std::filesystem::exists(file) );
 

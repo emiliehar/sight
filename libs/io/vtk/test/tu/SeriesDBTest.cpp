@@ -73,7 +73,7 @@ void SeriesDBTest::testImportSeriesDB()
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + imagePath.string(), std::filesystem::exists(imagePath));
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + meshPath.string(), std::filesystem::exists(meshPath));
 
-    data::location::ILocation::VectPathType paths;
+    std::vector<std::filesystem::path> paths;
     paths.push_back(imagePath);
     paths.push_back(meshPath);
     paths.push_back(meshPath);
@@ -148,7 +148,7 @@ void SeriesDBTest::testLazyImportSeriesDB()
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + imagePath.string(), std::filesystem::exists(imagePath));
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + meshPath.string(), std::filesystem::exists(meshPath));
 
-    data::location::ILocation::VectPathType paths;
+    std::vector<std::filesystem::path> paths;
     paths.push_back(imagePath);
     paths.push_back(meshPath);
 

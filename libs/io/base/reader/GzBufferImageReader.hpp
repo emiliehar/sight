@@ -25,8 +25,9 @@
 #include "io/base/config.hpp"
 #include "io/base/reader/GenericObjectReader.hpp"
 
+#include <core/location/SingleFile.hpp>
+
 #include <data/Image.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <filesystem>
 
@@ -44,7 +45,7 @@ namespace reader
  * is .raw.gz. This format is basic. The buffer is writen in a file with zlib.
  */
 class IO_BASE_CLASS_API GzBufferImageReader :  public GenericObjectReader< data::Image >,
-                                               public data::location::enableSingleFile< IObjectReader >
+                                               public core::location::SingleFile
 {
 
 public:

@@ -30,8 +30,6 @@
 #include <core/jobs/IJob.hpp>
 #include <core/tools/Object.hpp>
 
-#include <data/location/ILocation.hpp>
-
 #include <cstdint>
 #include <filesystem>
 
@@ -87,19 +85,6 @@ public:
     IO_BASE_API virtual void write() = 0;
 
     /**
-     * @brief m_location setter.
-     * @param[in] location set location where object will be saved
-     */
-    IO_BASE_API virtual void setLocation( const data::location::ILocation::sptr location );
-
-    /**
-     * @brief m_location getter.
-     *
-     * @return m_location
-     */
-    IO_BASE_API virtual data::location::ILocation::sptr getLocation();
-
-    /**
      * @brief m_object setter.
      * @param[in] _pObject replace m_object of the instance writer
      * @note m_object is save in class with a weakptr
@@ -148,9 +133,6 @@ protected:
      * This object is given in parameter of setObject method but it is conserved with a weakptr.
      */
     core::tools::Object::cwptr m_object;
-
-    /// Object location ( file path, directory path, url, etc )
-    data::location::ILocation::sptr m_location;
 
     /// Extension of file format
     std::string m_extension;

@@ -45,7 +45,6 @@ namespace helper
 //------------------------------------------------------------------------------
 
 DicomSeriesWriter::DicomSeriesWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableFolder< io::base::writer::IObjectWriter >(this),
     m_writeCount(0),
     m_job(core::jobs::Observer::New("Writing DICOM files"))
 {

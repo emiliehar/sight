@@ -87,9 +87,7 @@ void DicomSeriesAnonymizer::anonymize(const data::DicomSeries::sptr& source,
 
     // Write DicomSeries (Copy files)
     m_writer->setObject(source);
-    data::location::Folder::sptr loc = data::location::Folder::New();
-    loc->setFolder(destPath);
-    m_writer->setLocation(loc);
+    m_writer->setFolder(destPath);
     m_writer->write();
 
     if(m_job->cancelRequested())

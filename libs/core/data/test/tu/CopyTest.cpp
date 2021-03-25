@@ -34,9 +34,6 @@
 #include <data/Integer.hpp>
 #include <data/Line.hpp>
 #include <data/List.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/MultiFiles.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/Material.hpp>
 #include <data/Matrix4.hpp>
 #include <data/Mesh.hpp>
@@ -97,8 +94,6 @@ void CopyTest::fieldCopyTest()
     __FWDATA_UT_FIELD_COPY_MACRO(data::Integer);
     __FWDATA_UT_FIELD_COPY_MACRO(data::Line);
     __FWDATA_UT_FIELD_COPY_MACRO(data::List);
-    __FWDATA_UT_FIELD_COPY_MACRO(data::location::Folder);
-    __FWDATA_UT_FIELD_COPY_MACRO(data::location::SingleFile);
     __FWDATA_UT_FIELD_COPY_MACRO(data::Material);
     __FWDATA_UT_FIELD_COPY_MACRO(data::Mesh);
     __FWDATA_UT_FIELD_COPY_MACRO(data::Plane);

@@ -25,7 +25,6 @@
 #include "io/base/reader/registry/macros.hpp"
 
 #include <data/Image.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <zlib.h>
 
@@ -41,10 +40,7 @@ namespace reader
 
 //------------------------------------------------------------------------------
 
-GzBufferImageReader::GzBufferImageReader(io::base::reader::IObjectReader::Key) :
-    data::location::
-    enableSingleFile< IObjectReader >(
-        this)
+GzBufferImageReader::GzBufferImageReader(io::base::reader::IObjectReader::Key)
 {
 }
 
@@ -58,8 +54,7 @@ GzBufferImageReader::~GzBufferImageReader()
 
 void GzBufferImageReader::read()
 {
-    assert( data::location::SingleFile::dynamicCast(m_location) );
-    std::filesystem::path file = data::location::SingleFile::dynamicCast(m_location)->getPath();
+    std::filesystem::path file = this->getFile();
 
     assert( file.empty() == false );
 

@@ -27,7 +27,6 @@
 
 #include <data/Image.hpp>
 #include <data/ImageSeries.hpp>
-#include <data/location/ILocation.hpp>
 #include <data/Mesh.hpp>
 #include <data/ModelSeries.hpp>
 #include <data/Reconstruction.hpp>

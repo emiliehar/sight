@@ -48,9 +48,7 @@ namespace sight::io::itk
 
 //------------------------------------------------------------------------------
 
-ImageReader::ImageReader(io::base::reader::IObjectReader::Key )  :
-    data::location::enableSingleFile<
-        IObjectReader >(this)
+ImageReader::ImageReader(io::base::reader::IObjectReader::Key )
 {
 }
 

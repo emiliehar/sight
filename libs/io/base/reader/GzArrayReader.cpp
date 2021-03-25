@@ -38,8 +38,7 @@ namespace reader
 
 //------------------------------------------------------------------------------
 
-GzArrayReader::GzArrayReader(io::base::reader::IObjectReader::Key) :
-    data::location::enableSingleFile< IObjectReader >(this)
+GzArrayReader::GzArrayReader(io::base::reader::IObjectReader::Key)
 {
 }
 
@@ -53,8 +52,7 @@ GzArrayReader::~GzArrayReader()
 
 void GzArrayReader::read()
 {
-    assert( data::location::SingleFile::dynamicCast(m_location) );
-    std::filesystem::path file = data::location::SingleFile::dynamicCast(m_location)->getPath();
+    std::filesystem::path file = this->getFile();
 
     assert( file.empty() == false );
 

@@ -25,11 +25,11 @@
 #include "io/dicom/config.hpp"
 #include "io/dicom/exception/Failed.hpp"
 
+#include <core/location/MultipleFiles.hpp>
+#include <core/location/SingleFolder.hpp>
 #include <core/log/Logger.hpp>
 
 #include <data/DicomSeries.hpp>
-#include <data/location/Folder.hpp>
-#include <data/location/MultiFiles.hpp>
 #include <data/SeriesDB.hpp>
 
 #include <io/base/reader/GenericObjectReader.hpp>
@@ -52,9 +52,9 @@ namespace reader
 /**
  * @brief This class adds patient(s) from DICOM file(s) to data::SeriesDB.
  */
-class IO_DICOM_CLASS_API SeriesDB : public io::base::reader::GenericObjectReader< data::SeriesDB >,
-                                    public data::location::enableFolder< io::base::reader::IObjectReader >,
-                                    public data::location::enableMultiFiles< io::base::reader::IObjectReader >,
+class IO_DICOM_CLASS_API SeriesDB : public base::reader::GenericObjectReader< data::SeriesDB >,
+                                    public core::location::SingleFolder,
+                                    public core::location::MultipleFiles,
                                     public core::com::HasSignals
 {
 

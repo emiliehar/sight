@@ -1,7 +1,6 @@
 /************************************************************************
  *
- * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2021 IRCAD France
  *
  * This file is part of Sight.
  *
@@ -20,17 +19,18 @@
  *
  ***********************************************************************/
 
-#define CAMP_COMPILATION
+#include "SessionReader.hpp"
 
-#include "data/location/SingleFile.hpp"
-
-#include <core/reflection/UserObject.hpp>
-
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(location)(SingleFile))
+namespace sight::io::base
 {
-    builder.base< sight::data::Object>()
-    .tag("object_version", "1")
-    .tag("lib_name", "::sight::data")
-    .property("path", &sight::data::location::SingleFile::m_path)
-    ;
+namespace reader
+{
+
+//------------------------------------------------------------------------------
+
+void SessionReader::read()
+{
 }
+
+} // namespace reader
+} // namespace sight::io::base

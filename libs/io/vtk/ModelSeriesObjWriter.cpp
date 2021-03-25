@@ -54,7 +54,6 @@ namespace sight::io::vtk
 //------------------------------------------------------------------------------
 
 ModelSeriesObjWriter::ModelSeriesObjWriter(io::base::writer::IObjectWriter::Key) :
-    data::location::enableFolder< io::base::writer::IObjectWriter >(this),
     m_job(core::jobs::Observer::New("ModelSeries Writer"))
 {
 }

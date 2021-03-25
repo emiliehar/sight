@@ -24,9 +24,9 @@
 
 #include <core/base.hpp>
 #include <core/com/Signal.hxx>
+#include <core/location/SingleFile.hpp>
+#include <core/location/SingleFolder.hpp>
 
-#include <data/location/Folder.hpp>
-#include <data/location/SingleFile.hpp>
 #include <data/Matrix4.hpp>
 
 #include <io/base/reader/Matrix4Reader.hpp>
@@ -93,21 +93,20 @@ void Matrix4ReaderService::configureWithIHM()
 
 void Matrix4ReaderService::openLocationDialog()
 {
-    static std::filesystem::path _sDefaultPath;
+    static auto defautDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a file to load a transformation matrix" : m_windowTitle);
-    dialogFile.setDefaultLocation( data::location::Folder::New(_sDefaultPath) );
+    dialogFile.setDefaultLocation(defautDirectory);
     dialogFile.addFilter("TRF files", "*.trf");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
 
-    data::location::SingleFile::sptr result;
-    result = data::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        _sDefaultPath = result->getPath().parent_path();
-        dialogFile.saveDefaultLocation( data::location::Folder::New(_sDefaultPath) );
-        this->setFile(result->getPath());
+        defautDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defautDirectory);
+        this->setFile(result->getFile());
     }
     else
     {

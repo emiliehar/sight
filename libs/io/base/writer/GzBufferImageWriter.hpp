@@ -25,8 +25,9 @@
 #include "io/base/config.hpp"
 #include "io/base/writer/GenericObjectWriter.hpp"
 
+#include <core/location/SingleFile.hpp>
+
 #include <data/Image.hpp>
-#include <data/location/SingleFile.hpp>
 
 #include <filesystem>
 
@@ -43,9 +44,8 @@ namespace writer
  * Ircad writer to write a data::Image on filesystem which the file format
  * is .raw.gz. This format is basic. The buffer is writen in a file with zlib.
  */
-class IO_BASE_CLASS_API GzBufferImageWriter :  public GenericObjectWriter< data::Image >,
-                                               public data::location::enableSingleFile< io::base::writer::
-                                                                                        IObjectWriter >
+class IO_BASE_CLASS_API GzBufferImageWriter : public GenericObjectWriter< data::Image >,
+                                              public core::location::SingleFile
 {
 
 public:

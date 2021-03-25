@@ -68,7 +68,7 @@ void SReconstruction::configuring()
 
     this->setTransformId(config.get<std::string>(sight::viz::scene3d::ITransformable::s_TRANSFORM_CONFIG,
                                                  this->getID() + "_transform"));
-    m_autoResetCamera = config.get<std::string>(s_AUTORESET_CAMERA_CONFIG, "yes") == "yes";
+    m_autoResetCamera = config.get<bool>(s_AUTORESET_CAMERA_CONFIG, true);
 
     const std::string hexaMask = config.get<std::string>(s_QUERY_CONFIG, "");
     if(!hexaMask.empty())

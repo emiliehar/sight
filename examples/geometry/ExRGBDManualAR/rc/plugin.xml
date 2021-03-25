@@ -303,7 +303,7 @@
 
             <service uid="meshOffscreenAdp" type="sight::module::viz::scene3d::adaptor::SMesh" autoConnect="true" >
                 <in key="mesh" uid="skinMesh" />
-                <config layer="default" autoresetcamera="no" shadingMode="ambient" />
+                <config layer="default" autoresetcamera="false" shadingMode="ambient" />
             </service>
 
             <service uid="cameraOffscreenAdp" type="sight::module::viz::scene3d::adaptor::SCamera" autoConnect="true" >

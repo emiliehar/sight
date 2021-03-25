@@ -326,7 +326,7 @@
 
             <service uid="DMPointAdp" type="sight::module::viz::scene3d::adaptor::SPointList"  autoConnect="true" >
                 <in key="mesh" uid="pointcloud" />
-                <config layer="AR" autoresetcamera="no" radius="1" visible="false" />
+                <config layer="AR" autoresetcamera="false" radius="1" visible="false" />
             </service>
 
             <service uid="DMCameraAdp" type="sight::module::viz::scene3d::adaptor::SCamera" >
@@ -357,7 +357,7 @@
 
             <service uid="VPointAdp" type="sight::module::viz::scene3d::adaptor::SPointList"  autoConnect="true" >
                 <in key="mesh" uid="pointcloud" />
-                <config layer="AR" autoresetcamera="no" radius="1" visible="false" />
+                <config layer="AR" autoresetcamera="false" radius="1" visible="false" />
             </service>
 
             <service uid="VCameraAdp" type="sight::module::viz::scene3d::adaptor::SCamera" >
@@ -380,7 +380,7 @@
 
             <service uid="RPointAdp" type="sight::module::viz::scene3d::adaptor::SPointList"  autoConnect="true" >
                 <in key="mesh" uid="pointcloud" />
-                <config layer="default" autoresetcamera="no" radius="1" />
+                <config layer="default" autoresetcamera="false" radius="1" />
             </service>
 
             <service uid="RCameraAdp" type="sight::module::viz::scene3d::adaptor::SCamera" >

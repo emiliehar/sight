@@ -272,7 +272,7 @@
             <inout key="image" uid="extrudedImage" autoConnect="true" />
             <inout key="tf" uid="${volumeTF}" />
             <inout key="clippingMatrix" uid="clippingMatrix" autoConnect="true" />
-            <config layer="defaultLayer" widgets="no" preintegration="no" autoresetcamera="no" samples="1024" />
+            <config layer="defaultLayer" widgets="false" preintegration="false" autoresetcamera="false" samples="1024" />
         </service>
 
         <service uid="3DNegatoAdp" type="sight::module::viz::scene3d::adaptor::SNegato3D" >

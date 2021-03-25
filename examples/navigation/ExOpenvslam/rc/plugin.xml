@@ -340,7 +340,7 @@
 
             <service uid="pointCloudAdp" type="sight::module::viz::scene3d::adaptor::SPointList" autoConnect="true" >
                 <in key="mesh" uid="openvslamPointCloud" />
-                <config layer="default" autoresetcamera="no" color="#ffffffff" radius="3.0f" textureName="circle.dds" />
+                <config layer="default" autoresetcamera="false" color="#ffffffff" radius="3.0f" textureName="circle.dds" />
             </service>
 
             <service uid="transformAdp" type="sight::module::viz::scene3d::adaptor::STransform" autoConnect="true" >

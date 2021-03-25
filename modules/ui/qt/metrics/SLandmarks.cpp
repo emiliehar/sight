@@ -122,11 +122,7 @@ void SLandmarks::configuring()
         "'opacity' value must be a number between 0.0 and 1.0 (current value: " << m_defaultLandmarkOpacity << ")",
             m_defaultLandmarkOpacity < 0.f || m_defaultLandmarkOpacity > 1.f);
 
-    const std::string advancedMode = config.get<std::string>(s_ADVANCED_CONFIG, "no");
-    SIGHT_FATAL_IF("'advanced' value must be 'yes' or 'no', here : '" + advancedMode + "'.",
-                   advancedMode != "yes" && advancedMode != "no");
-
-    m_advancedMode = (advancedMode == "yes");
+    m_advancedMode = config.get<bool>(s_ADVANCED_CONFIG, false);
 
     m_text = config.get<std::string>(s_TEXT_CONFIG, m_text);
 }

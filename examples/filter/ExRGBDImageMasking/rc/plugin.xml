@@ -285,7 +285,7 @@
 
             <service uid="meshOffscreenAdp" type="sight::module::viz::scene3d::adaptor::SMesh" autoConnect="true" >
                 <inout key="mesh" uid="mesh" shadingMode="ambient" />
-                <config layer="default" transform="id" autoresetcamera="no" />
+                <config layer="default" transform="id" autoresetcamera="false" />
             </service>
 
             <!-- ******************************* Services ***************************************** -->

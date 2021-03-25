@@ -301,7 +301,7 @@
             <!-- Cube displayed on top of the marker plane -->
             <service uid="cubeAdp" type="sight::module::viz::scene3d::adaptor::SMesh" autoConnect="true" >
                 <inout key="mesh" uid="cubeMesh" />
-                <config layer="default" autoresetcamera="no" />
+                <config layer="default" autoresetcamera="false" />
             </service>
 
             <service uid="distortAdp" type="sight::module::viz::scene3d::adaptor::SCompositorParameter" autoConnect="true" >
@@ -442,7 +442,7 @@
                     <!-- list of tag's id -->
                     <marker id="101" />
                 </track>
-                <debugMarkers>yes</debugMarkers>
+                <debugMarkers>true</debugMarkers>
             </service>
 
             <!-- Computes the pose of the camera with tag(s) detected by aruco -->

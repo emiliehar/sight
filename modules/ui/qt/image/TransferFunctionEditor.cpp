@@ -94,11 +94,10 @@ void TransferFunctionEditor::configuring()
             const auto path = core::runtime::getModuleResourceFilePath(itCfg->second.get_value<std::string>());
             m_paths.push_back(path);
         }
+        
+        const bool value = config.get<bool>("<xmlattr>.useDefaultPath", true);
 
-        const std::string value = config.get("<xmlattr>.useDefaultPath", "yes");
-        SIGHT_FATAL_IF("'useDefaultPath' value must be 'yes' or 'no'", value != "yes" && value != "no");
-
-        useDefaultPath = (value == "yes");
+        useDefaultPath = value;
     }
     if (useDefaultPath)
     {

@@ -465,7 +465,7 @@
                     <!-- list of id -->
                     <marker id="101" />
                 </track>
-                <debugMarkers>yes</debugMarkers>
+                <debugMarkers>true</debugMarkers>
             </service>
 
             <service uid="arucoTracker2Srv" type="sight::module::navigation::optics::SArucoTracker" worker="tracking2" >
@@ -479,7 +479,7 @@
                     <!-- list of id -->
                     <marker id="101" />
                 </track>
-                <debugMarkers>yes</debugMarkers>
+                <debugMarkers>true</debugMarkers>
             </service>
 
             <!-- This will compute the pose of the camera with tag(s) detected by aruco -->

@@ -58,7 +58,7 @@ Example:
             <inout key="tfPool" uid="TFSet" autoConnect="true"/>
             <in key="currentTF" uid="${transferFunctionOutput}" optional="true"/>
             <out key="tf" uid="${transferFunctionOutput}" />
-            <config useDefaultPath="no">
+            <config useDefaultPath="false">
                 <path>${TFPath}</path>
             </config>
         </service>

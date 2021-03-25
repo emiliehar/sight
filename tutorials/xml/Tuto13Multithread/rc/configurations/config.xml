@@ -108,12 +108,12 @@
 
         <!-- Visualization service for the first window. -->
         <service uid="rendering1Srv" type="sight::module::viz::sample::SMesh" autoConnect="true" >
-            <in key="mesh" uid="mesh" autoresetcamera="no" />
+            <in key="mesh" uid="mesh" autoresetcamera="false" />
         </service>
 
         <!-- Visualization service for the second window -->
         <service uid="rendering2Srv" type="sight::module::viz::sample::SMesh" autoConnect="true" >
-            <in key="mesh" uid="mesh" autoresetcamera="no" />
+            <in key="mesh" uid="mesh" autoresetcamera="false" />
         </service>
 
         <!--

@@ -224,7 +224,7 @@
                 <track>
                     <marker id="0,1,2,3,4,5,6,7,8,42,100,101,102,103,104,105" />
                 </track>
-                <debugMarkers>yes</debugMarkers>
+                <debugMarkers>true</debugMarkers>
             </service>
 
             <!-- ******************************* Connections ***************************************** -->

@@ -73,7 +73,7 @@ protected:
 
 private:
 
-    /// The filesystem vector
+    /// The filesystem path to the target file
     std::filesystem::path m_file;
 };
 

@@ -84,19 +84,19 @@ void Matrix4WriterService::configureWithIHM()
 
 void Matrix4WriterService::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a file to save a transformation matrix" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("TRF files", "*.trf");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
         this->setFile(result->getFile());
     }
     else

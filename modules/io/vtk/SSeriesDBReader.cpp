@@ -73,10 +73,10 @@ void SSeriesDBReader::configureWithIHM()
 
 void SSeriesDBReader::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setType(ui::base::dialog::ILocationDialog::MULTI_FILES);
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose vtk files to load Series" : m_windowTitle);
     dialogFile.addFilter("All supported files", "*.vtk *.vtp *.vti *.mhd *.vtu *.obj *.ply *.stl");
@@ -97,8 +97,8 @@ void SSeriesDBReader::openLocationDialog()
         const std::vector<std::filesystem::path> paths = result->getFiles();
         if(!paths.empty())
         {
-            defautDirectory->setFolder(paths[0].parent_path());
-            dialogFile.saveDefaultLocation(defautDirectory);
+            defaultDirectory->setFolder(paths[0].parent_path());
+            dialogFile.saveDefaultLocation(defaultDirectory);
         }
         this->setFiles(paths);
     }

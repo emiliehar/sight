@@ -83,11 +83,11 @@ bool SOpenCVReader::defineLocationGUI()
     bool ok = false;
 
     // Ask user for the file path
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(ui::base::dialog::ILocationDialog::SINGLE_FILE);
     dialogFile.addFilter("XML or YAML file", "*.xml *.yml *.yaml");
@@ -97,8 +97,8 @@ bool SOpenCVReader::defineLocationGUI()
     if (result)
     {
         this->setFile(result->getFile());
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
         ok = true;
     }
     else

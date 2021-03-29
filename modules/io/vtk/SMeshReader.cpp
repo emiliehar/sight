@@ -76,11 +76,11 @@ void SMeshReader::configureWithIHM()
 
 void SMeshReader::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a vtk file to load Mesh" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("All supported files", "*.vtk *.vtp *.obj *.ply *.stl");
     dialogFile.addFilter("OBJ File(.obj)", "*.obj");
     dialogFile.addFilter("PLY File(.ply)", "*.ply");
@@ -93,8 +93,8 @@ void SMeshReader::openLocationDialog()
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
         this->setFile(result->getFile());
     }
     else

@@ -72,20 +72,20 @@ void SDicomSeriesWriter::configureWithIHM()
 
 void SDicomSeriesWriter::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a directory for DICOM images" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        defautDirectory->setFolder(result->getFolder());
+        defaultDirectory->setFolder(result->getFolder());
         this->setFolder(result->getFolder());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
     else
     {

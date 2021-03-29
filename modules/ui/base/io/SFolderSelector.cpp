@@ -67,10 +67,10 @@ void SFolderSelector::starting()
 
 void SFolderSelector::updating( )
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_dialogTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::FOLDER);
 

@@ -459,11 +459,11 @@ void SReader::configureWithIHM()
 
 void SReader::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setType(ui::base::dialog::ILocationDialog::SINGLE_FILE);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setOption(ui::base::dialog::LocationDialog::FILE_MUST_EXIST);
@@ -480,8 +480,8 @@ void SReader::openLocationDialog()
     if (result)
     {
         this->setFile(result->getFile());
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
     else
     {

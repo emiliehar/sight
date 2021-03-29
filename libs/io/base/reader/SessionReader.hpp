@@ -42,16 +42,18 @@ public:
     SIGHT_DECLARE_CLASS(SessionReader, IObjectReader, factory::New< SessionReader >)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
-    /// Default constructors, destructor and assignment operators
+    /// Delete default constructors and assignment operators
     SessionReader()                                = delete;
     SessionReader(const SessionReader&)            = delete;
     SessionReader(SessionReader&&)                 = delete;
     SessionReader& operator=(const SessionReader&) = delete;
     SessionReader& operator=(SessionReader&&)      = delete;
-    IO_BASE_API ~SessionReader() override          = default;
+
+    /// Use default destructor
+    IO_BASE_API ~SessionReader() override = default;
 
     /// Constructor. Do nothing.
-    SessionReader(IObjectReader::Key key)
+    inline SessionReader(IObjectReader::Key key)
     {
     }
 
@@ -59,7 +61,7 @@ public:
     IO_BASE_API void read() override;
 
     /// Defines extension supported by this reader ".sight"
-    std::string extension() override
+    inline std::string extension() override
     {
         return ".sight";
     }

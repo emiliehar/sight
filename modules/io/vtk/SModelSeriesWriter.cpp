@@ -81,11 +81,11 @@ void SModelSeriesWriter::configureWithIHM()
 
 void SModelSeriesWriter::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialog;
     dialog.setTitle(m_windowTitle.empty() ? "Choose a directory to save meshes" : m_windowTitle);
-    dialog.setDefaultLocation(defautDirectory);
+    dialog.setDefaultLocation(defaultDirectory);
     dialog.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialog.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
@@ -113,8 +113,8 @@ void SModelSeriesWriter::openLocationDialog()
     if (result)
     {
         this->setFolder(result->getFolder());
-        defautDirectory->setFolder(result->getFolder().parent_path());
-        dialog.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFolder().parent_path());
+        dialog.saveDefaultLocation(defaultDirectory);
 
         if(m_selectedExtension.empty())
         {

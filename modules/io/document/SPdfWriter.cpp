@@ -97,11 +97,11 @@ void SPdfWriter::configureWithIHM()
 
 void SPdfWriter::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose an external data file" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("pdf", "*.pdf");
 
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
@@ -109,8 +109,8 @@ void SPdfWriter::openLocationDialog()
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
         this->setFile(result->getFile());
     }
     else

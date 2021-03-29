@@ -77,11 +77,11 @@ void JpgImageWriterService::configureWithIHM()
 
 void JpgImageWriterService::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a directory to save image" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
@@ -89,8 +89,8 @@ void JpgImageWriterService::openLocationDialog()
     if (result)
     {
         this->setFolder(result->getFolder());
-        defautDirectory = result;
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory = result;
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
     else
     {

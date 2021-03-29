@@ -576,13 +576,13 @@ void SWriter::configureWithIHM()
 
 void SWriter::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     if( !m_useAtomsPatcher || versionSelection() )
     {
         sight::ui::base::dialog::LocationDialog dialogFile;
         dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);
-        dialogFile.setDefaultLocation(defautDirectory);
+        dialogFile.setDefaultLocation(defaultDirectory);
         dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
         dialogFile.setType(ui::base::dialog::LocationDialog::SINGLE_FILE);
 
@@ -597,8 +597,8 @@ void SWriter::openLocationDialog()
         {
             this->setFile(result->getFile());
             m_selectedExtension = dialogFile.getCurrentSelection();
-            defautDirectory->setFolder(result->getFile().parent_path());
-            dialogFile.saveDefaultLocation(defautDirectory);
+            defaultDirectory->setFolder(result->getFile().parent_path());
+            dialogFile.saveDefaultLocation(defaultDirectory);
         }
         else
         {

@@ -379,20 +379,20 @@ void SPreferencesConfiguration::stopping()
 
 void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select Storage directory");
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::FOLDER);
 
     const auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
     if (result)
     {
-        defautDirectory->setFolder(result->getFolder());
+        defaultDirectory->setFolder(result->getFolder());
         lineEdit->setText( QString::fromStdString(result->getFolder().string()) );
-        dialogFile.saveDefaultLocation(defautDirectory);
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
 }
 
@@ -400,20 +400,20 @@ void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 
 void SPreferencesConfiguration::onSelectFile(QPointer<QLineEdit> lineEdit)
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select File");
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::SINGLE_FILE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
     if (result)
     {
-        defautDirectory->setFolder(result->getFile().parent_path());
+        defaultDirectory->setFolder(result->getFile().parent_path());
         lineEdit->setText(QString::fromStdString(result->getFile().string()));
-        dialogFile.saveDefaultLocation(defautDirectory);
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
 }
 

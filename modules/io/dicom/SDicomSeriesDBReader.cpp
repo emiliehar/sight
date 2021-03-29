@@ -114,11 +114,11 @@ void SDicomSeriesDBReader::configureWithIHM()
 
 void SDicomSeriesDBReader::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? this->getSelectorDialogTitle() : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
@@ -126,8 +126,8 @@ void SDicomSeriesDBReader::openLocationDialog()
     if (result)
     {
         this->setFolder(result->getFolder());
-        defautDirectory->setFolder(result->getFolder());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFolder());
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
 }
 

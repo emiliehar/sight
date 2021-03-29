@@ -96,10 +96,10 @@ void SVideoWriter::configureWithIHM()
 
 void SVideoWriter::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose an file to save the video" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("mp4", "*.mp4");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
@@ -107,8 +107,8 @@ void SVideoWriter::openLocationDialog()
     if(result)
     {
         m_selectedExtension = dialogFile.getCurrentSelection();
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
         this->setFile(result->getFile());
     }
     else

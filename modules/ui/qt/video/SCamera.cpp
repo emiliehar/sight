@@ -208,10 +208,10 @@ void SCamera::onChooseFile()
     // Check preferences
     const std::filesystem::path videoDirPreferencePath(sight::ui::base::preferences::getVideoDir());
 
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("All files", "*.*");
     dialogFile.addFilter("videos", "*.avi *.m4v *.mkv *.mp4 *.ogv");
     dialogFile.addFilter("images", "*.bmp *.jpeg *.jpg *.png *.tiff");
@@ -290,8 +290,8 @@ void SCamera::onChooseFile()
             auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
             if (result)
             {
-                defautDirectory->setFolder(result->getFile().parent_path());
-                dialogFile.saveDefaultLocation(defautDirectory);
+                defaultDirectory->setFolder(result->getFile().parent_path());
+                dialogFile.saveDefaultLocation(defaultDirectory);
                 videoPath = result->getFile();
             }
         }

@@ -82,7 +82,7 @@ void SImageReader::configureWithIHM()
 
 void SImageReader::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
 
     /* Initialize the available extensions for BitmapImageReader */
     std::vector<std::string> ext;
@@ -100,7 +100,7 @@ void SImageReader::openLocationDialog()
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a file to load an image" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.addFilter("Vtk", "*.vtk");
     dialogFile.addFilter("Vti", "*.vti");
     dialogFile.addFilter("MetaImage", "*.mhd");
@@ -112,8 +112,8 @@ void SImageReader::openLocationDialog()
     if (result)
     {
         this->setFile(result->getFile());
-        defautDirectory->setFolder(result->getFile().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFile().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
     else
     {

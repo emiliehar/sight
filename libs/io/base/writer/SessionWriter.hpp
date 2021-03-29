@@ -51,7 +51,7 @@ public:
     IO_BASE_API ~SessionWriter() override          = default;
 
     /// Constructor. Do nothing.
-    SessionWriter(io::base::writer::IObjectWriter::Key key)
+    inline SessionWriter(io::base::writer::IObjectWriter::Key key)
     {
     }
 
@@ -59,7 +59,7 @@ public:
     IO_BASE_API void write() override;
 
     /// Defines extension supported by this writer ".sight"
-    std::string extension() override
+    inline std::string extension() override
     {
         return ".sight";
     }

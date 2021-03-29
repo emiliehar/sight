@@ -111,10 +111,10 @@ void SFrameWriter::configureWithIHM()
 
 void SFrameWriter::openLocationDialog()
 {
-    static auto defautDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = core::location::SingleFolder::New();
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a folder to save the frames" : m_windowTitle);
-    dialogFile.setDefaultLocation(defautDirectory);
+    dialogFile.setDefaultLocation(defaultDirectory);
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
     dialogFile.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
@@ -122,8 +122,8 @@ void SFrameWriter::openLocationDialog()
     if (result)
     {
         this->setFolder(result->getFolder());
-        defautDirectory->setFolder(result->getFolder().parent_path());
-        dialogFile.saveDefaultLocation(defautDirectory);
+        defaultDirectory->setFolder(result->getFolder().parent_path());
+        dialogFile.saveDefaultLocation(defaultDirectory);
     }
     else
     {

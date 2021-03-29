@@ -65,7 +65,7 @@ public:
     /**
      * @brief Create and set the default transfer function.
      *
-     * Create the image's transfer function pool if if does not exist and then create the defaut transfer function.
+     * Create the image's transfer function pool if if does not exist and then create the default transfer function.
      * Set the current transfer function to the default grey-level if no transfer function was set (using
      * setTransferFunction() ).
      */

@@ -111,7 +111,7 @@ protected:
     };
 
     /// XML Configuration tree
-    core::runtime::ConfigurationElement::csptr m_cfgElem;
+    boost::property_tree::ptree m_cfgElem;
 
     /// Running state of the app config manager
     ConfigState m_state;

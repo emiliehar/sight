@@ -50,7 +50,7 @@ const std::array< std::string, 3 > s_DATA_KEYWORDS = {{ "in", "out", "inout" }};
 
 //-----------------------------------------------------------------------------
 
-void Config::createConnections( const core::runtime::ConfigurationElement::csptr& connectionCfg,
+void Config::createConnections( const boost::property_tree::ptree& connectionCfg,
                                 core::com::helper::SigSlotConnection& connections,
                                 const CSPTR(core::tools::Object)& obj)
 {
@@ -75,7 +75,7 @@ void Config::createConnections( const core::runtime::ConfigurationElement::csptr
 
 //-----------------------------------------------------------------------------
 
-Config::ConnectionInfo Config::parseConnections( const core::runtime::ConfigurationElement::csptr& connectionCfg,
+Config::ConnectionInfo Config::parseConnections( const boost::property_tree::ptree& connectionCfg,
                                                  const CSPTR(core::tools::Object)& obj)
 {
     ConnectionInfo info;
@@ -83,26 +83,31 @@ Config::ConnectionInfo Config::parseConnections( const core::runtime::Configurat
     std::regex re("(.*)/(.*)");
     std::smatch match;
     std::string src, uid, key;
-
-    for(core::runtime::ConfigurationElement::csptr elem :   connectionCfg->getElements())
+    auto connectCfg = connectionCfg.equal_range("connect");
+      // Config
+    // std::string config = srvElem.get<std::string>("<xmlattr>.config", "");
+    // SIGHT_ASSERT(errMsgHead + "'config' attribute is empty.", !srvConfig.m_uid.empty());
+    connectionCfg.get<std::string>("<xmalattr>.config", "");
+    for (auto itCfg = connectCfg.first; itCfg != connectCfg.second; ++itCfg)
     {
-        src = elem->getValue();
+   
+     src = itCfg->first;
         if( std::regex_match(src, match, re) )
         {
             SIGHT_ASSERT("Wrong value for attribute src: "<<src, match.size() >= 3);
             uid.assign(match[1].first, match[1].second);
             key.assign(match[2].first, match[2].second);
 
-            SIGHT_ASSERT(src << " configuration is not correct for "<< elem->getName(),
-                         !uid.empty() && !key.empty());
+            // SIGHT_ASSERT(src << " configuration is not correct for "<< itCfg->second,
+            //              !uid.empty() && !key.empty());
 
-            if (elem->getName() == "signal")
+            if (itCfg->first == "signal")
             {
                 SIGHT_ASSERT("There must be only one signal by connection",
                              info.m_signal.first.empty() && info.m_signal.second.empty());
                 info.m_signal = std::make_pair(uid, key);
             }
-            else if (elem->getName() == "slot")
+            else if (itCfg->first == "slot")
             {
                 info.m_slots.push_back( std::make_pair(uid, key) );
             }
@@ -112,7 +117,7 @@ Config::ConnectionInfo Config::parseConnections( const core::runtime::Configurat
             SIGHT_ASSERT("Object uid is not defined, object used to retrieve signal must be present.", obj);
             uid = obj->getID();
             key = src;
-            SIGHT_ASSERT("Element must be a signal or must be written as <fwID/Key>", elem->getName() == "signal");
+            SIGHT_ASSERT("Element must be a signal or must be written as <fwID/Key>", itCfg->first == "signal");
             SIGHT_ASSERT("There must be only one signal by connection",
                          info.m_signal.first.empty() && info.m_signal.second.empty());
             info.m_signal = std::make_pair(uid, key);
@@ -125,7 +130,7 @@ Config::ConnectionInfo Config::parseConnections( const core::runtime::Configurat
 
 //-----------------------------------------------------------------------------
 
-ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationElement::csptr& connectionCfg,
+ProxyConnections Config::parseConnections2(const boost::property_tree::ptree& connectionCfg,
                                            const std::string& errMsgHead,
                                            std::function<std::string()> generateChannelNameFn)
 {
@@ -137,10 +142,13 @@ ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationEle
     std::string src, uid, key;
 
     std::string channel;
-    if(connectionCfg->hasAttribute("channel"))
-    {
-        channel = connectionCfg->getAttributeValue("channel");
+    if(!connectionCfg.get<std::string>("connect.<xmlattr>.channel","").empty())
+    {   
+        std::cout << "the connect has not found" << std::endl;
+        std::cout << connectionCfg.get<std::string>("connect.<xmlattr>.channel","")<< std::endl;
+        channel = connectionCfg.get<std::string>("connect.<xmlattr>.channel","");
         SIGHT_ASSERT(errMsgHead + "Empty 'channel' attribute", !channel.empty());
+    
     }
     else
     {
@@ -149,24 +157,24 @@ ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationEle
     }
 
     ProxyConnections proxyCnt(channel);
-
-    for(core::runtime::ConfigurationElement::csptr elem : connectionCfg->getElements())
+     auto connectCfg = connectionCfg.equal_range("connect");
+    for (auto itCfg = connectCfg.first; itCfg != connectCfg.second; ++itCfg)
     {
-        src = elem->getValue();
+        src = itCfg->first;
         if( std::regex_match(src, match, re) )
         {
             SIGHT_ASSERT("errMsgHead + Wrong value for attribute src: "<<src, match.size() >= 3);
             uid.assign(match[1].first, match[1].second);
             key.assign(match[2].first, match[2].second);
 
-            SIGHT_ASSERT(errMsgHead + src << " configuration is not correct for "<< elem->getName(),
-                         !uid.empty() && !key.empty());
+            // SIGHT_ASSERT(errMsgHead + src << " configuration is not correct for "<< itCfg->second,
+            //              !uid.empty() && !key.empty());
 
-            if (elem->getName() == "signal")
+            if (itCfg->first == "signal")
             {
                 proxyCnt.addSignalConnection(uid, key);
             }
-            else if (elem->getName() == "slot")
+            else if (itCfg->first== "slot")
             {
                 proxyCnt.addSlotConnection(uid, key);
             }
@@ -185,33 +193,34 @@ ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationEle
 //-----------------------------------------------------------------------------
 
 void Config::createProxy( const std::string& objectKey,
-                          const CSPTR(core::runtime::ConfigurationElement)& cfg,
+                          const boost::property_tree::ptree& cfg,
                           Config::ProxyConnectionsMapType& proxyMap,
                           const CSPTR(data::Object)& obj)
 {
     service::registry::Proxy::sptr proxy = service::registry::Proxy::getDefault();
-
-    SIGHT_ASSERT("Missing 'channel' attribute", cfg->hasAttribute("channel"));
-    const std::string channel = cfg->getExistingAttributeValue("channel");
+    bool hasAttribute = !cfg.get<std::string>("connect.<xmlattr>.uid","").empty();
+    SIGHT_ASSERT("Missing 'channel' attribute", hasAttribute);
+    const std::string channel = cfg.get<std::string>("connect.<xmlattr>.channel","");
     ProxyConnections proxyCnt(channel);
 
     std::regex re("(.*)/(.*)");
     std::smatch match;
     std::string src, uid, key;
-    for(core::runtime::ConfigurationElement::csptr elem :   cfg->getElements())
+    auto connectCfg = cfg.equal_range("connect");
+    for (auto itCfg = connectCfg.first; itCfg != connectCfg.second; ++itCfg)
     {
-        src = elem->getValue();
+        src = itCfg->first;
         if( std::regex_match(src, match, re) )
         {
             SIGHT_ASSERT("Wrong value for attribute src: " + src, match.size() >= 3);
             uid.assign(match[1].first, match[1].second);
             key.assign(match[2].first, match[2].second);
 
-            SIGHT_ASSERT(src + " configuration is not correct for " + elem->getName(), !uid.empty() && !key.empty());
+            //SIGHT_ASSERT(src + " configuration is not correct for " + itCfg.second, !uid.empty() && !key.empty());
 
             core::tools::Object::sptr channelObj = core::tools::fwID::getObject(uid);
 
-            if (elem->getName() == "signal")
+            if (itCfg->first == "signal")
             {
                 core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast< core::com::HasSignals >(channelObj);
                 SIGHT_ASSERT("Can't find the holder of signal '" + key + "'", hasSignals);
@@ -219,7 +228,7 @@ void Config::createProxy( const std::string& objectKey,
                 proxy->connect(channel, sig);
                 proxyCnt.addSignalConnection(uid, key);
             }
-            else if (elem->getName() == "slot")
+            else if (itCfg->first == "slot")
             {
                 core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast< core::com::HasSlots >(channelObj);
                 SIGHT_ASSERT("Can't find the holder of slot '" + key + "'", hasSlots);
@@ -232,7 +241,7 @@ void Config::createProxy( const std::string& objectKey,
         {
             uid = obj->getID();
             key = src;
-            SIGHT_ASSERT("Element must be a signal or must be written as <fwID/Key>", elem->getName() == "signal");
+            SIGHT_ASSERT("Element must be a signal or must be written as <fwID/Key>", itCfg->first == "signal");
             core::com::SignalBase::sptr sig = obj->signal(key);
             proxy->connect(channel, sig);
             proxyCnt.addSignalConnection(uid, key);

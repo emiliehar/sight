@@ -484,7 +484,7 @@ void AppConfigManager::processUpdateItems()
 
 // ------------------------------------------------------------------------
 
-void AppConfigManager::createObjects(core::runtime::ConfigurationElement::csptr cfgElem)
+void AppConfigManager::createObjects(boost::property_tree::ptree cfgElem)
 {
     for(const auto& elem :  cfgElem->getElements())
     {

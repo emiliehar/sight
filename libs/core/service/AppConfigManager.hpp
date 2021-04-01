@@ -168,7 +168,7 @@ private:
     void processUpdateItems();
 
     /// Parses objects section and create objects.
-    void createObjects(core::runtime::ConfigurationElement::csptr cfgElem);
+    void createObjects(boost::property_tree::ptree cfgElem);
 
     /// Parses services and create all the services that can be instantiated.
     void createServices(const boost::property_tree::ptree& cfgElem);

@@ -26,10 +26,10 @@
 #include "service/extension/AppConfig.hpp"
 
 #include <core/mt/types.hpp>
-#include <core/runtime/ConfigurationElement.hpp>
-#include <core/runtime/EConfigurationElement.hpp>
 #include <core/runtime/Extension.hpp>
 #include <core/tools/Object.hpp>
+
+#include <boost/property_tree/ptree.hpp>
 
 #include <data/Composite.hpp>
 
@@ -67,7 +67,7 @@ public:
     std::string desc;
     typedef std::map< std::string, std::string > ParametersType;
     ParametersType parameters;
-    core::runtime::ConfigurationElement::csptr config;
+    boost::property_tree::ptree config;
     std::string moduleId; ///< Module identifier (used to start the module when the appConfig is launched)
     std::string moduleVersion; ///< Module version (used to start the module when the appConfig is launched)
 };
@@ -118,7 +118,7 @@ public:
                                  const std::string& group,
                                  const std::string& desc,
                                  const AppInfo::ParametersType& parameters,
-                                 const core::runtime::ConfigurationElement::csptr& config,
+                                 const boost::property_tree::ptree& config,
                                  const std::string& moduleId);
 
     /**
@@ -127,7 +127,7 @@ public:
      * @param replaceFields associations between the value and the pattern to replace in the config.
      * @note This method is thread safe.
      */
-    SERVICE_API core::runtime::ConfigurationElement::csptr getAdaptedTemplateConfig( const std::string& configId,
+    SERVICE_API boost::property_tree::ptree getAdaptedTemplateConfig( const std::string& configId,
                                                                                      const FieldAdaptorType replaceFields,
                                                                                      bool autoPrefixId ) const;
 
@@ -137,7 +137,7 @@ public:
      * @param replaceFields composite of association between the value and the pattern to replace in the config.
      * @note This method is thread safe.
      */
-    SERVICE_API core::runtime::ConfigurationElement::csptr getAdaptedTemplateConfig( const std::string& configId,
+    SERVICE_API boost::property_tree::ptree getAdaptedTemplateConfig( const std::string& configId,
                                                                                      data::Composite::csptr replaceFields,
                                                                                      bool autoPrefixId )
     const;
@@ -192,11 +192,11 @@ private:
     /// Convert the composite into map <pattern, value>.
     FieldAdaptorType compositeToFieldAdaptor( data::Composite::csptr fieldAdaptors ) const;
 
-    static void collectUIDForParameterReplace(core::runtime::ConfigurationElement::csptr _cfgElem,
+    static void collectUIDForParameterReplace(boost::property_tree::ptree _cfgElem,
                                               UidParameterReplaceType& replaceMap);
 
     /// Adapts the configuration : replace field thanks to field adaptors
-    static core::runtime::EConfigurationElement::sptr adaptConfig(core::runtime::ConfigurationElement::csptr _cfgElem,
+    static boost::property_tree::ptree adaptConfig(boost::property_tree::ptree _cfgElem,
                                                                   const FieldAdaptorType& _fieldAdaptors,
                                                                   const UidParameterReplaceType& _uidParameterReplace,
                                                                   const std::string& _autoPrefixId );

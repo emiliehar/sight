@@ -26,6 +26,7 @@
 #include <core/runtime/helper.hpp>
 #include <core/runtime/Module.hpp>
 #include <core/runtime/Runtime.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 #include <data/Composite.hpp>
 #include <data/String.hpp>
@@ -158,7 +159,7 @@ void AppConfig::clearRegistry()
 
 //-----------------------------------------------------------------------------
 
-core::runtime::ConfigurationElement::csptr AppConfig::getAdaptedTemplateConfig(
+boost::property_tree::ptree AppConfig::getAdaptedTemplateConfig(
     const std::string& configId,
     const FieldAdaptorType fieldAdaptors,
     bool autoPrefixId) const
@@ -296,7 +297,7 @@ std::string AppConfig::getUniqueIdentifier(const std::string& serviceUid )
 
 //-----------------------------------------------------------------------------
 
-void AppConfig::collectUIDForParameterReplace(core::runtime::ConfigurationElement::csptr _cfgElem,
+void AppConfig::collectUIDForParameterReplace(boost::property_tree::ptree _cfgElem,
                                               UidParameterReplaceType& _replaceMap)
 {
     const auto& name = _cfgElem->getName();

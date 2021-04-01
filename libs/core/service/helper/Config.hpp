@@ -83,7 +83,7 @@ public:
      * @param cfg configuration element containing "<connect>" tags
      * @param obj optional object used to retrieve signal if uid is not defined [deprecated]
      */
-    SERVICE_API static ConnectionInfo parseConnections(const CSPTR(core::runtime::ConfigurationElement)& cfg,
+    SERVICE_API static ConnectionInfo parseConnections(const boost::property_tree::ptree& cfg,
                                                        const CSPTR(core::tools::Object)& obj =
                                                            CSPTR(core::tools::Object)());
 
@@ -94,7 +94,7 @@ public:
      * @param cfg configuration element containing "<connect>" tags
      */
     SERVICE_API static ProxyConnections parseConnections2(
-        const CSPTR(core::runtime::ConfigurationElement)& connectionCfg,
+        const boost::property_tree::ptree& connectionCfg,
         const std::string& errMsgHead,
         std::function<std::string()> generateChannelNameFn);
 
@@ -106,7 +106,7 @@ public:
      * @param obj optional object used to retrieve signal if uid is not defined [deprecated]
      */
     SERVICE_API static void createConnections(
-        const CSPTR(core::runtime::ConfigurationElement)& cfg,
+        const boost::property_tree::ptree& cfg,
         core::com::helper::SigSlotConnection& helper,
         const CSPTR(core::tools::Object)& obj = CSPTR(core::tools::Object)());
 
@@ -120,7 +120,7 @@ public:
      */
     SERVICE_API static void createProxy(
         const std::string& objectKey,
-        const CSPTR(core::runtime::ConfigurationElement)& cfg,
+        const boost::property_tree::ptree& cfg,
         ProxyConnectionsMapType& proxyMap,
         const CSPTR(data::Object)& obj = CSPTR(data::Object)());
 

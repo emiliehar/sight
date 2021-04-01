@@ -23,49 +23,49 @@
 #pragma once
 
 #include "io/base/config.hpp"
-#include "io/base/location/Session.hpp"
-#include "io/base/reader/IObjectReader.hpp"
+#include "io/base/session/WriteSession.hpp"
+#include "io/base/writer/IObjectWriter.hpp"
 
 #include <data/Object.hpp>
 
 namespace sight::io::base
 {
-namespace reader
+namespace session
 {
 
-class SessionReader final :
-    public IObjectReader,
-    public location::Session
+class SessionWriter final :
+    public writer::IObjectWriter,
+    public WriteSession
 {
 public:
 
-    SIGHT_DECLARE_CLASS(SessionReader, IObjectReader, factory::New< SessionReader >)
+    SIGHT_DECLARE_CLASS(SessionWriter, writer::IObjectWriter, writer::factory::New< SessionWriter >)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
     /// Delete default constructors and assignment operators
-    SessionReader()                                = delete;
-    SessionReader(const SessionReader&)            = delete;
-    SessionReader(SessionReader&&)                 = delete;
-    SessionReader& operator=(const SessionReader&) = delete;
-    SessionReader& operator=(SessionReader&&)      = delete;
+    SessionWriter()                                = delete;
+    SessionWriter(const SessionWriter&)            = delete;
+    SessionWriter(SessionWriter&&)                 = delete;
+    SessionWriter& operator=(const SessionWriter&) = delete;
+    SessionWriter& operator=(SessionWriter&&)      = delete;
 
     /// Use default destructor
-    IO_BASE_API ~SessionReader() override = default;
+    IO_BASE_API ~SessionWriter() override = default;
 
     /// Constructor. Do nothing.
-    inline SessionReader(IObjectReader::Key key)
+    inline SessionWriter(io::base::writer::IObjectWriter::Key key)
     {
     }
 
-    /// Read the file with standard iostream API.
-    IO_BASE_API void read() override;
+    /// Write the file
+    IO_BASE_API void write() override;
 
-    /// Defines extension supported by this reader ".sight"
+    /// Defines extension supported by this writer ".sight"
     inline std::string extension() override
     {
         return ".sight";
     }
 };
 
-} // namespace reader
+} // namespace session
 } // namespace sight::io::base

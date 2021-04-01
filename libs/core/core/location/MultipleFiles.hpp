@@ -25,6 +25,7 @@
 #include <core/location/ILocation.hpp>
 
 #include <filesystem>
+#include <iterator>
 #include <ostream>
 #include <sstream>
 #include <string>

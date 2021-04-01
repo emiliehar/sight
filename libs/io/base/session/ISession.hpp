@@ -28,56 +28,57 @@
 
 #include <filesystem>
 
-namespace sight::io::base::location
+namespace sight::io::base
+{
+namespace session
 {
 /**
- * @brief Class to define a location that holds what is needed to de/serialize a session.
- * 
+ * @brief Interface to define a location that holds what is needed to de/serialize a session.
+ *
  */
-class CORE_CLASS_API Session : public core::location::ILocation
+template< class ARCHIVE >
+class IO_BASE_CLASS_API ISession : public core::location::ILocation
 {
 public:
-    SIGHT_DECLARE_CLASS(Session)
-
-    /// Factory
-    inline static Session::sptr New()
-    {
-        struct make_shared_enabler : public Session {};
-        return std::make_shared<make_shared_enabler>();
-    }
+    SIGHT_DECLARE_CLASS(ISession)
 
     /// String serialization function
     inline std::string toString() const override
     {
-        return m_file.string();
+        return get_archive_path().string();
     }
 
     //------------------------------------------------------------------------------
 
-    inline void setFile(const std::filesystem::path& filePath)
+    /// Set the archive path and open the archive
+    IO_BASE_API virtual void set_archive_path(const std::filesystem::path& archive_path) = 0;
+
+    //------------------------------------------------------------------------------
+
+    inline std::filesystem::path get_archive_path() const
     {
-        m_file = filePath;
+        return m_archive ? m_archive->getArchivePath() : "";
     }
 
     //------------------------------------------------------------------------------
 
-    inline std::filesystem::path getFile()
+    inline typename ARCHIVE::sptr get_archive() const
     {
-        return m_file;
+        return m_archive;
     }
 
 protected:
 
     /// Constructor
-    CORE_API Session() = default;
+    IO_BASE_API ISession() = default;
 
     /// Destructor
-    CORE_API virtual ~Session() = default;
+    IO_BASE_API virtual ~ISession() = default;
 
 private:
 
-    /// The filesystem vector
-    std::filesystem::path m_file;
+    typename ARCHIVE::sptr m_archive;
 };
 
-} // namespace sight::io::base::location
+} // namespace session
+} // namespace sight::io::base

@@ -23,47 +23,49 @@
 #pragma once
 
 #include "io/base/config.hpp"
-#include "io/base/location/Session.hpp"
-#include "io/base/writer/IObjectWriter.hpp"
+#include "io/base/reader/IObjectReader.hpp"
+#include "io/base/session/ReadSession.hpp"
 
 #include <data/Object.hpp>
 
 namespace sight::io::base
 {
-namespace writer
+namespace session
 {
 
-class SessionWriter final :
-    public IObjectWriter,
-    public location::Session
+class SessionReader final :
+    public reader::IObjectReader,
+    public ReadSession
 {
 public:
 
-    SIGHT_DECLARE_CLASS(SessionWriter, IObjectWriter, factory::New< SessionWriter >)
+    SIGHT_DECLARE_CLASS(SessionReader, reader::IObjectReader, reader::factory::New< SessionReader >)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
-    /// Default constructors, destructor and assignment operators
-    SessionWriter()                                = delete;
-    SessionWriter(const SessionWriter&)            = delete;
-    SessionWriter(SessionWriter&&)                 = delete;
-    SessionWriter& operator=(const SessionWriter&) = delete;
-    SessionWriter& operator=(SessionWriter&&)      = delete;
-    IO_BASE_API ~SessionWriter() override          = default;
+    /// Delete default constructors and assignment operators
+    SessionReader()                                = delete;
+    SessionReader(const SessionReader&)            = delete;
+    SessionReader(SessionReader&&)                 = delete;
+    SessionReader& operator=(const SessionReader&) = delete;
+    SessionReader& operator=(SessionReader&&)      = delete;
+
+    /// Use default destructor
+    IO_BASE_API ~SessionReader() override = default;
 
     /// Constructor. Do nothing.
-    inline SessionWriter(io::base::writer::IObjectWriter::Key key)
+    inline SessionReader(IObjectReader::Key key)
     {
     }
 
-    /// Write the file
-    IO_BASE_API void write() override;
+    /// Read the file with standard iostream API.
+    IO_BASE_API void read() override;
 
-    /// Defines extension supported by this writer ".sight"
+    /// Defines extension supported by this reader ".sight"
     inline std::string extension() override
     {
         return ".sight";
     }
 };
 
-} // namespace writer
+} // namespace session
 } // namespace sight::io::base

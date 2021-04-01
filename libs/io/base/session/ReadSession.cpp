@@ -19,18 +19,18 @@
  *
  ***********************************************************************/
 
-#include "SessionReader.hpp"
+#include "ReadSession.hpp"
 
 namespace sight::io::base
 {
-namespace reader
+namespace session
 {
 
-//------------------------------------------------------------------------------
-
-void SessionReader::read()
+/// Set the archive path and open the archive in read mode
+void ReadSession::set_archive_path(const std::filesystem::path& archive_path)
 {
+    /*@TODO*/
 }
 
-} // namespace reader
+} // namespace session
 } // namespace sight::io::base

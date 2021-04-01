@@ -23,7 +23,7 @@
 
 namespace sight::io::base
 {
-namespace writer
+namespace session
 {
 
 /// Write the file with standard iostream API.
@@ -31,5 +31,5 @@ void SessionWriter::write()
 {
 }
 
-} // namespace writer
+} // namespace session
 } //namespace sight::io::base

@@ -140,9 +140,14 @@ public:
             nRet < 0);
 
         std::string comment;
-        comment.resize(info.size_comment);
+
+        // We must take into account the final \0
+        comment.resize(info.size_comment+1);
 
         nRet = unzGetGlobalComment(m_zipDescriptor.get(), comment.data(), static_cast<uint16_t>(comment.size()));
+
+        // ...but we don't want it ourself
+        comment.resize(info.size_comment);
 
         SIGHT_THROW_EXCEPTION_IF(
             io::zip::exception::Read(

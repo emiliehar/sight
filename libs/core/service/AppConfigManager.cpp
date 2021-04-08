@@ -146,7 +146,7 @@ void AppConfigManager::create()
 
     this->createObjects(m_cfgElem);
     this->createConnections();
-    const auto configTree = core::runtime::Convert::toPropertyTree(m_cfgElem);
+    const auto configTree = m_cfgElem;
     this->createServices(configTree.get_child("config"));
 
     m_state = STATE_CREATED;
@@ -216,7 +216,7 @@ void AppConfigManager::destroy()
     SIGHT_DEBUG("Parsing OSR after destroying the config :" << std::endl
                                                             << service::OSR::getRegistryInformation());
 
-    m_cfgElem.reset();
+    m_cfgElem.clear();
     m_createdObjects.clear();
     m_deferredObjects.clear();
     m_deferredServices.clear();

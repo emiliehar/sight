@@ -28,7 +28,7 @@ namespace sight::core::runtime
 {
 
 EConfigurationElement::EConfigurationElement(const std::string& name) :
-    core::runtime::ConfigurationElement( std::shared_ptr< core::runtime::Module >(), name )
+    boost::property_tree::ptree( std::shared_ptr< core::runtime::Module >(), name )
 {
 }
 
@@ -41,7 +41,7 @@ EConfigurationElement::~EConfigurationElement()
 EConfigurationElement::sptr EConfigurationElement::addConfigurationElement( const std::string& name )
 {
     EConfigurationElement::sptr cfg = EConfigurationElement::New(name);
-    this->core::runtime::ConfigurationElement::addConfigurationElement( cfg );
+    this->boost::property_tree::ptree::add( cfg );
     return cfg;
 }
 
@@ -49,7 +49,7 @@ EConfigurationElement::sptr EConfigurationElement::addConfigurationElement( cons
 
 void EConfigurationElement::addConfigurationElement( EConfigurationElement::sptr element )
 {
-    this->core::runtime::ConfigurationElement::addConfigurationElement( element );
+    this->boost ::addConfigurationElement( element );
 }
 
 //------------------------------------------------------------------------------

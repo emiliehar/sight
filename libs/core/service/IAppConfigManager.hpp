@@ -59,7 +59,7 @@ public:
     bool isDestroyed() const;
 
     /// Set config param
-    void setConfig(core::runtime::ConfigurationElement::csptr cfgElem);
+    void setConfig(boost::property_tree::ptree cfgElem);
 
     /**
      * @brief Set configuration
@@ -161,7 +161,7 @@ inline bool IAppConfigManager::isDestroyed() const
 
 //------------------------------------------------------------------------------
 
-inline void IAppConfigManager::setConfig(core::runtime::ConfigurationElement::csptr cfgElem)
+inline void IAppConfigManager::setConfig(boost::property_tree::ptree cfgElem)
 {
     m_cfgElem = cfgElem;
 }

@@ -24,6 +24,7 @@
 
 #include "core/config.hpp"
 #include "core/runtime/ConfigurationElement.hpp"
+#include <boost/property_tree/ptree.hpp>
 
 namespace sight::core::runtime
 {
@@ -33,7 +34,7 @@ namespace sight::core::runtime
  *          which reading XML structure provided by module descriptions
  *
  */
-class CORE_CLASS_API EConfigurationElement : public core::runtime::ConfigurationElement
+class CORE_CLASS_API EConfigurationElement : public boost::property_tree::ptree
 {
 public:
 

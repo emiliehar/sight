@@ -54,7 +54,7 @@ void Factory::parseBundleInformation()
 {
     SrvRegContainer moduleInfoMap;
 
-    typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
+    typedef boost::property_tree::ptree ConfigurationType;
     typedef std::shared_ptr< core::runtime::Extension > ExtensionType;
 
     std::vector< ExtensionType >  extElements;

@@ -108,7 +108,7 @@ void AppConfig::parseBundleInformation()
         }
 
         // Get config
-        core::runtime::ConfigurationElement::csptr config = ext->findConfigurationElement("config");
+        boost::property_tree::ptree config = ext->findConfigurationElement("config");
 
         // Get module
         std::shared_ptr< core::runtime::Module> module = ext->getModule();
@@ -125,7 +125,7 @@ void AppConfig::addAppInfo( const std::string& configId,
                             const std::string& group,
                             const std::string& desc,
                             const AppInfo::ParametersType& parameters,
-                            const core::runtime::ConfigurationElement::csptr& config,
+                            const boost::property_tree::ptree& config,
                             const std::string& moduleId)
 {
     core::mt::WriteLock lock(m_registryMutex);
@@ -171,7 +171,7 @@ boost::property_tree::ptree AppConfig::getAdaptedTemplateConfig(
                  iter != m_reg.end());
 
     // Adapt config
-    core::runtime::ConfigurationElement::sptr newConfig;
+    boost::property_tree::ptree newConfig;
 
     FieldAdaptorType fields;
     AppInfo::ParametersType parameters = iter->second->parameters;
@@ -210,7 +210,7 @@ boost::property_tree::ptree AppConfig::getAdaptedTemplateConfig(
 
 //-----------------------------------------------------------------------------
 
-core::runtime::ConfigurationElement::csptr AppConfig::getAdaptedTemplateConfig( const std::string& configId,
+boost::property_tree::ptree AppConfig::getAdaptedTemplateConfig( const std::string& configId,
                                                                                 data::Composite::csptr replaceFields,
                                                                                 bool autoPrefixId )
 const
@@ -322,7 +322,7 @@ void AppConfig::collectUIDForParameterReplace(boost::property_tree::ptree _cfgEl
 
 //-----------------------------------------------------------------------------
 
-core::runtime::EConfigurationElement::sptr AppConfig::adaptConfig(core::runtime::ConfigurationElement::csptr _cfgElem,
+boost::property_tree::ptree AppConfig::adaptConfig(boost::property_tree::ptree _cfgElem,
                                                                   const FieldAdaptorType& _fieldAdaptors,
                                                                   const UidParameterReplaceType& _uidParameterReplace,
                                                                   const std::string& _autoPrefixId)

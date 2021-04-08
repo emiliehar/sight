@@ -55,7 +55,7 @@ public:
 
     std::string service;
     std::string desc;
-    core::runtime::ConfigurationElement::csptr config;
+    boost::property_tree::ptree config;
 };
 
 /**
@@ -108,13 +108,13 @@ public:
     SERVICE_API void addServiceConfigInfo( const std::string& configId,
                                            const std::string& service,
                                            const std::string& desc,
-                                           core::runtime::ConfigurationElement::csptr config );
+                                           boost::property_tree::ptree config );
 
     /**
      * @brief Returns the configuration with the given id for the service with the given implementation
      * @note This method is thread safe
      */
-    SERVICE_API core::runtime::ConfigurationElement::csptr getServiceConfig( const std::string& configId,
+    SERVICE_API boost::property_tree::ptree getServiceConfig( const std::string& configId,
                                                                              const std::string& serviceImpl =
                                                                                  "" ) const;
 

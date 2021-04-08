@@ -25,6 +25,7 @@
 #include <core/runtime/ConfigurationElement.hpp>
 #include <core/runtime/helper.hpp>
 #include <core/runtime/Runtime.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 namespace sight::service
 {
@@ -77,7 +78,7 @@ void Config::parseBundleInformation()
         }
 
         // Get config
-        core::runtime::ConfigurationElement::csptr config = ext->findConfigurationElement("config");
+        boost::property_tree::ptree config = ext->findConfigurationElement("config");
 
         // Add service config info
         this->addServiceConfigInfo(id, service, desc, config);
@@ -90,7 +91,7 @@ void Config::addServiceConfigInfo
     (   const std::string& configId,
     const std::string& service,
     const std::string& desc,
-    core::runtime::ConfigurationElement::csptr config)
+    boost::property_tree::ptree config)
 {
     core::mt::WriteLock lock(m_registryMutex);
 
@@ -126,7 +127,7 @@ void Config::clearRegistry()
 
 //-----------------------------------------------------------------------------
 
-core::runtime::ConfigurationElement::csptr Config::getServiceConfig( const std::string& configId,
+boost::property_tree::ptree Config::getServiceConfig( const std::string& configId,
                                                                      const std::string& _serviceImpl ) const
 {
 #ifndef _DEBUG

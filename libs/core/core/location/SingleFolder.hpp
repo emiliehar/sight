@@ -22,46 +22,29 @@
 
 #pragma once
 
-#include "core/location/ILocation.hpp"
+#include "ILocation.hpp"
 
 #include <filesystem>
 
 namespace sight::core::location
 {
-/**
- * @brief Class to define a location that holds one single directory paths
- */
+/// Class to define a location that holds one single directory paths
 class CORE_CLASS_API SingleFolder : public ILocation
 {
 public:
     SIGHT_DECLARE_CLASS(SingleFolder)
 
     /// Factory
-    inline static SingleFolder::sptr New()
-    {
-        struct make_shared_enabler : public SingleFolder {};
-        return std::make_shared<make_shared_enabler>();
-    }
+    inline static SingleFolder::sptr New();
 
     /// String serialization function
-    inline std::string toString() const override
-    {
-        return m_folder.string();
-    }
+    inline std::string toString() const override;
 
-    //------------------------------------------------------------------------------
+    /// Sets folder
+    inline void setFolder(const std::filesystem::path& folder);
 
-    inline void setFolder(const std::filesystem::path& folder)
-    {
-        m_folder = folder;
-    }
-
-    //------------------------------------------------------------------------------
-
-    inline std::filesystem::path getFolder()
-    {
-        return m_folder;
-    }
+    /// Gets folder
+    inline std::filesystem::path getFolder() const;
 
 protected:
 
@@ -76,5 +59,33 @@ private:
     /// The directory as filesystem path
     std::filesystem::path m_folder;
 };
+
+/// Factory
+inline SingleFolder::sptr SingleFolder::New()
+{
+    struct MakeSharedEnabler : public SingleFolder {};
+    return std::make_shared<MakeSharedEnabler>();
+}
+
+//------------------------------------------------------------------------------
+
+inline std::string SingleFolder::toString() const
+{
+    return m_folder.string();
+}
+
+//------------------------------------------------------------------------------
+
+inline void SingleFolder::setFolder(const std::filesystem::path& folder)
+{
+    m_folder = folder;
+}
+
+//------------------------------------------------------------------------------
+
+inline std::filesystem::path SingleFolder::getFolder() const
+{
+    return m_folder;
+}
 
 } // namespace sight::io::base::location

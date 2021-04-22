@@ -47,7 +47,7 @@ atoms::Object::sptr convert(const data::Object::sptr& dataObj, DataVisitor::Atom
 {
     atoms::Object::sptr atom;
 
-    DataVisitor::AtomCacheType::iterator elem = cache.find( core::tools::UUID::get( dataObj ) );
+    DataVisitor::AtomCacheType::iterator elem = cache.find( dataObj->getUUID() );
 
     if ( elem == cache.end() )
     {

@@ -1,6 +1,7 @@
 /************************************************************************
  *
- * Copyright (C) 2021 IRCAD France
+ * Copyright (C) 2009-2021 IRCAD France
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -19,18 +20,31 @@
  *
  ***********************************************************************/
 
-#include "SessionReader.hpp"
+#pragma once
 
-namespace sight::io::base
+#include <cppunit/extensions/HelperMacros.h>
+
+namespace sight::io::session
 {
-namespace session
+namespace ut
 {
 
-//------------------------------------------------------------------------------
-
-void SessionReader::read()
+class PasswordKeeperTest : public CPPUNIT_NS::TestFixture
 {
-}
+CPPUNIT_TEST_SUITE(PasswordKeeperTest);
+CPPUNIT_TEST(globalTest);
+CPPUNIT_TEST(localTest);
+CPPUNIT_TEST_SUITE_END();
 
-} // namespace session
-} // namespace sight::io::base
+public:
+    // Interface
+    void setUp();
+    void tearDown();
+
+    // Tests
+    void globalTest();
+    void localTest();
+};
+
+} // namespace ut
+} // namespace sight::io::session

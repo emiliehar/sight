@@ -142,7 +142,7 @@ struct DataConversionValueVisitor : public ::camp::ValueVisitor< atoms::Base::sp
 
 //-----------------------------------------------------------------------------
 
-DataVisitor::DataVisitor( data::Object::sptr dataObj, AtomCacheType& cache ) :
+DataVisitor::DataVisitor( SPTR(data::Object)dataObj, AtomCacheType& cache ) :
     m_campDataObj( dataObj.get() ),
     m_cache( cache )
 {
@@ -151,7 +151,7 @@ DataVisitor::DataVisitor( data::Object::sptr dataObj, AtomCacheType& cache ) :
     m_atomObj = atoms::Object::New();
     ClassnameType classname = m_campDataObj.call("classname").to<std::string>();
     m_atomObj->setMetaInfo( DataVisitor::CLASSNAME_METAINFO, classname );
-    core::tools::UUID::UUIDType uuid = core::tools::UUID::get(dataObj);
+    std::string uuid = dataObj->getUUID();
     m_atomObj->setMetaInfo( DataVisitor::ID_METAINFO, uuid );
     m_cache[uuid] = m_atomObj;
 

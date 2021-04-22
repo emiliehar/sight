@@ -77,7 +77,7 @@ public:
                                                       const std::string& classname) const; };
     /** @} */
 
-    typedef std::map< core::tools::UUID::UUIDType, SPTR(data::Object) > DataCacheType;
+    typedef std::map< std::string, SPTR(data::Object) > DataCacheType;
 
     /// Constructors. Initializes parameters.
     ATOMS_API AtomVisitor( const atoms::Object::sptr& atomObj, DataCacheType& cache,

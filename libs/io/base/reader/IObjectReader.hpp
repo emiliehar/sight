@@ -98,7 +98,7 @@ public:
      * @return m_object
      * @note m_object is saved in reader with a weakptr
      */
-    IO_BASE_API virtual core::tools::Object::sptr getObject();
+    IO_BASE_API virtual core::tools::Object::sptr getObject() const;
 
     IO_BASE_API virtual std::string extension() = 0;
 

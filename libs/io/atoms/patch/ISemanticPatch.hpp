@@ -46,7 +46,7 @@ class IO_ATOMS_CLASS_API ISemanticPatch : public IPatch
 {
 
 public:
-    SIGHT_DECLARE_CLASS(ISemanticPatch)
+    SIGHT_DECLARE_CLASS(ISemanticPatch, IPatch)
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
     /// Constructor

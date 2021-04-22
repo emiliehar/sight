@@ -25,6 +25,7 @@
 #include "io/zip/config.hpp"
 #include "io/zip/IWriteArchive.hpp"
 
+#include <core/crypto/secure_string.hpp>
 #include <core/macros.hpp>
 
 #include <filesystem>
@@ -43,14 +44,14 @@ public:
 
     SIGHT_DECLARE_CLASS(WriteZipArchive, IWriteArchive)
 
-    enum CompressionMethod
+    enum Method
     {
         STORE   = 0,
         DEFLATE = 8,
         ZSTD    = 93
     };
 
-    enum CompressionLevel
+    enum Level
     {
         DEFAULT = -1,
         FAST    = 2,
@@ -60,10 +61,10 @@ public:
     //------------------------------------------------------------------------------
 
     static sptr New(const std::filesystem::path& archive,
-                    const std::string& comment = "",
-                    const std::string& key     = "",
-                    CompressionMethod method   = CompressionMethod::ZSTD,
-                    CompressionLevel level     = CompressionLevel::DEFAULT)
+                    const std::string& comment             = "",
+                    const core::crypto::secure_string& key = "",
+                    Method method                          = Method::ZSTD,
+                    Level level                            = Level::DEFAULT)
     {
         return std::make_shared<WriteZipArchive>(archive, comment, key, method, level);
     }
@@ -73,10 +74,10 @@ public:
      *
      */
     WriteZipArchive(const std::filesystem::path& archive,
-                    const std::string& comment = "",
-                    const std::string& key     = "",
-                    CompressionMethod method   = CompressionMethod::ZSTD,
-                    CompressionLevel level     = CompressionLevel::DEFAULT) :
+                    const std::string& comment             = "",
+                    const core::crypto::secure_string& key = "",
+                    Method method                          = Method::ZSTD,
+                    Level level                            = Level::DEFAULT) :
         m_archive(archive),
         m_comment(comment),
         m_key(key),
@@ -132,10 +133,10 @@ private:
     std::string m_key;
 
     /// Compression method used globally
-    CompressionMethod m_method {CompressionMethod::ZSTD};
+    Method m_method {Method::ZSTD};
 
     /// Compression level used globally
-    CompressionLevel m_level {CompressionLevel::DEFAULT};
+    Level m_level {Level::DEFAULT};
 };
 
 }

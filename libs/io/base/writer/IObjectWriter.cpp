@@ -53,8 +53,9 @@ void IObjectWriter::setObject( core::tools::Object::csptr object )
 
 core::tools::Object::csptr IObjectWriter::getObject() const
 {
-    assert( !m_object.expired() );
-    return m_object.lock();
+    const auto object = m_object.lock();
+    SIGHT_ASSERT( "Object expired.", object);
+    return object;
 }
 
 //------------------------------------------------------------------------------

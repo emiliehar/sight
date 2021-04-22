@@ -22,24 +22,23 @@
 
 #pragma once
 
-#include "io/base/config.hpp"
-#include "io/base/session/WriteSession.hpp"
-#include "io/base/writer/IObjectWriter.hpp"
+#include "io/session/config.hpp"
 
-#include <data/Object.hpp>
+#include <core/crypto/secure_string.hpp>
+#include <core/location/SingleFile.hpp>
 
-namespace sight::io::base
+#include <io/base/writer/IObjectWriter.hpp>
+
+namespace sight::io::session
 {
-namespace session
-{
 
-class SessionWriter final :
-    public writer::IObjectWriter,
-    public WriteSession
+class IO_SESSION_CLASS_API SessionWriter final :
+    public base::writer::IObjectWriter,
+    public core::location::SingleFile
 {
 public:
 
-    SIGHT_DECLARE_CLASS(SessionWriter, writer::IObjectWriter, writer::factory::New< SessionWriter >)
+    SIGHT_DECLARE_CLASS(SessionWriter, base::writer::IObjectWriter, base::writer::factory::New< SessionWriter >)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
     /// Delete default constructors and assignment operators
@@ -50,22 +49,26 @@ public:
     SessionWriter& operator=(SessionWriter&&)      = delete;
 
     /// Use default destructor
-    IO_BASE_API ~SessionWriter() override = default;
+    IO_SESSION_API ~SessionWriter() override;
 
-    /// Constructor. Do nothing.
-    inline SessionWriter(io::base::writer::IObjectWriter::Key key)
-    {
-    }
+    /// Constructor
+    IO_SESSION_API SessionWriter(base::writer::IObjectWriter::Key key);
 
     /// Write the file
-    IO_BASE_API void write() override;
+    IO_SESSION_API void write() override;
 
     /// Defines extension supported by this writer ".sight"
-    inline std::string extension() override
-    {
-        return ".sight";
-    }
+    IO_SESSION_API std::string extension() override;
+
+    /// Sets the password
+    /// @param password the new password
+    IO_SESSION_API void setPassword(const core::crypto::secure_string& password);
+
+private:
+
+    /// PImpl
+    class SessionWriterImpl;
+    std::unique_ptr<SessionWriterImpl> m_pimpl;
 };
 
-} // namespace session
-} // namespace sight::io::base
+} // namespace sight::io::session

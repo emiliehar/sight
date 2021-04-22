@@ -265,8 +265,7 @@ void SModelSeriesWriter::updating()
             SIGHT_ASSERT("Mesh from reconstruction is not instanced", mesh);
 
             const std::filesystem::path filename = this->getFolder() /
-                                                   (rec->getOrganName() + "_" + core::tools::UUID::get(mesh) +
-                                                    m_selectedExtension);
+                                                   (rec->getOrganName() + "_" + mesh->getUUID() + m_selectedExtension);
             try
             {
                 this->writeMesh(filename, mesh);

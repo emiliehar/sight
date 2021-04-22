@@ -62,14 +62,15 @@ public:
     typedef char char_type;
     typedef ::boost::iostreams::source_tag category;
 
-    ZipSource( const std::filesystem::path& archive, const std::string& key = "") :
+    ZipSource( const std::filesystem::path& archive, const core::crypto::secure_string& key = "") :
         m_zipDescriptor( openReadZipArchive(archive), &unzClose ),
         m_archive(archive),
         m_key(key)
     {
     }
 
-    ZipSource( const std::filesystem::path& archive, const std::filesystem::path& path, const std::string& key = "") :
+    ZipSource( const std::filesystem::path& archive, const std::filesystem::path& path,
+               const core::crypto::secure_string& key = "") :
         m_zipDescriptor( openReadZipArchive(archive), &unzClose ),
         m_archive(archive),
         m_path(path),
@@ -163,12 +164,12 @@ private:
     SPTR(void) m_zipDescriptor;
     std::filesystem::path m_archive;
     std::filesystem::path m_path;
-    std::string m_key;
+    core::crypto::secure_string m_key;
 };
 
 //-----------------------------------------------------------------------------
 
-ReadZipArchive::ReadZipArchive(const std::filesystem::path& archive, const std::string& key) :
+ReadZipArchive::ReadZipArchive(const std::filesystem::path& archive, const core::crypto::secure_string& key) :
     m_archive(archive),
     m_key(key)
 {

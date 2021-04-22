@@ -22,63 +22,43 @@
 
 #pragma once
 
-#include "io/base/config.hpp"
+#include "io/session/config.hpp"
 
 #include <core/location/ILocation.hpp>
 
 #include <filesystem>
 
-namespace sight::io::base
+namespace sight::io::session
 {
-namespace session
+namespace detail
 {
-/**
- * @brief Interface to define a location that holds what is needed to de/serialize a session.
- *
- */
-template< class ARCHIVE >
-class IO_BASE_CLASS_API ISession : public core::location::ILocation
+
+/// Interface to define a location that holds what is needed to de/serialize a session.
+class IO_SESSION_CLASS_API ISession : public core::location::ILocation
 {
 public:
-    SIGHT_DECLARE_CLASS(ISession)
+    SIGHT_DECLARE_CLASS(ISession, core::location::ILocation)
 
     /// String serialization function
     inline std::string toString() const override
     {
-        return get_archive_path().string();
-    }
-
-    //------------------------------------------------------------------------------
-
-    /// Set the archive path and open the archive
-    IO_BASE_API virtual void set_archive_path(const std::filesystem::path& archive_path) = 0;
-
-    //------------------------------------------------------------------------------
-
-    inline std::filesystem::path get_archive_path() const
-    {
-        return m_archive ? m_archive->getArchivePath() : "";
-    }
-
-    //------------------------------------------------------------------------------
-
-    inline typename ARCHIVE::sptr get_archive() const
-    {
-        return m_archive;
+        return "";
     }
 
 protected:
 
     /// Constructor
-    IO_BASE_API ISession() = default;
+    IO_SESSION_API ISession() = default;
 
     /// Destructor
-    IO_BASE_API virtual ~ISession() = default;
+    IO_SESSION_API virtual ~ISession() = default;
 
-private:
-
-    typename ARCHIVE::sptr m_archive;
+    /// Return the default index file path used to store the objects tree
+    inline virtual std::filesystem::path get_index_file_path()
+    {
+        return "/index.json";
+    }
 };
 
-} // namespace session
-} // namespace sight::io::base
+} // namespace detail
+} // namespace sight::io::session

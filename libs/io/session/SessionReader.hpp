@@ -22,24 +22,23 @@
 
 #pragma once
 
-#include "io/base/config.hpp"
-#include "io/base/reader/IObjectReader.hpp"
-#include "io/base/session/ReadSession.hpp"
+#include "io/session/config.hpp"
 
-#include <data/Object.hpp>
+#include <core/crypto/secure_string.hpp>
+#include <core/location/SingleFile.hpp>
 
-namespace sight::io::base
+#include <io/base/reader/IObjectReader.hpp>
+
+namespace sight::io::session
 {
-namespace session
-{
 
-class SessionReader final :
-    public reader::IObjectReader,
-    public ReadSession
+class IO_SESSION_CLASS_API SessionReader final :
+    public base::reader::IObjectReader,
+    public core::location::SingleFile
 {
 public:
 
-    SIGHT_DECLARE_CLASS(SessionReader, reader::IObjectReader, reader::factory::New< SessionReader >)
+    SIGHT_DECLARE_CLASS(SessionReader, base::reader::IObjectReader, base::reader::factory::New< SessionReader >)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
     /// Delete default constructors and assignment operators
@@ -49,23 +48,27 @@ public:
     SessionReader& operator=(const SessionReader&) = delete;
     SessionReader& operator=(SessionReader&&)      = delete;
 
-    /// Use default destructor
-    IO_BASE_API ~SessionReader() override = default;
+    /// Constructor
+    IO_SESSION_API SessionReader(base::reader::IObjectReader::Key key);
 
-    /// Constructor. Do nothing.
-    inline SessionReader(IObjectReader::Key key)
-    {
-    }
+    /// Default destructor
+    IO_SESSION_API ~SessionReader() override;
 
-    /// Read the file with standard iostream API.
-    IO_BASE_API void read() override;
+    /// Read the session from archive.
+    IO_SESSION_API void read() override;
 
     /// Defines extension supported by this reader ".sight"
-    inline std::string extension() override
-    {
-        return ".sight";
-    }
+    IO_SESSION_API std::string extension() override;
+
+    /// Sets the password
+    /// @param password the new password
+    IO_SESSION_API void setPassword(const core::crypto::secure_string& password);
+
+private:
+
+    /// PImpl
+    class SessionReaderImpl;
+    std::unique_ptr<SessionReaderImpl> m_pimpl;
 };
 
-} // namespace session
-} // namespace sight::io::base
+} // namespace sight::io::session

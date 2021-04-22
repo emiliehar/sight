@@ -32,7 +32,7 @@ namespace sight::core::location
 class CORE_CLASS_API SingleFile : public ILocation
 {
 public:
-    SIGHT_DECLARE_CLASS(SingleFile)
+    SIGHT_DECLARE_CLASS(SingleFile, ILocation)
 
     /// Factory
     inline static SingleFile::sptr New();

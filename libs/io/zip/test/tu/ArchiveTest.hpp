@@ -1,6 +1,7 @@
 /************************************************************************
  *
- * Copyright (C) 2021 IRCAD France
+ * Copyright (C) 2009-2021 IRCAD France
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -19,18 +20,32 @@
  *
  ***********************************************************************/
 
-#include "ReadSession.hpp"
+#pragma once
 
-namespace sight::io::base
+#include <cppunit/extensions/HelperMacros.h>
+
+namespace sight::io::zip
 {
-namespace session
+namespace ut
 {
 
-/// Set the archive path and open the archive in read mode
-void ReadSession::set_archive_path(const std::filesystem::path& archive_path)
+class ArchiveTest : public CPPUNIT_NS::TestFixture
 {
-    /*@TODO*/
-}
+CPPUNIT_TEST_SUITE(ArchiveTest);
+CPPUNIT_TEST(newTest);
+CPPUNIT_TEST(cacheTest);
+CPPUNIT_TEST(openTest);
+CPPUNIT_TEST_SUITE_END();
 
-} // namespace session
-} // namespace sight::io::base
+public:
+    // interface
+    void setUp();
+    void tearDown();
+
+    void newTest();
+    void cacheTest();
+    void openTest();
+};
+
+} // namespace ut
+} // namespace sight::io::zip

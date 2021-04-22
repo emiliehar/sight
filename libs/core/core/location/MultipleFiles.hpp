@@ -34,10 +34,10 @@
 namespace sight::core::location
 {
 /// Class to define a location that holds one or more file path.
-class CORE_CLASS_API MultipleFiles : public core::location::ILocation
+class CORE_CLASS_API MultipleFiles : public ILocation
 {
 public:
-    SIGHT_DECLARE_CLASS(MultipleFiles)
+    SIGHT_DECLARE_CLASS(MultipleFiles, ILocation)
 
     /// Factory
     inline static MultipleFiles::sptr New();

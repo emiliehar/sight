@@ -19,18 +19,28 @@
  *
  ***********************************************************************/
 
-#include "WriteSession.hpp"
+#include "IDataSerializer.hpp"
 
-namespace sight::io::base
+#include <core/crypto/AES256.hpp>
+#include <core/crypto/Base64.hpp>
+
+namespace sight::io::session
 {
-namespace session
+namespace detail::data
 {
 
-/// Set the archive path and open the archive in write mode
-void WriteSession::set_archive_path(const std::filesystem::path& archive_path)
+//------------------------------------------------------------------------------
+
+void IDataSerializer::writeToTree(
+    boost::property_tree::ptree& tree,
+    const std::string& key,
+    const std::string& value,
+    const core::crypto::secure_string& password)
 {
-    /*@TODO*/
+    const auto& raw    = password.empty() ? value : core::crypto::encrypt(value, password + key.c_str());
+    const auto& base64 = core::crypto::to_base64(raw);
+    tree.put(key, base64);
 }
 
-} // namespace session
-} // namespace sight::io::base
+} // namespace detail::data
+} // namespace sight::io::session

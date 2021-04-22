@@ -25,10 +25,10 @@
 #include <core/Exception.hpp>
 #include <core/tools/System.hpp>
 
-#include <utestData/Data.hpp>
-
 #include <io/zip/ReadZipArchive.hpp>
 #include <io/zip/WriteZipArchive.hpp>
+
+#include <utestData/Data.hpp>
 
 #include <filesystem>
 
@@ -96,7 +96,7 @@ void ZipTest::cryptTest()
                            std::filesystem::exists(sourceFile));
 
     // The password to use for encryption
-    const std::string password = "The little blue kitty is very sick...";
+    const core::crypto::secure_string password = "The little blue kitty is very sick...";
 
     // Put sourceFile into archiveFile
     SPTR(WriteZipArchive) writer = std::make_shared<WriteZipArchive>(path, writerComment, password);
@@ -139,8 +139,8 @@ void ZipTest::badPasswordCryptTest()
                            std::filesystem::exists(sourceFile));
 
     // The password to use for encryption
-    const std::string writePassword = "The little blue kitty is very sick...";
-    const std::string readPassword  = "This is not the good password";
+    const core::crypto::secure_string writePassword = "The little blue kitty is very sick...";
+    const core::crypto::secure_string readPassword  = "This is not the good password";
 
     // Put sourceFile into archiveFile
     SPTR(WriteZipArchive) writer = std::make_shared<WriteZipArchive>(path, writerComment, writePassword);

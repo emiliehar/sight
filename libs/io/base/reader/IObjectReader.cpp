@@ -49,7 +49,7 @@ void IObjectReader::setObject( core::tools::Object::sptr _pObject )
 
 //------------------------------------------------------------------------------
 
-core::tools::Object::sptr IObjectReader::getObject()
+core::tools::Object::sptr IObjectReader::getObject() const
 {
     auto object = m_object.lock();
     SIGHT_ASSERT( "Object is null", object );

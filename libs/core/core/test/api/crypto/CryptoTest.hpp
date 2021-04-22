@@ -1,6 +1,7 @@
 /************************************************************************
  *
- * Copyright (C) 2021 IRCAD France
+ * Copyright (C) 2009-2021 IRCAD France
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -19,17 +20,32 @@
  *
  ***********************************************************************/
 
-#include "SessionWriter.hpp"
+#pragma once
 
-namespace sight::io::base
+#include <cppunit/extensions/HelperMacros.h>
+
+namespace sight::core::crypto
 {
-namespace session
+namespace ut
 {
 
-/// Write the file with standard iostream API.
-void SessionWriter::write()
+class CryptoTest : public CPPUNIT_NS::TestFixture
 {
-}
+CPPUNIT_TEST_SUITE(CryptoTest);
+CPPUNIT_TEST(hashTest);
+CPPUNIT_TEST(cryptoTest);
+CPPUNIT_TEST(base64Test);
+CPPUNIT_TEST_SUITE_END();
 
-} // namespace session
-} //namespace sight::io::base
+public:
+    // interface
+    void setUp();
+    void tearDown();
+
+    void hashTest();
+    void cryptoTest();
+    void base64Test();
+};
+
+} // namespace ut
+} // namespace sight::core::crypto

@@ -237,20 +237,20 @@ void ConversionTest::meshConversionTest()
 void ConversionTest::graphConversionTest()
 {
     atoms::Object::sptr atom;
-    core::tools::UUID::UUIDType gID, n1ID, n2ID, n3ID, e12ID, e23ID;
+    std::string gID, n1ID, n2ID, n3ID, e12ID, e23ID;
     {
         data::Graph::sptr g = data::Graph::New();
-        gID = core::tools::UUID::get(g);
+        gID = g->getUUID();
         data::Node::sptr n1 = data::Node::New();
-        n1ID = core::tools::UUID::get(n1);
+        n1ID = n1->getUUID();
         data::Node::sptr n2 = data::Node::New();
-        n2ID = core::tools::UUID::get(n2);
+        n2ID = n2->getUUID();
         data::Node::sptr n3 = data::Node::New();
-        n3ID = core::tools::UUID::get(n3);
+        n3ID = n3->getUUID();
         data::Edge::sptr e12 = data::Edge::New();
-        e12ID = core::tools::UUID::get(e12);
+        e12ID = e12->getUUID();
         data::Edge::sptr e23 = data::Edge::New();
-        e23ID = core::tools::UUID::get(e23);
+        e23ID = e23->getUUID();
 
         // build graph
         g->addNode(n1);
@@ -286,7 +286,7 @@ void ConversionTest::graphConversionTest()
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Graph nodes size", (size_t)3, nodes.size() );
     for( data::Node::sptr node :  nodes )
     {
-        core::tools::UUID::UUIDType nodeID = core::tools::UUID::get(node);
+        std::string nodeID = node->getUUID();
         CPPUNIT_ASSERT_MESSAGE("Test node uuid", nodeID == n1ID || nodeID == n2ID || nodeID == n3ID );
         if (  nodeID == n1ID )
         {
@@ -311,7 +311,7 @@ void ConversionTest::graphConversionTest()
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Graph connections size", (size_t)2, connections.size() );
     for( data::Graph::ConnectionContainer::value_type elem  :  connections )
     {
-        core::tools::UUID::UUIDType edgeID = core::tools::UUID::get(elem.first);
+        std::string edgeID = elem.first->getUUID();
         CPPUNIT_ASSERT_MESSAGE("Test edge uuid", edgeID == e12ID || edgeID == e23ID );
         if ( edgeID == e12ID )
         {
@@ -485,10 +485,10 @@ void ConversionTest::objectMultiReferencedTest()
 void ConversionTest::recursiveObjectTest()
 {
     atoms::Object::sptr atom;
-    core::tools::UUID::UUIDType compositeID;
+    std::string compositeID;
     {
         data::Composite::sptr composite = data::Composite::New();
-        compositeID                      = core::tools::UUID::get( composite );
+        compositeID                      = composite->getUUID();
         composite->getContainer()["key"] = composite;
         // Create Atom
         atom = atoms::conversion::convert( composite );
@@ -497,7 +497,7 @@ void ConversionTest::recursiveObjectTest()
         composite->getContainer().erase("key");
     }
 
-    CPPUNIT_ASSERT( !core::tools::UUID::exist( compositeID ) );
+    CPPUNIT_ASSERT(!core::tools::Object::fromUUID( compositeID ));
 
     // Create Data from Atom
     data::Composite::sptr newComposite =
@@ -574,9 +574,8 @@ void ConversionTest::uuidChangeTest()
         );
     dataReloaded = data::String::dynamicCast((*compositeReloaded)["key"]);
 
-    CPPUNIT_ASSERT( core::tools::UUID::get(composite) != core::tools::UUID::get(compositeReloaded) );
-    CPPUNIT_ASSERT( core::tools::UUID::get(data) != core::tools::UUID::get(dataReloaded) );
-
+    CPPUNIT_ASSERT(composite->getUUID() != compositeReloaded->getUUID());
+    CPPUNIT_ASSERT(data->getUUID() != dataReloaded->getUUID());
 }
 
 //-----------------------------------------------------------------------------

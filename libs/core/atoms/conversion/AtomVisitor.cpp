@@ -37,7 +37,7 @@ namespace sight::atoms::conversion
 
 data::Object::sptr AtomVisitor::ReusePolicy::operator()(const std::string& uuid, const std::string& classname) const
 {
-    data::Object::sptr obj = data::Object::dynamicCast(core::tools::UUID::get(uuid));
+    data::Object::sptr obj = data::Object::dynamicCast(core::tools::Object::fromUUID(uuid));
 
     SIGHT_THROW_EXCEPTION_IF(
         exception::ClassnameMismatch("Loaded object classname (" + classname
@@ -61,9 +61,7 @@ data::Object::sptr AtomVisitor::ReusePolicy::operator()(const std::string& uuid,
             , !obj
             );
 
-        bool uuidIsSet = core::tools::UUID::set(obj, uuid);
-
-        SIGHT_ASSERT( "UUID '" << uuid << "' should not exist", uuidIsSet );
+        obj->setUUID(uuid);
     }
 
     return obj;
@@ -90,7 +88,7 @@ data::Object::sptr AtomVisitor::ChangePolicy::operator()(const std::string& uuid
         , !obj
         );
 
-    core::tools::UUID::set(obj, uuid);
+    obj->setUUID(uuid);
     return obj;
 }
 
@@ -113,13 +111,8 @@ data::Object::sptr AtomVisitor::StrictPolicy::operator()(const std::string& uuid
             std::string("Unable to build '") + classname + "': the data factory may be missing.")
         , !obj
         );
-    const bool uuidIsSet = core::tools::UUID::set(obj, uuid);
 
-    SIGHT_THROW_EXCEPTION_IF(
-        exception::DuplicatedDataUUID(
-            std::string( "Try to create new data object '") + classname + "' with uuid '"
-            + uuid + "' but this uuid is already used."
-            ), !uuidIsSet );
+    obj->setUUID(uuid);
 
     return obj;
 
@@ -149,7 +142,7 @@ void AtomVisitor::visit()
 void AtomVisitor::processMetaInfos( const atoms::Object::MetaInfosType& metaInfos )
 {
     const DataVisitor::ClassnameType& classname = metaInfos.find( DataVisitor::CLASSNAME_METAINFO )->second;
-    const core::tools::UUID::UUIDType& uuid     = metaInfos.find( DataVisitor::ID_METAINFO )->second;
+    const std::string& uuid                     = metaInfos.find( DataVisitor::ID_METAINFO )->second;
 
     m_dataObj     = m_uuidPolicy(uuid, classname);
     m_cache[uuid] = m_dataObj;

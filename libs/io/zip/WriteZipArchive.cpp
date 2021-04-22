@@ -66,8 +66,8 @@ zipFile openWriteZipArchive( const std::filesystem::path& archive )
 std::streamsize openFile(zipFile zipDescriptor,
                          const std::filesystem::path& path,
                          const std::string& key,
-                         WriteZipArchive::CompressionMethod method,
-                         WriteZipArchive::CompressionLevel level)
+                         WriteZipArchive::Method method,
+                         WriteZipArchive::Level level)
 {
     const std::string filepath = path.generic_string();
     const char* const filename = filepath.c_str();
@@ -88,8 +88,8 @@ std::streamsize openFile(zipFile zipDescriptor,
                                             // field data
         0,                                  // uint16_t size_extrafield_global: size of extrafield_local buffer
         nullptr,                            // const char *comment: buffer for comment string
-        method,                           // int method: contain the compression method
-        level,                            // int level: contain the level of compression
+        method,                             // int method: contain the compression method
+        level,                              // int level: contain the level of compression
         0,                                  // int raw: use 0 to disable
         0,                                  // (UNUSED) int windowBits: use default value
         0,                                  // (UNUSED) int memLevel: use default value
@@ -112,10 +112,10 @@ struct ZipSinkParameter
 {
     ZipSinkParameter(const std::filesystem::path& archive,
                      const std::filesystem::path& path,
-                     const std::string& comment                = "",
-                     const std::string& key                    = "",
-                     WriteZipArchive::CompressionMethod method = WriteZipArchive::CompressionMethod::ZSTD,
-                     WriteZipArchive::CompressionLevel level   = WriteZipArchive::CompressionLevel::DEFAULT) :
+                     const std::string& comment     = "",
+                     const std::string& key         = "",
+                     WriteZipArchive::Method method = WriteZipArchive::Method::ZSTD,
+                     WriteZipArchive::Level level   = WriteZipArchive::Level::DEFAULT) :
         m_archive(archive),
         m_path(path),
         m_comment(comment),
@@ -129,8 +129,8 @@ struct ZipSinkParameter
     const std::filesystem::path& m_path;
     const std::string& m_comment;
     const std::string& m_key;
-    const WriteZipArchive::CompressionMethod m_method;
-    const WriteZipArchive::CompressionLevel m_level;
+    const WriteZipArchive::Method m_method;
+    const WriteZipArchive::Level m_level;
 };
 
 class ZipSink

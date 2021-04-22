@@ -26,26 +26,24 @@
 #include "core/tools/fwID.hpp"
 
 #include <core/base.hpp>
-
-#include <boost/core/noncopyable.hpp>
-
 namespace sight::core::tools
 {
-
-class UUID;
 
 /**
  * @brief   Define Base class for Sight objects and services
  */
 class CORE_CLASS_API Object  : public core::BaseObject,
-                               public ::boost::noncopyable,
                                protected core::tools::fwID
 {
 public:
     SIGHT_DECLARE_CLASS(Object, core::BaseObject)
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
-    friend class core::tools::UUID;
+    /// Delete default copy constructors and assignment operators
+    Object(const Object&)            = delete;
+    Object(Object&&)                 = delete;
+    Object& operator=(const Object&) = delete;
+    Object& operator=(Object&&)      = delete;
 
     // expose API for ID management
     using core::tools::fwID::hasID;
@@ -53,21 +51,18 @@ public:
     using core::tools::fwID::setID;
     using core::tools::fwID::resetID;
 
-    CORE_API Object();
-    virtual ~Object();
+    CORE_API Object() = default;
+    CORE_API virtual ~Object();
 
-protected:
+    /// Returns the uuid of the current instance
+    CORE_API std::string getUUID() const;
 
-    /// UUID used to identify the object, notably for serialization
-    SPTR(core::tools::UUID) m_uuid;
+    /// Sets the uuid of the current instance
+    CORE_API void setUUID(const std::string& uuid);
+
+    /// Retrieve the object associated with an uuid
+    /// @param uuid the uuid of the object to retrieve
+    static Object::sptr fromUUID(const std::string& uuid);
 };
-
-//-----------------------------------------------------------------------------
-
-inline Object::~Object()
-{
-}
-
-//-----------------------------------------------------------------------------
 
 }

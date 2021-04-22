@@ -447,7 +447,7 @@ void SWriter::updating()
                     tmpFilePath.string(),
                     "",
                     "",
-                    sight::io::zip::WriteZipArchive::CompressionMethod::DEFLATE
+                    sight::io::zip::WriteZipArchive::Method::DEFLATE
                     );
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
@@ -458,7 +458,7 @@ void SWriter::updating()
                     tmpFilePath.string(),
                     "",
                     sight::ui::base::preferences::getPassword(),
-                    sight::io::zip::WriteZipArchive::CompressionMethod::DEFLATE
+                    sight::io::zip::WriteZipArchive::Method::DEFLATE
                     );
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
@@ -469,7 +469,7 @@ void SWriter::updating()
                     tmpFilePath.string(),
                     "",
                     sight::ui::base::preferences::getPassword(),
-                    sight::io::zip::WriteZipArchive::CompressionMethod::ZSTD
+                    sight::io::zip::WriteZipArchive::Method::ZSTD
                     );
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;

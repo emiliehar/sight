@@ -26,6 +26,7 @@
 #include "io/atoms/patch/exceptions/MissingInformation.hpp"
 #include "io/atoms/patch/types.hpp"
 
+#include <core/exceptionmacros.hpp>
 #include <core/spyLog.hpp>
 
 #include <boost/property_tree/exceptions.hpp>

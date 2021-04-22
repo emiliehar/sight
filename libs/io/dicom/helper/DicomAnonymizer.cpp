@@ -264,7 +264,7 @@ void DicomAnonymizer::anonymizationProcess(const std::filesystem::path& dirPath)
     io::dicom::helper::DicomSearch::searchRecursively(tmpPath, dicomFiles, false);
 
     unsigned int fileIndex = 0;
-    for(const auto file : dicomFiles)
+    for(const auto& file : dicomFiles)
     {
         if(m_observer->cancelRequested())
         {

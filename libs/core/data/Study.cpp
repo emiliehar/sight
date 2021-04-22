@@ -50,6 +50,7 @@ void Study::shallowCopy(const data::Object::csptr& _source)
                                   + " to " + this->getClassname()), !bool(other) );
 
     this->fieldShallowCopy( other );
+    m_studyID                 = other->m_studyID;
     m_instanceUID             = other->m_instanceUID;
     m_date                    = other->m_date;
     m_time                    = other->m_time;
@@ -72,6 +73,7 @@ void Study::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType
                                   + " to " + this->getClassname()), !bool(other) );
 
     this->fieldDeepCopy( other, cache );
+    m_studyID                 = other->m_studyID;
     m_instanceUID             = other->m_instanceUID;
     m_date                    = other->m_date;
     m_time                    = other->m_time;

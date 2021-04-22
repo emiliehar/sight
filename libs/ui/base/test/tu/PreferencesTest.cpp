@@ -22,6 +22,7 @@
 
 #include "PreferencesTest.hpp"
 
+#include <core/crypto/secure_string.hpp>
 #include <core/runtime/operations.hpp>
 #include <core/runtime/Profile.hpp>
 #include <core/tools/Os.hpp>
@@ -130,16 +131,16 @@ void PreferencesTest::helperTest()
 void PreferencesTest::passwordTest()
 {
     // Reset password field in settings
-    ui::base::preferences::setPassword(std::string());
+    ui::base::preferences::setPassword(core::crypto::secure_string());
 
     // Test default empty password (means no password)
-    CPPUNIT_ASSERT_EQUAL(ui::base::preferences::getPassword(), std::string());
+    CPPUNIT_ASSERT_EQUAL(ui::base::preferences::getPassword(), core::crypto::secure_string());
 
     // Test if there is no hash in preferences (means no password)
     CPPUNIT_ASSERT_EQUAL(ui::base::preferences::hasPasswordHash(), false);
 
     // Test with a real password
-    const std::string password = "You are the one for me, for me, for me, formidable";
+    const core::crypto::secure_string password = "You are the one for me, for me, for me, formidable";
     ui::base::preferences::setPassword(password);
     CPPUNIT_ASSERT_EQUAL(password, ui::base::preferences::getPassword());
 

@@ -28,7 +28,7 @@
 namespace sight::core::location
 {
 /**
- * @brief Abstract base class to define a location (file(s) path, directory, archive) that can be used in Sight reader /
+ * @brief Abstract base class to define a location (file path, directory, archive) that can be used in Sight reader /
  * writer
  */
 class CORE_CLASS_API ILocation

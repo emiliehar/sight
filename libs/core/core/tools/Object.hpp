@@ -60,7 +60,7 @@ public:
     /// Sets the uuid of the current instance
     CORE_API void setUUID(const std::string& uuid);
 
-    /// Retrieve the object associated with an uuid
+    /// Retrieves the object associated with an uuid
     /// @param uuid the uuid of the object to retrieve
     static Object::sptr fromUUID(const std::string& uuid);
 };

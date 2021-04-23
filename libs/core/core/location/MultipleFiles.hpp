@@ -51,7 +51,7 @@ public:
     /// Gets the file paths
     inline std::vector<std::filesystem::path> getFiles() const;
 
-    /// Append one file path
+    /// Appends one file path
     inline void addFile(const std::filesystem::path& filePaths);
 
 protected:

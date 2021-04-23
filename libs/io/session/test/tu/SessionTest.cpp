@@ -153,24 +153,24 @@ void SessionTest::integerTest()
     std::filesystem::create_directories(tmpfolder);
     const std::filesystem::path testPath = tmpfolder / "integerTest.zip";
 
-    const std::int64_t answear = 42;
-    const std::int64_t satan   = 666;
+    const std::int64_t answer = 42;
+    const std::int64_t satan  = 666;
     const std::string fieldName(UUID::generateUUID());
 
     // Test serialization
     {
         // Create the data::Integer
-        auto answearData = data::Integer::New(answear);
+        auto answerData = data::Integer::New(answer);
 
         // Add a field
-        answearData->setField(fieldName, data::Integer::New(satan));
+        answerData->setField(fieldName, data::Integer::New(satan));
 
         // Create the session writer
         auto sessionWriter = io::session::SessionWriter::New();
         CPPUNIT_ASSERT(sessionWriter);
 
         // Configure the session
-        sessionWriter->setObject(answearData);
+        sessionWriter->setObject(answerData);
         sessionWriter->setFile(testPath);
         sessionWriter->write();
 
@@ -185,12 +185,12 @@ void SessionTest::integerTest()
         sessionReader->read();
 
         // Test value
-        const auto& answearData = data::Integer::dynamicCast(sessionReader->getObject());
-        CPPUNIT_ASSERT(answearData);
-        CPPUNIT_ASSERT_EQUAL(answear, answearData->getValue());
+        const auto& answerData = data::Integer::dynamicCast(sessionReader->getObject());
+        CPPUNIT_ASSERT(answerData);
+        CPPUNIT_ASSERT_EQUAL(answer, answerData->getValue());
 
         // Test field
-        const auto& fieldData = data::Integer::dynamicCast(answearData->getField(fieldName));
+        const auto& fieldData = data::Integer::dynamicCast(answerData->getField(fieldName));
         CPPUNIT_ASSERT(fieldData);
         CPPUNIT_ASSERT_EQUAL(satan, fieldData->getValue());
     }
@@ -486,13 +486,16 @@ void SessionTest::meshTest()
 
         for (; originalIt != originalEnd && meshIt != meshEnd; ++originalIt, ++meshIt)
         {
-            CPPUNIT_ASSERT_EQUAL(originalIt->point->x, meshIt->point->x);
-            CPPUNIT_ASSERT_EQUAL(originalIt->point->y, meshIt->point->y);
-            CPPUNIT_ASSERT_EQUAL(originalIt->point->z, meshIt->point->z);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->point->x, meshIt->point->x, std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->point->y, meshIt->point->y, std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->point->z, meshIt->point->z, std::numeric_limits<float>::epsilon());
 
-            CPPUNIT_ASSERT_EQUAL(originalIt->normal->nx, meshIt->normal->nx);
-            CPPUNIT_ASSERT_EQUAL(originalIt->normal->ny, meshIt->normal->ny);
-            CPPUNIT_ASSERT_EQUAL(originalIt->normal->nz, meshIt->normal->nz);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->normal->nx, meshIt->normal->nx,
+                                         std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->normal->ny, meshIt->normal->ny,
+                                         std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->normal->nz, meshIt->normal->nz,
+                                         std::numeric_limits<float>::epsilon());
         }
     }
 }

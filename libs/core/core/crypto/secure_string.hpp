@@ -30,16 +30,16 @@
 namespace sight::core::crypto
 {
 
-/// Zeroing the pointed memory
+/// Zeroes the pointed memory
 /// @param p memory address
-/// @param n length to zeroing
+/// @param n length to zero
 inline void cleanse(void* p, std::size_t n) noexcept
 {
     // "volatile" guard from unwanted optimization
     std::fill_n(static_cast<volatile char*>(p), n, 0);
 }
 
-/// This class is an implementation of basic_string Allocator. It's main feature is a secure deletion of allocated data
+/// This class is an implementation of basic_string Allocator. Its main feature is secure deletion of allocated data
 /// See https://en.cppreference.com/w/cpp/named_req/Allocator
 template <typename T>
 struct allocator
@@ -92,7 +92,7 @@ using secure_string = std::basic_string<char, std::char_traits<char>, allocator<
 
 } // sight::core::crypto
 
-// Zero the strings own memory on destruction
+// Zeroes the strings own memory on destruction
 template<> inline ::sight::core::crypto::secure_string::~basic_string()
 {
     clear();

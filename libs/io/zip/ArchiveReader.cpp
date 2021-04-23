@@ -46,7 +46,7 @@ public:
     ArchiveReaderImpl& operator=(ArchiveReaderImpl&&)      = delete;
 
     /// Constructor. It open the archive and create all resources needed to access it.
-    /// @param archive_path path of the archive file. The file will be kept opened as long as the instance leave.
+    /// @param archive_path path of the archive file. The file will be kept opened as long as the instance lives.
     ArchiveReaderImpl(const std::filesystem::path& archive_path) :
         m_archive_path(archive_path)
     {
@@ -79,7 +79,7 @@ public:
         cache_clean(m_archive_path);
     }
 
-    /// Returns an std::istream to read an archived file
+    /// Returns a std::istream to read an archived file
     /// @param file_path path of an archived file.
     /// @param password the password needed to decrypt the file.
     std::unique_ptr<std::istream> openFile(const std::filesystem::path& file_path,

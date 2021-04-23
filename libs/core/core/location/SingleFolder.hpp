@@ -28,7 +28,7 @@
 
 namespace sight::core::location
 {
-/// Class to define a location that holds one single directory paths
+/// Class to define a location that holds a single directory path
 class CORE_CLASS_API SingleFolder : public ILocation
 {
 public:

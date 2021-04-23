@@ -40,10 +40,10 @@ public:
     /// String serialization function
     inline std::string toString() const override;
 
-    /// Set the file path
+    /// Sets the file path
     inline void setFile(const std::filesystem::path& filePath);
 
-    /// Get the file path
+    /// Gets the file path
     inline std::filesystem::path getFile() const;
 
 protected:

@@ -224,7 +224,7 @@ private:
                 }
             }
 
-            // Assign the
+            // Assign the deserialized fields
             newObject->setFields(fields);
 
             return newObject;

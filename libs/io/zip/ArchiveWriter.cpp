@@ -148,8 +148,8 @@ public:
     ArchiveWriterImpl& operator=(const ArchiveWriter&) = delete;
     ArchiveWriterImpl& operator=(ArchiveWriter&&)      = delete;
 
-    /// Constructor. It open the archive and create all resources needed to access it.
-    /// @param archive_path path of the archive file. The file will be kept opened as long as the instance leave.
+    /// Constructor. It opens the archive and creates all resources needed to access it.
+    /// @param archive_path path of the archive file. The file will be kept opened as long as the instance lives.
     ArchiveWriterImpl(const std::filesystem::path& archive_path) :
         m_archive_path(archive_path)
     {
@@ -187,7 +187,7 @@ public:
         cache_clean(m_archive_path);
     }
 
-    /// Returns an std::ostream to read an archived file
+    /// Returns a std::ostream to read an archived file
     /// @param file_path path of the file inside the archive.
     /// @param password the password needed to encrypt the file.
     /// @param method the compression algorithm to use.

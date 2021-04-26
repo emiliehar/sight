@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -34,18 +35,20 @@ namespace detail::data
 EquipmentDeserializer::sptr EquipmentDeserializer::shared()
 {
     struct make_shared_enabler final : public EquipmentDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 EquipmentDeserializer::uptr EquipmentDeserializer::unique()
 {
     struct make_unique_enabler final : public EquipmentDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr EquipmentDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -55,8 +58,8 @@ sight::data::Object::sptr EquipmentDeserializer::deserialize(
     const core::crypto::secure_string& password)
 {
     // Create or reuse the object
-    const auto& equipment =
-        object ? sight::data::Equipment::dynamicCast(object) : sight::data::Equipment::New();
+    const auto& equipment
+        = object ? sight::data::Equipment::dynamicCast(object) : sight::data::Equipment::New();
 
     SIGHT_ASSERT(
         "Object '" << equipment->getClassname() << "' is not a '" << sight::data::Equipment::classname() << "'",
@@ -67,7 +70,7 @@ sight::data::Object::sptr EquipmentDeserializer::deserialize(
     return equipment;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr EquipmentDeserializer::create()
 {
@@ -76,4 +79,5 @@ sight::data::Object::sptr EquipmentDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

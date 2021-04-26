@@ -26,12 +26,13 @@
 
 namespace sight::ui::history
 {
+
 namespace ut
 {
 
 class ImageDiffCommandTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ImageDiffCommandTest );
+CPPUNIT_TEST_SUITE(ImageDiffCommandTest);
 CPPUNIT_TEST(undoredoTest);
 CPPUNIT_TEST(getSizeTest);
 CPPUNIT_TEST_SUITE_END();
@@ -46,5 +47,6 @@ public:
     void getSizeTest();
 };
 
-} //namespace ut
-} //namespace sight::ui::history
+} // namespace ut
+
+} // namespace sight::ui::history

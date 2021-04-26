@@ -28,6 +28,7 @@
 
 namespace sight::module::viz::scene2d
 {
+
 namespace adaptor
 {
 
@@ -65,7 +66,6 @@ namespace adaptor
  */
 class MODULE_VIZ_SCENE2D_CLASS_API SScaleValues : public sight::viz::scene2d::IAdaptor
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SScaleValues, ::sight::viz::scene2d::IAdaptor)
 
@@ -76,7 +76,6 @@ public:
     MODULE_VIZ_SCENE2D_API virtual ~SScaleValues() noexcept;
 
 protected:
-
     MODULE_VIZ_SCENE2D_API void configuring() override;
 
     /// Initialize the layer, set the pen style to DashLine and call the draw() function.
@@ -89,12 +88,11 @@ protected:
     MODULE_VIZ_SCENE2D_API void stopping() override;
 
     /// Manage the given events
-    MODULE_VIZ_SCENE2D_API void processInteraction( sight::viz::scene2d::data::Event& _event ) override;
+    MODULE_VIZ_SCENE2D_API void processInteraction(sight::viz::scene2d::data::Event& _event) override;
 
     MODULE_VIZ_SCENE2D_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     void buildValues();
 
     void rescaleValues();
@@ -149,4 +147,5 @@ private:
 };
 
 } // namespace adaptor
+
 } // namespace sight::module::viz::scene2d

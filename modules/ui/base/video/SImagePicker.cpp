@@ -32,7 +32,7 @@
 namespace sight::module::ui::base::video
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const core::com::Slots::SlotKeyType s_GET_INTERACTION_SLOT = "getInteraction";
 
@@ -48,32 +48,31 @@ SImagePicker::SImagePicker() noexcept
     m_videoRefMap["center"]   = VideoReference::CENTER;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SImagePicker::~SImagePicker() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImagePicker::starting()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImagePicker::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImagePicker::configuring()
 {
     const ConfigType config = this->getConfigTree().get_child("config.<xmlattr>");
 
-    const std::string videoRef = config.get< std::string >("videoReference", "center");
+    const std::string videoRef = config.get<std::string>("videoReference", "center");
 
     auto it = m_videoRefMap.find(videoRef);
 
@@ -85,71 +84,71 @@ void SImagePicker::configuring()
     {
         m_videoRef = it->second;
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImagePicker::updating()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImagePicker::getInteraction(data::tools::PickingInfo info)
 {
-    if (info.m_modifierMask == data::tools::PickingInfo::CTRL)
+    if(info.m_modifierMask == data::tools::PickingInfo::CTRL)
     {
-        if (info.m_eventId == data::tools::PickingInfo::Event::MOUSE_LEFT_DOWN)
+        if(info.m_eventId == data::tools::PickingInfo::Event::MOUSE_LEFT_DOWN)
         {
             const double x = info.m_worldPos[0];
             const double y = info.m_worldPos[1];
             const double z = info.m_worldPos[2];
 
-            const std::array<double, 3> position = {{ x, y, z }};
+            const std::array<double, 3> position = {{x, y, z}};
 
             this->addPoint(position);
         }
-        else if (info.m_eventId == data::tools::PickingInfo::Event::MOUSE_RIGHT_DOWN)
+        else if(info.m_eventId == data::tools::PickingInfo::Event::MOUSE_RIGHT_DOWN)
         {
             this->removeLastPoint();
         }
-
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void SImagePicker::addPoint(const std::array<double, 3>& currentPoint )
+void SImagePicker::addPoint(const std::array<double, 3>& currentPoint)
 {
     // Set z to 0 as it is an image.
 
-    auto pointList      = this->getLockedInOut< data::PointList >(s_POINTLIST_INOUT);
-    auto pixelPointList = this->getLockedInOut< data::PointList >(s_PIXEL_POINTLIST_INOUT);
+    auto pointList      = this->getLockedInOut<data::PointList>(s_POINTLIST_INOUT);
+    auto pixelPointList = this->getLockedInOut<data::PointList>(s_PIXEL_POINTLIST_INOUT);
 
     data::Point::sptr point = data::Point::New(currentPoint[0], currentPoint[1], 0.);
 
-    const auto camera = this->getLockedInput< data::Camera >(s_CAMERA_INOUT);
+    const auto camera = this->getLockedInput<data::Camera>(s_CAMERA_INOUT);
 
     data::Point::sptr pixel;
 
-    switch (m_videoRef)
+    switch(m_videoRef)
     {
         case VideoReference::CENTER:
         {
-            const float offset[2] = { static_cast<float>(camera->getWidth()) / 2.f,
-                                      static_cast<float>(camera->getHeight()) / 2.f };
+            const float offset[2] = {static_cast<float>(camera->getWidth()) / 2.f,
+                                     static_cast<float>(camera->getHeight()) / 2.f};
 
             // Shift point to set reference at top_left corner & inverse y axis.
-            pixel = data::Point::New(currentPoint[0] + offset[0],
-                                     offset[1] - currentPoint[1], 0.);
+            pixel = data::Point::New(
+                currentPoint[0] + offset[0],
+                offset[1] - currentPoint[1],
+                0.);
+            break;
         }
-        break;
+
         case VideoReference::TOP_LEFT:
-        {
             pixel = data::Point::New(currentPoint[0], currentPoint[1], 0.);
-        }
-        break;
+            break;
+
         default:
             SIGHT_ERROR("Only video reference CENTER and TOP_LEFT are handled");
             break;
@@ -158,11 +157,11 @@ void SImagePicker::addPoint(const std::array<double, 3>& currentPoint )
     // "World" points.
     {
         pointList->getPoints().push_back(point);
-        auto sig = pointList->signal< data::PointList::ModifiedSignalType >(
+        auto sig = pointList->signal<data::PointList::ModifiedSignalType>(
             data::PointList::s_MODIFIED_SIG);
         sig->asyncEmit();
 
-        auto sig2 = pointList->signal< data::PointList::PointAddedSignalType >(
+        auto sig2 = pointList->signal<data::PointList::PointAddedSignalType>(
             data::PointList::s_POINT_ADDED_SIG);
         sig2->asyncEmit(point);
     }
@@ -170,35 +169,35 @@ void SImagePicker::addPoint(const std::array<double, 3>& currentPoint )
     // Pixel points.
     {
         pixelPointList->getPoints().push_back(pixel);
-        auto sig = pixelPointList->signal< data::PointList::ModifiedSignalType >(
+        auto sig = pixelPointList->signal<data::PointList::ModifiedSignalType>(
             data::PointList::s_MODIFIED_SIG);
         sig->asyncEmit();
 
-        auto sig2 = pixelPointList->signal< data::PointList::PointAddedSignalType >(
+        auto sig2 = pixelPointList->signal<data::PointList::PointAddedSignalType>(
             data::PointList::s_POINT_ADDED_SIG);
         sig2->asyncEmit(point);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImagePicker::removeLastPoint()
 {
-    auto pointList      = this->getLockedInOut< data::PointList >(s_POINTLIST_INOUT);
-    auto pixelPointList = this->getLockedInOut< data::PointList >(s_PIXEL_POINTLIST_INOUT);
+    auto pointList      = this->getLockedInOut<data::PointList>(s_POINTLIST_INOUT);
+    auto pixelPointList = this->getLockedInOut<data::PointList>(s_PIXEL_POINTLIST_INOUT);
     data::Point::sptr point;
 
-    if (!pointList->getPoints().empty() && !pixelPointList->getPoints().empty())
+    if(!pointList->getPoints().empty() && !pixelPointList->getPoints().empty())
     {
         {
             point = pointList->getPoints().back();
             pointList->getPoints().pop_back();
 
-            auto sig = pointList->signal< data::PointList::ModifiedSignalType >(
+            auto sig = pointList->signal<data::PointList::ModifiedSignalType>(
                 data::PointList::s_MODIFIED_SIG);
             sig->asyncEmit();
 
-            auto sig2 = pointList->signal< data::PointList::PointRemovedSignalType >(
+            auto sig2 = pointList->signal<data::PointList::PointRemovedSignalType>(
                 data::PointList::s_POINT_REMOVED_SIG);
             sig2->asyncEmit(point);
         }
@@ -207,18 +206,17 @@ void SImagePicker::removeLastPoint()
             point = pixelPointList->getPoints().back();
             pixelPointList->getPoints().pop_back();
 
-            auto sig = pixelPointList->signal< data::PointList::ModifiedSignalType >(
+            auto sig = pixelPointList->signal<data::PointList::ModifiedSignalType>(
                 data::PointList::s_MODIFIED_SIG);
             sig->asyncEmit();
 
-            auto sig2 = pixelPointList->signal< data::PointList::PointRemovedSignalType >(
+            auto sig2 = pixelPointList->signal<data::PointList::PointRemovedSignalType>(
                 data::PointList::s_POINT_REMOVED_SIG);
             sig2->asyncEmit(point);
         }
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::ui::base::video

@@ -28,13 +28,14 @@
 
 namespace sight::core::com
 {
+
 namespace exception
 {
 
 /// No worker exception.
 struct WorkerChanged : core::Exception
 {
-    CORE_API WorkerChanged ( const std::string& err );
+    CORE_API WorkerChanged(const std::string& err);
 };
 
 } // namespace exception

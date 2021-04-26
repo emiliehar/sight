@@ -26,16 +26,17 @@
 
 namespace sight::atoms
 {
+
 namespace ut
 {
 
-class AtomTest :  public CPPUNIT_NS::TestFixture
+class AtomTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( AtomTest );
-CPPUNIT_TEST( blobTest );
-CPPUNIT_TEST( mapTest );
-CPPUNIT_TEST( objectTest );
-CPPUNIT_TEST( sequenceTest );
+CPPUNIT_TEST_SUITE(AtomTest);
+CPPUNIT_TEST(blobTest);
+CPPUNIT_TEST(mapTest);
+CPPUNIT_TEST(objectTest);
+CPPUNIT_TEST(sequenceTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -49,5 +50,6 @@ public:
     void sequenceTest();
 };
 
-}  // namespace ut
-}  // namespace sight::atoms
+} // namespace ut
+
+} // namespace sight::atoms

@@ -35,7 +35,7 @@ static const core::com::Slots::SlotKeyType s_START_PROGRESS_SLOT  = "startProgre
 static const core::com::Slots::SlotKeyType s_UPDATE_PROGRESS_SLOT = "updateProgress";
 static const core::com::Slots::SlotKeyType s_STOP_PROGRESS_SLOT   = "stopProgress";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SProgressBarController::SProgressBarController() noexcept
 {
@@ -43,37 +43,38 @@ SProgressBarController::SProgressBarController() noexcept
     newSlot(s_UPDATE_PROGRESS_SLOT, &SProgressBarController::updateProgress, this);
     newSlot(s_STOP_PROGRESS_SLOT, &SProgressBarController::stopProgress, this);
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 SProgressBarController::~SProgressBarController() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::configuring()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::startProgress(std::string _id)
 {
@@ -81,11 +82,12 @@ void SProgressBarController::startProgress(std::string _id)
     m_progressDialogs[_id] = sight::ui::base::dialog::ProgressDialog::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::updateProgress(std::string _id, float _percentage, std::string _message)
 {
     core::mt::ScopedLock lock(m_mutex);
+
     if(m_progressDialogs.find(_id) != m_progressDialogs.end())
     {
         (*m_progressDialogs[_id])(_percentage, _message);
@@ -97,7 +99,7 @@ void SProgressBarController::updateProgress(std::string _id, float _percentage, 
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProgressBarController::stopProgress(std::string _id)
 {
@@ -105,6 +107,6 @@ void SProgressBarController::stopProgress(std::string _id)
     m_progressDialogs.erase(_id);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::dimse.

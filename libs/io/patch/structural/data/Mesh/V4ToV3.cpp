@@ -58,16 +58,17 @@ V4ToV3::~V4ToV3()
 
 // ----------------------------------------------------------------------------
 
-V4ToV3::V4ToV3( const V4ToV3& cpy ) :
+V4ToV3::V4ToV3(const V4ToV3& cpy) :
     io::atoms::patch::IStructuralPatch(cpy)
 {
 }
 
 // ----------------------------------------------------------------------------
 
-void V4ToV3::apply( const sight::atoms::Object::sptr& previous,
-                    const sight::atoms::Object::sptr& current,
-                    io::atoms::patch::IPatch::NewVersionsType& newVersions)
+void V4ToV3::apply(
+    const sight::atoms::Object::sptr& previous,
+    const sight::atoms::Object::sptr& current,
+    io::atoms::patch::IPatch::NewVersionsType& newVersions)
 {
     IStructuralPatch::apply(previous, current, newVersions);
 
@@ -78,19 +79,19 @@ void V4ToV3::apply( const sight::atoms::Object::sptr& previous,
         = [&](const std::string& _buffer)
           {
               // Retrieves values from previous atoms object.
-              sight::atoms::Object::sptr cellData     = previous->getAttribute< sight::atoms::Object >(_buffer);
-              sight::atoms::Blob::sptr cellDataBuffer = cellData->getAttribute< sight::atoms::Blob >("buffer");
-              sight::atoms::Sequence::sptr strides    = cellData->getAttribute< sight::atoms::Sequence >("strides");
+              sight::atoms::Object::sptr cellData     = previous->getAttribute<sight::atoms::Object>(_buffer);
+              sight::atoms::Blob::sptr cellDataBuffer = cellData->getAttribute<sight::atoms::Blob>("buffer");
+              sight::atoms::Sequence::sptr strides    = cellData->getAttribute<sight::atoms::Sequence>("strides");
               sight::atoms::String::sptr stride       = sight::atoms::String::dynamicCast((*strides)[0]);
-              size_t cellDataElementSize              = static_cast< size_t >(stoi(stride->getString()));
+              size_t cellDataElementSize              = static_cast<size_t>(stoi(stride->getString()));
 
               // Retrieves values from current atoms object.
-              sight::atoms::Object::sptr currentCellData     = current->getAttribute< sight::atoms::Object >(_buffer);
-              sight::atoms::Blob::sptr currentCellDataBuffer = currentCellData->getAttribute< sight::atoms::Blob >(
+              sight::atoms::Object::sptr currentCellData     = current->getAttribute<sight::atoms::Object>(_buffer);
+              sight::atoms::Blob::sptr currentCellDataBuffer = currentCellData->getAttribute<sight::atoms::Blob>(
                   "buffer");
-              sight::atoms::Sequence::sptr currentStrides = currentCellData->getAttribute< sight::atoms::Sequence >(
+              sight::atoms::Sequence::sptr currentStrides = currentCellData->getAttribute<sight::atoms::Sequence>(
                   "strides");
-              sight::atoms::String::sptr currentType = currentCellData->getAttribute< sight::atoms::String >("type");
+              sight::atoms::String::sptr currentType = currentCellData->getAttribute<sight::atoms::String>("type");
 
               // Set the new strides to sizeof(std::uint32_t).
               sight::atoms::String::dynamicCast((*currentStrides)[0])->setValue(std::to_string(sizeof(std::uint64_t)));
@@ -112,11 +113,11 @@ void V4ToV3::apply( const sight::atoms::Object::sptr& previous,
               const auto bufferMemoryLock                   = bufferMemory->lock();
               bufferMemory->allocate(size * sizeof(std::uint64_t));
 
-              std::uint32_t* buff32 = static_cast<std::uint32_t*>( buff );
-              std::uint64_t* buff64 = static_cast<std::uint64_t*>( bufferMemory->getBuffer() );
+              std::uint32_t* buff32 = static_cast<std::uint32_t*>(buff);
+              std::uint64_t* buff64 = static_cast<std::uint64_t*>(bufferMemory->getBuffer());
 
               // Iterate over buffers, and fill it with 32 bit values.
-              for(size_t i = 0; i < size; ++i)
+              for(size_t i = 0 ; i < size ; ++i)
               {
                   buff64[i] = static_cast<std::uint64_t>(buff32[i]);
               }

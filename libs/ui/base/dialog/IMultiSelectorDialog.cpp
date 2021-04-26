@@ -24,11 +24,12 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
 
-const IMultiSelectorDialog::FactoryRegistryKeyType IMultiSelectorDialog::REGISTRY_KEY =
-    "::ui::base::dialog::MultiSelectorDialog";
+const IMultiSelectorDialog::FactoryRegistryKeyType IMultiSelectorDialog::REGISTRY_KEY
+    = "::ui::base::dialog::MultiSelectorDialog";
 
 IMultiSelectorDialog::IMultiSelectorDialog()
 {
@@ -39,4 +40,5 @@ IMultiSelectorDialog::~IMultiSelectorDialog()
 }
 
 } // namespace dialog
+
 } // namespace sight::ui::base

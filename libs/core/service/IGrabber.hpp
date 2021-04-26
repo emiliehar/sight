@@ -28,11 +28,14 @@
 
 namespace sight::data
 {
+
 class FrameTL;
+
 }
 
 namespace sight::service
 {
+
 /**
  * @brief   This interface defines grabber service API.
  *          Must be implemented for services that grabs frames.
@@ -58,9 +61,7 @@ namespace sight::service
  */
 class SERVICE_CLASS_API IGrabber : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IGrabber, service::IService)
 
     /**
@@ -172,7 +173,6 @@ protected:
     SERVICE_API void setStartState(bool state);
 
 private:
-
     /**
      * @brief Pauses or unpauses camera if it is started, if not, it starts it. This slot shouldn't be used when play
      * or pause slots are used, this is why we add a boolean state, to ensure correct interaction with a GUI element.
@@ -181,7 +181,6 @@ private:
 
     /// Determines whether the grabber has been started, note : this does not mean it is playing, as it could be paused.
     bool m_isStarted{false};
-
 };
 
-} //namespace sight::service
+} // namespace sight::service

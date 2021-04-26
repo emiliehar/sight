@@ -38,14 +38,13 @@ namespace sight::core::memory
 
 struct CORE_CLASS_API BufferInfo
 {
-
     typedef size_t SizeType;
-    typedef WPTR ( void ) CounterType;
+    typedef WPTR(void) CounterType;
 
     CORE_API BufferInfo();
 
     CORE_API void clear();
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     long lockCount() const
     {
@@ -65,8 +64,7 @@ struct CORE_CLASS_API BufferInfo
     core::LogicStamp lastAccess;
     core::memory::BufferAllocationPolicy::sptr bufferPolicy;
 
-    SPTR( core::memory::stream::in::IFactory ) istreamFactory;
-
+    SPTR(core::memory::stream::in::IFactory) istreamFactory;
 };
 
 } // namespace sight::core::memory

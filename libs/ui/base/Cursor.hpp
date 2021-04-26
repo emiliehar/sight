@@ -36,9 +36,7 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API Cursor : public ui::base::ICursor
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(Cursor, ui::base::ICursor, new Cursor)
 
     /// Constructor. Create the implementation of the specific cursor
@@ -48,13 +46,12 @@ public:
 
     // TODO : update API to reflect the cursor stack
     /// Set the cursor
-    UI_BASE_API void setCursor( ui::base::ICursor::CursorType cursor) override;
+    UI_BASE_API void setCursor(ui::base::ICursor::CursorType cursor) override;
 
     /// Set the default cursor
     UI_BASE_API void setDefaultCursor() override;
 
 protected:
-
     /// Implementation of a cursor in a specific IHM (wx/Qt)
     ui::base::ICursor::sptr m_implementation;
 };

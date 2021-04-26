@@ -41,6 +41,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace series
 {
 
@@ -49,11 +50,9 @@ namespace series
  */
 class MODULE_UI_QT_CLASS_API Selector : public QTreeView
 {
-
 Q_OBJECT
 
 public:
-
     /// Defines a map associating icons to series (map\<series classname, icon path\>)
     typedef SelectorModel::SeriesIconType SeriesIconType;
 
@@ -111,14 +110,15 @@ Q_SIGNALS:
      * @note selection and deselection contain only the change of selection. The series always selected or deselected
      * don't appear in this selection/deselection.
      */
-    void selectSeries(QVector< data::Series::sptr > _selection,
-                      QVector< data::Series::sptr > _deselection);
+    void selectSeries(
+        QVector<data::Series::sptr> _selection,
+        QVector<data::Series::sptr> _deselection);
 
     /**
      * @brief Signal emitted when series are deleted.
      * @param _selection contains the deleted series.
      */
-    void removeSeries(QVector< data::Series::sptr > _selection);
+    void removeSeries(QVector<data::Series::sptr> _selection);
 
 protected Q_SLOTS:
     /**
@@ -132,7 +132,6 @@ protected Q_SLOTS:
     void selectionChanged(const QItemSelection& _selected, const QItemSelection& _deselected);
 
 private Q_SLOTS:
-
     /**
      * @brief SLOT: called when the selector model sends a signal to remove the study.
      * @param _uid the instance UID of the study to remove.
@@ -146,8 +145,7 @@ private Q_SLOTS:
     void onRemoveSerieID(const std::string& _id);
 
 private:
-
-    typedef QVector< data::Series::sptr > SeriesVectorType;
+    typedef QVector<data::Series::sptr> SeriesVectorType;
 
     /**
      * @brief Returns all the Series associated to the selection.
@@ -171,41 +169,42 @@ private:
     void deleteSelection();
 
     /// Tree model
-    QPointer<SelectorModel> m_model { nullptr };
+    QPointer<SelectorModel> m_model{nullptr};
 
     /// Allows to remove items.
-    bool m_allowedRemove { true };
-
+    bool m_allowedRemove{true};
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Selector::clear()
 {
     m_model->clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Selector::setInsertMode(bool _insert)
 {
     m_model->setInsertMode(_insert);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Selector::setRemoveStudyIcon(const std::filesystem::path& _path)
 {
     m_model->setRemoveStudyIcon(_path);
 }
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 inline void Selector::setRemoveSerieIcon(const std::filesystem::path& _path)
 {
     m_model->setRemoveSerieIcon(_path);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace series.
+
 } // namespace sight::module::ui::qt.

@@ -45,52 +45,61 @@ namespace policy
 class CORE_CLASS_API NeverDump : public core::memory::IPolicy
 {
 public:
+    SIGHT_DECLARE_CLASS(NeverDump, core::memory::IPolicy, core::memory::policy::factory::New<NeverDump>)
 
-    SIGHT_DECLARE_CLASS(NeverDump, core::memory::IPolicy, core::memory::policy::factory::New< NeverDump >)
+    CORE_API virtual void allocationRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer,
+        BufferInfo::SizeType size) override;
 
-    CORE_API virtual void allocationRequest( BufferInfo& info,
-                                             core::memory::BufferManager::ConstBufferPtrType buffer,
-                                             BufferInfo::SizeType size ) override;
+    CORE_API virtual void setRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer,
+        BufferInfo::SizeType size) override;
 
-    CORE_API virtual void setRequest( BufferInfo& info,
-                                      core::memory::BufferManager::ConstBufferPtrType buffer,
-                                      BufferInfo::SizeType size ) override;
+    CORE_API virtual void reallocateRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer,
+        BufferInfo::SizeType newSize) override;
 
-    CORE_API virtual void reallocateRequest( BufferInfo& info,
-                                             core::memory::BufferManager::ConstBufferPtrType buffer,
-                                             BufferInfo::SizeType newSize ) override;
+    CORE_API virtual void destroyRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
 
-    CORE_API virtual void destroyRequest( BufferInfo& info,
-                                          core::memory::BufferManager::ConstBufferPtrType buffer ) override;
+    CORE_API virtual void lockRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
+    CORE_API virtual void unlockRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
 
-    CORE_API virtual void lockRequest( BufferInfo& info,
-                                       core::memory::BufferManager::ConstBufferPtrType buffer ) override;
-    CORE_API virtual void unlockRequest( BufferInfo& info,
-                                         core::memory::BufferManager::ConstBufferPtrType buffer ) override;
-
-    CORE_API virtual void dumpSuccess( BufferInfo& info,
-                                       core::memory::BufferManager::ConstBufferPtrType buffer ) override;
-    CORE_API virtual void restoreSuccess( BufferInfo& info,
-                                          core::memory::BufferManager::ConstBufferPtrType buffer ) override;
+    CORE_API virtual void dumpSuccess(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
+    CORE_API virtual void restoreSuccess(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
 
     CORE_API void refresh() override;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     bool setParam(const std::string& name, const std::string& value) override
     {
         SIGHT_NOT_USED(name);
         SIGHT_NOT_USED(value);
+
         return false;
     }
 
-    CORE_API std::string getParam(const std::string& name, bool* ok = NULL ) const override;
+    CORE_API std::string getParam(const std::string& name, bool* ok = NULL) const override;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     const core::memory::IPolicy::ParamNamesType& getParamNames() const override
     {
         static core::memory::IPolicy::ParamNamesType names;
+
         return names;
     }
 };

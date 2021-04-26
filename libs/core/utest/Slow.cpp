@@ -29,11 +29,12 @@
 namespace sight::utest
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static bool getIgnoreSlowTestsEnv()
 {
-    const char* slowTests = std::getenv( "FW_IGNORE_SLOW_TESTS" );
+    const char* slowTests = std::getenv("FW_IGNORE_SLOW_TESTS");
+
     if(slowTests == nullptr || std::strlen(slowTests) == 0 || std::strcmp(slowTests, "0") == 0)
     {
         return false;
@@ -44,11 +45,12 @@ static bool getIgnoreSlowTestsEnv()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Slow::ignoreSlowTests()
 {
     static const bool IGNORE_SLOW_TESTS = getIgnoreSlowTestsEnv();
+
     return IGNORE_SLOW_TESTS;
 }
 

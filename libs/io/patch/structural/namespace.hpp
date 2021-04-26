@@ -33,44 +33,56 @@ namespace creator
 /// Contains creators for fwMedData.
 namespace data
 {
+
 }
+
 } // namespace creator
 
 /// Contains the structural patch (io::atoms::patch::IStructuralPatch) to tranforms atoms from fwData objects.
 namespace data
 {
+
 /// Contains the structural patch to transform atoms from data::Acquisition.
 namespace Acquisition
 {
+
 }
 
 /// Contains the structural patch to transform atoms from data::Patient.
 namespace Patient
 {
+
 }
 
 /// Contains the structural patch to transform atoms from data::Reconstruction.
 namespace Reconstruction
 {
+
 }
 
 /// Contains the structural patch to transform atoms from data::Study.
 namespace Study
 {
+
 }
+
 } // namespace data
 
 /// Contains the structural patch (io::atoms::patch::IStructuralPatch) to tranforms atoms from fwMedData objects.
 namespace data
 {
+
 /// Contains the structural patch to transform atoms from data::ImageSeries.
 namespace ImageSeries
 {
+
 }
 /// Contains the structural patch to transform atoms from data::ModelSeries.
 namespace ModelSeries
 {
+
 }
+
 } // namespace data
 
 } // namespace sight::io::patch::structural

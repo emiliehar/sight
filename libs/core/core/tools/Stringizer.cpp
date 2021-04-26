@@ -30,7 +30,7 @@
 namespace sight::core::tools
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 std::string getString(const std::string& aString)
@@ -38,17 +38,19 @@ std::string getString(const std::string& aString)
     return aString;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 std::string getString(const std::type_info& ti)
 {
 #ifndef WIN32
     char* demangled = abi::__cxa_demangle(ti.name(), 0, 0, 0);
-    if (demangled)
+
+    if(demangled)
     {
         std::string res(demangled);
         free(demangled);
+
         return res;
     }
     else
@@ -60,7 +62,7 @@ std::string getString(const std::type_info& ti)
 #endif
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 std::string getString(const TypeInfo& ti)
@@ -68,30 +70,30 @@ std::string getString(const TypeInfo& ti)
     return getString(ti.type_info());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 std::string getString(const signed char& c)
 {
-    return boost::lexical_cast<std::string>((short)c);
+    return boost::lexical_cast<std::string>((short) c);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 std::string getString(const char& c)
 {
-    return boost::lexical_cast<std::string>((short)c);
+    return boost::lexical_cast<std::string>((short) c);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 std::string getString(const unsigned char& c)
 {
-    return boost::lexical_cast<std::string>((short)c);
+    return boost::lexical_cast<std::string>((short) c);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}
+} // namespace sight::core

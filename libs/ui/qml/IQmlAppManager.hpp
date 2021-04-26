@@ -66,6 +66,7 @@ class UI_QML_CLASS_QT_API IQmlAppManager : public QObject,
                                            public service::AppManager
 {
 Q_OBJECT
+
 public:
     /// Constructor.
     UI_QML_QT_API IQmlAppManager() noexcept;
@@ -74,7 +75,6 @@ public:
     UI_QML_QT_API virtual ~IQmlAppManager() noexcept;
 
 public Q_SLOTS:
-
     /// Initialize the manager
     UI_QML_QT_API virtual void initialize();
 

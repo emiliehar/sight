@@ -27,8 +27,10 @@
  */
 namespace sight::module::filter::mesh
 {
+
 namespace generator
 {
 
 } // namespace generator.
+
 } // namespace sight::module::filter::mesh.

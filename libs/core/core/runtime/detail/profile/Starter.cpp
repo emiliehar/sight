@@ -39,14 +39,14 @@ namespace detail
 namespace profile
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Starter::Starter( const std::string& identifier ) :
-    m_identifier( identifier )
+Starter::Starter(const std::string& identifier) :
+    m_identifier(identifier)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Starter::apply()
 {
@@ -63,13 +63,13 @@ void Starter::apply()
             SIGHT_WARN("module " + m_identifier + " already started");
         }
     }
-    catch( const std::exception& e )
+    catch(const std::exception& e)
     {
         SIGHT_FATAL("Unable to start module " + m_identifier + ". " + e.what());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace detail
 

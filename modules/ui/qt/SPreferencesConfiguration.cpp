@@ -51,37 +51,39 @@ namespace sight::module::ui::qt
 
 const core::com::Signals::SignalKeyType SPreferencesConfiguration::s_PARAMETERS_MODIFIED_SIG = "parametersModified";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPreferencesConfiguration::SPreferencesConfiguration() noexcept
 {
-    m_sigParametersModified = newSignal< ParametersModifiedSignalType >(s_PARAMETERS_MODIFIED_SIG);
+    m_sigParametersModified = newSignal<ParametersModifiedSignalType>(s_PARAMETERS_MODIFIED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPreferencesConfiguration::~SPreferencesConfiguration() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPreferencesConfiguration::configuring()
 {
     this->initialize();
 
     core::runtime::ConfigurationElementContainer config = m_configuration->findAllConfigurationElement("preference");
+
     for(const auto& elt : config.getElements())
     {
         PreferenceElt pref;
 
         ConfigurationType typeCfg = elt->findConfigurationElement("type");
         SIGHT_ASSERT("element 'type' is missing.", typeCfg);
+
         if(typeCfg->getValue() == "checkbox")
         {
             pref.m_type = PreferenceType::CHECKBOX;
         }
-        else if (typeCfg->getValue() == "text" )
+        else if(typeCfg->getValue() == "text")
         {
             pref.m_type = PreferenceType::TEXT;
         }
@@ -102,12 +104,14 @@ void SPreferencesConfiguration::configuring()
             pref.m_type = PreferenceType::DOUBLE;
 
             ConfigurationType keyCfg = elt->findConfigurationElement("min");
+
             if(keyCfg)
             {
                 pref.m_dMinMax.first = std::stod(keyCfg->getValue());
             }
 
             keyCfg = elt->findConfigurationElement("max");
+
             if(keyCfg)
             {
                 pref.m_dMinMax.second = std::stod(keyCfg->getValue());
@@ -118,12 +122,14 @@ void SPreferencesConfiguration::configuring()
             pref.m_type = PreferenceType::U_INT;
 
             ConfigurationType keyCfg = elt->findConfigurationElement("min");
+
             if(keyCfg)
             {
                 pref.m_iMinMax.first = std::stoi(keyCfg->getValue());
             }
 
             keyCfg = elt->findConfigurationElement("max");
+
             if(keyCfg)
             {
                 pref.m_iMinMax.second = std::stoi(keyCfg->getValue());
@@ -131,7 +137,7 @@ void SPreferencesConfiguration::configuring()
         }
         else
         {
-            SIGHT_ERROR("Preference type "<<typeCfg->getValue()<<" is not implemented");
+            SIGHT_ERROR("Preference type " << typeCfg->getValue() << " is not implemented");
         }
 
         ConfigurationType nameCfg = elt->findConfigurationElement("name");
@@ -146,8 +152,8 @@ void SPreferencesConfiguration::configuring()
         SIGHT_ASSERT("element 'default_value' is missing.", defaultValueCfg);
         pref.m_defaultValue = defaultValueCfg->getValue();
 
-        if(pref.m_type == PreferenceType::TEXT || pref.m_type == PreferenceType::PATH ||
-           pref.m_type == PreferenceType::FILE)
+        if(pref.m_type == PreferenceType::TEXT || pref.m_type == PreferenceType::PATH
+           || pref.m_type == PreferenceType::FILE)
         {
             pref.m_lineEdit = new QLineEdit(QString::fromStdString(pref.m_defaultValue));
         }
@@ -173,19 +179,21 @@ void SPreferencesConfiguration::configuring()
 
             const ::boost::char_separator<char> sep(", ;");
             const std::string s = valuesCfg->getValue();
-            const ::boost::tokenizer< ::boost::char_separator<char> > tokens {s, sep};
+            const ::boost::tokenizer< ::boost::char_separator<char> > tokens{s, sep};
 
             pref.m_comboBox = new QComboBox();
+
             for(const std::string& value : tokens)
             {
                 pref.m_comboBox->addItem(QString::fromStdString(value));
             }
         }
+
         m_preferences.push_back(pref);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPreferencesConfiguration::starting()
 {
@@ -193,12 +201,14 @@ void SPreferencesConfiguration::starting()
 
     // Check preferences
     data::Composite::sptr prefs = sight::ui::base::preferences::getPreferences();
+
     if(prefs)
     {
         for(PreferenceElt& pref : m_preferences)
         {
-            data::Composite::IteratorType iterPref = prefs->find( pref.m_preferenceKey );
-            if ( iterPref != prefs->end() )
+            data::Composite::IteratorType iterPref = prefs->find(pref.m_preferenceKey);
+
+            if(iterPref != prefs->end())
             {
                 pref.m_dataPreference = data::String::dynamicCast(iterPref->second);
             }
@@ -211,7 +221,7 @@ void SPreferencesConfiguration::starting()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPreferencesConfiguration::updating()
 {
@@ -219,6 +229,7 @@ void SPreferencesConfiguration::updating()
     QPointer<QGridLayout> layout = new QGridLayout();
 
     int index = 0;
+
     for(PreferenceElt& pref : m_preferences)
     {
         QPointer<QLabel> label = new QLabel(QString::fromStdString(pref.m_name));
@@ -238,7 +249,10 @@ void SPreferencesConfiguration::updating()
         {
             pref.m_lineEdit->setText(QString::fromStdString(pref.m_dataPreference->value()));
             layout->addWidget(pref.m_lineEdit, index, 1);
-            QObject::connect(pref.m_lineEdit, &QLineEdit::textEdited, [&]()
+            QObject::connect(
+                pref.m_lineEdit,
+                &QLineEdit::textEdited,
+                [&]()
                 {
                     int pos               = 0;
                     QLineEdit* const edit = pref.m_lineEdit;
@@ -261,7 +275,6 @@ void SPreferencesConfiguration::updating()
                         edit->style()->polish(edit);
                     }
                 });
-
         }
         else if(pref.m_type == PreferenceType::PATH)
         {
@@ -269,7 +282,10 @@ void SPreferencesConfiguration::updating()
             layout->addWidget(pref.m_lineEdit, index, 1);
             QPointer<QPushButton> directorySelector = new QPushButton("...");
             layout->addWidget(directorySelector, index, 2);
-            QObject::connect(directorySelector.data(), &QPushButton::clicked, [this, pref]()
+            QObject::connect(
+                directorySelector.data(),
+                &QPushButton::clicked,
+                [this, pref]()
                 {
                     this->onSelectDir(pref.m_lineEdit);
                 });
@@ -280,7 +296,10 @@ void SPreferencesConfiguration::updating()
             layout->addWidget(pref.m_lineEdit, index, 1);
             QPointer<QPushButton> directorySelector = new QPushButton("...");
             layout->addWidget(directorySelector, index, 2);
-            QObject::connect(directorySelector.data(), &QPushButton::clicked, [this, pref]()
+            QObject::connect(
+                directorySelector.data(),
+                &QPushButton::clicked,
+                [this, pref]()
                 {
                     this->onSelectFile(pref.m_lineEdit);
                 });
@@ -288,16 +307,19 @@ void SPreferencesConfiguration::updating()
         else if(pref.m_type == PreferenceType::COMBOBOX)
         {
             const int currentIndex = pref.m_comboBox->findText(QString::fromStdString(pref.m_dataPreference->value()));
+
             if(currentIndex < 0)
             {
-                SIGHT_WARN( "Preference '" + pref.m_dataPreference->value() +
-                            "' can't be find in combobox. The first one is selected.");
+                SIGHT_WARN(
+                    "Preference '" + pref.m_dataPreference->value()
+                    + "' can't be find in combobox. The first one is selected.");
                 pref.m_comboBox->setCurrentIndex(0);
             }
             else
             {
                 pref.m_comboBox->setCurrentIndex(currentIndex);
             }
+
             layout->addWidget(pref.m_comboBox, index, 1);
         }
 
@@ -312,19 +334,19 @@ void SPreferencesConfiguration::updating()
     buttonLayout->addWidget(cancelButton);
     buttonLayout->addWidget(okButton);
 
-    layout->addLayout(buttonLayout, index, 1, 4, 2 );
+    layout->addLayout(buttonLayout, index, 1, 4, 2);
 
     QObject::connect(cancelButton.data(), &QPushButton::clicked, dialog.data(), &QDialog::reject);
     QObject::connect(okButton.data(), &QPushButton::clicked, dialog.data(), &QDialog::accept);
 
     dialog->setLayout(layout);
 
-    if (dialog->exec() == QDialog::Accepted)
+    if(dialog->exec() == QDialog::Accepted)
     {
         for(PreferenceElt& pref : m_preferences)
         {
-            if((pref.m_type == PreferenceType::TEXT || pref.m_type == PreferenceType::PATH ||
-                pref.m_type == PreferenceType::FILE) && !pref.m_lineEdit->text().isEmpty())
+            if((pref.m_type == PreferenceType::TEXT || pref.m_type == PreferenceType::PATH
+                || pref.m_type == PreferenceType::FILE) && !pref.m_lineEdit->text().isEmpty())
             {
                 pref.m_dataPreference->value() = pref.m_lineEdit->text().toStdString();
             }
@@ -363,19 +385,20 @@ void SPreferencesConfiguration::updating()
                 pref.m_dataPreference->value() = pref.m_comboBox->currentText().toStdString();
             }
         }
+
         m_sigParametersModified->asyncEmit();
         sight::ui::base::preferences::savePreferences();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPreferencesConfiguration::stopping()
 {
     this->actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 {
@@ -388,15 +411,16 @@ void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::FOLDER);
 
     const auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFolder());
-        lineEdit->setText( QString::fromStdString(result->getFolder().string()) );
+        lineEdit->setText(QString::fromStdString(result->getFolder().string()));
         dialogFile.saveDefaultLocation(defaultDirectory);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPreferencesConfiguration::onSelectFile(QPointer<QLineEdit> lineEdit)
 {
@@ -409,7 +433,8 @@ void SPreferencesConfiguration::onSelectFile(QPointer<QLineEdit> lineEdit)
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::SINGLE_FILE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFile().parent_path());
         lineEdit->setText(QString::fromStdString(result->getFile().string()));
@@ -417,6 +442,6 @@ void SPreferencesConfiguration::onSelectFile(QPointer<QLineEdit> lineEdit)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt

@@ -43,55 +43,60 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::module::io::vtk::ut::SeriesDBReaderTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::module::io::vtk::ut::SeriesDBReaderTest);
 
 static const double epsilon = 0.00001;
 
 namespace sight::module::io::vtk
 {
+
 namespace ut
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void compare(data::Object::sptr objRef, data::Object::sptr objComp)
 {
     data::reflection::visitor::CompareObjects visitor;
     visitor.compare(objRef, objComp);
     SPTR(data::reflection::visitor::CompareObjects::PropsMapType) props = visitor.getDifferences();
-    for( data::reflection::visitor::CompareObjects::PropsMapType::value_type prop :  (*props) )
+
+    for(data::reflection::visitor::CompareObjects::PropsMapType::value_type prop : (*props))
     {
-        SIGHT_ERROR( "new object difference found : " << prop.first << " '" << prop.second << "'" );
+        SIGHT_ERROR("new object difference found : " << prop.first << " '" << prop.second << "'");
     }
-    CPPUNIT_ASSERT_MESSAGE("Object Not equal", props->size() == 0 );
+
+    CPPUNIT_ASSERT_MESSAGE("Object Not equal", props->size() == 0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::testSeriesDBReader()
 {
     const std::filesystem::path imageFile = utestData::Data::dir() / "sight/image/vtk/img.vtk";
     const std::filesystem::path meshFile  = utestData::Data::dir() / "sight/mesh/vtk/sphere.vtk";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + imageFile.string() + "' does not exist",
-                           std::filesystem::exists(imageFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + imageFile.string() + "' does not exist",
+        std::filesystem::exists(imageFile));
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + meshFile.string() + "' does not exist",
-                           std::filesystem::exists(meshFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + meshFile.string() + "' does not exist",
+        std::filesystem::exists(meshFile));
 
     core::runtime::EConfigurationElement::sptr readerSrvCfg = core::runtime::EConfigurationElement::New("service");
     core::runtime::EConfigurationElement::sptr file1Cfg     = core::runtime::EConfigurationElement::New("file");
@@ -104,7 +109,7 @@ void SeriesDBReaderTest::testSeriesDBReader()
 
     data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
 
-    service::IService::sptr srv = service::add( "::sight::module::io::vtk::SSeriesDBReader" );
+    service::IService::sptr srv = service::add("::sight::module::io::vtk::SSeriesDBReader");
 
     CPPUNIT_ASSERT_MESSAGE("Create SSeriesDBReader failed", srv);
 
@@ -119,7 +124,7 @@ void SeriesDBReaderTest::testSeriesDBReader()
     // Data expected
     const data::Image::Spacing spacingExpected = {1.732, 1.732, 3.2};
     const data::Image::Origin originExpected   = {34.64, 86.6, 56};
-    const data::Image::Size sizeExpected       = { 230, 170, 58};
+    const data::Image::Size sizeExpected       = {230, 170, 58};
 
     CPPUNIT_ASSERT_EQUAL(size_t(2), seriesDB->size());
 
@@ -134,9 +139,9 @@ void SeriesDBReaderTest::testSeriesDBReader()
     const data::Image::Spacing originRead  = image->getOrigin2();
     const data::Image::Size sizeRead       = image->getSize2();
 
-    CPPUNIT_ASSERT_EQUAL(spacingExpected.size(), spacingRead.size() );
-    CPPUNIT_ASSERT_EQUAL(originExpected.size(), originRead.size() );
-    CPPUNIT_ASSERT_EQUAL(sizeExpected.size(), sizeRead.size() );
+    CPPUNIT_ASSERT_EQUAL(spacingExpected.size(), spacingRead.size());
+    CPPUNIT_ASSERT_EQUAL(originExpected.size(), originRead.size());
+    CPPUNIT_ASSERT_EQUAL(sizeExpected.size(), sizeRead.size());
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect spacing on x", spacingExpected[0], spacingRead[0], epsilon);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect spacing on y", spacingExpected[1], spacingRead[1], epsilon);
@@ -150,27 +155,28 @@ void SeriesDBReaderTest::testSeriesDBReader()
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect size on y", sizeExpected[1], sizeRead[1], epsilon);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect size on z", sizeExpected[2], sizeRead[2], epsilon);
 
-    CPPUNIT_ASSERT_EQUAL(size_t(2),  modelSeries->getReconstructionDB().size());
+    CPPUNIT_ASSERT_EQUAL(size_t(2), modelSeries->getReconstructionDB().size());
 
     data::Reconstruction::sptr rec1 = modelSeries->getReconstructionDB()[0];
     data::Reconstruction::sptr rec2 = modelSeries->getReconstructionDB()[1];
     data::Mesh::sptr mesh1          = rec1->getMesh();
     data::Mesh::sptr mesh2          = rec2->getMesh();
 
-    CPPUNIT_ASSERT_EQUAL((data::Mesh::Size)720, mesh1->getNumberOfCells());
-    CPPUNIT_ASSERT_EQUAL((data::Mesh::Size)362, mesh1->getNumberOfPoints());
+    CPPUNIT_ASSERT_EQUAL((data::Mesh::Size) 720, mesh1->getNumberOfCells());
+    CPPUNIT_ASSERT_EQUAL((data::Mesh::Size) 362, mesh1->getNumberOfPoints());
 
     compare(mesh1, mesh2);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::testMergeSeriesDBReader()
 {
     const std::filesystem::path imageFile = utestData::Data::dir() / "sight/image/vtk/img.vtk";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + imageFile.string() + "' does not exist",
-                           std::filesystem::exists(imageFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + imageFile.string() + "' does not exist",
+        std::filesystem::exists(imageFile));
 
     core::runtime::EConfigurationElement::sptr readerSrvCfg = core::runtime::EConfigurationElement::New("service");
     core::runtime::EConfigurationElement::sptr fileCfg      = core::runtime::EConfigurationElement::New("file");
@@ -181,7 +187,7 @@ void SeriesDBReaderTest::testMergeSeriesDBReader()
     data::SeriesDB::sptr seriesDB       = data::SeriesDB::New();
     seriesDB->getContainer().push_back(imageSeries);
 
-    service::IService::sptr srv = service::add( "::sight::module::io::vtk::SSeriesDBReader" );
+    service::IService::sptr srv = service::add("::sight::module::io::vtk::SSeriesDBReader");
 
     CPPUNIT_ASSERT_MESSAGE("Create SSeriesDBReader failed", srv);
 
@@ -196,7 +202,8 @@ void SeriesDBReaderTest::testMergeSeriesDBReader()
     CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::module::io::vtk
+} // namespace ut
+
+} // namespace sight::module::io::vtk

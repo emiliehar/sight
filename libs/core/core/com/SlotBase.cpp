@@ -28,37 +28,39 @@
 namespace sight::core::com
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotBase::run() const
 {
-    typedef SlotRun< void () > SlotFuncType;
-    const SlotFuncType* fun = dynamic_cast< const SlotFuncType* >(this);
+    typedef SlotRun<void ()> SlotFuncType;
+    const SlotFuncType* fun = dynamic_cast<const SlotFuncType*>(this);
+
     if(fun)
     {
         fun->run();
     }
     else
     {
-        SIGHT_ERROR( "failed to run : " + m_signature + " with " + SlotBase::getTypeName< void() >() );
-        SIGHT_THROW_EXCEPTION( core::com::exception::BadRun( "Failed to find right signature for run"  ) );
+        SIGHT_ERROR("failed to run : " + m_signature + " with " + SlotBase::getTypeName<void()>());
+        SIGHT_THROW_EXCEPTION(core::com::exception::BadRun("Failed to find right signature for run"));
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SlotBase::VoidSharedFutureType SlotBase::asyncRun() const
 {
-    typedef SlotRun< void () > SlotFuncType;
-    const SlotFuncType* fun = dynamic_cast< const SlotFuncType* >(this);
+    typedef SlotRun<void ()> SlotFuncType;
+    const SlotFuncType* fun = dynamic_cast<const SlotFuncType*>(this);
+
     if(fun)
     {
         return fun->asyncRun();
     }
     else
     {
-        SIGHT_ERROR( "failed to asyncRun : " + m_signature + " with " + SlotBase::getTypeName< void() >() );
-        SIGHT_THROW_EXCEPTION( core::com::exception::BadRun( "Failed to find right signature for asyncRun"  ) );
+        SIGHT_ERROR("failed to asyncRun : " + m_signature + " with " + SlotBase::getTypeName<void()>());
+        SIGHT_THROW_EXCEPTION(core::com::exception::BadRun("Failed to find right signature for asyncRun"));
     }
 }
 

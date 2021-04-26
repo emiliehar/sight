@@ -67,7 +67,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SLabelImageToBinaryImage final : public service::IOperator
 {
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SLabelImageToBinaryImage, service::IOperator)
 
@@ -78,7 +77,6 @@ public:
     MODULE_FILTER_IMAGE_CLASS_API ~SLabelImageToBinaryImage() override;
 
 protected:
-
     /// Configures this service.
     MODULE_FILTER_IMAGE_API void configuring() override;
 
@@ -101,9 +99,7 @@ protected:
     MODULE_FILTER_IMAGE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
-    ::boost::optional< std::string > m_labelSetFieldName;
-
+    ::boost::optional<std::string> m_labelSetFieldName;
 };
 
 } // namespace sight::module::filter::image.

@@ -31,25 +31,26 @@
 
 namespace sight::module::ui::base
 {
+
 namespace io
 {
 
 const core::com::Signals::SignalKeyType SFolderSelector::s_FOLDER_SELECTED_SIG = "folderSelected";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SFolderSelector::SFolderSelector( ) noexcept
+SFolderSelector::SFolderSelector() noexcept
 {
-    newSignal< FolderSelectedSignalType >( s_FOLDER_SELECTED_SIG );
+    newSignal<FolderSelectedSignalType>(s_FOLDER_SELECTED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SFolderSelector::~SFolderSelector() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SFolderSelector::configuring()
 {
@@ -57,15 +58,15 @@ void SFolderSelector::configuring()
     m_dialogTitle = config.get("dialogTitle", "Select a folder");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SFolderSelector::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SFolderSelector::updating( )
+void SFolderSelector::updating()
 {
     static auto defaultDirectory = core::location::SingleFolder::New();
     sight::ui::base::dialog::LocationDialog dialogFile;
@@ -75,20 +76,23 @@ void SFolderSelector::updating( )
     dialogFile.setType(sight::ui::base::dialog::ILocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         auto sig = this->signal<FolderSelectedSignalType>(s_FOLDER_SELECTED_SIG);
         sig->asyncEmit(result->getFolder());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SFolderSelector::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //
+
 } // namespace io
+
 } // namespace sight::module::ui::base

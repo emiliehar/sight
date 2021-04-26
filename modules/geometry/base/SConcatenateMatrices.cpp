@@ -57,14 +57,16 @@ void SConcatenateMatrices::configuring()
 
     std::vector<ConfigurationType> matrixCfgs = inCfgs[0]->find("key");
 
-    for (ConfigurationType cfg : matrixCfgs)
+    for(ConfigurationType cfg : matrixCfgs)
     {
         bool invertCurrentMatrix  = false;
         const std::string inverse = cfg->getAttributeValue("inverse");
-        if (!inverse.empty())
+
+        if(!inverse.empty())
         {
             invertCurrentMatrix = (inverse == "true");
         }
+
         m_invertVector.push_back(invertCurrentMatrix);
     }
 }
@@ -85,7 +87,7 @@ void SConcatenateMatrices::stopping()
 
 void SConcatenateMatrices::updating()
 {
-    auto outputMatrix = this->getInOut< data::Matrix4>(s_OUTPUT);
+    auto outputMatrix = this->getInOut<data::Matrix4>(s_OUTPUT);
     SIGHT_ASSERT("inout '" + s_OUTPUT + "' is not defined", outputMatrix);
     {
         data::mt::ObjectWriteLock outputMatrixLock(outputMatrix);
@@ -95,12 +97,13 @@ void SConcatenateMatrices::updating()
         auto inverse = data::Matrix4::New();
 
         size_t index = 0;
-        for (const bool invertCurrentMatrix : m_invertVector)
+
+        for(const bool invertCurrentMatrix : m_invertVector)
         {
-            auto inputMatrix = this->getInput< data::Matrix4>(s_MATRIX_GROUP_INOUT, index++);
+            auto inputMatrix = this->getInput<data::Matrix4>(s_MATRIX_GROUP_INOUT, index++);
             data::mt::ObjectReadLock inputMatrixLock(inputMatrix);
 
-            if (invertCurrentMatrix)
+            if(invertCurrentMatrix)
             {
                 sight::geometry::data::invert(inputMatrix, inverse);
                 sight::geometry::data::multiply(outputMatrix, inverse, outputMatrix);
@@ -112,7 +115,7 @@ void SConcatenateMatrices::updating()
         }
     }
 
-    auto sig = outputMatrix->signal< data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
+    auto sig = outputMatrix->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();

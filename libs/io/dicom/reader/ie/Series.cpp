@@ -36,32 +36,35 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace ie
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Series::Series(const data::DicomSeries::csptr& dicomSeries,
-               const SPTR(::gdcm::Reader)& reader,
-               const io::dicom::container::DicomInstance::sptr& instance,
-               const data::Series::sptr& series,
-               const core::log::Logger::sptr& logger,
-               ProgressCallback progress,
-               CancelRequestedCallback cancel) :
-    io::dicom::reader::ie::InformationEntity< data::Series >(dicomSeries, reader, instance, series,
-                                                             logger, progress, cancel)
+Series::Series(
+    const data::DicomSeries::csptr& dicomSeries,
+    const SPTR(::gdcm::Reader)& reader,
+    const io::dicom::container::DicomInstance::sptr& instance,
+    const data::Series::sptr& series,
+    const core::log::Logger::sptr& logger,
+    ProgressCallback progress,
+    CancelRequestedCallback cancel) :
+    io::dicom::reader::ie::InformationEntity<data::Series>(dicomSeries, reader, instance, series,
+                                                           logger, progress, cancel)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Series::~Series()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Series::readGeneralSeriesModule()
 {
@@ -87,11 +90,12 @@ void Series::readGeneralSeriesModule()
     m_object->setTime(time);
 
     const std::string& performingPhysicianNamesStr
-        = io::dicom::helper::DicomDataReader::getTagValue< 0x0008, 0x1050 >(dataset);
+        = io::dicom::helper::DicomDataReader::getTagValue<0x0008, 0x1050>(dataset);
+
     if(!performingPhysicianNamesStr.empty())
     {
         data::DicomValuesType performingPhysicianNames;
-        ::boost::split( performingPhysicianNames, performingPhysicianNamesStr, ::boost::is_any_of("\\"));
+        ::boost::split(performingPhysicianNames, performingPhysicianNamesStr, ::boost::is_any_of("\\"));
         m_object->setPerformingPhysiciansName(performingPhysicianNames);
     }
 
@@ -140,14 +144,15 @@ void Series::readGeneralSeriesModule()
     m_object->setPerformedProcedureComments(performedProcedureComments);
 
     const data::ImageSeries::sptr imageSeries = data::ImageSeries::dynamicCast(m_object);
+
     if(imageSeries)
     {
-        const std::string& imageContrastAgent =
-            io::dicom::helper::DicomDataReader::getTagValue<0x0018, 0x0010>(dataset);
+        const std::string& imageContrastAgent
+            = io::dicom::helper::DicomDataReader::getTagValue<0x0018, 0x0010>(dataset);
         imageSeries->setContrastAgent(imageContrastAgent);
 
-        const std::string& imageContrastRoute =
-            io::dicom::helper::DicomDataReader::getTagValue<0x0018, 0x1040>(dataset);
+        const std::string& imageContrastRoute
+            = io::dicom::helper::DicomDataReader::getTagValue<0x0018, 0x1040>(dataset);
         imageSeries->setContrastRoute(imageContrastRoute);
 
         const std::string& imageContrastVolume = io::dicom::helper::DicomDataReader::getTagValue<0x0018, 0x1041>(
@@ -193,5 +198,7 @@ void Series::readGeneralSeriesModule()
 }
 
 } // namespace ie
+
 } // namespace reader
+
 } // namespace sight::io::dicom

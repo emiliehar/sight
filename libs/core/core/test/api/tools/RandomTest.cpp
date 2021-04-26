@@ -25,28 +25,29 @@
 #include <core/tools/random/Generator.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::RandomTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::RandomTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RandomTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RandomTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RandomTest::generatorTest()
 {
@@ -59,14 +60,15 @@ void RandomTest::generatorTest()
     CPPUNIT_ASSERT_MESSAGE("Generate random number not in good interval.", randI >= minI && randI <= maxI);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RandomTest::randomListTest()
 {
     float minF = 10.f, maxF = 20.f;
     std::vector<float> randF(10);
     core::tools::random::fillContainer(minF, maxF, randF);
-    for(size_t i = 0; i < randF.size(); ++i)
+
+    for(size_t i = 0 ; i < randF.size() ; ++i)
     {
         CPPUNIT_ASSERT_MESSAGE("Generate random number not in good interval.", randF[i] >= minF && randF[i] <= maxF);
     }
@@ -74,13 +76,14 @@ void RandomTest::randomListTest()
     int minI = 10, maxI = 20;
     std::vector<int> randI(10);
     core::tools::random::fillContainer(minI, maxI, randI);
-    for(size_t i = 0; i < randF.size(); ++i)
+
+    for(size_t i = 0 ; i < randF.size() ; ++i)
     {
         CPPUNIT_ASSERT_MESSAGE("Generate random number not in good interval.", randI[i] >= minI && randI[i] <= maxI);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RandomTest::seedTest()
 {
@@ -97,11 +100,13 @@ void RandomTest::seedTest()
     std::vector<int> randI2(10);
     core::tools::random::fillContainer(minI, maxI, randI1, seedVal);
     core::tools::random::fillContainer(minI, maxI, randI2, seedVal);
-    for(size_t i = 0; i < randI1.size(); ++i)
+
+    for(size_t i = 0 ; i < randI1.size() ; ++i)
     {
         CPPUNIT_ASSERT_EQUAL(randI1[i], randI2[i]);
     }
 }
 
 } // namespace ut
+
 } // namespace sight::core::tools

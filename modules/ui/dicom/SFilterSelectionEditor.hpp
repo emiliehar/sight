@@ -65,10 +65,9 @@ class MODULE_UI_DICOM_CLASS_API SFilterSelectionEditor : public QObject,
 Q_OBJECT;
 
 public:
+    SIGHT_DECLARE_SERVICE(SFilterSelectionEditor, sight::ui::base::IEditor)
 
-    SIGHT_DECLARE_SERVICE(SFilterSelectionEditor,  sight::ui::base::IEditor )
-
-    typedef std::map< std::string, filter::dicom::IFilter::sptr > FilterMapType;
+    typedef std::map<std::string, filter::dicom::IFilter::sptr> FilterMapType;
 
     /**
      * @brief Constructor
@@ -107,8 +106,8 @@ private Q_SLOTS:
 
     /// Slot used to display a warning when ignore errors checkbox is checked
     MODULE_UI_DICOM_API void onForceChecked(int state);
-protected:
 
+protected:
     /// Do nothing.
     MODULE_UI_DICOM_API void configuring() override;
 
@@ -122,7 +121,7 @@ protected:
     MODULE_UI_DICOM_API void updating() override;
 
     /// Override
-    MODULE_UI_DICOM_API void info(std::ostream& _sstream ) override;
+    MODULE_UI_DICOM_API void info(std::ostream& _sstream) override;
 
     /// Fill the combobox with the list of available filters
     MODULE_UI_DICOM_API void fillAvailableFilters();
@@ -146,31 +145,31 @@ protected:
     static std::string getFilterDescription(filter::dicom::IFilter::sptr filter);
 
     /// Combo box displaying the available filters
-    QPointer< QComboBox > m_availableFilterListWidget;
+    QPointer<QComboBox> m_availableFilterListWidget;
 
     /// Selected filters list widget
-    QPointer< QListWidget > m_selectedFilterListWidget;
+    QPointer<QListWidget> m_selectedFilterListWidget;
 
     /// Button used to add a filter in the list
-    QPointer< QPushButton > m_addFilterButton;
+    QPointer<QPushButton> m_addFilterButton;
 
     /// Button used to remove a filter in the list
-    QPointer< QPushButton > m_removeFilterButton;
+    QPointer<QPushButton> m_removeFilterButton;
 
     /// Button used to configure a filter in the list
-    QPointer< QPushButton > m_configureFilterButton;
+    QPointer<QPushButton> m_configureFilterButton;
 
     /// Button used to apply filters of the list
-    QPointer< QPushButton > m_applyFiltersButton;
+    QPointer<QPushButton> m_applyFiltersButton;
 
     /// Button used to split a composite filter
-    QPointer< QPushButton > m_splitFilterButton;
+    QPointer<QPushButton> m_splitFilterButton;
 
     /// Delete key shortcut
-    QPointer< QShortcut > m_deleteShortcut;
+    QPointer<QShortcut> m_deleteShortcut;
 
     /// Forced apply check box
-    QPointer< QCheckBox > m_forcedApplyCheckBox;
+    QPointer<QCheckBox> m_forcedApplyCheckBox;
 
     /// Map used to store filters and their keys
     FilterMapType m_filtersMap;
@@ -180,7 +179,6 @@ protected:
 
     /// Destination SeriesDB
     data::SeriesDB::sptr m_destinationSeriesDB;
-
 };
 
 } // namespace sight::module::ui::dicom

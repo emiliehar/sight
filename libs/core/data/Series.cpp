@@ -39,22 +39,24 @@ Series::Series(data::Object::Key) :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Series::~Series()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Series::shallowCopy(const data::Object::csptr& _source)
 {
     Series::csptr other = Series::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->fieldShallowCopy( other );
+    this->fieldShallowCopy(other);
 
     m_patient   = other->m_patient;
     m_study     = other->m_study;
@@ -68,16 +70,18 @@ void Series::shallowCopy(const data::Object::csptr& _source)
     m_description              = other->m_description;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Series::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Series::csptr other = Series::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->fieldDeepCopy( other, cache );
+    this->fieldDeepCopy(other, cache);
 
     m_patient   = data::Object::copy(other->m_patient, cache);
     m_study     = data::Object::copy(other->m_study, cache);
@@ -91,6 +95,6 @@ void Series::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheTyp
     m_description              = other->m_description;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

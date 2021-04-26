@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -36,7 +37,6 @@ class GenericSerializer : public IDataSerializer
 {
 public:
     SIGHT_DECLARE_CLASS(GenericSerializer<T>, IDataSerializer)
-
     /// Delete default copy constructors and assignment operators
     GenericSerializer(const GenericSerializer&)            = delete;
     GenericSerializer(GenericSerializer&&)                 = delete;
@@ -60,30 +60,31 @@ public:
         const core::crypto::secure_string& password = "") override;
 
 protected:
-
     /// Default constructor
     GenericSerializer() = default;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 typename GenericSerializer<T>::sptr GenericSerializer<T>::shared()
 {
     struct make_shared_enabler final : public GenericSerializer<T> {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 typename GenericSerializer<T>::uptr GenericSerializer<T>::unique()
 {
     struct make_unique_enabler final : public GenericSerializer<T> {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 void GenericSerializer<T>::serialize(
@@ -106,4 +107,5 @@ void GenericSerializer<T>::serialize(
 }
 
 } // namespace detail::data
+
 } // namespace sight::io::session

@@ -32,19 +32,19 @@ namespace sight::module::viz::sample
 
 static const std::string s_IMAGE_INPUT = "image";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImage::SImage() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImage::~SImage() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImage::configuring()
 {
@@ -53,17 +53,18 @@ void SImage::configuring()
     const auto config = this->getConfigTree();
 
     auto inoutsCfg = config.equal_range("in");
-    for (auto itCfg = inoutsCfg.first; itCfg != inoutsCfg.second; ++itCfg)
+
+    for(auto itCfg = inoutsCfg.first ; itCfg != inoutsCfg.second ; ++itCfg)
     {
         if(itCfg->second.get<std::string>("<xmlattr>.key") == s_IMAGE_INPUT)
         {
-            m_imageAutoConnect =
-                itCfg->second.get_optional<std::string>("<xmlattr>.autoConnect").get_value_or("no") == "yes";
+            m_imageAutoConnect
+                = itCfg->second.get_optional<std::string>("<xmlattr>.autoConnect").get_value_or("no") == "yes";
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImage::starting()
 {
@@ -74,7 +75,7 @@ void SImage::starting()
     const auto genericSceneId = this->getID() + "-genericScene";
     sight::ui::base::GuiRegistry::registerSIDContainer(genericSceneId, qtContainer);
 
-    auto image = this->getLockedInput< data::Object>(s_IMAGE_INPUT);
+    auto image = this->getLockedInput<data::Object>(s_IMAGE_INPUT);
 
     // create and register the render service
     service::IService::ConfigType renderConfig;
@@ -108,7 +109,7 @@ void SImage::starting()
     negatoConfig.put("config.<xmlattr>.interactive", "true");
     m_negatoSrv = service::add("::sight::module::viz::scene3d::adaptor::SNegato3D");
     m_negatoSrv->setConfiguration(negatoConfig);
-    m_negatoSrv->registerInOut( std::const_pointer_cast< data::Object >(image->getConstSptr()), "image", true );
+    m_negatoSrv->registerInOut(std::const_pointer_cast<data::Object>(image->getConstSptr()), "image", true);
     m_negatoSrv->setID(this->getID() + "negato3DAdaptor");
     m_negatoSrv->configure();
 
@@ -117,7 +118,7 @@ void SImage::starting()
     m_negatoSrv->slot("start")->asyncRun();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SImage::getAutoConnections() const
 {
@@ -129,13 +130,13 @@ service::IService::KeyConnectionsMap SImage::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImage::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImage::stopping()
 {
@@ -145,9 +146,9 @@ void SImage::stopping()
 
     sight::ui::base::GuiRegistry::unregisterSIDContainer(this->getID() + "-genericScene");
 
-    service::OSR::unregisterService( m_negatoSrv );
-    service::OSR::unregisterService( m_interactorSrv );
-    service::OSR::unregisterService( m_renderSrv );
+    service::OSR::unregisterService(m_negatoSrv);
+    service::OSR::unregisterService(m_interactorSrv);
+    service::OSR::unregisterService(m_renderSrv);
 
     m_negatoSrv.reset();
     m_interactorSrv.reset();

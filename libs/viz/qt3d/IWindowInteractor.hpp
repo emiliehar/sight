@@ -34,7 +34,9 @@
 
 namespace Qt3DExtras
 {
+
 class Qt3DWindow;
+
 }
 
 namespace sight::viz::qt3d
@@ -46,9 +48,7 @@ namespace sight::viz::qt3d
  */
 class VIZ_QT3D_CLASS_API IWindowInteractor : public sight::core::BaseObject
 {
-
 public:
-
     typedef viz::qt3d::factory::Key Key;
 
     /**
@@ -57,7 +57,7 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -82,7 +82,7 @@ public:
     VIZ_QT3D_API virtual ~IWindowInteractor();
 
     /// Creates an interactor and installs it in window.
-    VIZ_QT3D_API virtual void createContainer( ui::base::container::fwContainer::sptr _parent) = 0;
+    VIZ_QT3D_API virtual void createContainer(ui::base::container::fwContainer::sptr _parent) = 0;
 
     /// Converts 3DView to QWidget and attach it to the container.
     VIZ_QT3D_API virtual void set3DView(Qt3DExtras::Qt3DWindow* _3dView) = 0;

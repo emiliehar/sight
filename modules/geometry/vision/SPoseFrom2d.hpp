@@ -139,14 +139,13 @@ protected:
     void computeRegistration(core::HiResClock::HiResClockType timestamp) override;
 
 private:
-
     /**
      * @brief The Marker struct:
      * to handle marker object, with 4 corners 2D, and optionnaly a centroid
      */
     struct Marker
     {
-        std::vector< ::cv::Point2f > corners2D;
+        std::vector< ::cv::Point2f> corners2D;
         ::cv::Point3f centroid;
     };
 
@@ -194,16 +193,16 @@ private:
     bool m_isInitialized;
 
     /// 3d model
-    std::vector< ::cv::Point3f > m_3dModel;
+    std::vector< ::cv::Point3f> m_3dModel;
 
     /// std::vector of cameras
-    std::vector < Camera > m_cameras;
+    std::vector<Camera> m_cameras;
 
     /// Extrinsic matrix
     Extrinsic m_extrinsic;
 
     /// List of tags associated with each inout matrix
-    std::vector< data::MarkerMap::KeyType> m_matricesTag;
+    std::vector<data::MarkerMap::KeyType> m_matricesTag;
 };
 
 } // namespace sight::module::geometry::vision

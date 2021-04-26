@@ -31,6 +31,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
@@ -40,8 +41,10 @@ namespace splitter
 class FILTER_DICOM_CLASS_API TagValueInstanceRemoveSplitter : public ISplitter
 {
 public:
-    SIGHT_DECLARE_CLASS(TagValueInstanceRemoveSplitter, ISplitter,
-                        filter::dicom::factory::New< TagValueInstanceRemoveSplitter >);
+    SIGHT_DECLARE_CLASS(
+        TagValueInstanceRemoveSplitter,
+        ISplitter,
+        filter::dicom::factory::New<TagValueInstanceRemoveSplitter>);
 
     /// Constructor
     FILTER_DICOM_API TagValueInstanceRemoveSplitter(filter::dicom::IFilter::Key key);
@@ -51,7 +54,8 @@ public:
 
     /// Override
     FILTER_DICOM_API virtual DicomSeriesContainerType apply(
-        const data::DicomSeries::sptr& series, const core::log::Logger::sptr& logger) const override;
+        const data::DicomSeries::sptr& series,
+        const core::log::Logger::sptr& logger) const override;
 
     /// Return the name of the filter
     FILTER_DICOM_API std::string getName() const override;
@@ -65,48 +69,54 @@ public:
     /**
      * @brief Tag used to sort instances
      * @{ */
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    DcmTagKey& getTag ()
+    DcmTagKey& getTag()
     {
         return this->m_tag;
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     const DcmTagKey& getTag() const
     {
         return this->m_tag;
     }
-    //------------------------------------------------------------------------------
 
-    void setTag (const DcmTagKey& _tag)
+    // ------------------------------------------------------------------------------
+
+    void setTag(const DcmTagKey& _tag)
     {
         this->m_tag = _tag;
     }
+
     /**  @} */
 
     /**
      * @brief Tag value used to determine if an instance must be removed
      * @{ */
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     std::string& getTagValue()
     {
         return this->m_tagValue;
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     const std::string& getTagValue() const
     {
         return this->m_tagValue;
     }
-    //------------------------------------------------------------------------------
 
-    void setTagValue(const std::string&  _tagValue)
+    // ------------------------------------------------------------------------------
+
+    void setTagValue(const std::string& _tagValue)
     {
         this->m_tagValue = _tagValue;
     }
-    /**  @} */
+
+/**  @} */
 
 protected:
     /// Filter name
@@ -120,8 +130,8 @@ protected:
 
     /// Tag value used to determine if an instance must be removed
     std::string m_tagValue;
-
 };
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

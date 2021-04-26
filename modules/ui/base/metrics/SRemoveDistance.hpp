@@ -67,9 +67,7 @@ namespace sight::module::ui::base::metrics
  */
 class MODULE_UI_BASE_CLASS_API SRemoveDistance final : public ::sight::ui::base::IAction
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SRemoveDistance, sight::ui::base::IAction)
 
@@ -80,7 +78,6 @@ public:
     MODULE_UI_BASE_API ~SRemoveDistance() noexcept override;
 
 protected:
-
     /// Configures the action.
     MODULE_UI_BASE_API void configuring() override;
 
@@ -94,7 +91,6 @@ protected:
     MODULE_UI_BASE_API void stopping() override;
 
 private:
-
     /// Changes a distance value to a string.
     static std::string distanceToStr(double _dist);
 

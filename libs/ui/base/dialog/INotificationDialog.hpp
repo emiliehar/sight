@@ -31,16 +31,16 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief Defines the generic notification popup GUI.
  */
 class UI_BASE_CLASS_API INotificationDialog : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(INotificationDialog, ui::base::GuiBaseObject)
 
     /// Notification Type (changes Qss style).
@@ -85,13 +85,13 @@ public:
      * @brief Sets the notification type.
      * @param _type notification type @see Type.
      */
-    UI_BASE_API virtual void setType( Type _type);
+    UI_BASE_API virtual void setType(Type _type);
 
     /**
      * @brief Sets the position.
      * @param _position notification position @see Position.
      */
-    UI_BASE_API virtual void setPosition( Position _position);
+    UI_BASE_API virtual void setPosition(Position _position);
 
     /**
      * @brief Sets the size
@@ -131,30 +131,29 @@ public:
     }
 
 protected:
-
     /// Total duration of the popup (cannot be below 2000ms).
-    int m_duration {3000};
+    int m_duration{3000};
 
     /// Message to display.
     std::string m_message;
 
     /// Type of notification (may change the background color).
-    Type m_notificationType {Type::DEFAULT};
+    Type m_notificationType{Type::DEFAULT};
 
     /// Where the notification will be displayed (relative to the active windows).
-    Position m_position {Position::DEFAULT};
+    Position m_position{Position::DEFAULT};
 
     /// Size as [width, height].
-    std::array<unsigned int, 2> m_size {200, 60};
+    std::array<unsigned int, 2> m_size{200, 60};
 
     /// Position of the notification, used to avoid overlapping
     /// when several notifications are shown. (0 = first, 1 = second, ...)
-    unsigned int m_index {0};
+    unsigned int m_index{0};
 
     /// Pointer to the parent container, default nullptr.
-    ui::base::container::fwContainer::csptr m_parentContainer {nullptr};
-
+    ui::base::container::fwContainer::csptr m_parentContainer{nullptr};
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

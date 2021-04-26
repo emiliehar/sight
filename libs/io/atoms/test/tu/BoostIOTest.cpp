@@ -35,33 +35,34 @@
 
 #include <filesystem>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::atoms::ut::BoostIOTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::atoms::ut::BoostIOTest);
 
 namespace sight::io::atoms
 {
+
 namespace ut
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void BoostIOTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BoostIOTest::tearDown()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void BoostIOTest::readWriteZipTest()
 {
     SequenceGenerator gen;
 
-    std::filesystem::path folderPath =
-        core::tools::System::getTemporaryFolder() / ( core::tools::UUID::generateUUID() + ".zip");
+    std::filesystem::path folderPath
+        = core::tools::System::getTemporaryFolder() / (core::tools::UUID::generateUUID() + ".zip");
 
     io::zip::IWriteArchive::sptr writeArchive;
     io::zip::IReadArchive::sptr readArchive;
@@ -92,13 +93,13 @@ void BoostIOTest::readWriteZipTest()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void BoostIOTest::readWriteDirTest()
 {
     SequenceGenerator gen;
-    std::filesystem::path folderPath =
-        core::tools::System::getTemporaryFolder() / core::tools::UUID::generateUUID();
+    std::filesystem::path folderPath
+        = core::tools::System::getTemporaryFolder() / core::tools::UUID::generateUUID();
 
     io::zip::IWriteArchive::sptr writeArchive;
     io::zip::IReadArchive::sptr readArchive;
@@ -129,51 +130,59 @@ void BoostIOTest::readWriteDirTest()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void BoostIOTest::writeProcess(SequenceGenerator& gen,
-                               io::zip::IWriteArchive::sptr writeArchive,
-                               const std::filesystem::path& rootFilename,
-                               io::atoms::FormatType format )
+void BoostIOTest::writeProcess(
+    SequenceGenerator& gen,
+    io::zip::IWriteArchive::sptr writeArchive,
+    const std::filesystem::path& rootFilename,
+    io::atoms::FormatType format)
 {
     sight::atoms::Sequence::sptr seq = gen.getSequence();
     io::atoms::Writer(seq).write(writeArchive, rootFilename, format);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void BoostIOTest::readProcess(SequenceGenerator& gen,
-                              io::zip::IReadArchive::sptr readArchive,
-                              const std::filesystem::path& rootFilename,
-                              const io::atoms::FormatType& formatType)
+void BoostIOTest::readProcess(
+    SequenceGenerator& gen,
+    io::zip::IReadArchive::sptr readArchive,
+    const std::filesystem::path& rootFilename,
+    const io::atoms::FormatType& formatType)
 {
     sight::atoms::Sequence::sptr readSeq;
     {
-        readSeq = sight::atoms::Sequence::dynamicCast(io::atoms::Reader().read(readArchive, rootFilename,
-                                                                               formatType));
+        readSeq = sight::atoms::Sequence::dynamicCast(
+            io::atoms::Reader().read(
+                readArchive,
+                rootFilename,
+                formatType));
     }
     gen.compare(readSeq);
     this->cleanSequence(*readSeq);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BoostIOTest::cleanSequence(sight::atoms::Sequence& seq)
 {
     // Break the reference cycles in the atom sequence
-    auto blob = std::dynamic_pointer_cast< sight::atoms::Blob>(seq[2]);
+    auto blob = std::dynamic_pointer_cast<sight::atoms::Blob>(seq[2]);
     SIGHT_THROW_IF("That's not a blob!", !blob);
     auto bo = blob->getBufferObject();
+
     if(bo)
     {
         bo->destroy();
     }
+
     blob->setBufferObject(nullptr);
-    auto map = std::dynamic_pointer_cast< sight::atoms::Map>(seq[3]);
+    auto map = std::dynamic_pointer_cast<sight::atoms::Map>(seq[3]);
     SIGHT_THROW_IF("That's not a map!", !map);
     map->clear();
     seq.clear();
 }
 
-}  // namespace ut
-}  // namespace sight::io::atoms
+} // namespace ut
+
+} // namespace sight::io::atoms

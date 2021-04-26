@@ -24,37 +24,39 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
 
-const IPulseProgressDialog::FactoryRegistryKeyType IPulseProgressDialog::REGISTRY_KEY =
-    "::ui::base::dialog::PulseProgressDialog";
+const IPulseProgressDialog::FactoryRegistryKeyType IPulseProgressDialog::REGISTRY_KEY
+    = "::ui::base::dialog::PulseProgressDialog";
 
 IPulseProgressDialog::IPulseProgressDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IPulseProgressDialog::~IPulseProgressDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IPulseProgressDialog::setStuff(Stuff stuff)
 {
     m_stuff = stuff;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IPulseProgressDialog::setFrequence(MilliSecond frequence)
 {
     m_frequence = frequence;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

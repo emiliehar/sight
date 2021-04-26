@@ -33,4 +33,4 @@ Plugin::~Plugin()
 {
 }
 
-} //namespace sight::filter::dicom
+} // namespace sight::filter::dicom

@@ -32,6 +32,7 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace archiver
 {
 
@@ -75,7 +76,7 @@ private:
     BufferCSPtr m_content;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::streamsize MemoryArchiveSource::read(char* s, std::streamsize n)
 {
@@ -83,22 +84,24 @@ std::streamsize MemoryArchiveSource::read(char* s, std::streamsize n)
     size_t endIndex;
 
     endIndex = m_readIndex + n;
-    if (endIndex > m_content->size())
+
+    if(endIndex > m_content->size())
     {
         endIndex = m_content->size();
     }
+
     std::copy(m_content->begin() + m_readIndex, m_content->begin() + endIndex, s);
     oldReadIndex = m_readIndex;
     m_readIndex  = endIndex;
+
     return endIndex - oldReadIndex;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MemoryReadArchive::MemoryReadArchive(const char* buffer, const std::size_t size) :
     m_SIZE(size),
     m_BUFFER(buffer)
-
 {
     SPTR(::boost::iostreams::stream<MemoryArchiveSource>) is;
     std::string filename;
@@ -107,62 +110,66 @@ MemoryReadArchive::MemoryReadArchive(const char* buffer, const std::size_t size)
 
     m_archive = archive_read_new();
     archive_read_support_format_all(m_archive);
-    if (archive_read_open_memory(m_archive, const_cast< char*>(buffer), size) != ARCHIVE_OK)
+
+    if(archive_read_open_memory(m_archive, const_cast<char*>(buffer), size) != ARCHIVE_OK)
     {
-        throw io::zip::exception::Read("Error when open memory archive : " + std::string(archive_error_string(
-                                                                                             m_archive)));
+        throw io::zip::exception::Read(
+                  "Error when open memory archive : " + std::string(
+                      archive_error_string(
+                          m_archive)));
     }
     else
     {
-        while ((archive_read_next_header(m_archive, &entry)) == ARCHIVE_OK)
+        while((archive_read_next_header(m_archive, &entry)) == ARCHIVE_OK)
         {
             fileContent = BufferSPtr(new std::vector<char>);
             filename    = std::string(archive_entry_pathname(entry));
             this->readEntry(fileContent);
             is                  = std::make_shared< ::boost::iostreams::stream<MemoryArchiveSource> >(fileContent);
             m_streams[filename] = is;
-
         }
     }
 
-    if (archive_read_free(m_archive) != ARCHIVE_OK)
+    if(archive_read_free(m_archive) != ARCHIVE_OK)
     {
-        throw io::zip::exception::Read("Error when close memory archive : " +
-                                       std::string(archive_error_string(m_archive)));
+        throw io::zip::exception::Read(
+                  "Error when close memory archive : "
+                  + std::string(archive_error_string(m_archive)));
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryReadArchive::readEntry(BufferSPtr content)
 {
     std::int64_t ret;
     char buffer[MemoryReadArchive::s_BUFFER_READ_SIZE];
 
-    while ((ret = archive_read_data(m_archive, buffer, MemoryReadArchive::s_BUFFER_READ_SIZE)) > 0)
+    while((ret = archive_read_data(m_archive, buffer, MemoryReadArchive::s_BUFFER_READ_SIZE)) > 0)
     {
         content->insert(content->end(), buffer, buffer + ret);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MemoryReadArchive::~MemoryReadArchive()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPTR(std::istream) MemoryReadArchive::getFile(const std::filesystem::path& path)
 {
-    if (m_streams.find(path.string()) != m_streams.end())
+    if(m_streams.find(path.string()) != m_streams.end())
     {
         return m_streams[path.string()];
     }
+
     throw io::zip::exception::Read("Cannot get file");
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::filesystem::path MemoryReadArchive::getArchivePath() const
 {
@@ -170,4 +177,5 @@ const std::filesystem::path MemoryReadArchive::getArchivePath() const
 }
 
 } // namespace archiver
+
 } // namespace sight::io::igtl::detail

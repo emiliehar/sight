@@ -44,36 +44,40 @@ TypeInfo::TypeInfo(const std::type_info& ti) :
     SIGHT_ASSERT("pInfo_ not instanced", pInfo_);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool TypeInfo::before(const TypeInfo& rhs) const
 {
     SIGHT_ASSERT("pInfo_ not instanced", pInfo_);
+
     // type_info::before return type is int in some VC libraries
     return pInfo_->before(*rhs.pInfo_) != 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::type_info& TypeInfo::type_info() const
 {
     SIGHT_ASSERT("pInfo_ not instanced", pInfo_);
+
     return *pInfo_;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const char* TypeInfo::name() const
 {
     SIGHT_ASSERT("pInfo_ not instanced", pInfo_);
+
     return pInfo_->name();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 TypeInfo& TypeInfo::operator=(const TypeInfo& rhs)
 {
     pInfo_ = rhs.pInfo_;
+
     return *this;
 }
 
@@ -82,44 +86,44 @@ TypeInfo& TypeInfo::operator=(const TypeInfo& rhs)
 bool operator==(const TypeInfo& lhs, const TypeInfo& rhs)
 // type_info::operator== return type is int in some VC libraries
 // typeinfo can have different ptr on the same strucure !!!!
-//http://gcc.gnu.org/ml/gcc/2002-05/msg02085.html
+// http://gcc.gnu.org/ml/gcc/2002-05/msg02085.html
 {
-    return strcmp(lhs.type_info().name(), rhs.type_info().name() ) == 0;
+    return strcmp(lhs.type_info().name(), rhs.type_info().name()) == 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool operator!=(const TypeInfo& lhs, const TypeInfo& rhs)
 {
     return !(lhs == rhs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool operator<(const TypeInfo& lhs, const TypeInfo& rhs)
 {
-    return strcmp(lhs.type_info().name(), rhs.type_info().name() ) < 0;
+    return strcmp(lhs.type_info().name(), rhs.type_info().name()) < 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool operator>(const TypeInfo& lhs, const TypeInfo& rhs)
 {
-    return strcmp(lhs.type_info().name(), rhs.type_info().name() ) > 0;
+    return strcmp(lhs.type_info().name(), rhs.type_info().name()) > 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool operator<=(const TypeInfo& lhs, const TypeInfo& rhs)
 {
-    return strcmp(lhs.type_info().name(), rhs.type_info().name() ) <= 0;
+    return strcmp(lhs.type_info().name(), rhs.type_info().name()) <= 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool operator>=(const TypeInfo& lhs, const TypeInfo& rhs)
 {
-    return strcmp(lhs.type_info().name(), rhs.type_info().name() ) >= 0;
+    return strcmp(lhs.type_info().name(), rhs.type_info().name()) >= 0;
 }
 
 } // end namespace sight::core::tools

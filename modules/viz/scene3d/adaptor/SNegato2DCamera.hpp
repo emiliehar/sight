@@ -76,9 +76,7 @@ namespace sight::module::viz::scene3d::adaptor
 class MODULE_VIZ_SCENE3D_CLASS_API SNegato2DCamera final : public sight::viz::scene3d::IAdaptor,
                                                            public sight::viz::scene3d::interactor::IInteractor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SNegato2DCamera, ::sight::viz::scene3d::IAdaptor)
 
@@ -108,8 +106,13 @@ public:
      * @param _x current width coordinate of the mouse cursor.
      * @param _y current height coordinate of the mouse cursor.
      */
-    MODULE_VIZ_SCENE3D_API void mouseMoveEvent(IInteractor::MouseButton _button, Modifier, int _x, int _y, int _dx,
-                                               int _dy) override;
+    MODULE_VIZ_SCENE3D_API void mouseMoveEvent(
+        IInteractor::MouseButton _button,
+        Modifier,
+        int _x,
+        int _y,
+        int _dx,
+        int _dy) override;
 
     /**
      * @brief Verifies if the button is pressed within the camera's viewport and enables mouse movements if that is the
@@ -137,7 +140,6 @@ public:
     MODULE_VIZ_SCENE3D_API void keyPressEvent(int _key, Modifier, int _x, int _y) override;
 
 protected:
-
     /// Configures the layer, interaction priority and camera orientation.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -167,7 +169,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     using Orientation = data::helper::MedicalImage::Orientation;
 
     /// SLOT: resets the camera's zoom.
@@ -187,26 +188,25 @@ private:
     void updateWindowing(double _windowDelta, double _levelDelta);
 
     /// Defines the current interaction status.
-    bool m_isInteracting { false };
+    bool m_isInteracting{false};
 
     /// Defines the image current orientation.
-    Orientation m_currentNegatoOrientation {  data::helper::MedicalImage::Orientation::Z_AXIS };
+    Orientation m_currentNegatoOrientation{data::helper::MedicalImage::Orientation::Z_AXIS};
 
     /// Defines the interaction priority.
-    int m_priority { 0 };
+    int m_priority{0};
 
     /// Helps interfacing with the transfer function input.
     data::helper::TransferFunction m_helperTF;
 
     /// Defines the transfer function window value at the time the interaction started.
-    double m_initialWindow { 0.f };
+    double m_initialWindow{0.f};
 
     /// Defines the transfer function level value at the time the interaction started.
-    double m_initialLevel { 0.f };
+    double m_initialLevel{0.f};
 
     /// Defines the mouse position at the time the windowing interaction started.
-    ::Ogre::Vector2i m_initialPos { -1, -1 };
-
+    ::Ogre::Vector2i m_initialPos{-1, -1};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

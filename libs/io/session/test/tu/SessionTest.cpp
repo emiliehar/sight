@@ -55,27 +55,28 @@ CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::session::ut::SessionTest);
 
 namespace sight::io::session
 {
+
 namespace ut
 {
 
 // For UUID::generateUUID();
 using core::tools::UUID;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::basicTest()
 {
@@ -92,7 +93,7 @@ void SessionTest::basicTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::booleanTest()
 {
@@ -144,7 +145,7 @@ void SessionTest::booleanTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::integerTest()
 {
@@ -196,7 +197,7 @@ void SessionTest::integerTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::floatTest()
 {
@@ -248,7 +249,7 @@ void SessionTest::floatTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::stringTest()
 {
@@ -303,7 +304,7 @@ void SessionTest::stringTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::circularTest()
 {
@@ -351,7 +352,7 @@ void SessionTest::circularTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::compositeTest()
 {
@@ -422,7 +423,7 @@ void SessionTest::compositeTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::meshTest()
 {
@@ -484,23 +485,29 @@ void SessionTest::meshTest()
         auto meshIt         = mesh->begin<data::iterator::PointIterator>();
         const auto& meshEnd = mesh->end<data::iterator::PointIterator>();
 
-        for (; originalIt != originalEnd && meshIt != meshEnd; ++originalIt, ++meshIt)
+        for( ; originalIt != originalEnd && meshIt != meshEnd ; ++originalIt, ++meshIt)
         {
             CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->point->x, meshIt->point->x, std::numeric_limits<float>::epsilon());
             CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->point->y, meshIt->point->y, std::numeric_limits<float>::epsilon());
             CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->point->z, meshIt->point->z, std::numeric_limits<float>::epsilon());
 
-            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->normal->nx, meshIt->normal->nx,
-                                         std::numeric_limits<float>::epsilon());
-            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->normal->ny, meshIt->normal->ny,
-                                         std::numeric_limits<float>::epsilon());
-            CPPUNIT_ASSERT_DOUBLES_EQUAL(originalIt->normal->nz, meshIt->normal->nz,
-                                         std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(
+                originalIt->normal->nx,
+                meshIt->normal->nx,
+                std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(
+                originalIt->normal->ny,
+                meshIt->normal->ny,
+                std::numeric_limits<float>::epsilon());
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(
+                originalIt->normal->nz,
+                meshIt->normal->nz,
+                std::numeric_limits<float>::epsilon());
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::equipmentTest()
 {
@@ -543,7 +550,7 @@ void SessionTest::equipmentTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::patientTest()
 {
@@ -595,7 +602,7 @@ void SessionTest::patientTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::studyTest()
 {
@@ -669,7 +676,7 @@ void SessionTest::studyTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::seriesTest()
 {
@@ -831,7 +838,8 @@ void SessionTest::seriesTest()
         CPPUNIT_ASSERT_EQUAL(time, series->getTime());
 
         const auto& seriesName = series->getPerformingPhysiciansName();
-        for(std::size_t i = 0; i < performingPhysiciansName.size(); ++i)
+
+        for(std::size_t i = 0 ; i < performingPhysiciansName.size() ; ++i)
         {
             CPPUNIT_ASSERT_EQUAL(performingPhysiciansName[i], seriesName[i]);
         }
@@ -851,7 +859,7 @@ void SessionTest::seriesTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionTest::activitySeriesTest()
 {
@@ -1032,8 +1040,8 @@ void SessionTest::activitySeriesTest()
         CPPUNIT_ASSERT_EQUAL(stringValue, compositeStringData->getValue());
 
         // Special circular inclusion test
-        const auto& activitySeriesData =
-            data::ActivitySeries::dynamicCast((*seriesComposite)[data::ActivitySeries::classname()]);
+        const auto& activitySeriesData
+            = data::ActivitySeries::dynamicCast((*seriesComposite)[data::ActivitySeries::classname()]);
         CPPUNIT_ASSERT(activitySeriesData);
         CPPUNIT_ASSERT_EQUAL(activityConfigId, activitySeriesData->getActivityConfigId());
 
@@ -1070,7 +1078,8 @@ void SessionTest::activitySeriesTest()
         CPPUNIT_ASSERT_EQUAL(time, series->getTime());
 
         const auto& seriesName = series->getPerformingPhysiciansName();
-        for(std::size_t i = 0; i < performingPhysiciansName.size(); ++i)
+
+        for(std::size_t i = 0 ; i < performingPhysiciansName.size() ; ++i)
         {
             CPPUNIT_ASSERT_EQUAL(performingPhysiciansName[i], seriesName[i]);
         }
@@ -1091,4 +1100,5 @@ void SessionTest::activitySeriesTest()
 }
 
 } // namespace ut
+
 } // namespace sight::io::session

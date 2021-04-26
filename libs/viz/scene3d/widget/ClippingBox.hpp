@@ -38,8 +38,7 @@ namespace sight::viz::scene3d::widget
 class ClippingBox
 {
 public:
-
-    using ClippingUpdateCallbackType = std::function< void (void) >;
+    using ClippingUpdateCallbackType = std::function<void (void)>;
     using sptr                       = std::shared_ptr<ClippingBox>;
     using wptr                       = std::weak_ptr<ClippingBox>;
 
@@ -55,14 +54,15 @@ public:
      * @param boxMtlName             material used to display the box edges and faces.
      * @param handleMtlName          material used to display the widget handles.
      */
-    VIZ_SCENE3D_API ClippingBox(const std::string& id,
-                                ::Ogre::SceneNode* parentSceneNode,
-                                ::Ogre::Camera* camera,
-                                ::Ogre::SceneManager* sceneManager,
-                                const ::Ogre::Matrix4& clippingMatrix,
-                                const ClippingUpdateCallbackType& clippingUpdateCallback,
-                                const std::string& boxMtlName    = "BasicAmbient",
-                                const std::string& handleMtlName = "BasicPhong" );
+    VIZ_SCENE3D_API ClippingBox(
+        const std::string& id,
+        ::Ogre::SceneNode* parentSceneNode,
+        ::Ogre::Camera* camera,
+        ::Ogre::SceneManager* sceneManager,
+        const ::Ogre::Matrix4& clippingMatrix,
+        const ClippingUpdateCallbackType& clippingUpdateCallback,
+        const std::string& boxMtlName    = "BasicAmbient",
+        const std::string& handleMtlName = "BasicPhong");
 
     /// Destructor.
     VIZ_SCENE3D_API virtual ~ClippingBox();
@@ -123,23 +123,22 @@ public:
     VIZ_SCENE3D_API void updateFromTransform(const ::Ogre::Matrix4& _clippingMx);
 
 private:
-
     /// The current selection mode.
     enum
     {
         NONE,
         BOX,
         CAMERA
-    } m_selectionMode { NONE };
+    } m_selectionMode {NONE};
 
     /// Get the face's image positions.
-    std::array< ::Ogre::Vector3, 4 > getFacePositions(vr::IVolumeRenderer::CubeFace _faceName) const;
+    std::array< ::Ogre::Vector3, 4> getFacePositions(vr::IVolumeRenderer::CubeFace _faceName) const;
 
     /// Get the center of a clipping box face.
     ::Ogre::Vector3 getFaceCenter(vr::IVolumeRenderer::CubeFace _faceName) const;
 
     /// Returns the clipping box's image space positions.
-    std::array< ::Ogre::Vector3, 8 > getClippingBoxPositions() const;
+    std::array< ::Ogre::Vector3, 8> getClippingBoxPositions() const;
 
     /// Creates the widget objects and scene nodes.
     void initWidgets();
@@ -160,32 +159,32 @@ private:
     const std::string m_id;
 
     /// This object's scene manager.
-    ::Ogre::SceneManager* m_sceneManager { nullptr };
+    ::Ogre::SceneManager* m_sceneManager{nullptr};
 
     /// Camera too which the volume is rendered.
-    ::Ogre::Camera* m_camera { nullptr };
+    ::Ogre::Camera* m_camera{nullptr};
 
     /// Parent node containing the volume.
-    ::Ogre::SceneNode* m_volumeSceneNode { nullptr };
+    ::Ogre::SceneNode* m_volumeSceneNode{nullptr};
 
     /// Node holding widget objects.
-    ::Ogre::SceneNode* m_widgetSceneNode { nullptr };
+    ::Ogre::SceneNode* m_widgetSceneNode{nullptr};
 
     /// Maps widget objects to their scene node and to a cube face.
-    std::map< const ::Ogre::MovableObject*,
-              std::pair< vr::IVolumeRenderer::CubeFace, ::Ogre::SceneNode* > >  m_widgets;
+    std::map<const ::Ogre::MovableObject*,
+             std::pair<vr::IVolumeRenderer::CubeFace, ::Ogre::SceneNode*> > m_widgets;
 
     /// Axis aligned clipping cube.
-    std::array< ::Ogre::Vector3, 2> m_clippingCube {{ ::Ogre::Vector3::ZERO, ::Ogre::Vector3::UNIT_SCALE }};
+    std::array< ::Ogre::Vector3, 2> m_clippingCube{{::Ogre::Vector3::ZERO, ::Ogre::Vector3::UNIT_SCALE}};
 
     /// Object used to display the clipping box.
-    ::Ogre::ManualObject* m_boundingBox { nullptr };
+    ::Ogre::ManualObject* m_boundingBox{nullptr};
 
     /// Oject holding the highlighted face geometry.
-    ::Ogre::ManualObject* m_selectedFace { nullptr };
+    ::Ogre::ManualObject* m_selectedFace{nullptr};
 
     /// Widget currently being dragged.
-    ::Ogre::Entity* m_selectedWidget { nullptr };
+    ::Ogre::Entity* m_selectedWidget{nullptr};
 
     /// Picked box point.
     ::Ogre::Vector3 m_pickedBoxPoint;

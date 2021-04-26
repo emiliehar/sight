@@ -33,10 +33,13 @@
 
 namespace sight::io::patch::semantic
 {
+
 namespace V2
 {
+
 namespace V03AGO
 {
+
 namespace data
 {
 
@@ -56,7 +59,7 @@ Image::~Image()
 
 // ----------------------------------------------------------------------------
 
-Image::Image( const Image& cpy ) :
+Image::Image(const Image& cpy) :
     io::atoms::patch::ISemanticPatch(cpy)
 {
 }
@@ -69,12 +72,12 @@ void Image::apply(
     io::atoms::patch::IPatch::NewVersionsType& newVersions)
 {
     ISemanticPatch::apply(previous, current, newVersions);
-    io::atoms::patch::helper::cleanFields( current );
-    io::atoms::patch::helper::Object helper( current );
+    io::atoms::patch::helper::cleanFields(current);
+    io::atoms::patch::helper::Object helper(current);
 
-    sight::atoms::Object::sptr array        = sight::atoms::Object::dynamicCast(previous->getAttribute("array"));
-    sight::atoms::Numeric::sptr nbComponent =
-        sight::atoms::Numeric::dynamicCast(array->getAttribute("nb_of_components"));
+    sight::atoms::Object::sptr array = sight::atoms::Object::dynamicCast(previous->getAttribute("array"));
+    sight::atoms::Numeric::sptr nbComponent
+        = sight::atoms::Numeric::dynamicCast(array->getAttribute("nb_of_components"));
 
     helper.replaceAttribute("nb_components", nbComponent->clone());
 }
@@ -82,6 +85,9 @@ void Image::apply(
 // ----------------------------------------------------------------------------
 
 } // namespace data
+
 } // namespace V03AGO
+
 } // namespace V2
+
 } // namespace sight::io::patch::semantic

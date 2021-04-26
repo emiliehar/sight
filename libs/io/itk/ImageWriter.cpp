@@ -35,17 +35,18 @@
 
 #include <filesystem>
 
-SIGHT_REGISTER_IO_WRITER( ::sight::io::itk::ImageWriter );
+SIGHT_REGISTER_IO_WRITER(::sight::io::itk::ImageWriter);
 
 namespace sight::io::itk
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 ImageWriter::ImageWriter(io::base::writer::IObjectWriter::Key key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ImageWriter::~ImageWriter()
 {
@@ -53,7 +54,6 @@ ImageWriter::~ImageWriter()
 
 struct ITKSaverFunctor
 {
-
     struct Parameter
     {
         std::string m_filename;
@@ -61,12 +61,12 @@ struct ITKSaverFunctor
         io::itk::ImageWriter::sptr m_fwWriter;
     };
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<class PIXELTYPE>
-    void operator()( const Parameter& param )
+    void operator()(const Parameter& param)
     {
-        SIGHT_DEBUG( "itk::ImageFileWriter with PIXELTYPE "<<  core::tools::Type::create<PIXELTYPE>().string() );
+        SIGHT_DEBUG("itk::ImageFileWriter with PIXELTYPE " << core::tools::Type::create<PIXELTYPE>().string());
 
         // VAG attention : ImageFileReader ne notifie AUCUNE progressEvent mais son ImageIO oui!!!! mais ImageFileReader
         // ne permet pas de l'atteindre
@@ -76,53 +76,55 @@ struct ITKSaverFunctor
 
         // Reader IO (*1*)
         typename ::itk::ImageIOBase::Pointer imageIOWrite = ::itk::ImageIOFactory::CreateImageIO(
-            param.m_filename.c_str(), ::itk::ImageIOFactory::WriteMode);
-        assert( imageIOWrite.IsNotNull() );
+            param.m_filename.c_str(),
+            ::itk::ImageIOFactory::WriteMode);
+        assert(imageIOWrite.IsNotNull());
 
         // create writer
-        typedef ::itk::Image< PIXELTYPE, 3> itkImageType;
-        typedef typename ::itk::ImageFileWriter< itkImageType >      WriterType;
+        typedef ::itk::Image<PIXELTYPE, 3> itkImageType;
+        typedef typename ::itk::ImageFileWriter<itkImageType> WriterType;
         typename WriterType::Pointer writer = WriterType::New();
 
         // set observation (*2*)
-        ::itk::LightProcessObject::Pointer castHelper = (::itk::LightProcessObject*)(imageIOWrite.GetPointer());
-        assert( castHelper.IsNotNull() );
+        ::itk::LightProcessObject::Pointer castHelper = (::itk::LightProcessObject*) (imageIOWrite.GetPointer());
+        assert(castHelper.IsNotNull());
         Progressor progress(castHelper, param.m_fwWriter, param.m_filename);
 
         // create itk Image
-        typename itkImageType::Pointer itkImage = io::itk::itkImageFactory<itkImageType>( param.m_dataImage );
+        typename itkImageType::Pointer itkImage = io::itk::itkImageFactory<itkImageType>(param.m_dataImage);
 
-        writer->SetFileName( param.m_filename.c_str() );
-        writer->SetInput( itkImage );
-        writer->SetImageIO( imageIOWrite  ); // (*3*)
+        writer->SetFileName(param.m_filename.c_str());
+        writer->SetInput(itkImage);
+        writer->SetImageIO(imageIOWrite); // (*3*)
 
         // save image;
         writer->Update();
     }
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageWriter::write()
 {
-    assert( !m_object.expired() );
-    assert( m_object.lock() );
+    assert(!m_object.expired());
+    assert(m_object.lock());
 
     ITKSaverFunctor::Parameter saverParam;
     saverParam.m_filename  = this->getFile().string();
     saverParam.m_dataImage = getConcreteObject();
     saverParam.m_fwWriter  = this->getSptr();
-    assert( saverParam.m_dataImage );
+    assert(saverParam.m_dataImage);
 
-    core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, ITKSaverFunctor >::invoke(
-        saverParam.m_dataImage->getType(), saverParam );
+    core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, ITKSaverFunctor>::invoke(
+        saverParam.m_dataImage->getType(),
+        saverParam);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string ImageWriter::extension()
 {
-    if ( getFile().empty() || ( getFile().string().find(".inr.gz") != std::string::npos ) )
+    if(getFile().empty() || (getFile().string().find(".inr.gz") != std::string::npos))
     {
         return ".inr.gz";
     }
@@ -132,6 +134,6 @@ std::string ImageWriter::extension()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::io::itk

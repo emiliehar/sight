@@ -41,7 +41,6 @@ namespace timeline
 class DATA_CLASS_API GenericObjectBase : public data::timeline::Buffer
 {
 public:
-
     /// Destructor
     DATA_API virtual ~GenericObjectBase();
 
@@ -64,10 +63,13 @@ public:
     DATA_API virtual void deepCopy(const data::timeline::Object& other);
 
 protected:
-
     /// Constructor
-    DATA_API GenericObjectBase( unsigned int maxElementNum, core::HiResClock::HiResClockType timestamp = 0,
-                                BufferDataType buffer = 0, size_t size = 0, DeleterType d = 0);
+    DATA_API GenericObjectBase(
+        unsigned int maxElementNum,
+        core::HiResClock::HiResClockType timestamp = 0,
+        BufferDataType buffer                      = 0,
+        size_t size                                = 0,
+        DeleterType d                              = 0);
 
     /// Number of elements that are actually set
     unsigned int m_numPresent;
@@ -82,11 +84,10 @@ protected:
  *          object is fixed, however some elements can be missing. A mask is provided to test the presence of a given
  *          element.
  */
-template< typename TYPE >
+template<typename TYPE>
 class GenericObject : public GenericObjectBase
 {
 public:
-
     /// Type of the elements inside the buffer
     typedef TYPE ElementType;
 
@@ -124,8 +125,12 @@ public:
     friend class iterator;
 
     /// Constructor
-    GenericObject( unsigned int m_maxElementNum, core::HiResClock::HiResClockType timestamp = 0,
-                   BufferDataType buffer = 0, size_t size = 0, DeleterType d = 0);
+    GenericObject(
+        unsigned int m_maxElementNum,
+        core::HiResClock::HiResClockType timestamp = 0,
+        BufferDataType buffer                      = 0,
+        size_t size                                = 0,
+        DeleterType d                              = 0);
 
     /// Destructor
     virtual ~GenericObject();

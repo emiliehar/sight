@@ -36,17 +36,18 @@
 #include <OGRE/OgreRenderTexture.h>
 #include <OGRE/OgreTextureManager.h>
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-fwRenderOgreRegisterOffscreenMgrMacro(sight::module::viz::scene3dQt::OffScreenWindowInteractor,
-                                      sight::viz::scene3d::IWindowInteractor::OFFSCREEN_REGISTRY_KEY);
+fwRenderOgreRegisterOffscreenMgrMacro(
+    sight::module::viz::scene3dQt::OffScreenWindowInteractor,
+    sight::viz::scene3d::IWindowInteractor::OFFSCREEN_REGISTRY_KEY);
 
 namespace sight::module::viz::scene3dQt
 {
 
 int OffScreenWindowInteractor::m_counter = 0;
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 OffScreenWindowInteractor::OffScreenWindowInteractor(
     sight::viz::scene3d::IWindowInteractor::OffscreenMgrKey,
@@ -58,34 +59,35 @@ OffScreenWindowInteractor::OffScreenWindowInteractor(
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 OffScreenWindowInteractor::~OffScreenWindowInteractor()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void OffScreenWindowInteractor::renderNow()
 {
     this->render();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void OffScreenWindowInteractor::requestRender()
 {
     this->render();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void OffScreenWindowInteractor::createContainer( sight::ui::base::container::fwContainer::sptr, bool, bool)
+void OffScreenWindowInteractor::createContainer(sight::ui::base::container::fwContainer::sptr, bool, bool)
 {
     m_ogreRoot = sight::viz::scene3d::Utils::getOgreRoot();
 
-    SIGHT_ASSERT("OpenGL RenderSystem not found",
-                 m_ogreRoot->getRenderSystem()->getName().find("GL") != std::string::npos);
+    SIGHT_ASSERT(
+        "OpenGL RenderSystem not found",
+        m_ogreRoot->getRenderSystem()->getName().find("GL") != std::string::npos);
 
     Ogre::NameValuePairList parameters;
 
@@ -100,35 +102,37 @@ void OffScreenWindowInteractor::createContainer( sight::ui::base::container::fwC
     parameters["currentGLContext"] = "true";
 
     // We create the renderWindow with a dummy size of 1 by 1
-    m_ogreRenderWindow = m_ogreRoot->createRenderWindow("OffScreenWindow_" + std::to_string(m_id),
-                                                        1,
-                                                        1,
-                                                        false,
-                                                        &parameters);
+    m_ogreRenderWindow = m_ogreRoot->createRenderWindow(
+        "OffScreenWindow_" + std::to_string(m_id),
+        1,
+        1,
+        false,
+        &parameters);
     mgr->registerWindow(m_ogreRenderWindow);
 
     m_ogreRenderWindow->setHidden(true);
     m_ogreRenderWindow->setAutoUpdated(false);
 
     auto& texMgr = ::Ogre::TextureManager::getSingleton();
-    m_ogreTexture = texMgr.createManual("OffscreenRT" + std::to_string(m_id),
-                                        sight::viz::scene3d::RESOURCE_GROUP,
-                                        ::Ogre::TEX_TYPE_2D,
-                                        m_width, m_height, 0,
-                                        ::Ogre::PF_BYTE_RGBA,
-                                        ::Ogre::TU_RENDERTARGET);
+    m_ogreTexture = texMgr.createManual(
+        "OffscreenRT" + std::to_string(m_id),
+        sight::viz::scene3d::RESOURCE_GROUP,
+        ::Ogre::TEX_TYPE_2D,
+        m_width,
+        m_height,
+        0,
+        ::Ogre::PF_BYTE_RGBA,
+        ::Ogre::TU_RENDERTARGET);
     m_ogreRenderTarget = m_ogreTexture->getBuffer()->getRenderTarget();
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void OffScreenWindowInteractor::connectToContainer()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void OffScreenWindowInteractor::disconnectInteractor()
 {
@@ -151,7 +155,7 @@ void OffScreenWindowInteractor::disconnectInteractor()
     m_offscreenSurface.reset();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void OffScreenWindowInteractor::makeCurrent()
 {
@@ -173,9 +177,9 @@ void OffScreenWindowInteractor::makeCurrent()
                 // Actually this method does the following :
                 // void GLRenderSystem::postExtraThreadsStarted()
                 // {
-                //   OGRE_LOCK_MUTEX(mThreadInitMutex);
-                //   if(mCurrentContext)
-                //     mCurrentContext->setCurrent();
+                // OGRE_LOCK_MUTEX(mThreadInitMutex);
+                // if(mCurrentContext)
+                // mCurrentContext->setCurrent();
                 // }
                 //
                 // This is actually want we want to do, even if this is not the initial purpose of this method
@@ -186,7 +190,7 @@ void OffScreenWindowInteractor::makeCurrent()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void OffScreenWindowInteractor::render()
 {
@@ -196,7 +200,7 @@ void OffScreenWindowInteractor::render()
     }
 
     service::IService::sptr renderService                = m_renderService.lock();
-    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast( renderService );
+    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast(renderService);
     ogreRenderService->slot(sight::viz::scene3d::SRender::s_COMPUTE_CAMERA_CLIPPING_SLOT)->asyncRun();
 
     ++m_frameId;
@@ -217,13 +221,13 @@ void OffScreenWindowInteractor::render()
     m_ogreRenderTarget->update();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 sight::viz::scene3d::IGraphicsWorker* OffScreenWindowInteractor::createGraphicsWorker()
 {
     return new OpenGLWorker(m_offscreenSurface.get());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3dQt

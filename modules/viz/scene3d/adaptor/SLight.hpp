@@ -36,7 +36,9 @@
 
 namespace Ogre
 {
+
 class Light;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
@@ -72,9 +74,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API SLight final : public ::sight::viz::scene3d::ILight
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SLight, ::sight::viz::scene3d::ILight)
 
@@ -186,7 +186,6 @@ public:
     MODULE_VIZ_SCENE3D_API bool isVisualFeedbackOn() const override;
 
 protected:
-
     /// Configures the service.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -210,107 +209,106 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     /// Containes the Ogre light managed by this adaptor.
-    ::Ogre::Light* m_light { nullptr };
+    ::Ogre::Light* m_light{nullptr};
 
     /// Defines the name of the associated Ogre light.
     std::string m_lightName;
 
     /// Sets the type of the associated Ogre light.
-    ::Ogre::Light::LightTypes m_lightType { ::Ogre::Light::LT_DIRECTIONAL };
+    ::Ogre::Light::LightTypes m_lightType{::Ogre::Light::LT_DIRECTIONAL};
 
     /// Enables the light.
-    bool m_switchedOn { true };
+    bool m_switchedOn{true};
 
     /// Defines the angle in degrees defining the rotation of the light around x axis.
-    float m_thetaOffset { 0.f };
+    float m_thetaOffset{0.f};
 
     /// Defines the angle in degrees defining the rotation of the light around y axis.
-    float m_phiOffset { 0.f };
+    float m_phiOffset{0.f};
 
     /// Contains the node used to attach the light
-    ::Ogre::SceneNode* m_lightNode { nullptr };
+    ::Ogre::SceneNode* m_lightNode{nullptr};
 
     /// Defines the visual feedback visibility state.
-    bool m_visualFeedback { false };
+    bool m_visualFeedback{false};
 
     /// Contains the material used for the feedback visualization.
-    data::Material::sptr m_material { nullptr };
+    data::Material::sptr m_material{nullptr};
 
     /// Contains the sphere at the light position.
-    ::Ogre::ManualObject* m_lightPosition { nullptr };
+    ::Ogre::ManualObject* m_lightPosition{nullptr};
 
     /// Defines the length of the visual feedback object.
-    float m_length { 50.f };
+    float m_length{50.f};
 
     /// Contains objects used for the directional light visual feedback.
-    std::pair< ::Ogre::ManualObject*, ::Ogre::ManualObject* > m_directionalFeedback { nullptr, nullptr };
+    std::pair< ::Ogre::ManualObject*, ::Ogre::ManualObject*> m_directionalFeedback{nullptr, nullptr};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline const std::string& SLight::getName() const
 {
     return m_lightName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SLight::setName(const std::string& _name)
 {
     m_lightName = _name;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::Light::LightTypes SLight::getType() const
 {
     return m_lightType;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::ColourValue SLight::getDiffuseColor() const
 {
     return m_light->getDiffuseColour();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::ColourValue SLight::getSpecularColor() const
 {
     return m_light->getSpecularColour();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool SLight::isSwitchedOn() const
 {
     return m_switchedOn;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline float SLight::getThetaOffset() const
 {
     return m_thetaOffset;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline float SLight::getPhiOffset() const
 {
     return m_phiOffset;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool SLight::isVisualFeedbackOn() const
 {
     return m_visualFeedback;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

@@ -36,17 +36,22 @@
 
 namespace fwDicomData
 {
+
 class DicomSeries;
+
 }
 
 namespace sight::core::jobs
 {
+
 class Aggregator;
 class Observer;
+
 }
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
 
@@ -54,14 +59,14 @@ namespace writer
  * @brief This class handles DICOM Surface Segmentation files writing.
  */
 class IO_DICOM_CLASS_API SurfaceSegmentation :
-    public io::base::writer::GenericObjectWriter< data::ModelSeries >,
+    public io::base::writer::GenericObjectWriter<data::ModelSeries>,
     public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(SurfaceSegmentation, io::base::writer::GenericObjectWriter< data::ModelSeries >,
-                        io::base::writer::factory::New< SurfaceSegmentation >);
+    SIGHT_DECLARE_CLASS(
+        SurfaceSegmentation,
+        io::base::writer::GenericObjectWriter<data::ModelSeries>,
+        io::base::writer::factory::New<SurfaceSegmentation>);
 
     /// Constructor
     IO_DICOM_API SurfaceSegmentation(io::base::writer::IObjectWriter::Key key);
@@ -82,14 +87,13 @@ public:
     IO_DICOM_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
     /// Logger
     core::log::Logger::sptr m_logger;
 
     /// Writer job
     SPTR(core::jobs::Observer) m_writerJob;
-
 };
 
 } // namespace writer
+
 } // namespace sight::io::dicom

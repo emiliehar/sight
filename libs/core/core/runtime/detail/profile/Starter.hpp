@@ -43,14 +43,13 @@ namespace profile
 class Starter : public boost::noncopyable
 {
 public:
-
     friend class Stopper;
     /**
      * @brief       Constructor
      *
      * @param[in]   identifier  a string containing a module identifier
      */
-    Starter( const std::string& identifier );
+    Starter(const std::string& identifier);
 
     /**
      * @brief   Applies the starter on the system.
@@ -60,8 +59,7 @@ public:
     void apply();
 
 protected:
-
-    const std::string m_identifier;     ///< the module identifier
+    const std::string m_identifier; ///< the module identifier
 };
 
 } // namespace detail

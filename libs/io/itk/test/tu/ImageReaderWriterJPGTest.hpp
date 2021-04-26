@@ -32,14 +32,15 @@
 
 namespace sight::io::itk
 {
+
 namespace ut
 {
 
 class ImageReaderWriterJPGTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ImageReaderWriterJPGTest );
-CPPUNIT_TEST( testImageWriter );
-CPPUNIT_TEST( testImageWriter2 );
+CPPUNIT_TEST_SUITE(ImageReaderWriterJPGTest);
+CPPUNIT_TEST(testImageWriter);
+CPPUNIT_TEST(testImageWriter2);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -50,8 +51,8 @@ public:
     // fonctions de tests
     void testImageWriter();
     void testImageWriter2();
-
 };
 
-} //namespace ut
-} //namespace sight::io::itk
+} // namespace ut
+
+} // namespace sight::io::itk

@@ -33,6 +33,7 @@
 
 namespace sight::module::data
 {
+
 /**
  * @brief This service extract camera informations in configuration using android device name.
  *
@@ -78,7 +79,6 @@ namespace sight::module::data
 class MODULE_DATA_CLASS_API SExtractDeviceInfo : public service::IController
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SExtractDeviceInfo, service::IController)
 
     /// Constructor
@@ -88,7 +88,6 @@ public:
     MODULE_DATA_API ~SExtractDeviceInfo();
 
 protected:
-
     /// Does nothing
     MODULE_DATA_API void starting() override;
 
@@ -102,13 +101,11 @@ protected:
     MODULE_DATA_API void updating() override;
 
 private:
-
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
-    typedef std::map< std::string, ConfigurationType > DeviceConfigType;
+    typedef std::map<std::string, ConfigurationType> DeviceConfigType;
     typedef core::runtime::ConfigurationElementContainer::Container CfgContainer;
 
     DeviceConfigType m_devicesConfig;
-
 };
 
 } // namespace sight::module::data

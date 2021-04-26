@@ -30,8 +30,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace container
 {
+
 namespace sr
 {
 
@@ -41,12 +43,14 @@ namespace sr
 class IO_DICOM_CLASS_API DicomSRSCoordNode : public io::dicom::container::sr::DicomSRNode
 {
 public:
-
     typedef std::vector<float> GraphicDataContainerType;
 
     /// Constructor
-    IO_DICOM_API DicomSRSCoordNode(const DicomCodedAttribute& codedAttribute, const std::string& relationship,
-                                   const std::string& graphicType, GraphicDataContainerType graphicDataContainer);
+    IO_DICOM_API DicomSRSCoordNode(
+        const DicomCodedAttribute& codedAttribute,
+        const std::string& relationship,
+        const std::string& graphicType,
+        GraphicDataContainerType graphicDataContainer);
 
     /// Destructor
     IO_DICOM_API virtual ~DicomSRSCoordNode();
@@ -63,7 +67,7 @@ public:
         return m_graphicType;
     }
 
-    ///Set Graphic type
+    /// Set Graphic type
     void setGraphicType(const std::string& graphicType)
     {
         m_graphicType = graphicType;
@@ -75,14 +79,13 @@ public:
         return m_graphicDataContainer;
     }
 
-    ///Set Graphic data container
+    /// Set Graphic data container
     void setGraphicDataContainer(const GraphicDataContainerType& graphicDataContainer)
     {
         m_graphicDataContainer = graphicDataContainer;
     }
 
 protected:
-
     /// Dump function
     virtual void print(std::ostream& os) const;
 
@@ -93,6 +96,8 @@ protected:
     GraphicDataContainerType m_graphicDataContainer;
 };
 
-} //namespace sr
-} //namespace container
-} //namespace sight::io::dicom
+} // namespace sr
+
+} // namespace container
+
+} // namespace sight::io::dicom

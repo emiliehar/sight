@@ -43,16 +43,14 @@ namespace writer
  * is .trf. This format is basic. This is an ascii file which contains matrix 4x4 values
  */
 class IO_BASE_CLASS_API Matrix4Writer :
-    public GenericObjectWriter< data::Matrix4>,
+    public GenericObjectWriter<data::Matrix4>,
     public core::location::SingleFile
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(
         Matrix4Writer,
-        GenericObjectWriter< data::Matrix4 >,
-        io::base::writer::factory::New< Matrix4Writer >
+        GenericObjectWriter<data::Matrix4>,
+        io::base::writer::factory::New<Matrix4Writer>
         )
     /// Constructor. Do nothing.
     IO_BASE_API Matrix4Writer(io::base::writer::IObjectWriter::Key key);
@@ -64,8 +62,7 @@ public:
     IO_BASE_API void write() override;
 
     /// Defines extension supported by this writer ".trf"
-    IO_BASE_API std::string  extension() override;
-
+    IO_BASE_API std::string extension() override;
 };
 
 }

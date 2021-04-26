@@ -42,7 +42,6 @@ namespace helper
 class VIZ_SCENE3D_CLASS_API Font
 {
 public:
-
     /**
      * @brief Creates or retrieves the ogre font generated from truetype font with a fixed size
      * @param _trueTypeFileName truetype font file name, must be in a resource folder.
@@ -50,17 +49,17 @@ public:
      * @param _trueTypeResolution font map resolution in dots per inch.
      * @return the font generated from the file with the given size.
      */
-    static VIZ_SCENE3D_API ::Ogre::FontPtr getFont(const std::string& _trueTypeFileName, const size_t _size,
-                                                   const std::uint32_t _trueTypeResolution = 220);
+    static VIZ_SCENE3D_API ::Ogre::FontPtr getFont(
+        const std::string& _trueTypeFileName,
+        const size_t _size,
+        const std::uint32_t _trueTypeResolution = 220);
 
     /// Creates or retrieves the material used to render the specified font.
     static VIZ_SCENE3D_API ::Ogre::MaterialPtr getFontMtl(const std::string& _fontName);
 
 private:
-
     /// Returns the font's texture map.
     static VIZ_SCENE3D_API ::Ogre::TexturePtr getFontMap(const std::string& _fontName);
-
 };
 
 } // namespace helper

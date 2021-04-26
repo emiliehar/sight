@@ -26,6 +26,7 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace helper
 {
 
@@ -34,8 +35,8 @@ namespace ut
 
 class MeshTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( MeshTest );
-CPPUNIT_TEST( copyColors );
+CPPUNIT_TEST_SUITE(MeshTest);
+CPPUNIT_TEST(copyColors);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -50,6 +51,8 @@ public:
 private:
 };
 
-} //namespace ut
-} //namespace helper
-} //namespace sight::viz::scene3d
+} // namespace ut
+
+} // namespace helper
+
+} // namespace sight::viz::scene3d

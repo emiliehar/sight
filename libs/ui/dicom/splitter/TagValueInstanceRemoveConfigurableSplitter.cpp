@@ -37,19 +37,20 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-fwDicomIOFilterRegisterMacro( ::sight::ui::dicom::splitter::TagValueInstanceRemoveConfigurableSplitter );
+fwDicomIOFilterRegisterMacro(::sight::ui::dicom::splitter::TagValueInstanceRemoveConfigurableSplitter);
 
 namespace sight::ui::dicom
 {
+
 namespace splitter
 {
 
-const std::string TagValueInstanceRemoveConfigurableSplitter::s_FILTER_NAME =
-    "Tag value instance remove configurable splitter";
-const std::string TagValueInstanceRemoveConfigurableSplitter::s_FILTER_DESCRIPTION =
-    "Remove instances if a tag has a certain value.";
+const std::string TagValueInstanceRemoveConfigurableSplitter::s_FILTER_NAME
+    = "Tag value instance remove configurable splitter";
+const std::string TagValueInstanceRemoveConfigurableSplitter::s_FILTER_DESCRIPTION
+    = "Remove instances if a tag has a certain value.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TagValueInstanceRemoveConfigurableSplitter::TagValueInstanceRemoveConfigurableSplitter(
     filter::dicom::IFilter::Key key) :
@@ -57,42 +58,41 @@ TagValueInstanceRemoveConfigurableSplitter::TagValueInstanceRemoveConfigurableSp
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TagValueInstanceRemoveConfigurableSplitter::~TagValueInstanceRemoveConfigurableSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string TagValueInstanceRemoveConfigurableSplitter::getName() const
 {
     return TagValueInstanceRemoveConfigurableSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string TagValueInstanceRemoveConfigurableSplitter::getDescription() const
 {
-
     return TagValueInstanceRemoveConfigurableSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool TagValueInstanceRemoveConfigurableSplitter::isConfigurationRequired() const
 {
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool TagValueInstanceRemoveConfigurableSplitter::isConfigurableWithGUI() const
 {
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void TagValueInstanceRemoveConfigurableSplitter::configureWithGUI()
 {
@@ -103,8 +103,8 @@ void TagValueInstanceRemoveConfigurableSplitter::configureWithGUI()
     dialog->setMinimumWidth(500);
 
     // Create tag selectors
-    ui::dicom::widget::QTagSelectorWidget* tagSelector =
-        new ui::dicom::widget::QTagSelectorWidget();
+    ui::dicom::widget::QTagSelectorWidget* tagSelector
+        = new ui::dicom::widget::QTagSelectorWidget();
     tagSelector->setTagValue(m_tag);
     mainLayout->addWidget(tagSelector);
 
@@ -128,6 +128,7 @@ void TagValueInstanceRemoveConfigurableSplitter::configureWithGUI()
     QObject::connect(cancelButton, SIGNAL(clicked(void)), dialog, SLOT(reject(void)));
 
     int result = dialog->exec();
+
     if(result == QDialog::Accepted)
     {
         m_tag      = tagSelector->getTag();
@@ -136,4 +137,5 @@ void TagValueInstanceRemoveConfigurableSplitter::configureWithGUI()
 }
 
 } // namespace splitter
+
 } // namespace sight::ui::dicom

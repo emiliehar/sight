@@ -50,11 +50,11 @@ namespace patcher
  */
 class IO_ATOMS_CLASS_API DefaultPatcher : public IPatcher
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(DefaultPatcher, io::atoms::patch::patcher::IPatcher,
-                        io::atoms::patch::patcher::factory::New< DefaultPatcher >)
+    SIGHT_DECLARE_CLASS(
+        DefaultPatcher,
+        io::atoms::patch::patcher::IPatcher,
+        io::atoms::patch::patcher::factory::New<DefaultPatcher>)
 
     /// Constructor
     IO_ATOMS_API DefaultPatcher(io::atoms::patch::patcher::IPatcher::Key key);
@@ -63,13 +63,13 @@ public:
     IO_ATOMS_API virtual ~DefaultPatcher();
 
     /// Apply the patch to the specified object
-    IO_ATOMS_API virtual sight::atoms::Object::sptr transformObject(sight::atoms::Object::sptr object,
-                                                                    const std::string& context,
-                                                                    const std::string& currentVersion,
-                                                                    const std::string& targetVersion) override;
+    IO_ATOMS_API virtual sight::atoms::Object::sptr transformObject(
+        sight::atoms::Object::sptr object,
+        const std::string& context,
+        const std::string& currentVersion,
+        const std::string& targetVersion) override;
 
 protected:
-
     /// Process structural atom object.
     IO_ATOMS_API virtual sight::atoms::Object::sptr processStructuralObject(sight::atoms::Object::sptr current);
 
@@ -86,23 +86,29 @@ protected:
     IO_ATOMS_API virtual sight::atoms::Sequence::sptr processSequence(sight::atoms::Sequence::sptr seq);
 
     /// Apply structural patch.
-    IO_ATOMS_API virtual sight::atoms::Object::sptr applyStructuralPatch(sight::atoms::Object::sptr previous,
-                                                                         sight::atoms::Object::sptr current);
+    IO_ATOMS_API virtual sight::atoms::Object::sptr applyStructuralPatch(
+        sight::atoms::Object::sptr previous,
+        sight::atoms::Object::sptr current);
 
     /// Apply contextual patch.
-    IO_ATOMS_API virtual sight::atoms::Object::sptr applyContextualPatch(sight::atoms::Object::sptr previous,
-                                                                         sight::atoms::Object::sptr current);
+    IO_ATOMS_API virtual sight::atoms::Object::sptr applyContextualPatch(
+        sight::atoms::Object::sptr previous,
+        sight::atoms::Object::sptr current);
     /// Return true if the object is known in the target version
     IO_ATOMS_API bool isKnown(const sight::atoms::Base::sptr& base);
 
     /// Type of the pass
-    enum PassType { Structural, Contextual };
+    enum PassType
+    {
+        Structural,
+        Contextual
+    };
 
     /**
      * @name Typedefs
      * @{ */
-    typedef std::map<std::string, sight::atoms::Object::sptr > CacheType;
-    typedef std::map< sight::atoms::Object::sptr, sight::atoms::Object::sptr > NewVersionsType;
+    typedef std::map<std::string, sight::atoms::Object::sptr> CacheType;
+    typedef std::map<sight::atoms::Object::sptr, sight::atoms::Object::sptr> NewVersionsType;
     /**  @} */
 
     /// Current type of pass during patching.
@@ -128,7 +134,6 @@ protected:
 
     /// Versions graph.
     io::atoms::patch::VersionsGraph::sptr m_versionsGraph;
-
 };
 
 } // namespace patcher

@@ -29,11 +29,13 @@ namespace sight::viz::scene2d
 /// Contains the data objects used in the Scene2D.
 namespace data
 {
+
 }
 
 /// Contains viz::scene2d::registry details
 namespace registry
 {
+
 }
 
 }

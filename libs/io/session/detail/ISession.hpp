@@ -30,6 +30,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail
 {
 
@@ -46,7 +47,6 @@ public:
     }
 
 protected:
-
     /// Constructor
     IO_SESSION_API ISession() = default;
 
@@ -61,4 +61,5 @@ protected:
 };
 
 } // namespace detail
+
 } // namespace sight::io::session

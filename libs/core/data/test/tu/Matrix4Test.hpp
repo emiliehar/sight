@@ -26,16 +26,17 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class Matrix4Test : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( Matrix4Test );
-    CPPUNIT_TEST( getterSetterByCoef );
-    CPPUNIT_TEST( getterSetterByArray );
-    CPPUNIT_TEST( getterSetterByMatrix );
+    CPPUNIT_TEST_SUITE(Matrix4Test);
+    CPPUNIT_TEST(getterSetterByCoef);
+    CPPUNIT_TEST(getterSetterByArray);
+    CPPUNIT_TEST(getterSetterByMatrix);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,5 +49,6 @@ public:
     void getterSetterByMatrix();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

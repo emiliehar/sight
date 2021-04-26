@@ -28,7 +28,7 @@
 #include <data/factory/new.hpp>
 #include <data/Object.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(Equipment))
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (Equipment))
 
 namespace sight::data
 {
@@ -38,12 +38,10 @@ namespace sight::data
  */
 class DATA_CLASS_API Equipment : public data::Object
 {
-
 public:
+    SIGHT_DECLARE_CLASS(Equipment, data::Object, data::factory::New<Equipment>)
 
-    SIGHT_DECLARE_CLASS(Equipment, data::Object, data::factory::New< Equipment >)
-
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(Equipment))
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (Equipment))
 
     /**
      * @brief Creates the equipement.
@@ -58,14 +56,14 @@ public:
      * @brief Defines shallow copy.
      * @param _source the source object to copy into this one.
      */
-    DATA_API void shallowCopy( const data::Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const data::Object::csptr& _source) override;
 
     /**
      * @brief Defines deep copy.
      * @param _source the source object to copy into this one.
      * @param _cache contains all copied objects to avoid duplication.
      */
-    DATA_API void cachedDeepCopy( const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
+    DATA_API void cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
 
     /// Gets the institution where the equipment that produced the composite instances is located.
     const DicomValueType& getInstitutionName() const;
@@ -74,25 +72,24 @@ public:
     void setInstitutionName(const DicomValueType& _val);
 
 protected:
-
     /// Defines the institution name.
     DicomValueType m_institutionName;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Equipment::getInstitutionName() const
 {
     return m_institutionName;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Equipment::setInstitutionName(const DicomValueType& _val)
 {
     m_institutionName = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // Namespace fwMedData.

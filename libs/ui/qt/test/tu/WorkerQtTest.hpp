@@ -36,7 +36,7 @@ namespace ut
 class WorkerQtTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( WorkerQtTest );
+    CPPUNIT_TEST_SUITE(WorkerQtTest);
 
     CPPUNIT_TEST(initTest);
     CPPUNIT_TEST(twiceInitTest);
@@ -63,9 +63,9 @@ public:
     void basicTimerTest();
 
 protected:
-
     SPTR(core::thread::Worker) m_worker;
 };
 
-} //namespace ut
-} //namespace sight::ui::qt
+} // namespace ut
+
+} // namespace sight::ui::qt

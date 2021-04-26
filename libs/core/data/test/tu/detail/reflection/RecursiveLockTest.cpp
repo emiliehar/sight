@@ -28,30 +28,32 @@
 
 #include <utestData/generator/Image.hpp>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::reflection::ut::RecursiveLockTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::reflection::ut::RecursiveLockTest);
 
 namespace sight::data
 {
+
 namespace reflection
 {
+
 namespace ut
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // Set up context before running a test.
 void RecursiveLockTest::setUp()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void RecursiveLockTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void RecursiveLockTest::lockTest()
 {
@@ -101,8 +103,10 @@ void RecursiveLockTest::lockTest()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace reflection
+
 } // namespace sight::data

@@ -43,22 +43,22 @@ static const core::com::Slots::SlotKeyType s_UPDATE_OBJECTS_SLOT = "updateObject
 static const std::string s_SOURCE_KEY      = "source";
 static const std::string s_DESTINATION_KEY = "destination";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPushObject::SPushObject() noexcept
 {
     newSlot(s_UPDATE_OBJECTS_SLOT, &SPushObject::updateObjects, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPushObject::~SPushObject() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushObject::configuring()
 {
@@ -70,7 +70,7 @@ void SPushObject::configuring()
     m_srcKey = pushCfg->getAttributeValue("srcKey");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushObject::starting()
 {
@@ -78,44 +78,47 @@ void SPushObject::starting()
     this->updateObjects();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushObject::stopping()
 {
     this->actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushObject::updating()
 {
-    data::Composite::sptr compositeSrc = this->getInOut< data::Composite >(s_SOURCE_KEY);
-    SIGHT_ASSERT( s_SOURCE_KEY + " doesn't exist or is not a composite", compositeSrc);
+    data::Composite::sptr compositeSrc = this->getInOut<data::Composite>(s_SOURCE_KEY);
+    SIGHT_ASSERT(s_SOURCE_KEY + " doesn't exist or is not a composite", compositeSrc);
 
-    data::Object::sptr obj = compositeSrc->at< data::Object>(m_srcKey);
+    data::Object::sptr obj = compositeSrc->at<data::Object>(m_srcKey);
 
     SIGHT_WARN_IF("'" + m_srcKey + "' not found in composite '" + compositeSrc->getID() + "'", obj == nullptr);
-    if (service::OSR::isRegistered(s_DESTINATION_KEY, service::IService::AccessType::OUTPUT,
-                                   this->getSptr()))
+
+    if(service::OSR::isRegistered(
+           s_DESTINATION_KEY,
+           service::IService::AccessType::OUTPUT,
+           this->getSptr()))
     {
         this->setOutput(s_DESTINATION_KEY, nullptr);
     }
-    else if (obj)
+    else if(obj)
     {
         this->setOutput(s_DESTINATION_KEY, obj);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushObject::updateObjects()
 {
-    data::Composite::sptr compositeSrc = this->getInOut< data::Composite >(s_SOURCE_KEY);
-    SIGHT_ASSERT( s_SOURCE_KEY + " doesn't exist or is not a composite", compositeSrc);
+    data::Composite::sptr compositeSrc = this->getInOut<data::Composite>(s_SOURCE_KEY);
+    SIGHT_ASSERT(s_SOURCE_KEY + " doesn't exist or is not a composite", compositeSrc);
 
     const bool executable = (compositeSrc->find(m_srcKey) != compositeSrc->end());
 
-    this->::sight::ui::base::IAction::setIsExecutable( executable );
+    this->::sight::ui::base::IAction::setIsExecutable(executable);
 
     if(executable && this->::sight::ui::base::IAction::getIsActive())
     {
@@ -123,17 +126,17 @@ void SPushObject::updateObjects()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SPushObject::getAutoConnections() const
 {
     KeyConnectionsMap connections;
-    connections.push( s_SOURCE_KEY, data::Composite::s_ADDED_OBJECTS_SIG, s_UPDATE_OBJECTS_SLOT );
-    connections.push( s_SOURCE_KEY, data::Composite::s_REMOVED_OBJECTS_SIG, s_UPDATE_OBJECTS_SLOT );
+    connections.push(s_SOURCE_KEY, data::Composite::s_ADDED_OBJECTS_SIG, s_UPDATE_OBJECTS_SLOT);
+    connections.push(s_SOURCE_KEY, data::Composite::s_REMOVED_OBJECTS_SIG, s_UPDATE_OBJECTS_SLOT);
 
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::base

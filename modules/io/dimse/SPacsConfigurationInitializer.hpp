@@ -69,11 +69,9 @@ namespace sight::module::io::dimse
  */
 class MODULE_IO_DIMSE_CLASS_API SPacsConfigurationInitializer : public service::IController
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
-    SIGHT_DECLARE_SERVICE(SPacsConfigurationInitializer,  service::IController)
+    SIGHT_DECLARE_SERVICE(SPacsConfigurationInitializer, service::IController)
 
     /// Creates the service.
     MODULE_IO_DIMSE_API SPacsConfigurationInitializer() noexcept;
@@ -82,7 +80,6 @@ public:
     MODULE_IO_DIMSE_API virtual ~SPacsConfigurationInitializer() noexcept;
 
 protected:
-
     /// Configures members.
     MODULE_IO_DIMSE_API void configuring() override;
 
@@ -109,7 +106,6 @@ protected:
     MODULE_IO_DIMSE_API void stopping() override;
 
 private:
-
     /// Defines the AET of the SCU (client name).
     std::string m_SCUAppEntityTitle;
 
@@ -120,7 +116,7 @@ private:
     std::string m_SCPHostName;
 
     /// Defines the SCP port (server port).
-    unsigned short m_SCPPort {0};
+    unsigned short m_SCPPort{0};
 
     /// Defines the request mode, GET or MOVE. Usually, most SCU use the C-MOVE method.
     sight::io::dimse::data::PacsConfiguration::RETRIEVE_METHOD m_retrieveMethod;
@@ -136,11 +132,10 @@ private:
     std::string m_moveAppEntityTitle;
 
     /// Defines the move port. This port is use to receive C-MOVE responses.
-    unsigned short m_movePort {0};
+    unsigned short m_movePort{0};
 
     /// Defines the key to save/load preferences.
     std::string m_preferenceKey;
-
 };
 
 } // namespace sight::module::io::dimse.

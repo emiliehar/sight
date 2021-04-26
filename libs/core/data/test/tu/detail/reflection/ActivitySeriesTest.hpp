@@ -26,17 +26,20 @@
 
 namespace sight::data
 {
+
 namespace detail
 {
+
 namespace reflection
 {
+
 namespace ut
 {
 
 class ActivitySeriesTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ActivitySeriesTest );
-CPPUNIT_TEST( propertiesTest );
+CPPUNIT_TEST_SUITE(ActivitySeriesTest);
+CPPUNIT_TEST(propertiesTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -47,7 +50,10 @@ public:
     void propertiesTest();
 };
 
-} //namespace ut
-} //namespace reflection
-} //namespace detail
-} //namespace sight::data
+} // namespace ut
+
+} // namespace reflection
+
+} // namespace detail
+
+} // namespace sight::data

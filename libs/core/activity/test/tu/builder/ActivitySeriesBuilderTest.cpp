@@ -36,14 +36,15 @@
 #include <data/Vector.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::activity::ut::ActivitySeriesBuilderTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::activity::ut::ActivitySeriesBuilderTest);
 
 namespace sight::activity
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesBuilderTest::setUp()
 {
@@ -56,7 +57,7 @@ void ActivitySeriesBuilderTest::setUp()
     m_activity->parseBundleInformation();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesBuilderTest::tearDown()
 {
@@ -65,7 +66,7 @@ void ActivitySeriesBuilderTest::tearDown()
     m_module.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesBuilderTest::buildDataTest()
 {
@@ -98,11 +99,11 @@ void ActivitySeriesBuilderTest::buildDataTest()
     CPPUNIT_ASSERT_MESSAGE(imageKey + " key is missing", dataActivity->find(imageKey) != dataActivity->end());
     CPPUNIT_ASSERT_MESSAGE(modelKey + " key is missing", dataActivity->find(modelKey) != dataActivity->end());
 
-    //single param [1;1]
+    // single param [1;1]
     data::Object::sptr obj = (*dataActivity)[imageKey];
     CPPUNIT_ASSERT(obj == imgSeriesSelected);
 
-    //set of param [0;2]
+    // set of param [0;2]
     obj = (*dataActivity)[modelKey];
     data::Composite::sptr composite = data::Composite::dynamicCast(obj);
     CPPUNIT_ASSERT_MESSAGE(modelKey + " param dynamicCast to data::Composite failed", composite);
@@ -110,7 +111,8 @@ void ActivitySeriesBuilderTest::buildDataTest()
     CPPUNIT_ASSERT(modelSeriesSelected == (*composite)["key1"]);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::activity
+} // namespace ut
+
+} // namespace sight::activity

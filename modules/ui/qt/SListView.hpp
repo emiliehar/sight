@@ -31,6 +31,7 @@
 
 namespace sight::module::ui::qt
 {
+
 /**
  * @brief   This editor allows to draw a list.
  * The currently selected item can be deleted by pressing on "del" key
@@ -55,7 +56,6 @@ class MODULE_UI_QT_CLASS_API SListView : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SListView, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -88,7 +88,7 @@ public:
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_REMOVE_ITEM_SLOT;
 
     /// SLOT : Called to insert an item at index.
-    void insertItem( int index, std::string value );
+    void insertItem(int index, std::string value);
 
     /// SLOT : Called to remove the item at the index position.
     void removeItem(int index);
@@ -96,7 +96,6 @@ public:
     ///@}
 
 protected:
-
     /// used to catch the del key released event
     bool eventFilter(QObject* watched, QEvent* event) override;
 
@@ -118,13 +117,11 @@ protected:
     void configuring() override;
 
 private:
-
     QPointer<QListWidget> m_listWidget; /// listWidget
 
 private Q_SLOTS:
-
     /// called when an item is double clicked
     void onItemDoubleClicked(QListWidgetItem* item);
 };
 
-}//namespace sight::module::ui::qt
+} // namespace sight::module::ui::qt

@@ -35,7 +35,9 @@
 
 namespace sight::core::jobs
 {
+
 class Observer;
+
 }
 
 namespace sight::io::vtk
@@ -47,14 +49,14 @@ namespace sight::io::vtk
  * Read VTK Mesh or Image files using the VTK lib, convert to ModelSeries or ImageSeries and push to SeriesDB.
  */
 class IO_VTK_CLASS_API SeriesDBReader :
-    public io::base::reader::GenericObjectReader< data::SeriesDB >,
+    public io::base::reader::GenericObjectReader<data::SeriesDB>,
     public core::location::MultipleFiles
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(SeriesDBReader, io::base::reader::GenericObjectReader< data::SeriesDB >,
-                        io::base::reader::factory::New< SeriesDBReader >)
+    SIGHT_DECLARE_CLASS(
+        SeriesDBReader,
+        io::base::reader::GenericObjectReader<data::SeriesDB>,
+        io::base::reader::factory::New<SeriesDBReader>)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
     /// @brief Constructor.
@@ -69,7 +71,7 @@ public:
     /// @return ".vtk"
     IO_VTK_API std::string extension() override;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setLazyMode(bool lazyMode)
     {
@@ -80,8 +82,7 @@ public:
     IO_VTK_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 
     bool m_lazyMode;

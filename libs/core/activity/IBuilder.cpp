@@ -27,25 +27,29 @@
 namespace sight::activity
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::Vector::sptr IBuilder::getType( const data::Vector::csptr& currentSelection,
-                                      const std::string& type ) const
+data::Vector::sptr IBuilder::getType(
+    const data::Vector::csptr& currentSelection,
+    const std::string& type) const
 {
     SIGHT_ASSERT("currentSelection not instanced", currentSelection);
 
     data::Vector::sptr subSelection = data::Vector::New();
-    for(data::Vector::value_type obj :  *currentSelection)
+
+    for(data::Vector::value_type obj : *currentSelection)
     {
         SIGHT_ASSERT("Object not instanced in selection", obj);
+
         if(obj->isA(type))
         {
             subSelection->getContainer().push_back(obj);
         }
     }
+
     return subSelection;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::activity

@@ -44,9 +44,7 @@ namespace Tuto05MultithreadConsoleCpp
  */
 class TUTO05MULTITHREADCONSOLECPP_CLASS_API SReadArray final : public sight::service::IController
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SReadArray, sight::service::IController)
 
@@ -57,7 +55,6 @@ public:
     TUTO05MULTITHREADCONSOLECPP_API ~SReadArray() noexcept override;
 
 protected:
-
     /// Does nothing.
     void configuring() override;
 
@@ -69,7 +66,6 @@ protected:
 
     /// Does nothing.
     void stopping() override;
-
 };
 
 } // namespace Tuto05MultithreadConsoleCpp.

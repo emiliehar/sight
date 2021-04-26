@@ -28,15 +28,16 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class MTLockTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( MTLockTest );
-    CPPUNIT_TEST( lockTest );
-    CPPUNIT_TEST( multipleLockTest );
+    CPPUNIT_TEST_SUITE(MTLockTest);
+    CPPUNIT_TEST(lockTest);
+    CPPUNIT_TEST(multipleLockTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -56,5 +57,6 @@ private:
     data::String::sptr m_string;
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

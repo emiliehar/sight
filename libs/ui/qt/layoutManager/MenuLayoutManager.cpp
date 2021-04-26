@@ -34,31 +34,32 @@
 
 #include <functional>
 
-fwGuiRegisterMacro( sight::ui::qt::layoutManager::MenuLayoutManager,
-                    sight::ui::base::layoutManager::IMenuLayoutManager::REGISTRY_KEY );
+fwGuiRegisterMacro(
+    sight::ui::qt::layoutManager::MenuLayoutManager,
+    sight::ui::base::layoutManager::IMenuLayoutManager::REGISTRY_KEY);
 
 namespace sight::ui::qt
 {
+
 namespace layoutManager
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MenuLayoutManager::MenuLayoutManager(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MenuLayoutManager::~MenuLayoutManager()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void MenuLayoutManager::createLayout( ui::base::container::fwMenu::sptr parent )
+void MenuLayoutManager::createLayout(ui::base::container::fwMenu::sptr parent)
 {
-
     m_parent = ui::qt::container::QtMenuContainer::dynamicCast(parent);
     SIGHT_ASSERT("dynamicCast fwMenu to QtMenuContainer failed", m_parent);
 
@@ -66,25 +67,27 @@ void MenuLayoutManager::createLayout( ui::base::container::fwMenu::sptr parent )
 
     QActionGroup* actionGroup  = 0;
     unsigned int menuItemIndex = 0;
-    for ( ui::base::layoutManager::IMenuLayoutManager::ActionInfo actionInfo : m_actionInfo)
+
+    for(ui::base::layoutManager::IMenuLayoutManager::ActionInfo actionInfo : m_actionInfo)
     {
         ui::qt::container::QtMenuItemContainer::sptr menuItem = ui::qt::container::QtMenuItemContainer::New();
 
-        QAction* action = menu->addAction( QString::fromStdString(actionInfo.m_name) );
+        QAction* action = menu->addAction(QString::fromStdString(actionInfo.m_name));
 
         action->setSeparator(actionInfo.m_isSeparator);
 
-        if (!actionInfo.m_icon.empty())
+        if(!actionInfo.m_icon.empty())
         {
             SIGHT_DEBUG(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + actionInfo.m_icon.string());
             QIcon icon(QString::fromStdString(actionInfo.m_icon.string()));
             action->setIcon(icon);
         }
-        if (actionInfo.m_type == ui::base::layoutManager::IMenuLayoutManager::QUIT)
+
+        if(actionInfo.m_type == ui::base::layoutManager::IMenuLayoutManager::QUIT)
         {
             action->setMenuRole(QAction::QuitRole);
         }
-        else if (actionInfo.m_type == ui::base::layoutManager::IMenuLayoutManager::ABOUT)
+        else if(actionInfo.m_type == ui::base::layoutManager::IMenuLayoutManager::ABOUT)
         {
             action->setMenuRole(QAction::AboutRole);
         }
@@ -95,22 +98,23 @@ void MenuLayoutManager::createLayout( ui::base::container::fwMenu::sptr parent )
 
         action->setCheckable(actionInfo.m_isCheckable || actionInfo.m_isRadio);
 
-        if (actionInfo.m_isRadio)
+        if(actionInfo.m_isRadio)
         {
-            if (!actionGroup)
+            if(!actionGroup)
             {
                 actionGroup = new QActionGroup(menu);
             }
+
             actionGroup->addAction(action);
         }
 
         // create shortcut
-        if( !actionInfo.m_shortcut.empty() )
+        if(!actionInfo.m_shortcut.empty())
         {
             action->setShortcut(QKeySequence(QString::fromStdString(actionInfo.m_shortcut)));
         }
 
-        if (actionInfo.m_isMenu)
+        if(actionInfo.m_isMenu)
         {
             ui::qt::container::QtMenuContainer::sptr menu = ui::qt::container::QtMenuContainer::New();
             QMenu* qtMenu                                 = new QMenu();
@@ -121,7 +125,7 @@ void MenuLayoutManager::createLayout( ui::base::container::fwMenu::sptr parent )
 
         menuItem->setQtMenuItem(action);
 
-        if(!actionInfo.m_isSeparator && !actionInfo.m_isMenu )
+        if(!actionInfo.m_isSeparator && !actionInfo.m_isMenu)
         {
             m_menuItems.push_back(menuItem);
             SIGHT_ASSERT("No callback found for menu" << actionInfo.m_name, menuItemIndex < m_callbacks.size());
@@ -130,8 +134,8 @@ void MenuLayoutManager::createLayout( ui::base::container::fwMenu::sptr parent )
             ui::qt::ActionCallback::sptr qtCallback = ui::qt::ActionCallback::dynamicCast(callback);
             SIGHT_ASSERT("dynamicCast IMenuItemCallback to ActionCallback failed", qtCallback);
 
-            QObject::connect( action, SIGNAL(triggered(bool)), qtCallback.get(), SLOT(executeQt(bool)));
-            QObject::connect( action, SIGNAL(toggled(bool)), qtCallback.get(), SLOT(checkQt(bool)));
+            QObject::connect(action, SIGNAL(triggered(bool)), qtCallback.get(), SLOT(executeQt(bool)));
+            QObject::connect(action, SIGNAL(toggled(bool)), qtCallback.get(), SLOT(checkQt(bool)));
             menuItemIndex++;
         }
         else
@@ -141,7 +145,7 @@ void MenuLayoutManager::createLayout( ui::base::container::fwMenu::sptr parent )
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MenuLayoutManager::destroyLayout()
 {
@@ -150,37 +154,38 @@ void MenuLayoutManager::destroyLayout()
     m_parent->clean();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MenuLayoutManager::menuItemSetVisible(ui::base::container::fwMenuItem::sptr fwMenuItem, bool isVisible)
 {
-    ui::qt::container::QtMenuItemContainer::sptr menuItemContainer =
-        ui::qt::container::QtMenuItemContainer::dynamicCast(fwMenuItem);
+    ui::qt::container::QtMenuItemContainer::sptr menuItemContainer
+        = ui::qt::container::QtMenuItemContainer::dynamicCast(fwMenuItem);
     QAction* action = menuItemContainer->getQtMenuItem();
     action->setVisible(isVisible);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MenuLayoutManager::menuItemSetEnabled(ui::base::container::fwMenuItem::sptr fwMenuItem, bool isEnabled)
 {
-    ui::qt::container::QtMenuItemContainer::sptr menuItemContainer =
-        ui::qt::container::QtMenuItemContainer::dynamicCast(fwMenuItem);
+    ui::qt::container::QtMenuItemContainer::sptr menuItemContainer
+        = ui::qt::container::QtMenuItemContainer::dynamicCast(fwMenuItem);
     QAction* action = menuItemContainer->getQtMenuItem();
     action->setEnabled(isEnabled);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MenuLayoutManager::menuItemSetChecked(ui::base::container::fwMenuItem::sptr fwMenuItem, bool isChecked)
 {
-    ui::qt::container::QtMenuItemContainer::sptr menuItemContainer =
-        ui::qt::container::QtMenuItemContainer::dynamicCast(fwMenuItem);
+    ui::qt::container::QtMenuItemContainer::sptr menuItemContainer
+        = ui::qt::container::QtMenuItemContainer::dynamicCast(fwMenuItem);
     QAction* action = menuItemContainer->getQtMenuItem();
     action->setChecked(isChecked);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace layoutManager
+
 } // namespace sight::ui::qt

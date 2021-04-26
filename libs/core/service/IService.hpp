@@ -56,16 +56,21 @@
 
 namespace sight::service
 {
+
 namespace registry
 {
+
 class ObjectService;
+
 }
 namespace thread
 {
+
 class Worker;
+
 }
 
-#define KEY_GROUP_NAME(key, index) (key + "#" + std::to_string(index) )
+#define KEY_GROUP_NAME(key, index) (key + "#" + std::to_string(index))
 
 /**
  * @brief   Base class for all services.
@@ -92,7 +97,6 @@ class SERVICE_CLASS_API IService : public core::tools::Object,
                                    public core::com::HasSlots,
                                    public core::com::HasSignals
 {
-
 // to give to OSR an access on IService objects;
 friend class registry::ObjectService;
 friend class AppConfigManager;
@@ -106,9 +110,9 @@ public:
 
     typedef std::string IdType;
     typedef std::string KeyType;
-    typedef std::map< KeyType, data::mt::weak_ptr< const data::Object > > InputMapType;
-    typedef std::map< KeyType, data::mt::weak_ptr< data::Object > > InOutMapType;
-    typedef std::map< KeyType, data::mt::shared_ptr< data::Object > > OutputMapType;
+    typedef std::map<KeyType, data::mt::weak_ptr<const data::Object> > InputMapType;
+    typedef std::map<KeyType, data::mt::weak_ptr<data::Object> > InOutMapType;
+    typedef std::map<KeyType, data::mt::shared_ptr<data::Object> > OutputMapType;
 
     enum class AccessType : std::uint8_t
     {
@@ -130,10 +134,10 @@ public:
         AccessType m_access;
 
         /// True if the service is autoConnected this object according to the auto-connection map
-        bool m_autoConnect { false };
+        bool m_autoConnect{false};
 
         /// True if the object is optional (i.e. the service can start even if the object is not present)
-        bool m_optional { false };
+        bool m_optional{false};
     };
 
     /// Used to store a service configuration.
@@ -146,7 +150,7 @@ public:
         std::string m_type;
 
         /// True if the service is autoConnected to all of its inputs/inouts according to the auto-connection map
-        bool m_globalAutoConnect { false };
+        bool m_globalAutoConnect{false};
 
         /// Service worker
         std::string m_worker;
@@ -174,26 +178,26 @@ public:
     /// Defines all possible global status for a service, including transitions
     typedef enum
     {
-        STARTED,    /**< state after start */
-        STARTING,   /**< state during start */
-        SWAPPING,   /**< state during swap */
-        STOPPED,    /**< state after stop */
-        STOPPING    /**< state during stop */
+        STARTED, /**< state after start */
+        STARTING, /**< state during start */
+        SWAPPING, /**< state during swap */
+        STOPPED, /**< state after stop */
+        STOPPING /**< state during stop */
     } GlobalStatus;
 
     /// Defines all possible status for an update process
     typedef enum
     {
-        UPDATING,   /**< state during update */
+        UPDATING, /**< state during update */
         NOTUPDATING /**< state during when the service is not updating */
     } UpdatingStatus;
 
     /// Defines all possible status for a configuration process
     typedef enum
     {
-        CONFIGURING,    /**< state during configuration */
-        CONFIGURED,     /**< state after configuration */
-        UNCONFIGURED    /**< state when the service is not configured */
+        CONFIGURING, /**< state during configuration */
+        CONFIGURED, /**< state after configuration */
+        UNCONFIGURED /**< state when the service is not configured */
     } ConfigurationStatus;
 
     //@}
@@ -226,9 +230,9 @@ public:
      * @name Slot API
      */
     //@{
-    typedef std::shared_future< void > SharedFutureType;
-    typedef std::packaged_task< void ()> PackagedTaskType;
-    typedef std::future< void > UniqueFutureType;
+    typedef std::shared_future<void> SharedFutureType;
+    typedef std::packaged_task<void ()> PackagedTaskType;
+    typedef std::future<void> UniqueFutureType;
 
     SERVICE_API static const core::com::Slots::SlotKeyType s_START_SLOT;
     typedef core::com::Slot<SharedFutureType()> StartSlotType;
@@ -246,7 +250,7 @@ public:
     typedef core::com::Slot<SharedFutureType(const KeyType&, data::Object::sptr)> SwapKeySlotType;
 
     /// Initializes m_associatedWorker and associates this worker to all service slots
-    SERVICE_API void setWorker( SPTR(core::thread::Worker) worker );
+    SERVICE_API void setWorker(SPTR(core::thread::Worker) worker);
 
     /// Returns associate worker
     SERVICE_API SPTR(core::thread::Worker) getWorker() const;
@@ -264,21 +268,21 @@ public:
      * @param[in] _cfgElement a structure which represents the xml configuration
      * @post m_configurationState == UNCONFIGURED
      */
-    SERVICE_API void setConfiguration( const core::runtime::ConfigurationElement::sptr _cfgElement );
+    SERVICE_API void setConfiguration(const core::runtime::ConfigurationElement::sptr _cfgElement);
 
     /**
      * @brief Set the configuration.
      * @param[in] _configuration whole configuration of the service.
      * @post m_configurationState == UNCONFIGURED
      */
-    SERVICE_API void setConfiguration( const Config& _configuration);
+    SERVICE_API void setConfiguration(const Config& _configuration);
 
     /**
      * @brief Affect the configuration, using a boost property tree
      * @param[in] ptree property tree
      * @post m_configurationState == UNCONFIGURED
      */
-    SERVICE_API void setConfiguration( const ConfigType& ptree );
+    SERVICE_API void setConfiguration(const ConfigType& ptree);
 
     /**
      * @brief Set configuration and then invoke configuring() if m_globalState == STOPPED or reconfiguring() if
@@ -286,7 +290,7 @@ public:
      * @post m_configurationState == CONFIGURED
      * @param[in] ptree property tree
      */
-    SERVICE_API void configure( const ConfigType& ptree );
+    SERVICE_API void configure(const ConfigType& ptree);
 
     /**
      * @brief Invoke configuring() if m_globalState == STOPPED. Invoke reconfiguring() if m_globalState == STARTED. Does
@@ -328,7 +332,7 @@ public:
      *
      *
      */
-    SERVICE_API SharedFutureType swapKey( const KeyType& _key, data::Object::sptr _obj );
+    SERVICE_API SharedFutureType swapKey(const KeyType& _key, data::Object::sptr _obj);
     //@}
 
     /**
@@ -414,7 +418,7 @@ public:
      * @param key name of the data to retrieve.
      * @return object cast in the right type, nullptr if not found.
      */
-    template< class DATATYPE >
+    template<class DATATYPE>
     [[deprecated("it will be removed in sight 21.0, use getWeakXXX() or getLockedXXX()")]]
     inline CSPTR(DATATYPE) getInput(const KeyType& key) const;
 
@@ -423,7 +427,7 @@ public:
      * @param key name of the data to retrieve.
      * @return object cast in the right type, nullptr if not found.
      */
-    template< class DATATYPE >
+    template<class DATATYPE>
     [[deprecated("it will be removed in sight 21.0, use getWeakXXX() or getLockedXXX()")]]
     inline SPTR(DATATYPE) getInOut(const KeyType& key) const;
 
@@ -432,7 +436,7 @@ public:
      * @param key name of the data to retrieve.
      * @return object cast in the right type, nullptr if not found.
      */
-    template< class DATATYPE >
+    template<class DATATYPE>
     [[deprecated("it will be removed in sight 21.0, use getWeakXXX() or getLockedXXX()")]]
     inline SPTR(DATATYPE) getOutput(const KeyType& key) const;
 
@@ -442,7 +446,7 @@ public:
      * @param index of the data to retrieve.
      * @return object cast in the right type, nullptr if not found.
      */
-    template< class DATATYPE >
+    template<class DATATYPE>
     [[deprecated("it will be removed in sight 21.0, use getWeakXXX() or getLockedXXX()")]]
     inline CSPTR(DATATYPE) getInput(const KeyType& keybase, size_t index) const;
 
@@ -452,7 +456,7 @@ public:
      * @param index of the data to retrieve.
      * @return object cast in the right type, nullptr if not found.
      */
-    template< class DATATYPE >
+    template<class DATATYPE>
     [[deprecated("it will be removed in sight 21.0, use getWeakXXX() or getLockedXXX()")]]
     inline SPTR(DATATYPE) getInOut(const KeyType& keybase, size_t index) const;
 
@@ -462,7 +466,7 @@ public:
      * @param index of the data to retrieve.
      * @return object cast in the right type, nullptr if not found.
      */
-    template< class DATATYPE >
+    template<class DATATYPE>
     [[deprecated("it will be removed in sight 21.0, use getWeakXXX() or getLockedXXX()")]]
     inline SPTR(DATATYPE) getOutput(const KeyType& keybase, size_t index) const;
 
@@ -471,24 +475,24 @@ public:
      * @param key name of the data to retrieve.
      * @return weak data pointer in the right type, expired pointer if not found.
      */
-    template< class DATATYPE, typename CONST_DATATYPE = std::add_const_t< DATATYPE > >
-    inline data::mt::weak_ptr< CONST_DATATYPE > getWeakInput(const KeyType& key) const;
+    template<class DATATYPE, typename CONST_DATATYPE = std::add_const_t<DATATYPE> >
+    inline data::mt::weak_ptr<CONST_DATATYPE> getWeakInput(const KeyType& key) const;
 
     /**
      * @brief Return a weak data pointer of the in/out object at the given key.
      * @param key name of the data to retrieve.
      * @return weak data pointer in the right type, expired pointer if not found.
      */
-    template< class DATATYPE >
-    inline data::mt::weak_ptr< DATATYPE > getWeakInOut(const KeyType& key) const;
+    template<class DATATYPE>
+    inline data::mt::weak_ptr<DATATYPE> getWeakInOut(const KeyType& key) const;
 
     /**
      * @brief Return a weak data pointer of the out object at the given key.
      * @param key name of the data to retrieve.
      * @return weak data pointer in the right type, expired pointer if not found.
      */
-    template< class DATATYPE >
-    inline data::mt::weak_ptr< DATATYPE > getWeakOutput(const KeyType& key) const;
+    template<class DATATYPE>
+    inline data::mt::weak_ptr<DATATYPE> getWeakOutput(const KeyType& key) const;
 
     /**
      * @brief Return a weak data pointer of the input object at the given key and index.
@@ -496,8 +500,8 @@ public:
      * @param index of the data to retrieve.
      * @return weak data pointer in the right type, expired pointer if not found.
      */
-    template< class DATATYPE, typename CONST_DATATYPE = std::add_const_t< DATATYPE > >
-    inline data::mt::weak_ptr< CONST_DATATYPE > getWeakInput(const KeyType& keybase, size_t index) const;
+    template<class DATATYPE, typename CONST_DATATYPE = std::add_const_t<DATATYPE> >
+    inline data::mt::weak_ptr<CONST_DATATYPE> getWeakInput(const KeyType& keybase, size_t index) const;
 
     /**
      * @brief Return a weak data pointer of the in/out object at the given key and index.
@@ -505,8 +509,8 @@ public:
      * @param index of the data to retrieve.
      * @return weak data pointer in the right type, expired pointer if not found.
      */
-    template< class DATATYPE >
-    inline data::mt::weak_ptr< DATATYPE > getWeakInOut(const KeyType& keybase, size_t index) const;
+    template<class DATATYPE>
+    inline data::mt::weak_ptr<DATATYPE> getWeakInOut(const KeyType& keybase, size_t index) const;
 
     /**
      * @brief Return a weak data pointer of the out object at the given key and index.
@@ -514,8 +518,8 @@ public:
      * @param index of the data to retrieve.
      * @return weak data pointer in the right type, expired pointer if not found.
      */
-    template< class DATATYPE >
-    inline data::mt::weak_ptr< DATATYPE > getWeakOutput(const KeyType& keybase, size_t index) const;
+    template<class DATATYPE>
+    inline data::mt::weak_ptr<DATATYPE> getWeakOutput(const KeyType& keybase, size_t index) const;
 
     /**
      * @brief Return a locked data pointer of the input object at the given key.
@@ -523,8 +527,8 @@ public:
      * @return locked data pointer in the right type.
      * @throw data::Exception if the data object is not found.
      */
-    template< class DATATYPE, typename CONST_DATATYPE = std::add_const_t< DATATYPE > >
-    inline data::mt::locked_ptr< CONST_DATATYPE > getLockedInput(const KeyType& key) const;
+    template<class DATATYPE, typename CONST_DATATYPE = std::add_const_t<DATATYPE> >
+    inline data::mt::locked_ptr<CONST_DATATYPE> getLockedInput(const KeyType& key) const;
 
     /**
      * @brief Return a locked data pointer of the in/out object at the given key.
@@ -532,8 +536,8 @@ public:
      * @return locked data pointer in the right type.
      * @throw data::Exception if the data object is not found.
      */
-    template< class DATATYPE >
-    inline data::mt::locked_ptr< DATATYPE > getLockedInOut(const KeyType& key) const;
+    template<class DATATYPE>
+    inline data::mt::locked_ptr<DATATYPE> getLockedInOut(const KeyType& key) const;
 
     /**
      * @brief Return a locked data pointer of the out object at the given key.
@@ -541,8 +545,8 @@ public:
      * @return locked data pointer in the right type.
      * @throw data::Exception if the data object is not found.
      */
-    template< class DATATYPE >
-    inline data::mt::locked_ptr< DATATYPE > getLockedOutput(const KeyType& key) const;
+    template<class DATATYPE>
+    inline data::mt::locked_ptr<DATATYPE> getLockedOutput(const KeyType& key) const;
 
     /**
      * @brief Return a locked data pointer of the input object at the given key and index.
@@ -551,8 +555,8 @@ public:
      * @return locked data pointer in the right type.
      * @throw data::Exception if the data object is not found.
      */
-    template< class DATATYPE, typename CONST_DATATYPE = std::add_const_t< DATATYPE > >
-    inline data::mt::locked_ptr< CONST_DATATYPE > getLockedInput(const KeyType& keybase, size_t index) const;
+    template<class DATATYPE, typename CONST_DATATYPE = std::add_const_t<DATATYPE> >
+    inline data::mt::locked_ptr<CONST_DATATYPE> getLockedInput(const KeyType& keybase, size_t index) const;
 
     /**
      * @brief Return a locked data pointer of the in/out object at the given key and index.
@@ -561,8 +565,8 @@ public:
      * @return locked data pointer in the right type.
      * @throw data::Exception if the data object is not found.
      */
-    template< class DATATYPE >
-    inline data::mt::locked_ptr< DATATYPE > getLockedInOut(const KeyType& keybase, size_t index) const;
+    template<class DATATYPE>
+    inline data::mt::locked_ptr<DATATYPE> getLockedInOut(const KeyType& keybase, size_t index) const;
 
     /**
      * @brief Return a locked data pointer of the out object at the given key and index.
@@ -571,8 +575,8 @@ public:
      * @return locked data pointer in the right type.
      * @throw data::Exception if the data object is not found.
      */
-    template< class DATATYPE >
-    inline data::mt::locked_ptr< DATATYPE > geLockedOutput(const KeyType& keybase, size_t index) const;
+    template<class DATATYPE>
+    inline data::mt::locked_ptr<DATATYPE> geLockedOutput(const KeyType& keybase, size_t index) const;
 
     /**
      * @brief Register an output object at a given key in the OSR, replacing it if it already exists.
@@ -584,8 +588,10 @@ public:
      * services will not maintain a reference to this object (only weak_ptr). When the service stops, it should remove
      * its outputs by calling setOutput(key, nullptr). Otherwise, a service may work on an expired object.
      */
-    SERVICE_API void setOutput(const service::IService::KeyType& key, const data::Object::sptr& object,
-                               size_t index = 0);
+    SERVICE_API void setOutput(
+        const service::IService::KeyType& key,
+        const data::Object::sptr& object,
+        size_t index = 0);
 
     /**
      * @brief Return the number of key in a group of keys.
@@ -608,36 +614,40 @@ public:
     class KeyConnectionsMap
     {
     public:
-        //------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------
 
-        void push (const KeyType& key,
-                   const core::com::Signals::SignalKeyType& sig,
-                   const core::com::Slots::SlotKeyType& slot)
+        void push(
+            const KeyType& key,
+            const core::com::Signals::SignalKeyType& sig,
+            const core::com::Slots::SlotKeyType& slot)
         {
             m_keyConnectionsMap[key].push_back(std::make_pair(sig, slot));
         }
 
-        typedef std::map< KeyType, KeyConnectionsType> KeyConnectionsMapType;
+        typedef std::map<KeyType, KeyConnectionsType> KeyConnectionsMapType;
 
-        //------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------
 
         KeyConnectionsMapType::const_iterator find(const KeyType& key) const
         {
             return m_keyConnectionsMap.find(key);
         }
-        //------------------------------------------------------------------------------
+
+        // ------------------------------------------------------------------------------
 
         KeyConnectionsMapType::const_iterator end() const
         {
             return m_keyConnectionsMap.cend();
         }
-        //------------------------------------------------------------------------------
+
+        // ------------------------------------------------------------------------------
 
         bool empty() const
         {
             return m_keyConnectionsMap.empty();
         }
-        //------------------------------------------------------------------------------
+
+        // ------------------------------------------------------------------------------
 
         size_t size() const
         {
@@ -645,7 +655,7 @@ public:
         }
 
     private:
-        std::map< KeyType, KeyConnectionsType> m_keyConnectionsMap;
+        std::map<KeyType, KeyConnectionsType> m_keyConnectionsMap;
     };
 
     //@}
@@ -693,8 +703,11 @@ public:
      * @param[in] autoConnect if true, the service will be connected to the object's signals
      * @param[in] optional if true, the service can be started even if the objet is not present
      */
-    SERVICE_API void registerInput(const data::Object::csptr& obj, const std::string& key,
-                                   const bool autoConnect = false, const bool optional = false);
+    SERVICE_API void registerInput(
+        const data::Object::csptr& obj,
+        const std::string& key,
+        const bool autoConnect = false,
+        const bool optional    = false);
 
     /**
      * @brief Unregister an input object for this service
@@ -711,8 +724,11 @@ public:
      * @param[in] autoConnect if true, the service will be connected to the object's signals
      * @param[in] optional if true, the service can be started even if the objet is not present
      */
-    SERVICE_API void registerInOut(const data::Object::sptr& obj, const std::string& key,
-                                   const bool autoConnect = false, const bool optional = false);
+    SERVICE_API void registerInOut(
+        const data::Object::sptr& obj,
+        const std::string& key,
+        const bool autoConnect = false,
+        const bool optional    = false);
 
     /**
      * @brief Unregister an inout object for this service
@@ -733,8 +749,12 @@ public:
      * @param[in] autoConnect if true, the service will be connected to the object's signals
      * @param[in] optional if true, the service can be started even if the objet is not present
      */
-    SERVICE_API void registerObject(const data::Object::sptr& obj, const std::string& key,
-                                    AccessType access, const bool autoConnect = false, const bool optional = false);
+    SERVICE_API void registerObject(
+        const data::Object::sptr& obj,
+        const std::string& key,
+        AccessType access,
+        const bool autoConnect = false,
+        const bool optional    = false);
 
     /**
      * @brief Define an object required by this service.
@@ -749,8 +769,12 @@ public:
      * @param[in] autoConnect if true, the service will be connected to the object's signals
      * @param[in] optional if true, the service can be started even if the objet is not present
      */
-    SERVICE_API void registerObject(const std::string& objId, const std::string& key,
-                                    AccessType access, const bool autoConnect = false, const bool optional = false);
+    SERVICE_API void registerObject(
+        const std::string& objId,
+        const std::string& key,
+        AccessType access,
+        const bool autoConnect = false,
+        const bool optional    = false);
 
     /**
      * @brief Unregister an object for this service
@@ -770,7 +794,6 @@ public:
     SERVICE_API bool hasAllRequiredObjects() const;
 
 protected:
-
     /**
      * @name Constructor and Destructor
      */
@@ -867,7 +890,7 @@ protected:
      * This method is used by operator<<(std::ostream & _sstream, IService& _service)
      * to avoid declaration of << by all services.
      */
-    SERVICE_API virtual void info( std::ostream& _sstream );
+    SERVICE_API virtual void info(std::ostream& _sstream);
 
     /**
      * @brief Returns proposals to connect service slots to associated objects signals,
@@ -887,8 +910,11 @@ protected:
      * @param[in] autoConnect if true, the service will be connected to the object's signals
      * @param[in] optional if true, the service can be started even if the objet is not present
      */
-    SERVICE_API void registerObject(const std::string& key, AccessType access, const bool autoConnect = false,
-                                    const bool optional = false);
+    SERVICE_API void registerObject(
+        const std::string& key,
+        AccessType access,
+        const bool autoConnect = false,
+        const bool optional    = false);
 
     /**
      * @brief Define an object group required by this service.
@@ -905,8 +931,12 @@ protected:
      * @note This method will register maxNbObject in the group named (<key>#0, <key>#1, ... <key>#<maxNbObject>). The
      * first Nth objects (minNbObject) are required, the other are optional.
      */
-    SERVICE_API void registerObjectGroup(const std::string& key, AccessType access, const std::uint8_t minNbObject,
-                                         const bool autoConnect = false, const std::uint8_t maxNbObject = 10);
+    SERVICE_API void registerObjectGroup(
+        const std::string& key,
+        AccessType access,
+        const std::uint8_t minNbObject,
+        const bool autoConnect         = false,
+        const std::uint8_t maxNbObject = 10);
 
     /**
      * @brief Configuration element used to configure service internal state using a generic XML like structure
@@ -940,7 +970,6 @@ protected:
 //@}
 
 private:
-
     // Slot: start the service
     SharedFutureType startSlot();
     SharedFutureType internalStart(bool _async);

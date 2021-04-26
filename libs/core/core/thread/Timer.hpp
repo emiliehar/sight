@@ -45,9 +45,9 @@ public:
     /**
      * @name Typedefs
      * @{ */
-    typedef std::shared_ptr< Timer >        sptr;
-    typedef std::function< void () >         FunctionType;
-    typedef std::chrono::duration<double>   TimeDurationType;
+    typedef std::shared_ptr<Timer> sptr;
+    typedef std::function<void ()> FunctionType;
+    typedef std::chrono::duration<double> TimeDurationType;
     /**  @} */
 
     CORE_API ~Timer();
@@ -64,7 +64,7 @@ public:
     CORE_API virtual void setDuration(TimeDurationType duration) = 0;
 
     /// Sets the function to be triggered when time duration expires.
-    template< typename F >
+    template<typename F>
     void setFunction(F f)
     {
         core::mt::ScopedLock lock(m_mutex);
@@ -82,7 +82,6 @@ public:
     virtual bool isRunning() const = 0;
 
 protected:
-
     /**
      * @brief Constructs a Timer.
      * By default, a the Timer mode is repetitive.
@@ -90,10 +89,10 @@ protected:
     CORE_API Timer();
 
     /// Copy constructor forbidden.
-    Timer( const Timer& );
+    Timer(const Timer&);
 
     /// Copy operator forbidden.
-    Timer& operator=( const Timer& );
+    Timer& operator=(const Timer&);
 
     /// This method is triggered when Timer's function is changed.
     CORE_API virtual void updatedFunction()
@@ -106,4 +105,4 @@ protected:
     mutable core::mt::Mutex m_mutex;
 };
 
-} //namespace sight::core::thread
+} // namespace sight::core::thread

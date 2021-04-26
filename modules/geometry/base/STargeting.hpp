@@ -63,9 +63,7 @@ namespace sight::module::geometry::base
  */
 class MODULE_GEOMETRY_BASE_CLASS_API STargeting final : public service::IService
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(STargeting, service::IService)
 
@@ -76,7 +74,6 @@ public:
     MODULE_GEOMETRY_BASE_API ~STargeting() noexcept override;
 
 protected:
-
     /// Does nothing.
     MODULE_GEOMETRY_BASE_API void starting() override;
 
@@ -99,10 +96,10 @@ protected:
 
 private:
     /// SLOT: updates selected landmark point position on the crosshair.
-    void updateSelectedPoint( std::string name, size_t index );
+    void updateSelectedPoint(std::string name, size_t index);
 
     /// SLOT: updates last landmark point position on the crosshair.
-    void updatePoint( std::string name );
+    void updatePoint(std::string name);
 
     /// SLOT: removes the landmark's position on the crosshair.
     void removePoint();
@@ -117,10 +114,10 @@ private:
     bool m_landmarkSelected{false};
 
     /// Target landmark.
-    ::glm::dvec3 m_targetLandmark{0. };
+    ::glm::dvec3 m_targetLandmark{0.};
 
     /// Width of the background image (pixels).
     int m_width{400};
-
 };
+
 } // namespace sight::module::geometry::base

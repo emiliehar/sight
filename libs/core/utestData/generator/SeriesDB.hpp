@@ -28,11 +28,14 @@
 
 namespace sight::data
 {
+
 class Reconstruction;
+
 }
 
 namespace sight::data
 {
+
 class SeriesDB;
 class Series;
 class Patient;
@@ -41,10 +44,12 @@ class Equipment;
 class ImageSeries;
 class ModelSeries;
 class ActivitySeries;
+
 }
 
 namespace sight::utestData
 {
+
 namespace generator
 {
 
@@ -54,9 +59,7 @@ namespace generator
  */
 class SeriesDB
 {
-
 public:
-
     /**
      * @brief Creates a SeriesDB.
      * @param nbImgSeries       number of ImageSeries to add in seriesDB
@@ -64,9 +67,10 @@ public:
      * @param nbActivitySeries  number of ActivitySeries to add in seriesDB
      * @return The created SeriesDB
      */
-    UTESTDATA_API static SPTR(data::SeriesDB) createSeriesDB(const unsigned char nbImgSeries,
-                                                             const unsigned char nbModelSeries,
-                                                             const unsigned char nbActivitySeries);
+    UTESTDATA_API static SPTR(data::SeriesDB) createSeriesDB(
+        const unsigned char nbImgSeries,
+        const unsigned char nbModelSeries,
+        const unsigned char nbActivitySeries);
 
     /// Returns a Patient with dummy informations
     UTESTDATA_API static SPTR(data::Patient) createPatient();
@@ -101,8 +105,8 @@ public:
      * reconstructionDB.
      */
     UTESTDATA_API static void generateReconstruction(SPTR(data::Reconstruction) rec, int index = -1);
-
 };
 
 } // namespace generator
+
 } // namespace sight::utestData

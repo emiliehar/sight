@@ -27,6 +27,7 @@
 
 namespace sight::service
 {
+
 /**
  * @brief   This interface defines registerer service API.
  *          Must be implemented for services that register objects together.
@@ -37,7 +38,6 @@ namespace sight::service
 class SERVICE_CLASS_API IRegisterer : public service::IService
 {
 public:
-
     SIGHT_DECLARE_SERVICE(IRegisterer, service::IService)
 
     /**
@@ -58,7 +58,6 @@ public:
     SERVICE_API virtual ~IRegisterer() noexcept;
 
 protected:
-
     /// Register matrix slot
     SERVICE_API virtual void computeRegistration(core::HiResClock::HiResClockType timestamp) = 0;
 };

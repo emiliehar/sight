@@ -30,13 +30,13 @@
 
 namespace sight::io::opencv
 {
+
 /**
  * @brief Camera calibration conversion methods.
  */
 class IO_OPENCV_CLASS_API Camera
 {
 public:
-
     /// Copy the intrinsic matrix, the image size and the distortion coefficients from a Sight camera.
     IO_OPENCV_API static std::tuple< ::cv::Mat, ::cv::Size, ::cv::Mat> copyToCv(const data::Camera::csptr& _src);
 };

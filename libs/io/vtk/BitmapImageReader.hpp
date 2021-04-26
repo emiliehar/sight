@@ -34,8 +34,10 @@
 
 namespace sight::core::jobs
 {
+
 class Observer;
 class IJob;
+
 }
 
 namespace sight::io::vtk
@@ -46,14 +48,14 @@ namespace sight::io::vtk
  *
  * Read a Bitmap Image using the VTK library
  */
-class BitmapImageReader : public base::reader::GenericObjectReader< data::Image >,
+class BitmapImageReader : public base::reader::GenericObjectReader<data::Image>,
                           public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(BitmapImageReader, io::base::reader::GenericObjectReader< data::Image >,
-                        io::base::reader::factory::New< BitmapImageReader >);
+    SIGHT_DECLARE_CLASS(
+        BitmapImageReader,
+        io::base::reader::GenericObjectReader<data::Image>,
+        io::base::reader::factory::New<BitmapImageReader>);
 
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
@@ -76,8 +78,7 @@ public:
     IO_VTK_API static void getAvailableExtensions(std::vector<std::string>& ext);
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 
     /// Available file extensions for bitmap files

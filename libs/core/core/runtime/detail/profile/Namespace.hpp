@@ -24,13 +24,16 @@
 
 namespace sight::core::runtime
 {
+
 namespace detail
 {
+
 /**
  * @brief   Contains classes to manage module declarations in profile.xml (activate/start/stop).
  */
 namespace profile
 {
+
 }
 
 }

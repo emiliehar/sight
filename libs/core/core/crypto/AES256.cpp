@@ -92,7 +92,7 @@ inline static T xxcrypt(
     return output;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string decrypt(const std::string& message, const secure_string& password)
 {
@@ -104,7 +104,7 @@ std::string decrypt(const std::string& message, const secure_string& password)
         password);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string decrypt(const secure_string& message, const secure_string& password)
 {
@@ -116,14 +116,14 @@ secure_string decrypt(const secure_string& message, const secure_string& passwor
         password);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string decrypt(const char* const message, const secure_string& password)
 {
     return decrypt(secure_string(message), password);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string encrypt(const std::string& message, const secure_string& password)
 {
@@ -135,7 +135,7 @@ std::string encrypt(const std::string& message, const secure_string& password)
         password);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string encrypt(const secure_string& message, const secure_string& password)
 {
@@ -147,7 +147,7 @@ secure_string encrypt(const secure_string& message, const secure_string& passwor
         password);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string encrypt(const char* const message, const secure_string& password)
 {

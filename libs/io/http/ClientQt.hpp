@@ -91,8 +91,7 @@ public Q_SLOTS:
 
 private:
     /// Set request headers with given values.
-    void computeHeaders(QNetworkRequest& request,  const Request::HeadersType& headers);
-
+    void computeHeaders(QNetworkRequest& request, const Request::HeadersType& headers);
 };
 
 } // namespace sight::io::http

@@ -29,6 +29,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
@@ -52,4 +53,5 @@ protected:
 };
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

@@ -36,6 +36,7 @@
 
 namespace sight::module::ui::qt::calibration
 {
+
 /**
  * @brief   SCalibrationInfoEditor service is used to handle the calibration points acquisition.
  * *
@@ -85,7 +86,6 @@ public:
     }
 
 protected:
-
     /// Initializes the editor
     MODULE_UI_QT_API void configuring() override;
 
@@ -132,7 +132,6 @@ private Q_SLOTS:
     void onItemDoubleClicked(QListWidgetItem*);
 
 private:
-
     /**
      * @brief Index of the last acquisition.
      */
@@ -141,11 +140,12 @@ private:
     /**
      * @brief Label displaying the number of point acquisitions.
      */
-    QPointer< QLabel > m_nbCapturesLabel;
+    QPointer<QLabel> m_nbCapturesLabel;
 
     /**
      * @brief Calibration point list.
      */
-    QPointer< QListWidget > m_capturesListWidget;
+    QPointer<QListWidget> m_capturesListWidget;
 };
+
 } // namespace sight::module::ui::qt::calibration

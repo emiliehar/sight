@@ -37,7 +37,6 @@ namespace helper
 class Utils
 {
 public:
-
     /**
      * @brief converOgreColorToQColor
      * @param _ogreColor the Ogre color to convert.

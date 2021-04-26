@@ -26,7 +26,7 @@
 
 #include <core/reflection/UserObject.hpp>
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(Mesh))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (Mesh))
 {
     builder
     .tag("object_version", "4")
@@ -46,7 +46,6 @@ SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(Mesh))
     .property("point_tex_coords", &::sight::data::Mesh::m_pointTexCoords)
     .property("cell_tex_coords", &::sight::data::Mesh::m_cellTexCoords)
     .property("array_map", &::sight::data::Mesh::m_arrayMap)
-    //.property("attributes", &::sight::data::Mesh::m_attributes) // It uses a mapper to convert attributes property.
+    // .property("attributes", &::sight::data::Mesh::m_attributes) // It uses a mapper to convert attributes property.
     ;
-
 }

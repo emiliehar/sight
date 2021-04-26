@@ -29,43 +29,47 @@ namespace sight::viz::scene3d
 
 const std::string ITransformable::s_TRANSFORM_CONFIG = "transform";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ITransformable::setTransformId(viz::scene3d::SRender::OgreObjectIdType _id)
 {
     m_transformId = _id;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 viz::scene3d::SRender::OgreObjectIdType ITransformable::getTransformId() const
 {
     return m_transformId;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::SceneNode* ITransformable::getTransformNode(::Ogre::SceneNode* const _parentNode)
 {
     SIGHT_ASSERT("Transform id is not set, please call setTransformId before.", !m_transformId.empty());
     m_transformNode = this->getTransformNode(m_transformId, _parentNode);
+
     return m_transformNode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-::Ogre::SceneNode* ITransformable::getTransformNode(const std::string& _name,
-                                                    ::Ogre::SceneNode* const _parentNode)
+::Ogre::SceneNode* ITransformable::getTransformNode(
+    const std::string& _name,
+    ::Ogre::SceneNode* const _parentNode)
 {
     SIGHT_ASSERT("Transform name is not set.", !_name.empty());
     auto transformNode = viz::scene3d::helper::Scene::getNodeById(_name, _parentNode);
-    if (transformNode == nullptr)
+
+    if(transformNode == nullptr)
     {
         transformNode = _parentNode->createChildSceneNode(_name);
     }
+
     return transformNode;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d

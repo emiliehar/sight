@@ -34,14 +34,15 @@
 
 namespace sight::module::ui::qt
 {
+
 /**
  * @brief   This action show the about frame.
  */
 class MODULE_UI_QT_CLASS_API SShowAbout : public QObject,
                                           public ::sight::ui::base::IAction
 {
-
 Q_OBJECT
+
 public:
     SIGHT_DECLARE_SERVICE(SShowAbout, sight::ui::base::IAction)
 
@@ -50,7 +51,7 @@ public:
      * @{ */
     MODULE_UI_QT_API SShowAbout() noexcept;
     MODULE_UI_QT_API virtual ~SShowAbout() noexcept;
-    /**  @} */
+/**  @} */
 
 protected:
     /**
@@ -81,7 +82,6 @@ protected:
     void info(std::ostream& _sstream) override;
 
 protected Q_SLOTS:
-
     /**
      * @brief Triggered when an URL is clicked in the about frame.
      *

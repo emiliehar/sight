@@ -37,17 +37,20 @@ QT_END_NAMESPACE
 
 namespace sight::ui::qt
 {
+
 namespace dialog
 {
+
 /**
  * @brief   This class allows us to show a pulse progress bar.
  */
 class UI_QT_CLASS_API PulseProgressDialog : public ui::base::dialog::IPulseProgressDialog
 {
 public:
-
-    SIGHT_DECLARE_CLASS(PulseProgressDialog, ui::base::dialog::IPulseProgressDialog,
-                        ui::base::factory::New< PulseProgressDialog >)
+    SIGHT_DECLARE_CLASS(
+        PulseProgressDialog,
+        ui::base::dialog::IPulseProgressDialog,
+        ui::base::factory::New<PulseProgressDialog>)
 
     UI_QT_API PulseProgressDialog(ui::base::GuiBaseObject::Key key);
 
@@ -62,9 +65,9 @@ public:
     UI_QT_API void show() override;
 
 protected:
-
-    QPointer< QProgressDialog >  m_pdialog;
-
+    QPointer<QProgressDialog> m_pdialog;
 };
+
 } // namespace dialog
+
 } // namespace sight::ui::qt

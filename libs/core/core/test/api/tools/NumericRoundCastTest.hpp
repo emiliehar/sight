@@ -26,17 +26,18 @@
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
 class NumericRoundCastTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( NumericRoundCastTest );
-CPPUNIT_TEST( castFloatToIntTest );
-CPPUNIT_TEST( castDoubleToIntTest );
-CPPUNIT_TEST( castIntToFloatTest );
-CPPUNIT_TEST( castDoubleToFloatTest );
-CPPUNIT_TEST( castIntToIntTest );
+CPPUNIT_TEST_SUITE(NumericRoundCastTest);
+CPPUNIT_TEST(castFloatToIntTest);
+CPPUNIT_TEST(castDoubleToIntTest);
+CPPUNIT_TEST(castIntToFloatTest);
+CPPUNIT_TEST(castDoubleToFloatTest);
+CPPUNIT_TEST(castIntToIntTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -52,4 +53,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::core::tools

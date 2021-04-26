@@ -35,7 +35,9 @@
 
 namespace sight::data
 {
+
 class Series;
+
 }
 
 namespace sight::module::io::dicomweb
@@ -61,10 +63,9 @@ namespace sight::module::io::dicomweb
 class MODULE_IO_DICOMWEB_CLASS_API SSeriesPusher : public service::IController
 {
 public:
+    SIGHT_DECLARE_SERVICE(SSeriesPusher, ::sight::service::IController)
 
-    SIGHT_DECLARE_SERVICE(SSeriesPusher, ::sight::service::IController )
-
-    typedef std::vector< CSPTR(data::Series) > DicomSeriesContainerType;
+    typedef std::vector<CSPTR(data::Series)> DicomSeriesContainerType;
 
     MODULE_IO_DICOMWEB_API static const core::com::Slots::SlotKeyType s_DISPLAY_SLOT;
     typedef core::com::Slot<void (const std::string&, bool)> DisplayMessageSlotType;
@@ -80,7 +81,6 @@ public:
     MODULE_IO_DICOMWEB_API virtual ~SSeriesPusher() noexcept;
 
 protected:
-
     /// Gets the configuration.
     MODULE_IO_DICOMWEB_API void configuring() override;
 
@@ -94,7 +94,6 @@ protected:
     MODULE_IO_DICOMWEB_API void updating() override;
 
 private:
-
     /// Push Series
     void pushSeries();
 
@@ -122,7 +121,6 @@ private:
 
     /// Server port
     int m_serverPort{4242};
-
 };
 
 } // namespace sight::module::io::dicomweb

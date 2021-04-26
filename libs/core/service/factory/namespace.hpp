@@ -30,6 +30,7 @@ namespace sight::service
  */
 namespace factory
 {
+
 } // namespace factory
 
 } // namespace sight::service

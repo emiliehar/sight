@@ -28,17 +28,18 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace ie
 {
 
 /**
  * @brief Series Information Entity class
  */
-class IO_DICOM_CLASS_API Series : public io::dicom::reader::ie::InformationEntity< data::Series >
+class IO_DICOM_CLASS_API Series : public io::dicom::reader::ie::InformationEntity<data::Series>
 {
-
 public:
     /**
      * @brief Constructor
@@ -50,13 +51,14 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API Series(const CSPTR(data::DicomSeries)& dicomSeries,
-                        const SPTR(::gdcm::Reader)& reader,
-                        const SPTR(io::dicom::container::DicomInstance)& instance,
-                        const data::Series::sptr& series,
-                        const core::log::Logger::sptr& logger = nullptr,
-                        ProgressCallback progress             = nullptr,
-                        CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API Series(
+        const CSPTR(data::DicomSeries)& dicomSeries,
+        const SPTR(::gdcm::Reader)& reader,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const data::Series::sptr& series,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~Series();
@@ -66,9 +68,10 @@ public:
      * @see PS 3.3 C.7.3.1
      */
     IO_DICOM_API virtual void readGeneralSeriesModule();
-
 };
 
 } // namespace ie
+
 } // namespace reader
+
 } // namespace sight::io::dicom

@@ -28,7 +28,9 @@
 
 namespace thread
 {
+
 class Timer;
+
 }
 
 namespace Tuto05MultithreadConsoleCpp
@@ -52,9 +54,7 @@ namespace Tuto05MultithreadConsoleCpp
  */
 class TUTO05MULTITHREADCONSOLECPP_CLASS_API SIncrementArray final : public sight::service::IController
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SIncrementArray, sight::service::IController)
 
@@ -65,7 +65,6 @@ public:
     TUTO05MULTITHREADCONSOLECPP_API virtual ~SIncrementArray() noexcept;
 
 protected:
-
     /// Does nothing.
     TUTO05MULTITHREADCONSOLECPP_API void configuring() override;
 
@@ -79,7 +78,6 @@ protected:
     TUTO05MULTITHREADCONSOLECPP_API void stopping() override;
 
 private:
-
     /// SLOT: starts the timer.
     void startTimer();
 
@@ -90,4 +88,4 @@ private:
     unsigned int m_periodInMillisec;
 };
 
-}  // namespace Tuto05MultithreadConsoleCpp.
+} // namespace Tuto05MultithreadConsoleCpp.

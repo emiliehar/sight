@@ -35,25 +35,25 @@ namespace sight::io::dicom
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CsvIO::CsvIO(std::istream& csvStream) :
     m_stream(csvStream)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CsvIO::~CsvIO()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 typedef ::boost::char_separator<char> CharSeparatorType;
-typedef ::boost::tokenizer< CharSeparatorType > TokenizerType;
+typedef ::boost::tokenizer<CharSeparatorType> TokenizerType;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CsvIO::TokenContainerType CsvIO::getLine(const std::string& separator)
 {
@@ -70,7 +70,8 @@ CsvIO::TokenContainerType CsvIO::getLine(const std::string& separator)
     return tokens;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace helper
+
 } // namespace sight::io::dicom

@@ -36,7 +36,9 @@
 
 namespace sight::data
 {
+
 class SeriesDB;
+
 }
 
 namespace sight::module::io::dicom
@@ -58,7 +60,6 @@ namespace sight::module::io::dicom
  */
 class MODULE_IO_DICOM_CLASS_API SSurfaceSegmentationWriter : public sight::io::base::service::IWriter
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SSurfaceSegmentationWriter, sight::io::base::service::IWriter)
 
@@ -83,7 +84,6 @@ public:
     MODULE_IO_DICOM_API void openLocationDialog() override;
 
 protected:
-
     /// Does nothing
     MODULE_IO_DICOM_API void starting() override;
 
@@ -100,14 +100,14 @@ protected:
     MODULE_IO_DICOM_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 private:
-
     /**
      * @brief Write a Series to a folder in DICOM format
      * @param[in] filename DICOM file name
      * @param[in] model ModelSeries that must be written
      */
-    void saveSurfaceSegmentation( const std::filesystem::path filename,
-                                  const data::ModelSeries::csptr& model);
+    void saveSurfaceSegmentation(
+        const std::filesystem::path filename,
+        const data::ModelSeries::csptr& model);
 };
 
 } // namespace sight::module::io::dicom

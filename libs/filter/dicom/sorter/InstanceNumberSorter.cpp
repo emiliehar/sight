@@ -31,18 +31,19 @@
 #include <dcmtk/dcmimgle/dcmimage.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::sorter::InstanceNumberSorter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::sorter::InstanceNumberSorter);
 
 namespace sight::filter::dicom
 {
+
 namespace sorter
 {
 
-const std::string InstanceNumberSorter::s_FILTER_NAME        = "Instance number sorter";
-const std::string InstanceNumberSorter::s_FILTER_DESCRIPTION =
-    "Sort instances using <i>InstanceNumber</i> tag.";
+const std::string InstanceNumberSorter::s_FILTER_NAME = "Instance number sorter";
+const std::string InstanceNumberSorter::s_FILTER_DESCRIPTION
+    = "Sort instances using <i>InstanceNumber</i> tag.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 InstanceNumberSorter::InstanceNumberSorter(filter::dicom::IFilter::Key key) :
     filter::dicom::sorter::TagValueSorter(key)
@@ -50,27 +51,27 @@ InstanceNumberSorter::InstanceNumberSorter(filter::dicom::IFilter::Key key) :
     this->setTag(DCM_InstanceNumber);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 InstanceNumberSorter::~InstanceNumberSorter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string InstanceNumberSorter::getName() const
 {
     return InstanceNumberSorter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string InstanceNumberSorter::getDescription() const
 {
     return InstanceNumberSorter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool InstanceNumberSorter::isConfigurationRequired() const
 {
@@ -78,4 +79,5 @@ bool InstanceNumberSorter::isConfigurationRequired() const
 }
 
 } // namespace sorter
+
 } // namespace sight::filter::dicom

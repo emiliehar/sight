@@ -30,9 +30,9 @@ namespace sight::viz::qt3d
 namespace factory
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-viz::qt3d::IWindowInteractor::sptr New( const viz::qt3d::registry::KeyType& classname )
+viz::qt3d::IWindowInteractor::sptr New(const viz::qt3d::registry::KeyType& classname)
 {
     return viz::qt3d::registry::get()->create(classname);
 }

@@ -34,14 +34,16 @@ namespace iterator
 {
 
 /// Used to iterate through a RGB image of type 'uint8'
-struct RGB {
+struct RGB
+{
     std::uint8_t r;
     std::uint8_t g;
     std::uint8_t b;
 };
 
 /// Used to iterate through a RGBA image of type 'uint8'
-struct RGBA {
+struct RGBA
+{
     std::uint8_t r;
     std::uint8_t g;
     std::uint8_t b;
@@ -49,14 +51,16 @@ struct RGBA {
 };
 
 /// Used to iterate through a BGR image of type 'uint8'
-struct BGR {
+struct BGR
+{
     std::uint8_t b;
     std::uint8_t g;
     std::uint8_t r;
 };
 
 /// Used to iterate through a BGRA image of type 'uint8'
-struct BGRA {
+struct BGRA
+{
     std::uint8_t b;
     std::uint8_t g;
     std::uint8_t r;
@@ -86,11 +90,10 @@ struct BGRA {
     }
    @endcode
  */
-template <class FORMAT, bool isConstIterator = true>
+template<class FORMAT, bool isConstIterator = true>
 class ImageIteratorBase
 {
 public:
-
     /**
      * For ConstIterator:   define input to be a const Image*
      * For Iterator: define input to be a Image*
@@ -163,7 +166,6 @@ public:
     value_type* operator->() const;
 
 protected:
-
     /// allow to create a ConstIterator from an Iterator
     friend class ImageIteratorBase<FORMAT, true>;
 
@@ -174,6 +176,7 @@ protected:
 };
 
 } // namespace iterator
+
 } // namespace sight::data
 
 #include "data/iterator/ImageIterator.hxx"

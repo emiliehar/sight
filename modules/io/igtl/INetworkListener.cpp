@@ -32,7 +32,7 @@ namespace sight::module::io::igtl
 const core::com::Signals::SignalKeyType INetworkListener::s_CONNECTED_SIGNAL    = "connected";
 const core::com::Signals::SignalKeyType INetworkListener::s_DISCONNECTED_SIGNAL = "disconnected";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 INetworkListener::INetworkListener()
 {
@@ -40,18 +40,18 @@ INetworkListener::INetworkListener()
     m_sigDisconnected = newSignal<DisconnectSignalType>(s_DISCONNECTED_SIGNAL);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 INetworkListener::~INetworkListener()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INetworkListener::updating()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::io::igtl.

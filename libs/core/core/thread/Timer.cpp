@@ -34,4 +34,4 @@ Timer::~Timer()
     this->stop();
 }
 
-} //namespace sight::core::thread
+} // namespace sight::core::thread

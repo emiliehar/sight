@@ -33,6 +33,7 @@
 
 namespace sight::module::ui::base
 {
+
 namespace series
 {
 
@@ -81,7 +82,6 @@ public:
     MODULE_UI_BASE_API KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// This method is used to configure the service parameters
     void configuring() override;
 
@@ -94,10 +94,9 @@ protected:
     /// Adds the series specified by m_seriesId in the SeriesDB.
     void updating() override;
 
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
     /**
      * @name Slots
      * @{
@@ -122,5 +121,7 @@ private:
     /// @deprecated appXml
     std::string m_seriesId;
 };
+
 } // namespace series
+
 } // namespace sight::module::ui::base

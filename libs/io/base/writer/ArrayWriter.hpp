@@ -31,6 +31,7 @@
 
 namespace sight::io::base
 {
+
 namespace writer
 {
 
@@ -40,14 +41,14 @@ namespace writer
  *
  * Ircad writer to write a data::Array on filesystem in a raw format
  */
-class IO_BASE_CLASS_API ArrayWriter :  public GenericObjectWriter< data::Array >,
-                                       public core::location::SingleFile
+class IO_BASE_CLASS_API ArrayWriter : public GenericObjectWriter<data::Array>,
+                                      public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(ArrayWriter, GenericObjectWriter< data::Array>,
-                        io::base::writer::factory::New< ArrayWriter >)
+    SIGHT_DECLARE_CLASS(
+        ArrayWriter,
+        GenericObjectWriter<data::Array>,
+        io::base::writer::factory::New<ArrayWriter>)
 
     /// Constructor. Do nothing.
     IO_BASE_API ArrayWriter(io::base::writer::IObjectWriter::Key key);
@@ -60,8 +61,8 @@ public:
 
     /// Defines extension supported by this writer ".raw"
     IO_BASE_API std::string extension() override;
-
 };
 
 } // namespace writer
+
 } // namespace sight::io::base

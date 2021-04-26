@@ -54,11 +54,10 @@ public:
     UI_BASE_API static const FactoryRegistryKeyType REGISTRY_KEY;
 
     /// Set the cursor
-    UI_BASE_API virtual void setCursor( CursorType cursor) = 0;
+    UI_BASE_API virtual void setCursor(CursorType cursor) = 0;
 
     /// Set the default cursor
     UI_BASE_API virtual void setDefaultCursor() = 0;
-
 };
 
 } // namespace sight::ui::base

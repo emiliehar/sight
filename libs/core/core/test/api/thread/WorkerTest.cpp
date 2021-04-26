@@ -33,29 +33,31 @@
 #include <iostream>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::thread::ut::WorkerTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::thread::ut::WorkerTest);
 
 namespace sight::core::thread
 {
+
 namespace ut
 {
 
 static utest::Exception e(""); // force link with fwTest
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void WorkerTest::setUp()
 {
     // Set up context before running a test.
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void WorkerTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 struct TestHandler
 {
@@ -64,15 +66,15 @@ struct TestHandler
         m_constructorThreadId = core::thread::getCurrentThreadId();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void nextStep()
     {
-        std::this_thread::sleep_for( std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
         this->nextStepNoSleep();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void nextStepNoSleep()
     {
@@ -83,20 +85,20 @@ struct TestHandler
         ++m_step;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setWorkerId(core::thread::ThreadIdType id)
     {
         m_workerThreadId = id;
     }
 
-    std::atomic_int m_step {0};
-    std::atomic_bool m_threadCheckOk {true};
+    std::atomic_int m_step{0};
+    std::atomic_bool m_threadCheckOk{true};
     core::thread::ThreadIdType m_constructorThreadId;
     core::thread::ThreadIdType m_workerThreadId;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WorkerTest::basicTest()
 {
@@ -105,9 +107,9 @@ void WorkerTest::basicTest()
 
         TestHandler handler;
         handler.setWorkerId(worker->getThreadId());
-        worker->post( std::bind( &TestHandler::nextStep, &handler) );
-        worker->post( std::bind( &TestHandler::nextStep, &handler) );
-        worker->post( std::bind( &TestHandler::nextStep, &handler) );
+        worker->post(std::bind(&TestHandler::nextStep, &handler));
+        worker->post(std::bind(&TestHandler::nextStep, &handler));
+        worker->post(std::bind(&TestHandler::nextStep, &handler));
 
         worker->stop();
         CPPUNIT_ASSERT_EQUAL(3, handler.m_step.load());
@@ -119,9 +121,9 @@ void WorkerTest::basicTest()
 
         TestHandler handler;
         handler.setWorkerId(worker->getThreadId());
-        worker->post( std::bind( &TestHandler::nextStepNoSleep, &handler) );
-        worker->post( std::bind( &TestHandler::nextStepNoSleep, &handler) );
-        worker->post( std::bind( &TestHandler::nextStepNoSleep, &handler) );
+        worker->post(std::bind(&TestHandler::nextStepNoSleep, &handler));
+        worker->post(std::bind(&TestHandler::nextStepNoSleep, &handler));
+        worker->post(std::bind(&TestHandler::nextStepNoSleep, &handler));
 
         worker->stop();
         CPPUNIT_ASSERT_EQUAL(3, handler.m_step.load());
@@ -129,7 +131,7 @@ void WorkerTest::basicTest()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WorkerTest::timerTest()
 {
@@ -142,7 +144,7 @@ void WorkerTest::timerTest()
 
     std::chrono::milliseconds duration = std::chrono::milliseconds(100);
 
-    timer->setFunction( std::bind( &TestHandler::nextStepNoSleep, &handler) );
+    timer->setFunction(std::bind(&TestHandler::nextStepNoSleep, &handler));
     timer->setDuration(duration);
 
     CPPUNIT_ASSERT(!timer->isRunning());
@@ -155,11 +157,11 @@ void WorkerTest::timerTest()
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
     CPPUNIT_ASSERT_EQUAL(0, handler.m_step.load());
 
-    std::this_thread::sleep_for( duration/10. );
+    std::this_thread::sleep_for(duration / 10.);
 
-    for (int i = 1; i < 50; ++i)
+    for(int i = 1 ; i < 50 ; ++i)
     {
-        std::this_thread::sleep_for( duration );
+        std::this_thread::sleep_for(duration);
 
         CPPUNIT_ASSERT(timer->isRunning());
         CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
@@ -172,11 +174,11 @@ void WorkerTest::timerTest()
     timer->stop();
 
     int lastStep = handler.m_step.load();
-    std::this_thread::sleep_for( duration*3 );
+    std::this_thread::sleep_for(duration * 3);
 
     CPPUNIT_ASSERT(!timer->isRunning());
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
-    CPPUNIT_ASSERT_LESSEQUAL(lastStep+5, handler.m_step.load());
+    CPPUNIT_ASSERT_LESSEQUAL(lastStep + 5, handler.m_step.load());
 
     // test start after stop
     handler.m_step.store(0);
@@ -187,11 +189,11 @@ void WorkerTest::timerTest()
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
     CPPUNIT_ASSERT_EQUAL(0, handler.m_step.load());
 
-    std::this_thread::sleep_for( duration/10. );
+    std::this_thread::sleep_for(duration / 10.);
 
-    for (int i = 1; i < 50; ++i)
+    for(int i = 1 ; i < 50 ; ++i)
     {
-        std::this_thread::sleep_for( duration );
+        std::this_thread::sleep_for(duration);
         CPPUNIT_ASSERT(timer->isRunning());
         CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
     }
@@ -203,11 +205,11 @@ void WorkerTest::timerTest()
     timer->stop();
 
     lastStep = handler.m_step.load();
-    std::this_thread::sleep_for( duration*3 );
+    std::this_thread::sleep_for(duration * 3);
 
     CPPUNIT_ASSERT(!timer->isRunning());
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
-    CPPUNIT_ASSERT_LESSEQUAL(lastStep+5, handler.m_step.load());
+    CPPUNIT_ASSERT_LESSEQUAL(lastStep + 5, handler.m_step.load());
 
     // change timer duration on the fly
     // change timer duration
@@ -219,11 +221,11 @@ void WorkerTest::timerTest()
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
     CPPUNIT_ASSERT_EQUAL(0, handler.m_step.load());
 
-    std::this_thread::sleep_for( duration/10. );
+    std::this_thread::sleep_for(duration / 10.);
 
-    for (int i = 1; i < 25; ++i)
+    for(int i = 1 ; i < 25 ; ++i)
     {
-        std::this_thread::sleep_for( duration );
+        std::this_thread::sleep_for(duration);
 
         CPPUNIT_ASSERT(timer->isRunning());
         CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
@@ -236,9 +238,9 @@ void WorkerTest::timerTest()
     duration = std::chrono::milliseconds(50);
     timer->setDuration(duration);
 
-    for (int i = 24; i < 50; ++i)
+    for(int i = 24 ; i < 50 ; ++i)
     {
-        std::this_thread::sleep_for( duration );
+        std::this_thread::sleep_for(duration);
 
         CPPUNIT_ASSERT(timer->isRunning());
         CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
@@ -251,11 +253,11 @@ void WorkerTest::timerTest()
     timer->stop();
 
     lastStep = handler.m_step.load();
-    std::this_thread::sleep_for( duration*3 );
+    std::this_thread::sleep_for(duration * 3);
 
     CPPUNIT_ASSERT(!timer->isRunning());
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
-    CPPUNIT_ASSERT_LESSEQUAL(lastStep+5, handler.m_step.load());
+    CPPUNIT_ASSERT_LESSEQUAL(lastStep + 5, handler.m_step.load());
 
     // one shot test
     handler.m_step.store(0);
@@ -270,7 +272,7 @@ void WorkerTest::timerTest()
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
     CPPUNIT_ASSERT_EQUAL(0, handler.m_step.load());
 
-    std::this_thread::sleep_for( duration*10 );
+    std::this_thread::sleep_for(duration * 10);
 
     CPPUNIT_ASSERT(!timer->isRunning());
     CPPUNIT_ASSERT(handler.m_threadCheckOk.load());
@@ -289,15 +291,16 @@ void WorkerTest::timerTest()
     {
         core::thread::Timer::sptr timer = worker->createTimer();
         duration = std::chrono::milliseconds(10);
-        timer->setFunction( [duration]()
+        timer->setFunction(
+            [duration]()
                 {
-                    std::this_thread::sleep_for( duration*90 );
-                } );
+                    std::this_thread::sleep_for(duration * 90);
+                });
 
         timer->setDuration(duration);
 
         timer->start();
-        std::this_thread::sleep_for( duration * 2 );
+        std::this_thread::sleep_for(duration * 2);
         timer->stop();
 
         timer.reset();
@@ -306,7 +309,8 @@ void WorkerTest::timerTest()
     worker->stop();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::core::thread
+} // namespace ut
+
+} // namespace sight::core::thread

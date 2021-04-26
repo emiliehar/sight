@@ -35,78 +35,80 @@
 
 namespace sight::core::memory
 {
+
 namespace tools
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MemoryMonitorTools::MemoryMonitorTools()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MemoryMonitorTools::~MemoryMonitorTools()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::uint64_t MemoryMonitorTools::estimateFreeMem()
 {
     return MEMORYTOOLIMPL::estimateFreeMem();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryMonitorTools::printProcessMemoryInformation()
 {
     MEMORYTOOLIMPL::printProcessMemoryInformation();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryMonitorTools::printSystemMemoryInformation()
 {
     MEMORYTOOLIMPL::printSystemMemoryInformation();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryMonitorTools::printMemoryInformation()
 {
     MEMORYTOOLIMPL::printMemoryInformation();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::uint64_t MemoryMonitorTools::getTotalSystemMemory()
 {
     return MEMORYTOOLIMPL::getTotalSystemMemory();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::uint64_t MemoryMonitorTools::getUsedSystemMemory()
 {
     return MEMORYTOOLIMPL::getUsedSystemMemory();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::uint64_t MemoryMonitorTools::getFreeSystemMemory()
 {
     return MEMORYTOOLIMPL::getFreeSystemMemory();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::uint64_t MemoryMonitorTools::getUsedProcessMemory()
 {
     return MEMORYTOOLIMPL::getUsedProcessMemory();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace tools
+
 } // namespace sight::core::memory

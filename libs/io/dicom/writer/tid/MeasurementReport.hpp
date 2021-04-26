@@ -29,8 +29,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
+
 namespace tid
 {
 
@@ -38,9 +40,8 @@ namespace tid
  * @brief Measurement Report TID - This a root template
  * @see TID t1tt1 FIXME: Set the final TID
  */
-class IO_DICOM_CLASS_API MeasurementReport : public io::dicom::writer::tid::TemplateID< data::Image >
+class IO_DICOM_CLASS_API MeasurementReport : public io::dicom::writer::tid::TemplateID<data::Image>
 {
-
 public:
     /**
      * @brief Constructor
@@ -48,9 +49,10 @@ public:
      * @param[in] instance DICOM instance used to share informations between modules
      * @param[in] image Image data
      */
-    IO_DICOM_API MeasurementReport(const SPTR(::gdcm::Writer)& writer,
-                                   const SPTR(io::dicom::container::DicomInstance)& instance,
-                                   const data::Image::csptr& image);
+    IO_DICOM_API MeasurementReport(
+        const SPTR(::gdcm::Writer)& writer,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const data::Image::csptr& image);
 
     /// Destructor
     IO_DICOM_API virtual ~MeasurementReport();
@@ -60,9 +62,10 @@ public:
      * @param[in] useSCoord3D True if we must write SCOORD3D, false if we must write SCOORD
      */
     IO_DICOM_API virtual SPTR(io::dicom::container::sr::DicomSRNode) createRootNode(bool useSCoord3D = true);
-
 };
 
 } // namespace tid
+
 } // namespace writer
+
 } // namespace sight::io::dicom

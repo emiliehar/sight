@@ -29,32 +29,35 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace ie
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Study::Study(const data::DicomSeries::csptr& dicomSeries,
-             const SPTR(::gdcm::Reader)& reader,
-             const io::dicom::container::DicomInstance::sptr& instance,
-             const data::Study::sptr& study,
-             const core::log::Logger::sptr& logger,
-             ProgressCallback progress,
-             CancelRequestedCallback cancel) :
-    io::dicom::reader::ie::InformationEntity< data::Study >(dicomSeries, reader, instance, study, logger,
-                                                            progress, cancel)
+Study::Study(
+    const data::DicomSeries::csptr& dicomSeries,
+    const SPTR(::gdcm::Reader)& reader,
+    const io::dicom::container::DicomInstance::sptr& instance,
+    const data::Study::sptr& study,
+    const core::log::Logger::sptr& logger,
+    ProgressCallback progress,
+    CancelRequestedCallback cancel) :
+    io::dicom::reader::ie::InformationEntity<data::Study>(dicomSeries, reader, instance, study, logger,
+                                                          progress, cancel)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Study::~Study()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Study::readGeneralStudyModule()
 {
@@ -85,7 +88,7 @@ void Study::readGeneralStudyModule()
     m_object->setDescription(studyDescription);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Study::readPatientStudyModule()
 {
@@ -106,8 +109,10 @@ void Study::readPatientStudyModule()
     m_object->setPatientBodyMassIndex(studyPatientBodyMassIndex);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}// namespace ie
+} // namespace ie
+
 } // namespace reader
+
 } // namespace sight::io::dicom

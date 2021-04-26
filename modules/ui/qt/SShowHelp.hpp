@@ -30,6 +30,7 @@
 
 namespace sight::module::ui::qt
 {
+
 /**
  * @brief   This action show the help contents.
  */
@@ -42,7 +43,6 @@ public:
     MODULE_UI_QT_API virtual ~SShowHelp() noexcept;
 
 protected:
-
     /**
      * @brief Configuring method.
      *
@@ -65,7 +65,7 @@ protected:
     /// Stops action
     void stopping() override;
 
-    MODULE_UI_QT_API void info(std::ostream& _sstream ) override;
+    MODULE_UI_QT_API void info(std::ostream& _sstream) override;
 
 private:
     /**

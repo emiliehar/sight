@@ -34,6 +34,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -41,18 +42,20 @@ namespace detail::data
 MeshDeserializer::sptr MeshDeserializer::shared()
 {
     struct make_shared_enabler final : public MeshDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MeshDeserializer::uptr MeshDeserializer::unique()
 {
     struct make_unique_enabler final : public MeshDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr MeshDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -81,7 +84,7 @@ sight::data::Object::sptr MeshDeserializer::deserialize(
         password);
 
     // "Convert" it to a string
-    const std::string content{ std::istreambuf_iterator<char>(*istream), std::istreambuf_iterator<char>() };
+    const std::string content{std::istreambuf_iterator<char>(*istream), std::istreambuf_iterator<char>()};
 
     // Create the vtk reader
     const auto& vtkReader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
@@ -95,7 +98,7 @@ sight::data::Object::sptr MeshDeserializer::deserialize(
     return mesh;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr MeshDeserializer::create()
 {
@@ -104,4 +107,5 @@ sight::data::Object::sptr MeshDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

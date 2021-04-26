@@ -71,9 +71,7 @@ namespace sight::module::filter::image
 
 class MODULE_FILTER_IMAGE_CLASS_API SPlaneSlicer : public service::IOperator
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SPlaneSlicer, service::IOperator)
 
     /// Constructor.
@@ -83,7 +81,6 @@ public:
     MODULE_FILTER_IMAGE_API virtual ~SPlaneSlicer() noexcept;
 
 protected:
-
     MODULE_FILTER_IMAGE_API void configuring() override;
     MODULE_FILTER_IMAGE_API void starting() override;
     MODULE_FILTER_IMAGE_API void updating() override;
@@ -102,7 +99,6 @@ protected:
     MODULE_FILTER_IMAGE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// Set the extent based on the extentImage and orientation.
     void setReslicerExtent();
 
@@ -125,4 +121,4 @@ private:
     vtkSmartPointer<vtkImageReslice> m_reslicer;
 };
 
-} //namespace sight::module::filter::image
+} // namespace sight::module::filter::image

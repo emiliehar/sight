@@ -35,24 +35,25 @@
 #include <vtkSmartPointer.h>
 #include <vtkSTLReader.h>
 
-SIGHT_REGISTER_IO_READER( ::sight::io::vtk::StlMeshReader );
+SIGHT_REGISTER_IO_READER(::sight::io::vtk::StlMeshReader);
 
 namespace sight::io::vtk
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 StlMeshReader::StlMeshReader(io::base::reader::IObjectReader::Key) :
     m_job(core::jobs::Observer::New("STL Mesh reader"))
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 StlMeshReader::~StlMeshReader()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StlMeshReader::read()
 {
@@ -60,53 +61,52 @@ void StlMeshReader::read()
 
     [[maybe_unused]] const auto objectLock = m_object.lock();
 
-    SIGHT_ASSERT("Object Lock null.", objectLock );
+    SIGHT_ASSERT("Object Lock null.", objectLock);
 
     const data::Mesh::sptr pMesh = getConcreteObject();
 
     using namespace sight::io::vtk::helper;
 
-    vtkSmartPointer< vtkSTLReader > reader = vtkSmartPointer< vtkSTLReader >::New();
+    vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
     reader->SetFileName(this->getFile().string().c_str());
 
-    vtkSmartPointer< vtkLambdaCommand > progressCallback;
+    vtkSmartPointer<vtkLambdaCommand> progressCallback;
 
-    progressCallback = vtkSmartPointer< vtkLambdaCommand >::New();
+    progressCallback = vtkSmartPointer<vtkLambdaCommand>::New();
     progressCallback->SetCallback(
         [&](vtkObject* caller, long unsigned int, void*)
         {
-            const auto filter = static_cast< vtkSTLReader* >(caller);
+            const auto filter = static_cast<vtkSTLReader*>(caller);
             m_job->doneWork(static_cast<std::uint64_t>(filter->GetProgress() * 100.));
-        }
-        );
+        });
     reader->AddObserver(vtkCommand::ProgressEvent, progressCallback);
 
-    m_job->addSimpleCancelHook([&] { reader->AbortExecuteOn(); });
+    m_job->addSimpleCancelHook([&]{reader->AbortExecuteOn();});
 
     reader->Update();
 
     vtkDataObject* obj = reader->GetOutput();
     vtkPolyData* mesh  = vtkPolyData::SafeDownCast(obj);
-    SIGHT_THROW_IF("StlMeshReader cannot read VTK Mesh file : "<< this->getFile().string(), !mesh);
+    SIGHT_THROW_IF("StlMeshReader cannot read VTK Mesh file : " << this->getFile().string(), !mesh);
     io::vtk::helper::Mesh::fromVTKMesh(mesh, pMesh);
 
     m_job->finish();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string StlMeshReader::extension()
 {
     return ".stl";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::jobs::IJob::sptr StlMeshReader::getJob() const
 {
     return m_job;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::io::vtk

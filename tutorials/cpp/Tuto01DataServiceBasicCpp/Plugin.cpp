@@ -34,19 +34,19 @@ namespace Tuto01DataServiceBasicCpp
 
 SIGHT_REGISTER_PLUGIN("::Tuto01DataServiceBasicCpp::Plugin");
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Plugin::~Plugin() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::start()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::initialize()
 {
@@ -93,13 +93,13 @@ void Plugin::initialize()
     m_renderSrv->update();
 }
 
-//--------------------------------------renderConfig----------------------------------------
+// --------------------------------------renderConfig----------------------------------------
 
 void Plugin::stop() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::uninitialize()
 {
@@ -109,12 +109,12 @@ void Plugin::uninitialize()
     m_frameSrv->stop();
 
     // unregister the services
-    service::OSR::unregisterService( m_readerSrv );
-    service::OSR::unregisterService( m_frameSrv );
-    service::OSR::unregisterService( m_renderSrv );
+    service::OSR::unregisterService(m_readerSrv);
+    service::OSR::unregisterService(m_frameSrv);
+    service::OSR::unregisterService(m_renderSrv);
     m_image.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace Tuto01DataServiceBasicCpp.

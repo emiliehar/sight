@@ -29,42 +29,40 @@
 
 #include <service/macros.hpp>
 
-
 namespace Tuto05MultithreadConsoleCpp
 {
 
 static const std::string s_ARRAY_INOUT = "array";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SReadArray::SReadArray() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SReadArray::~SReadArray() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReadArray::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReadArray::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReadArray::updating()
 {
-    const auto array = this->getInOut< sight::data::Array >(s_ARRAY_INOUT);
+    const auto array = this->getInOut<sight::data::Array>(s_ARRAY_INOUT);
 
     // Initialize the array size and type.
     const int arraySize = 10;
@@ -74,24 +72,24 @@ void SReadArray::updating()
     // Fill the array values.
     const auto dumpLock = array->lock();
 
-    auto itr = array->begin< unsigned int >();
+    auto itr = array->begin<unsigned int>();
 
-    for(unsigned int i = 0; i < arraySize; i++, ++itr)
+    for(unsigned int i = 0 ; i < arraySize ; i++, ++itr)
     {
         *itr = i;
     }
 
     // Notify that the array is modified.
-    const auto sig = array->signal< sight::data::Object::ModifiedSignalType>( sight::data::Object::s_MODIFIED_SIG );
+    const auto sig = array->signal<sight::data::Object::ModifiedSignalType>(sight::data::Object::s_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReadArray::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace Tuto05MultithreadConsoleCpp.

@@ -28,6 +28,7 @@
 
 namespace sight::module::viz::scene2d
 {
+
 namespace adaptor
 {
 
@@ -44,9 +45,7 @@ namespace adaptor
  */
 class MODULE_VIZ_SCENE2D_CLASS_API SViewportInteractor : public sight::viz::scene2d::IAdaptor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SViewportInteractor, ::sight::viz::scene2d::IAdaptor)
 
     MODULE_VIZ_SCENE2D_API SViewportInteractor() noexcept;
@@ -54,7 +53,6 @@ public:
     MODULE_VIZ_SCENE2D_API ~SViewportInteractor() noexcept;
 
 protected:
-
     MODULE_VIZ_SCENE2D_API void configuring() override;
 
     MODULE_VIZ_SCENE2D_API void starting() override;
@@ -63,15 +61,15 @@ protected:
 
     MODULE_VIZ_SCENE2D_API void stopping() override;
 
-    MODULE_VIZ_SCENE2D_API void processInteraction( sight::viz::scene2d::data::Event& _event ) override;
+    MODULE_VIZ_SCENE2D_API void processInteraction(sight::viz::scene2d::data::Event& _event) override;
 
-    MODULE_VIZ_SCENE2D_API void zoom( bool zoomIn );
+    MODULE_VIZ_SCENE2D_API void zoom(bool zoomIn);
 
 private:
-
     bool m_viewportIsTranslated;
     sight::viz::scene2d::data::Coord m_lastCoordEvent;
 };
 
-}   // namespace adaptor
-}   // namespace sight::module::viz::scene2d
+} // namespace adaptor
+
+} // namespace sight::module::viz::scene2d

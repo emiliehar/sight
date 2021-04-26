@@ -25,14 +25,15 @@
 #include <data/Equipment.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::EquipmentTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::EquipmentTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EquipmentTest::setUp()
 {
@@ -40,7 +41,7 @@ void EquipmentTest::setUp()
     m_equipment = data::Equipment::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EquipmentTest::tearDown()
 {
@@ -48,7 +49,7 @@ void EquipmentTest::tearDown()
     m_equipment.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EquipmentTest::institutionNameTest()
 {
@@ -58,7 +59,8 @@ void EquipmentTest::institutionNameTest()
     CPPUNIT_ASSERT_EQUAL(institutionName, m_equipment->getInstitutionName());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

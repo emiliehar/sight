@@ -39,28 +39,28 @@ namespace detail
 namespace dl
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Native::Native( const std::string& name ) noexcept :
-    m_name( name )
+Native::Native(const std::string& name) noexcept :
+    m_name(name)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Native::~Native() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::filesystem::path Native::getFullPath() const
 {
 #if defined(linux) || defined(__linux)
     const std::filesystem::path result = m_searchPath / ("lib" + this->getName() + ".so");
 #elif defined(WIN32)
-    const std::filesystem::path result = m_searchPath / ( this->getName() + ".dll");
-#elif defined (__APPLE__)
+    const std::filesystem::path result = m_searchPath / (this->getName() + ".dll");
+#elif defined(__APPLE__)
     const std::filesystem::path result = m_searchPath / ("lib" + this->getName() + ".dylib");
 #endif
 
@@ -69,38 +69,41 @@ const std::filesystem::path Native::getFullPath() const
     {
         throw RuntimeException("Unable to find a native library for the module.");
     }
-    if( !std::filesystem::exists(result) )
+
+    if(!std::filesystem::exists(result))
     {
         throw RuntimeException("'" + result.string() + "': invalid native module file name.");
     }
-    if( std::filesystem::is_directory(result) )
+
+    if(std::filesystem::is_directory(result))
     {
         throw RuntimeException("'" + result.string() + "': is a directory. Dynamic library is missing.");
     }
+
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string Native::getName() const
 {
     return m_name;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Native::setSearchPath( const std::filesystem::path& path ) noexcept
+void Native::setSearchPath(const std::filesystem::path& path) noexcept
 {
     m_searchPath = path;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Native::operator=(const Native&) noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dl
 

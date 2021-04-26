@@ -51,10 +51,8 @@ namespace sight::module::io::dimse
  */
 class MODULE_IO_DIMSE_CLASS_API SProgressBarController : public service::IController
 {
-
 public:
-
-    SIGHT_DECLARE_SERVICE(SProgressBarController,  service::IController)
+    SIGHT_DECLARE_SERVICE(SProgressBarController, service::IController)
 
     /// Initializes slots.
     MODULE_IO_DIMSE_API SProgressBarController() noexcept;
@@ -63,7 +61,6 @@ public:
     MODULE_IO_DIMSE_API virtual ~SProgressBarController() noexcept;
 
 protected:
-
     /// Does nothing.
     MODULE_IO_DIMSE_API void configuring() override;
 
@@ -77,7 +74,6 @@ protected:
     MODULE_IO_DIMSE_API void updating() override;
 
 private:
-
     /// Starts a progress bar with the given id.
     void startProgress(std::string _id);
 
@@ -88,11 +84,10 @@ private:
     void stopProgress(std::string _id);
 
     /// Stores progress bars.
-    std::map< std::string, sight::ui::base::dialog::ProgressDialog::sptr > m_progressDialogs;
+    std::map<std::string, sight::ui::base::dialog::ProgressDialog::sptr> m_progressDialogs;
 
     /// Synchronizes progress bars access.
     core::mt::Mutex m_mutex;
-
 };
 
 } // namespace sight::module::io::dimse.

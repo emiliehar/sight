@@ -38,15 +38,13 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API GuiRegistry : public ui::base::GuiBaseObject
 {
-
 public:
-
-    typedef std::map< std::string, ui::base::container::fwContainer::sptr > ContainerMapType;
-    typedef std::map< std::string, ui::base::container::fwMenuBar::sptr >   MenuBarMapType;
-    typedef std::map< std::string, ui::base::container::fwToolBar::sptr >   ToolBarMapType;
-    typedef std::map< std::string, ui::base::container::fwMenu::sptr >      MenuMapType;
-    typedef std::vector< std::string >                           ParentSidsType;
-    typedef std::map< std::string, ParentSidsType > ActionToParentMapType;
+    typedef std::map<std::string, ui::base::container::fwContainer::sptr> ContainerMapType;
+    typedef std::map<std::string, ui::base::container::fwMenuBar::sptr> MenuBarMapType;
+    typedef std::map<std::string, ui::base::container::fwToolBar::sptr> ToolBarMapType;
+    typedef std::map<std::string, ui::base::container::fwMenu::sptr> MenuMapType;
+    typedef std::vector<std::string> ParentSidsType;
+    typedef std::map<std::string, ParentSidsType> ActionToParentMapType;
 
     SIGHT_DECLARE_CLASS(GuiRegistry, ui::base::GuiBaseObject)
 
@@ -60,7 +58,7 @@ public:
      */
     UI_BASE_API virtual ~GuiRegistry();
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     /**
      * @name    Helper SID-container methods
@@ -89,7 +87,7 @@ public:
 
     ///@}
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     /**
      * @name    Helper WID-container methods
@@ -118,7 +116,7 @@ public:
 
     ///@}
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     /**
      * @name    Helper SID-MenuBar methods
@@ -140,7 +138,7 @@ public:
     UI_BASE_API static ui::base::container::fwMenuBar::sptr getSIDMenuBar(std::string sid);
     ///@}
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     /**
      * @name    Helper SID-ToolBar methods
@@ -162,7 +160,7 @@ public:
     UI_BASE_API static ui::base::container::fwToolBar::sptr getSIDToolBar(std::string sid);
     ///@}
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     /**
      * @name    Helper SID-Menu methods
@@ -184,7 +182,7 @@ public:
     UI_BASE_API static ui::base::container::fwMenu::sptr getSIDMenu(std::string sid);
     ///@}
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     /**
      * @name    Helper Action-Menu methods
@@ -233,7 +231,6 @@ public:
     ///@}
 
 protected:
-
     static ContainerMapType m_globalSIDToFwContainer;
     static ContainerMapType m_globalWIDToFwContainer;
     static MenuBarMapType m_globalSIDToFwMenuBar;
@@ -242,7 +239,6 @@ protected:
 
     /// Parent sid can be Menu sid or ToolBar sid
     static ActionToParentMapType m_actionSIDToParentSID;
-
 };
 
 } // namespace sight::ui::base

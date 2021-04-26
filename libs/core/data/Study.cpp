@@ -25,7 +25,7 @@
 #include <data/Exception.hpp>
 #include <data/registry/macros.hpp>
 
-SIGHT_REGISTER_DATA( sight::data::Study )
+SIGHT_REGISTER_DATA(sight::data::Study)
 
 namespace sight::data
 {
@@ -34,22 +34,24 @@ Study::Study(data::Object::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Study::~Study()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Study::shallowCopy(const data::Object::csptr& _source)
 {
     Study::csptr other = Study::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->fieldShallowCopy( other );
+    this->fieldShallowCopy(other);
     m_studyID                 = other->m_studyID;
     m_instanceUID             = other->m_instanceUID;
     m_date                    = other->m_date;
@@ -63,16 +65,18 @@ void Study::shallowCopy(const data::Object::csptr& _source)
     m_patientBodyMassIndex    = other->m_patientBodyMassIndex;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Study::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Study::csptr other = Study::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->fieldDeepCopy( other, cache );
+    this->fieldDeepCopy(other, cache);
     m_studyID                 = other->m_studyID;
     m_instanceUID             = other->m_instanceUID;
     m_date                    = other->m_date;
@@ -86,6 +90,6 @@ void Study::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType
     m_patientBodyMassIndex    = other->m_patientBodyMassIndex;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

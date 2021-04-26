@@ -36,9 +36,7 @@ namespace sight::module::ui::base
  */
 class MODULE_UI_BASE_CLASS_API SToolBar : public ::sight::ui::base::IToolBar
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SToolBar, ::sight::ui::base::IToolBar)
 
     /// Constructor. Do nothing.
@@ -48,7 +46,6 @@ public:
     MODULE_UI_BASE_API virtual ~SToolBar() noexcept;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */
@@ -125,9 +122,8 @@ protected:
     /**
      * @brief This method is used to give information about the service. Do nothing.
      */
-    MODULE_UI_BASE_API void info(std::ostream& _sstream ) override;
+    MODULE_UI_BASE_API void info(std::ostream& _sstream) override;
     ///@}
-
 };
 
 }

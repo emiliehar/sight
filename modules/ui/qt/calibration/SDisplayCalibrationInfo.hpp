@@ -67,9 +67,7 @@ namespace sight::module::ui::qt::calibration
  */
 class MODULE_UI_QT_CLASS_API SDisplayCalibrationInfo : public service::IController
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SDisplayCalibrationInfo, service::IController)
 
     /// Constructor. Does nothing.
@@ -79,7 +77,6 @@ public:
     MODULE_UI_QT_API virtual ~SDisplayCalibrationInfo() noexcept;
 
 protected:
-
     /// Starts the config
     void starting() override;
 
@@ -93,7 +90,6 @@ protected:
     void configuring() override;
 
 private:
-
     /**
      * @name Slots
      * @}

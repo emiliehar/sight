@@ -37,7 +37,6 @@ class ArchiveReaderImpl final : public ArchiveReader
 {
 public:
     SIGHT_DECLARE_CLASS(ArchiveReaderImpl, ArchiveReader)
-
     /// Delete default constructors and assignment operators, as we don't want to allow resources duplication
     ArchiveReaderImpl()                                    = delete;
     ArchiveReaderImpl(const ArchiveReaderImpl&)            = delete;
@@ -82,14 +81,14 @@ public:
     /// Returns a std::istream to read an archived file
     /// @param file_path path of an archived file.
     /// @param password the password needed to decrypt the file.
-    std::unique_ptr<std::istream> openFile(const std::filesystem::path& file_path,
-                                           const core::crypto::secure_string& password = "") override
+    std::unique_ptr<std::istream> openFile(
+        const std::filesystem::path& file_path,
+        const core::crypto::secure_string& password = "") override
     {
         // Boost iostreams Source. It allows easy istream implementation
         class ZipSource
         {
         public:
-
             typedef char char_type;
             typedef boost::iostreams::source_tag category;
 
@@ -107,7 +106,7 @@ public:
                 Parameters(
                     const ArchiveReaderImpl::sptr& archive,
                     const std::filesystem::path& file_path,
-                    const core::crypto::secure_string& password ) :
+                    const core::crypto::secure_string& password) :
                     m_archive(archive),
                     m_file_path(file_path),
                     m_password(password)
@@ -118,18 +117,18 @@ public:
             ZipSource(const std::shared_ptr<const Parameters>& parameters) :
                 m_attributes(parameters),
                 m_file_keeper(std::make_shared<const ZipFileKeeper>(m_attributes)),
-                m_lock_guard(std::make_shared< std::lock_guard<std::mutex> >(m_attributes->m_archive->m_operation_mutex))
+                m_lock_guard(std::make_shared<std::lock_guard<std::mutex> >(m_attributes->m_archive->m_operation_mutex))
             {
             }
 
-            //------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------
 
             std::streamsize read(char* buffer, std::streamsize size)
             {
                 const int read = unzReadCurrentFile(
                     m_attributes->m_archive->m_unz_file,
                     buffer,
-                    static_cast< std::uint32_t >(size));
+                    static_cast<std::uint32_t>(size));
 
                 SIGHT_THROW_EXCEPTION_IF(
                     exception::Read(
@@ -142,8 +141,8 @@ public:
 
                 return read;
             }
-        private:
 
+        private:
             // Used to create and destroy minizip file handle
             struct ZipFileKeeper
             {
@@ -214,8 +213,7 @@ public:
             const std::shared_ptr<const ZipFileKeeper> m_file_keeper;
 
             // Locks the archive mutex so nobody could open another file.
-            const std::shared_ptr< const std::lock_guard<std::mutex> > m_lock_guard;
-
+            const std::shared_ptr<const std::lock_guard<std::mutex> > m_lock_guard;
         };
 
         auto parameters = std::make_shared<ZipSource::Parameters>(
@@ -225,11 +223,10 @@ public:
 
         // Creating a ZipSource also lock the archive mutex.
         // Due to its design, minizip only allows one archive with the same path with one file operation.
-        return std::make_unique< boost::iostreams::stream<ZipSource> >(parameters);
+        return std::make_unique<boost::iostreams::stream<ZipSource> >(parameters);
     }
 
 private:
-
     /// Internal class
     friend class ZipSource;
 
@@ -237,13 +234,13 @@ private:
     std::filesystem::path m_archive_path;
 
     /// Archive context handle
-    void* m_unz_file {nullptr};
+    void* m_unz_file{nullptr};
 
     /// Mutex to prevent multiple read/write operation on same file
     std::mutex m_operation_mutex;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ArchiveReader::sptr ArchiveReader::shared(const std::filesystem::path& archive_path)
 {

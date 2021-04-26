@@ -48,28 +48,26 @@ namespace sight::module::ui::viz
 
 static const std::string s_RECONSTRUCTION_INOUT = "reconstruction";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STextureSelector::STextureSelector() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STextureSelector::~STextureSelector() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextureSelector::starting()
 {
-
     this->create();
 
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(
-        this->getContainer() );
+        this->getContainer());
 
     m_loadButton = new QPushButton(QString("Load texture"));
     m_loadButton->setToolTip(QString("Selected organ's texture"));
@@ -80,10 +78,10 @@ void STextureSelector::starting()
     m_deleteButton->setMinimumSize(m_deleteButton->sizeHint());
 
     QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget( m_loadButton, 0 );
-    layout->addWidget( m_deleteButton, 0 );
+    layout->addWidget(m_loadButton, 0);
+    layout->addWidget(m_deleteButton, 0);
 
-    qtContainer->setLayout( layout );
+    qtContainer->setLayout(layout);
     qtContainer->setEnabled(true);
 
     QObject::connect(m_loadButton, SIGNAL(clicked()), this, SLOT(onLoadButton()));
@@ -92,33 +90,31 @@ void STextureSelector::starting()
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextureSelector::stopping()
 {
-
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextureSelector::configuring()
 {
-
     this->initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextureSelector::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextureSelector::onLoadButton()
 {
-    auto reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    auto reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("No associated Reconstruction", reconstruction);
 
     data::Material::sptr material = reconstruction->getMaterial();
@@ -133,34 +129,34 @@ void STextureSelector::onLoadButton()
         material->setDiffuseTexture(image);
     }
 
-    auto srv = service::add< sight::ui::base::IDialogEditor >("::sight::module::ui::base::io::SSelector");
+    auto srv = service::add<sight::ui::base::IDialogEditor>("::sight::module::ui::base::io::SSelector");
     srv->registerInOut(image, io::base::service::s_DATA_KEY);
 
     srv->configure();
     srv->start();
     srv->update();
     srv->stop();
-    service::OSR::unregisterService( srv );
+    service::OSR::unregisterService(srv);
 
     // If we didn't have to create a new texture, we can notify the associated image
     if(existingTexture)
     {
-        auto sig = image->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+        auto sig = image->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
         sig->emit();
     }
     else
     {
-        auto sig = material->signal< data::Material::AddedTextureSignalType >(
+        auto sig = material->signal<data::Material::AddedTextureSignalType>(
             data::Material::s_ADDED_TEXTURE_SIG);
         sig->emit(image);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextureSelector::onDeleteButton()
 {
-    auto reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    auto reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("No associated Reconstruction", reconstruction);
 
     data::Material::sptr material = reconstruction->getMaterial();
@@ -169,12 +165,12 @@ void STextureSelector::onDeleteButton()
     if(image)
     {
         material->setDiffuseTexture(nullptr);
-        auto sig = material->signal< data::Material::RemovedTextureSignalType >(
+        auto sig = material->signal<data::Material::RemovedTextureSignalType>(
             data::Material::s_REMOVED_TEXTURE_SIG);
         sig->emit(image);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::viz

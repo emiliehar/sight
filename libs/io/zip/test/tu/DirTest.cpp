@@ -32,33 +32,34 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::zip::ut::DirTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::zip::ut::DirTest);
 
 namespace sight::io::zip
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DirTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DirTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DirTest::writeReadFileTest()
 {
     const std::filesystem::path dirPath = core::tools::System::getTemporaryFolder() / "fwDirTest";
-    std::filesystem::create_directories( dirPath );
+    std::filesystem::create_directories(dirPath);
 
     SPTR(WriteDirArchive) writer = std::make_shared<WriteDirArchive>(dirPath);
     SPTR(ReadDirArchive) reader  = std::make_shared<ReadDirArchive>(dirPath);
@@ -68,16 +69,15 @@ void DirTest::writeReadFileTest()
     CPPUNIT_ASSERT_NO_THROW(writer->createFile(testFile));
 
     CPPUNIT_ASSERT_NO_THROW(reader->getFile(testFile));
-    std::filesystem::remove_all( dirPath );
-
+    std::filesystem::remove_all(dirPath);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DirTest::writeDirTest()
 {
     const std::filesystem::path dirPath = core::tools::System::getTemporaryFolder() / "fwDirTest";
-    std::filesystem::create_directories( dirPath );
+    std::filesystem::create_directories(dirPath);
 
     SPTR(WriteDirArchive) writer = std::make_shared<WriteDirArchive>(dirPath);
 
@@ -85,32 +85,34 @@ void DirTest::writeDirTest()
 
     CPPUNIT_ASSERT_NO_THROW(writer->createDir(testDir));
 
-    CPPUNIT_ASSERT(std::filesystem::exists(dirPath/testDir));
+    CPPUNIT_ASSERT(std::filesystem::exists(dirPath / testDir));
 
-    std::filesystem::remove_all( dirPath );
+    std::filesystem::remove_all(dirPath);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DirTest::putFileTest()
 {
     const std::filesystem::path dirPath = core::tools::System::getTemporaryFolder() / "fwDirTest";
-    std::filesystem::create_directories( dirPath );
+    std::filesystem::create_directories(dirPath);
 
     SPTR(WriteDirArchive) writer = std::make_shared<WriteDirArchive>(dirPath);
 
     const std::filesystem::path testDir  = "test";
     const std::filesystem::path testFile = utestData::Data::dir() / "sight/image/jpg/makao01.jpg";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + testFile.string() + "' does not exist",
-                           std::filesystem::exists(testFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + testFile.string() + "' does not exist",
+        std::filesystem::exists(testFile));
 
     CPPUNIT_ASSERT_NO_THROW(writer->putFile(testFile, "image.jpg"));
 
-    CPPUNIT_ASSERT(std::filesystem::exists(dirPath/"image.jpg"));
+    CPPUNIT_ASSERT(std::filesystem::exists(dirPath / "image.jpg"));
 
-    std::filesystem::remove_all( dirPath );
+    std::filesystem::remove_all(dirPath);
 }
 
 } // namespace ut
+
 } // namespace sight::io::zip

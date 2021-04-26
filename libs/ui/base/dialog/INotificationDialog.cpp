@@ -24,45 +24,47 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
-const INotificationDialog::FactoryRegistryKeyType INotificationDialog::REGISTRY_KEY =
-    "::ui::base::dialog::NotificationDialog";
 
-//-----------------------------------------------------------------------------
+const INotificationDialog::FactoryRegistryKeyType INotificationDialog::REGISTRY_KEY
+    = "::ui::base::dialog::NotificationDialog";
+
+// -----------------------------------------------------------------------------
 
 INotificationDialog::INotificationDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 INotificationDialog::~INotificationDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INotificationDialog::setMessage(const std::string& _msg)
 {
     m_message = _msg;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INotificationDialog::setPosition(INotificationDialog::Position _position)
 {
     m_position = _position;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INotificationDialog::setType(INotificationDialog::Type _type)
 {
     m_notificationType = _type;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INotificationDialog::setSize(unsigned int _width, unsigned int _height)
 {
@@ -70,21 +72,22 @@ void INotificationDialog::setSize(unsigned int _width, unsigned int _height)
     m_size[1] = _height;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INotificationDialog::setIndex(unsigned int _index)
 {
     m_index = _index;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INotificationDialog::setDuration(int _durationInMs)
 {
     m_duration = _durationInMs;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

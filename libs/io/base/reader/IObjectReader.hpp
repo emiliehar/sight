@@ -51,13 +51,11 @@ namespace reader
  */
 class IO_BASE_CLASS_API IObjectReader : public core::BaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IObjectReader)
 
-    typedef std::function< void ( std::uint64_t /*progress*/) > ProgressCallback;
-    typedef std::function< void ( ) > CancelCallback;
+    typedef std::function<void (std::uint64_t /*progress*/)> ProgressCallback;
+    typedef std::function<void ()> CancelCallback;
 
     typedef io::base::reader::factory::Key Key;
 
@@ -67,7 +65,7 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -90,7 +88,7 @@ public:
      * @note m_object is save in class with a weakptr
      * @note This object can be get with the method getObject()
      */
-    IO_BASE_API virtual void setObject( core::tools::Object::sptr _pObject );
+    IO_BASE_API virtual void setObject(core::tools::Object::sptr _pObject);
 
     /**
      * @brief m_object getter.
@@ -114,7 +112,6 @@ public:
     }
 
 protected:
-
     /// Constructor. Do nothing.
     IO_BASE_API IObjectReader();
 

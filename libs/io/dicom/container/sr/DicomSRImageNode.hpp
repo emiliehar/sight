@@ -30,8 +30,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace container
 {
+
 namespace sr
 {
 
@@ -41,10 +43,13 @@ namespace sr
 class IO_DICOM_CLASS_API DicomSRImageNode : public io::dicom::container::sr::DicomSRNode
 {
 public:
-
     /// Constructor
-    IO_DICOM_API DicomSRImageNode(const DicomCodedAttribute& codedAttribute, const std::string& relationship,
-                                  const std::string& sopClassUID, const std::string& sopInstanceUID, int frameNumber);
+    IO_DICOM_API DicomSRImageNode(
+        const DicomCodedAttribute& codedAttribute,
+        const std::string& relationship,
+        const std::string& sopClassUID,
+        const std::string& sopInstanceUID,
+        int frameNumber);
 
     /// Destructor
     IO_DICOM_API virtual ~DicomSRImageNode();
@@ -92,7 +97,6 @@ public:
     }
 
 protected:
-
     /// Dump function
     virtual void print(std::ostream& os) const;
 
@@ -113,6 +117,8 @@ protected:
     int m_frameNumber;
 };
 
-} //namespace sr
-} //namespace container
-} //namespace sight::io::dicom
+} // namespace sr
+
+} // namespace container
+
+} // namespace sight::io::dicom

@@ -51,13 +51,11 @@ namespace writer
  */
 class IO_BASE_CLASS_API IObjectWriter : public core::BaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IObjectWriter)
 
-    typedef std::function< void ( std::uint64_t /*progress*/) > ProgressCallback;
-    typedef std::function< void ( ) > CancelCallback;
+    typedef std::function<void (std::uint64_t /*progress*/)> ProgressCallback;
+    typedef std::function<void ()> CancelCallback;
 
     typedef io::base::writer::factory::Key Key;
 
@@ -67,7 +65,7 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -90,14 +88,14 @@ public:
      * @note m_object is save in class with a weakptr
      * @note This object can be get with the method getObject()
      */
-    IO_BASE_API virtual void setObject( core::tools::Object::csptr object );
+    IO_BASE_API virtual void setObject(core::tools::Object::csptr object);
 
     /**
      * @brief m_object getter.
      *
      * @return m_object
      */
-    IO_BASE_API virtual core::tools::Object::csptr  getObject() const;
+    IO_BASE_API virtual core::tools::Object::csptr getObject() const;
 
     /**
      * @brief Return the default filename extension can be dynamic.
@@ -106,7 +104,7 @@ public:
      * The extension can be empty (for a repository for example) or must return a string BEGINNING WITH A DOT
      * by default be empty
      */
-    IO_BASE_API virtual std::string  extension() = 0;
+    IO_BASE_API virtual std::string extension() = 0;
 
     /**
      * @brief Requests writer abortion.
@@ -120,7 +118,6 @@ public:
     }
 
 protected:
-
     /// Constructor. Do nothing.
     IO_BASE_API IObjectWriter();
 
@@ -136,7 +133,6 @@ protected:
 
     /// Extension of file format
     std::string m_extension;
-
 };
 
 } // namespace writer

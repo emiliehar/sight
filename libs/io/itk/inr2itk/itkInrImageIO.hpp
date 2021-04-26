@@ -85,12 +85,13 @@ protected:
     IO_ITK_API InrImageIO();
     IO_ITK_API ~InrImageIO();
     void PrintSelf(std::ostream& os, Indent indent) const override;
+
 private:
-    InrImageIO(const Self&); //purposely not implemented
-    void operator=(const Self&); //purposely not implemented
+    InrImageIO(const Self&); // purposely not implemented
+    void operator=(const Self&); // purposely not implemented
 
     std::streampos m_headerSize;
-    //bool m_swapBytes;
+    // bool m_swapBytes;
 }; // class InrImageIO()
 
 } // namespace itk

@@ -50,7 +50,7 @@ public:
     IO_PATCH_API ~V2ToV3();
 
     /// Copy constructor
-    IO_PATCH_API V2ToV3( const V2ToV3& cpy );
+    IO_PATCH_API V2ToV3(const V2ToV3& cpy);
 
     /**
      * @brief Applies patch
@@ -61,7 +61,6 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace Material

@@ -34,32 +34,35 @@
 #include <io/patch/structural/data/ImageSeries/V1ToV2.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::structural::ut::data::ImageSeries::V1ToV2Test );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::structural::ut::data::ImageSeries::V1ToV2Test);
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace ImageSeries
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V1ToV2Test::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V1ToV2Test::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V1ToV2Test::applyPatchTest()
 {
@@ -101,8 +104,12 @@ void V1ToV2Test::applyPatchTest()
     }
 }
 
-//------------------------------------------------------------------------------
-} //namespace ImageSeries
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+// ------------------------------------------------------------------------------
+
+} // namespace ImageSeries
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

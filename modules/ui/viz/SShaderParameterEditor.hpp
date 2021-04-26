@@ -54,15 +54,13 @@ namespace sight::module::ui::viz
  */
 class MODULE_UI_VIZ_CLASS_API SShaderParameterEditor : public sight::ui::base::IEditor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SShaderParameterEditor, sight::ui::base::IEditor)
 
     typedef std::string EditorImplementationType;
     typedef std::string ObjectClassnameType;
     typedef std::string ObjectId;
-    typedef std::map< ObjectClassnameType, EditorImplementationType > EditorMapType;
+    typedef std::map<ObjectClassnameType, EditorImplementationType> EditorMapType;
 
     /// Constructor.
     MODULE_UI_VIZ_API SShaderParameterEditor() noexcept;
@@ -71,7 +69,6 @@ public:
     MODULE_UI_VIZ_API virtual ~SShaderParameterEditor() noexcept;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /// Initialize the container
@@ -90,7 +87,6 @@ protected:
     MODULE_UI_VIZ_API void updating() override;
 
 private:
-
     /// Clear the current container
     void clear();
     /// Retrieves the shader parameters attached to the Reconstruction object and stores them into a collection

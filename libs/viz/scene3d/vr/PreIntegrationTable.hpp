@@ -44,7 +44,6 @@ namespace vr
 class PreIntegrationTable
 {
 public:
-
     /// Constructor, does nothing.
     VIZ_SCENE3D_API PreIntegrationTable();
 
@@ -58,8 +57,10 @@ public:
     VIZ_SCENE3D_API void removeTexture();
 
     /// Sets the table resolution based on the new image and recomputes it.
-    VIZ_SCENE3D_API void imageUpdate(const data::Image::sptr& _img, const data::TransferFunction::sptr& _tf,
-                                     float _samplingRate);
+    VIZ_SCENE3D_API void imageUpdate(
+        const data::Image::sptr& _img,
+        const data::TransferFunction::sptr& _tf,
+        float _samplingRate);
 
     /// Computes the table based on the given TF and slice distance.
     VIZ_SCENE3D_API void tfUpdate(const data::TransferFunction::sptr& _tf, float _sampleDistance);
@@ -71,7 +72,6 @@ public:
     VIZ_SCENE3D_API inline std::pair<int, int> getMinMax() const;
 
 private:
-
     /// Defines a texture pixel.
     struct TablePixel
     {
@@ -98,24 +98,23 @@ private:
 
     /// Texture resolution.
     unsigned m_textureSize;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::Ogre::TexturePtr PreIntegrationTable::getTexture() const
 {
     return m_tableTexture;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::pair<int, int> PreIntegrationTable::getMinMax() const
 {
     return m_valueInterval;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace vr
 

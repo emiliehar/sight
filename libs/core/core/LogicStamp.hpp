@@ -35,7 +35,6 @@ namespace sight::core
  */
 class CORE_CLASS_API LogicStamp : public BaseObject
 {
-
 public:
     SIGHT_DECLARE_CLASS(LogicStamp, BaseObject, new LogicStamp)
 
@@ -74,7 +73,7 @@ public:
      */
     bool operator>(const LogicStamp& ls) const
     {
-        return ( this->m_modifiedLogicalTime > ls.m_modifiedLogicalTime );
+        return this->m_modifiedLogicalTime > ls.m_modifiedLogicalTime;
     }
 
     /**
@@ -84,7 +83,7 @@ public:
      */
     bool operator<(const LogicStamp& ls) const
     {
-        return ( this->m_modifiedLogicalTime < ls.m_modifiedLogicalTime );
+        return this->m_modifiedLogicalTime < ls.m_modifiedLogicalTime;
     }
 
     /**
@@ -96,12 +95,10 @@ public:
     }
 
 private:
-
     /**
      * @brief Stored logical time
      */
     LogicStampType m_modifiedLogicalTime{0};
-
 };
 
-} //namespace sight::core
+} // namespace sight::core

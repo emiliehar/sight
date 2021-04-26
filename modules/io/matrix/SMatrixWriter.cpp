@@ -46,7 +46,7 @@ static const core::com::Slots::SlotKeyType s_START_RECORD = "startRecord";
 static const core::com::Slots::SlotKeyType s_STOP_RECORD  = "stopRecord";
 static const core::com::Slots::SlotKeyType s_WRITE        = "write";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SMatrixWriter::SMatrixWriter() noexcept :
     m_isRecording(false)
@@ -57,7 +57,7 @@ SMatrixWriter::SMatrixWriter() noexcept :
     newSlot(s_WRITE, &SMatrixWriter::write, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SMatrixWriter::~SMatrixWriter() noexcept
 {
@@ -68,34 +68,34 @@ SMatrixWriter::~SMatrixWriter() noexcept
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SMatrixWriter::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::openLocationDialog()
 {
@@ -108,6 +108,7 @@ void SMatrixWriter::openLocationDialog()
     dialogFile.addFilter(".csv file", "*.csv");
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
+
     if(result)
     {
         defaultDirectory->setFolder(result->getFile().parent_path());
@@ -118,26 +119,24 @@ void SMatrixWriter::openLocationDialog()
     {
         this->clearLocations();
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::stopping()
 {
     this->stopRecord();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::updating()
 {
-
     core::HiResClock::HiResClockType timestamp = core::HiResClock::getTimeInMilliSec();
     this->saveMatrix(timestamp);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::saveMatrix(core::HiResClock::HiResClockType _timestamp)
 {
@@ -146,48 +145,53 @@ void SMatrixWriter::saveMatrix(core::HiResClock::HiResClockType _timestamp)
     this->stopRecord();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::write(core::HiResClock::HiResClockType timestamp)
 {
     if(m_isRecording)
     {
-        data::MatrixTL::csptr matrixTL = this->getInput< data::MatrixTL >(sight::io::base::service::s_DATA_KEY);
+        data::MatrixTL::csptr matrixTL = this->getInput<data::MatrixTL>(sight::io::base::service::s_DATA_KEY);
 
         const unsigned int numberOfMat = matrixTL->getMaxElementNum();
 
         // Get the buffer of the copied timeline
         CSPTR(data::timeline::Object) object = matrixTL->getClosestObject(timestamp);
+
         if(object)
         {
-            CSPTR(data::MatrixTL::BufferType) buffer =
-                std::dynamic_pointer_cast< const data::MatrixTL::BufferType >(object);
+            CSPTR(data::MatrixTL::BufferType) buffer
+                = std::dynamic_pointer_cast<const data::MatrixTL::BufferType>(object);
+
             if(buffer)
             {
                 timestamp = object->getTimestamp();
                 const size_t time = static_cast<size_t>(timestamp);
-                m_filestream << time <<";";
-                for(unsigned int i = 0; i < numberOfMat; ++i)
+                m_filestream << time << ";";
+
+                for(unsigned int i = 0 ; i < numberOfMat ; ++i)
                 {
                     const float* values = buffer->getElement(i);
 
-                    for(unsigned int v = 0; v < 16; ++v)
+                    for(unsigned int v = 0 ; v < 16 ; ++v)
                     {
                         m_filestream << values[v] << ";";
                     }
                 }
+
                 m_filestream << std::endl;
             }
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::startRecord()
 {
     // Default mode when opening a file is in append mode
     std::ios_base::openmode openMode = std::ofstream::app;
+
     if(!this->hasLocationDefined())
     {
         this->openLocationDialog();
@@ -208,17 +212,18 @@ void SMatrixWriter::startRecord()
         else
         {
             SIGHT_WARN(
-                "The file " + this->getFile().string() +
-                " can't be open. Please check if it is already open in another program.");
+                "The file " + this->getFile().string()
+                + " can't be open. Please check if it is already open in another program.");
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMatrixWriter::stopRecord()
 {
     m_isRecording = false;
+
     if(m_filestream.is_open())
     {
         m_filestream.flush();
@@ -226,15 +231,16 @@ void SMatrixWriter::stopRecord()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SMatrixWriter::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(sight::io::base::service::s_DATA_KEY, data::MatrixTL::s_OBJECT_PUSHED_SIG, s_WRITE);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::matrix

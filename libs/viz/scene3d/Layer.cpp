@@ -64,7 +64,7 @@
 namespace sight::viz::scene3d
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const core::com::Signals::SignalKeyType Layer::s_INIT_LAYER_SIG           = "layerInitialized";
 const core::com::Signals::SignalKeyType Layer::s_RESIZE_LAYER_SIG         = "layerResized";
@@ -74,7 +74,7 @@ const core::com::Signals::SignalKeyType Layer::s_CAMERA_RANGE_UPDATED_SIG = "Cam
 const core::com::Slots::SlotKeyType Layer::s_INTERACTION_SLOT  = "interaction";
 const core::com::Slots::SlotKeyType Layer::s_RESET_CAMERA_SLOT = "resetCamera";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::string Layer::DEFAULT_CAMERA_NAME = "DefaultCam";
 const std::string Layer::DEFAULT_LIGHT_NAME  = "DefaultLight";
@@ -83,34 +83,35 @@ const std::string Layer::s_DEFAULT_CAMERA_NAME      = "DefaultCam";
 const std::string Layer::s_DEFAULT_LIGHT_NAME       = "DefaultLight";
 const std::string Layer::s_DEFAULT_CAMERA_NODE_NAME = "CameraNode";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 struct Layer::LayerCameraListener : public ::Ogre::Camera::Listener
 {
-    Layer* m_layer { nullptr };
-    int m_frameId { 0 };
+    Layer* m_layer{nullptr};
+    int m_frameId{0};
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     LayerCameraListener(Layer* renderer) :
         m_layer(renderer)
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void cameraPreRenderScene(::Ogre::Camera*) final
     {
-        SIGHT_ASSERT("Layer is not set", m_layer );
+        SIGHT_ASSERT("Layer is not set", m_layer);
 
         if(m_layer->getStereoMode() != viz::scene3d::compositor::Core::StereoModeType::NONE)
         {
             const int frameId = m_layer->getRenderService()->getInteractorManager()->getFrameId();
+
             if(frameId != m_frameId)
             {
                 auto& gpuProgramMgr = ::Ogre::GpuProgramManager::getSingleton();
 
-                for(std::uint8_t i = 0; i < m_layer->getNumberOfCameras(); ++i)
+                for(std::uint8_t i = 0 ; i < m_layer->getNumberOfCameras() ; ++i)
                 {
                     ::Ogre::Matrix4 projMat = m_layer->getCameraProjMat(i);
 
@@ -121,16 +122,18 @@ struct Layer::LayerCameraListener : public ::Ogre::Camera::Listener
 
                     const auto& sharedParameterMap = gpuProgramMgr.getAvailableSharedParameters();
                     {
-                        const std::string projParamName = "ProjectionMatrixParam/"+std::to_string(i);
+                        const std::string projParamName = "ProjectionMatrixParam/" + std::to_string(i);
                         auto it                         = sharedParameterMap.find(projParamName);
+
                         if(it != sharedParameterMap.end())
                         {
                             it->second->setNamedConstant("u_proj", projMat);
                         }
                     }
                     {
-                        const std::string projParamName = "InverseProjectionMatrixParam/"+std::to_string(i);
+                        const std::string projParamName = "InverseProjectionMatrixParam/" + std::to_string(i);
                         auto it                         = sharedParameterMap.find(projParamName);
+
                         if(it != sharedParameterMap.end())
                         {
                             it->second->setNamedConstant("u_invProj", projMat.inverse());
@@ -143,7 +146,7 @@ struct Layer::LayerCameraListener : public ::Ogre::Camera::Listener
         }
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 };
 
 Layer::Layer()
@@ -157,20 +160,20 @@ Layer::Layer()
     newSlot(s_RESET_CAMERA_SLOT, &Layer::resetCameraCoordinates, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Layer::~Layer()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setRenderTarget(::Ogre::RenderTarget* _renderTarget)
 {
     m_renderTarget = _renderTarget;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setID(const std::string& id)
 {
@@ -179,28 +182,28 @@ void Layer::setID(const std::string& id)
     m_id = id;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::string Layer::getName() const
 {
     return m_sceneManager->getName();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::string& Layer::getLayerID() const
 {
     return m_id;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::Ogre::SceneManager* Layer::getSceneManager() const
 {
     return m_sceneManager;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::createScene()
 {
@@ -210,7 +213,7 @@ void Layer::createScene()
 
     auto root = viz::scene3d::Utils::getOgreRoot();
     m_sceneManager = root->createSceneManager("DefaultSceneManager", renderService->getID() + "_" + m_id);
-    m_sceneManager->addRenderQueueListener( viz::scene3d::Utils::getOverlaySystem() );
+    m_sceneManager->addRenderQueueListener(viz::scene3d::Utils::getOverlaySystem());
 
     SIGHT_ASSERT("Scene manager must be initialized", m_sceneManager);
     SIGHT_ASSERT("Render window must be initialized", m_renderTarget);
@@ -220,6 +223,7 @@ void Layer::createScene()
     for(const auto& overlayName : m_overlayScripts)
     {
         ::Ogre::Overlay* overlay = ::Ogre::OverlayManager::getSingleton().getByName(overlayName);
+
         if(overlay)
         {
             overlay->hide(); // Hide the overlay for now and display it when rendering in this layer's viewport.
@@ -235,13 +239,13 @@ void Layer::createScene()
     m_camera = m_sceneManager->createCamera(Layer::s_DEFAULT_CAMERA_NAME);
     m_camera->setNearClipDistance(1);
 
-    const auto&[left, top, width, height] = m_viewportCfg;
-    m_viewport                            = m_renderTarget->addViewport(m_camera, m_order, left, top, width, height);
+    const auto& [left, top, width, height] = m_viewportCfg;
+    m_viewport                             = m_renderTarget->addViewport(m_camera, m_order, left, top, width, height);
     m_viewport->setOverlaysEnabled(m_enabledOverlays.size() > 0);
 
     m_compositorChainManager = fwc::ChainManager::uptr(new fwc::ChainManager(m_viewport));
 
-    if (m_order != 0)
+    if(m_order != 0)
     {
         m_viewport->setClearEveryFrame(true, ::Ogre::FBT_DEPTH);
     } // Set the background material
@@ -249,10 +253,12 @@ void Layer::createScene()
     {
         // FIXME : background isn't shown when using compositor with a clear pass
         // We must blend the input previous in each compositor
-        ::Ogre::MaterialPtr defaultMaterial = ::Ogre::MaterialManager::getSingleton().getByName("Background",
-                                                                                                RESOURCE_GROUP);
+        ::Ogre::MaterialPtr defaultMaterial = ::Ogre::MaterialManager::getSingleton().getByName(
+            "Background",
+            RESOURCE_GROUP);
         ::Ogre::MaterialPtr material = ::Ogre::MaterialManager::getSingleton().create(
-            this->getName() + "backgroundMat", RESOURCE_GROUP);
+            this->getName() + "backgroundMat",
+            RESOURCE_GROUP);
         defaultMaterial.get()->copyDetailsTo(material);
 
         std::uint8_t color[4];
@@ -310,8 +316,9 @@ void Layer::createScene()
         m_defaultLightDiffuseColor  = data::Color::New();
         m_defaultLightSpecularColor = data::Color::New();
 
-        m_lightAdaptor = viz::scene3d::ILight::createLightAdaptor(m_defaultLightDiffuseColor,
-                                                                  m_defaultLightSpecularColor);
+        m_lightAdaptor = viz::scene3d::ILight::createLightAdaptor(
+            m_defaultLightDiffuseColor,
+            m_defaultLightSpecularColor);
         m_lightAdaptor->setName(Layer::s_DEFAULT_LIGHT_NAME);
         m_lightAdaptor->setType(::Ogre::Light::LT_DIRECTIONAL);
         m_lightAdaptor->setTransformId(cameraNode->getName());
@@ -335,12 +342,13 @@ void Layer::createScene()
     {
         ::boost::char_separator<char> sep(";");
         ::boost::tokenizer< ::boost::char_separator<char> > tok(m_rawCompositorChain, sep);
-        std::vector< fwc::ChainManager::CompositorIdType> compositorChain;
+        std::vector<fwc::ChainManager::CompositorIdType> compositorChain;
 
         for(const auto& it : tok)
         {
             compositorChain.push_back(it);
         }
+
         if(m_stereoMode != compositor::Core::StereoModeType::NONE)
         {
             m_autostereoListener = new compositor::listener::AutoStereoCompositorListener(this->getNumberOfCameras());
@@ -361,12 +369,14 @@ void Layer::createScene()
 
 void Layer::destroyScene()
 {
-    if (m_order == 0)
+    if(m_order == 0)
     {
         // Remove the background material for the first layer
         ::Ogre::MaterialManager::getSingleton().remove(
-            this->getName() + "backgroundMat", viz::scene3d::RESOURCE_GROUP);
+            this->getName() + "backgroundMat",
+            viz::scene3d::RESOURCE_GROUP);
     }
+
     if(m_lightAdaptor)
     {
         viz::scene3d::ILight::destroyLightAdaptor(m_lightAdaptor);
@@ -379,6 +389,7 @@ void Layer::destroyScene()
         delete m_cameraListener;
         m_cameraListener = nullptr;
     }
+
     if(m_autostereoListener)
     {
         ::Ogre::MaterialManager::getSingleton().removeListener(m_autostereoListener);
@@ -391,6 +402,7 @@ void Layer::destroyScene()
         viz::scene3d::Utils::getOgreRoot()->destroySceneManager(m_sceneManager);
         m_sceneManager = nullptr;
     }
+
     m_camera = nullptr;
 }
 
@@ -414,14 +426,15 @@ void Layer::updateCompositorState(std::string compositorName, bool isEnabled)
 
 // ----------------------------------------------------------------------------
 
-void Layer::forAllInteractors(const std::function< void(const interactor::IInteractor::sptr&)>&& _f)
+void Layer::forAllInteractors(const std::function<void(const interactor::IInteractor::sptr&)>&& _f)
 {
     const auto interactorsBegin = m_interactors.begin();
     const auto interactorsEnd   = m_interactors.end();
 
-    for(auto it = interactorsBegin; it != interactorsEnd && !m_cancelFurtherInteraction; ++it)
+    for(auto it = interactorsBegin ; it != interactorsEnd && !m_cancelFurtherInteraction ; ++it)
     {
         const interactor::IInteractor::sptr interactor = it->second.lock();
+
         if(interactor)
         {
             _f(interactor);
@@ -442,27 +455,28 @@ void Layer::interaction(viz::scene3d::IWindowInteractor::InteractionInfo info)
     switch(info.interactionType)
     {
         case viz::scene3d::IWindowInteractor::InteractionInfo::MOUSEMOVE:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->mouseMoveEvent(info.button, info.modifiers, info.x, info.y, info.dx, info.dy);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->mouseMoveEvent(info.button, info.modifiers, info.x, info.y, info.dx, info.dy);
+            });
             break;
-        }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::WHEELMOVE:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->wheelEvent(info.modifiers, info.delta, info.x, info.y);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->wheelEvent(info.modifiers, info.delta, info.x, info.y);
+            });
             break;
-        }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::RESIZE:
         {
             auto sig = this->signal<ResizeLayerSignalType>(s_RESIZE_LAYER_SIG);
             sig->asyncEmit(info.x, info.y);
 
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
                 {
                     _i->resizeEvent(info.x, info.y);
                 });
@@ -474,6 +488,7 @@ void Layer::interaction(viz::scene3d::IWindowInteractor::InteractionInfo info)
             {
                 m_dpi = newDpi;
                 auto& movableTextObjects = m_sceneManager->getMovableObjects(factory::Text::FACTORY_TYPE_NAME);
+
                 for(auto& [name, movObj] : movableTextObjects)
                 {
                     Text* const textObj = dynamic_cast<Text*>(movObj);
@@ -484,46 +499,46 @@ void Layer::interaction(viz::scene3d::IWindowInteractor::InteractionInfo info)
 
             break;
         }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::KEYPRESS:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->keyPressEvent(info.key, info.modifiers, info.x, info.y);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->keyPressEvent(info.key, info.modifiers, info.x, info.y);
+            });
             break;
-        }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::KEYRELEASE:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->keyReleaseEvent(info.key, info.modifiers, info.x, info.y);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->keyReleaseEvent(info.key, info.modifiers, info.x, info.y);
+            });
             break;
-        }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::BUTTONRELEASE:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->buttonReleaseEvent(info.button, info.modifiers, info.x, info.y);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->buttonReleaseEvent(info.button, info.modifiers, info.x, info.y);
+            });
             break;
-        }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::BUTTONPRESS:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->buttonPressEvent(info.button, info.modifiers, info.x, info.y);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->buttonPressEvent(info.button, info.modifiers, info.x, info.y);
+            });
             break;
-        }
+
         case viz::scene3d::IWindowInteractor::InteractionInfo::BUTTONDOUBLEPRESS:
-        {
-            this->forAllInteractors([&info](const interactor::IInteractor::sptr& _i)
-                {
-                    _i->buttonDoublePressEvent(info.button, info.modifiers, info.x, info.y);
-                });
+            this->forAllInteractors(
+                [&info](const interactor::IInteractor::sptr& _i)
+            {
+                _i->buttonDoublePressEvent(info.button, info.modifiers, info.x, info.y);
+            });
             break;
-        }
     }
 
     m_cancelFurtherInteraction = false;
@@ -545,7 +560,7 @@ void Layer::setOrder(int _order)
 
 // ----------------------------------------------------------------------------
 
-void Layer::setWorker( const core::thread::Worker::sptr& _worker)
+void Layer::setWorker(const core::thread::Worker::sptr& _worker)
 {
     core::com::HasSlots::m_slots.setWorker(_worker);
 }
@@ -557,9 +572,9 @@ viz::scene3d::SRender::sptr Layer::getRenderService() const
     return m_renderService.lock();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Layer::setRenderService( const viz::scene3d::SRender::sptr& _service)
+void Layer::setRenderService(const viz::scene3d::SRender::sptr& _service)
 {
     SIGHT_ASSERT("service not instanced", _service);
 
@@ -602,7 +617,7 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::Ogre::AxisAlignedBox Layer::computeWorldBoundingBox() const
 {
@@ -616,7 +631,7 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
     rootSceneNode->_update(true, false);
 
     // This stack will be used for iterate through the scene nodes graph
-    ::std::stack< const ::Ogre::SceneNode* > childrenStack;
+    ::std::stack<const ::Ogre::SceneNode*> childrenStack;
     childrenStack.push(rootSceneNode);
 
     while(!childrenStack.empty())
@@ -626,9 +641,10 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
 
         // Retrieves an iterator pointing to the attached movable objects of the current scene node
         const ::Ogre::SceneNode::ObjectMap& entities = tempSceneNode->getAttachedObjects();
+
         for(const auto movable : entities)
         {
-            const ::Ogre::Entity* entity = dynamic_cast< ::Ogre::Entity* > (movable);
+            const ::Ogre::Entity* entity = dynamic_cast< ::Ogre::Entity*>(movable);
 
             if(entity)
             {
@@ -640,7 +656,7 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
             else
             {
                 // Then try to cast into a ManualObject*
-                const ::Ogre::ManualObject* manualObject = dynamic_cast< ::Ogre::ManualObject* > (movable);
+                const ::Ogre::ManualObject* manualObject = dynamic_cast< ::Ogre::ManualObject*>(movable);
 
                 if(manualObject)
                 {
@@ -652,7 +668,7 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
                 else
                 {
                     // Last try to cast into a Camera*
-                    const ::Ogre::Camera* cameraObject = dynamic_cast< ::Ogre::Camera* > (movable);
+                    const ::Ogre::Camera* cameraObject = dynamic_cast< ::Ogre::Camera*>(movable);
 
                     if(cameraObject && cameraObject != this->getDefaultCamera())
                     {
@@ -668,7 +684,8 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
         for(auto* const childNode : tempSceneNode->getChildren())
         {
             // First, we must cast the Node* into a SceneNode*
-            const ::Ogre::SceneNode* childSceneNode = dynamic_cast< ::Ogre::SceneNode* >(childNode);
+            const ::Ogre::SceneNode* childSceneNode = dynamic_cast< ::Ogre::SceneNode*>(childNode);
+
             if(childSceneNode)
             {
                 // Push the current node into the stack in order to continue iteration
@@ -676,10 +693,11 @@ void Layer::removeInteractor(const viz::scene3d::interactor::IInteractor::sptr& 
             }
         }
     }
+
     return worldCoordBoundingBox;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 compositor::transparencyTechnique Layer::getTransparencyTechnique()
 {
@@ -691,7 +709,7 @@ compositor::transparencyTechnique Layer::getTransparencyTechnique()
     return compositor::DEFAULT;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 int Layer::getTransparencyDepth()
 {
@@ -701,14 +719,14 @@ int Layer::getTransparencyDepth()
     }
 
     return 0;
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Layer::setTransparencyTechnique(compositor::transparencyTechnique _technique)
 {
     bool success = false;
+
     if(m_coreCompositor)
     {
         // Playing with the transparency may create new compositors, thus new resources in OpenGL, thus we
@@ -722,7 +740,7 @@ bool Layer::setTransparencyTechnique(compositor::transparencyTechnique _techniqu
     return success;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Layer::setTransparencyDepth(int _depth)
 {
@@ -737,21 +755,21 @@ void Layer::setTransparencyDepth(int _depth)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setCameraCalibrations(const CameraCalibrationsType& calibrations)
 {
     m_stereoCameraCalibration = calibrations;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool Layer::isDefaultLight(const viz::scene3d::ILight::csptr& _light) const
 {
     return m_lightAdaptor == _light;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::removeDefaultLight()
 {
@@ -760,7 +778,7 @@ void Layer::removeDefaultLight()
     m_lightAdaptor.reset();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::resetCameraCoordinates()
 {
@@ -769,8 +787,8 @@ void Layer::resetCameraCoordinates()
     if(m_camera && m_camera->getProjectionType() == ::Ogre::PT_PERSPECTIVE)
     {
         // Check if bounding box is valid, otherwise, do nothing.
-        if( worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_NULL ||
-            worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_INFINITE)
+        if(worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_NULL
+           || worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_INFINITE)
         {
             ::Ogre::SceneNode* camNode = m_camera->getParentSceneNode();
             camNode->setPosition(0.f, 0.f, 0.f);
@@ -778,22 +796,23 @@ void Layer::resetCameraCoordinates()
         else
         {
             // Arbitrary coefficient
-            const ::Ogre::Real boundingBoxLength = worldCoordBoundingBox.getSize().length() > 0 ?
-                                                   worldCoordBoundingBox.getSize().length() : 0;
+            const ::Ogre::Real boundingBoxLength = worldCoordBoundingBox.getSize().length() > 0
+                                                   ? worldCoordBoundingBox.getSize().length() : 0;
 
             float coeffZoom = static_cast<float>(boundingBoxLength);
             SIGHT_DEBUG("Zoom coefficient : " << coeffZoom);
 
             // Set the direction of the camera
-            ::Ogre::SceneNode* camNode = m_camera->getParentSceneNode();
+            ::Ogre::SceneNode* camNode      = m_camera->getParentSceneNode();
             const ::Ogre::Quaternion quat   = camNode->getOrientation();
             const ::Ogre::Vector3 direction = quat.zAxis();
 
             // Set the position of the camera
-            camNode->setPosition((worldCoordBoundingBox.getCenter() + coeffZoom * direction ) );
+            camNode->setPosition((worldCoordBoundingBox.getCenter() + coeffZoom * direction));
 
             // Update interactor's mouse scale
-            this->forAllInteractors([coeffZoom](const interactor::IInteractor::sptr& _i)
+            this->forAllInteractors(
+                [coeffZoom](const interactor::IInteractor::sptr& _i)
                 {
                     _i->setSceneLength(coeffZoom);
                 });
@@ -805,7 +824,7 @@ void Layer::resetCameraCoordinates()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::computeCameraParameters()
 {
@@ -814,10 +833,10 @@ void Layer::computeCameraParameters()
     if(m_camera && m_camera->getProjectionType() == ::Ogre::PT_PERSPECTIVE)
     {
         // Check if bounding box is valid, otherwise, do nothing.
-        if( worldCoordBoundingBox != ::Ogre::AxisAlignedBox::EXTENT_NULL &&
-            worldCoordBoundingBox != ::Ogre::AxisAlignedBox::EXTENT_INFINITE)
+        if(worldCoordBoundingBox != ::Ogre::AxisAlignedBox::EXTENT_NULL
+           && worldCoordBoundingBox != ::Ogre::AxisAlignedBox::EXTENT_INFINITE)
         {
-            ::Ogre::SceneNode* camNode = m_camera->getParentSceneNode();
+            ::Ogre::SceneNode* camNode      = m_camera->getParentSceneNode();
             const ::Ogre::Quaternion quat   = camNode->getOrientation();
             const ::Ogre::Vector3 direction = quat.zAxis();
             const ::Ogre::Vector3 position  = camNode->getPosition();
@@ -826,7 +845,8 @@ void Layer::computeCameraParameters()
             const float distance      = div.z;
 
             // Update interactor's mouse scale
-            this->forAllInteractors([distance](const interactor::IInteractor::sptr& _i)
+            this->forAllInteractors(
+                [distance](const interactor::IInteractor::sptr& _i)
                 {
                     _i->setSceneLength(distance);
                 });
@@ -836,22 +856,22 @@ void Layer::computeCameraParameters()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::resetCameraClippingRange() const
 {
     this->resetCameraClippingRange(this->computeWorldBoundingBox());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::resetCameraClippingRange(const ::Ogre::AxisAlignedBox& worldCoordBoundingBox) const
 {
     if(m_camera && m_camera->getProjectionType() == ::Ogre::PT_PERSPECTIVE)
     {
         // Check if bounding box is valid, otherwise, do nothing.
-        if( worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_NULL ||
-            worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_INFINITE)
+        if(worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_NULL
+           || worldCoordBoundingBox == ::Ogre::AxisAlignedBox::EXTENT_INFINITE)
         {
             return;
         }
@@ -871,10 +891,10 @@ void Layer::resetCameraClippingRange(const ::Ogre::AxisAlignedBox& worldCoordBou
         a = -direction.x;
         b = -direction.y;
         c = -direction.z;
-        d = -(a*position.x + b*position.y + c*position.z);
+        d = -(a * position.x + b * position.y + c * position.z);
 
         // Max near and min far
-        float maxNear = a*minimum.x + b*minimum.y + c*minimum.z + d;
+        float maxNear = a * minimum.x + b * minimum.y + c * minimum.z + d;
         float minFar  = 1e-18f;
         float dist;
 
@@ -885,14 +905,15 @@ void Layer::resetCameraClippingRange(const ::Ogre::AxisAlignedBox& worldCoordBou
         corners[3] = maximum.y;
         corners[4] = minimum.z;
         corners[5] = maximum.z;
+
         // Find the closest / farthest bounding box vertex
-        for (int k = 0; k < 2; k++ )
+        for(int k = 0 ; k < 2 ; k++)
         {
-            for (int j = 0; j < 2; j++ )
+            for(int j = 0 ; j < 2 ; j++)
             {
-                for (int i = 0; i < 2; i++ )
+                for(int i = 0 ; i < 2 ; i++)
                 {
-                    dist    = a*corners[i] + b*corners[2+j] + c*corners[4+k] + d;
+                    dist    = a * corners[i] + b * corners[2 + j] + c * corners[4 + k] + d;
                     maxNear = (dist < maxNear) ? dist : maxNear;
                     minFar  = (dist > minFar) ? dist : minFar;
                 }
@@ -900,32 +921,36 @@ void Layer::resetCameraClippingRange(const ::Ogre::AxisAlignedBox& worldCoordBou
         }
 
         // Give ourselves a little breathing room
-        maxNear = 0.99f*maxNear - (minFar - maxNear)*0.5f;
-        minFar  = 1.01f*minFar + (minFar - maxNear)*0.5f;
+        maxNear = 0.99f * maxNear - (minFar - maxNear) * 0.5f;
+        minFar  = 1.01f * minFar + (minFar - maxNear) * 0.5f;
 
         // Do not let the range behind the camera throw off the calculation.
-        if (maxNear < 0.1f)
+        if(maxNear < 0.1f)
         {
             maxNear = 0.1f;
         }
 
         // Make sure near is not bigger than far
-        maxNear = (maxNear >= minFar) ? (0.01f*minFar) : (maxNear);
+        maxNear = (maxNear >= minFar) ? (0.01f * minFar) : (maxNear);
 
         const auto& chain          = this->getCompositorChain();
-        const auto saoCompositorIt = std::find_if(chain.begin(), chain.end(),
-                                                  viz::scene3d::compositor::ChainManager::FindCompositorByName("SAO"));
+        const auto saoCompositorIt = std::find_if(
+            chain.begin(),
+            chain.end(),
+            viz::scene3d::compositor::ChainManager::FindCompositorByName("SAO"));
 
         const auto prevNear = m_camera->getNearClipDistance();
         const auto prevFar  = m_camera->getFarClipDistance();
+
         if(saoCompositorIt != chain.end() && saoCompositorIt->second)
         {
             // Near and far for SAO
             maxNear = 1;
             minFar  = 10000;
         }
-        m_camera->setNearClipDistance( maxNear );
-        m_camera->setFarClipDistance( minFar );
+
+        m_camera->setNearClipDistance(maxNear);
+        m_camera->setFarClipDistance(minFar);
 
         if(maxNear != prevNear || minFar != prevFar)
         {
@@ -934,14 +959,14 @@ void Layer::resetCameraClippingRange(const ::Ogre::AxisAlignedBox& worldCoordBou
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::requestRender()
 {
     m_renderService.lock()->requestRender();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setStereoMode(compositor::Core::StereoModeType mode)
 {
@@ -969,7 +994,7 @@ void Layer::setStereoMode(compositor::Core::StereoModeType mode)
     this->restartAdaptors();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setBackgroundColor(std::string topColor, std::string botColor)
 {
@@ -977,7 +1002,7 @@ void Layer::setBackgroundColor(std::string topColor, std::string botColor)
     m_bottomColor = botColor;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setBackgroundScale(float topScale, float botScale)
 {
@@ -985,13 +1010,17 @@ void Layer::setBackgroundScale(float topScale, float botScale)
     m_bottomScale = botScale;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
-void Layer::setCoreCompositorEnabled(bool enabled, std::string transparencyTechnique, std::string numPeels,
-                                     compositor::Core::StereoModeType stereoMode)
+void Layer::setCoreCompositorEnabled(
+    bool enabled,
+    std::string transparencyTechnique,
+    std::string numPeels,
+    compositor::Core::StereoModeType stereoMode)
 {
     m_hasCoreCompositor = enabled;
     m_stereoMode        = stereoMode;
+
     if(transparencyTechnique != "")
     {
         if(transparencyTechnique == "DepthPeeling")
@@ -1026,7 +1055,7 @@ void Layer::setCoreCompositorEnabled(bool enabled, std::string transparencyTechn
     }
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 void Layer::setCompositorChainEnabled(const std::string& compositorChain)
 {
@@ -1038,53 +1067,53 @@ void Layer::setCompositorChainEnabled(const std::string& compositorChain)
     }
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 void Layer::setViewportConfig(const ViewportConfigType& _vpCfg)
 {
     m_viewportCfg = _vpCfg;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 bool Layer::isCoreCompositorEnabled()
 {
     return m_hasCoreCompositor;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 bool Layer::isCompositorChainEnabled()
 {
     return m_hasCompositorChain;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 compositor::Core::StereoModeType Layer::getStereoMode() const
 {
     return m_stereoMode;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 void Layer::setupCore()
 {
     // Needed to setup compositors in GL3Plus, Ogre creates render targets
     m_renderService.lock()->makeCurrent();
 
-    m_coreCompositor = std::make_shared< viz::scene3d::compositor::Core>(m_viewport);
+    m_coreCompositor = std::make_shared<viz::scene3d::compositor::Core>(m_viewport);
     m_coreCompositor->setStereoMode(m_stereoMode);
     m_coreCompositor->setTransparencyTechnique(m_transparencyTechnique);
     m_coreCompositor->setTransparencyDepth(m_numPeels);
     m_coreCompositor->update();
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 void Layer::restartAdaptors()
 {
-    auto adaptors = this->getRenderService()->getAdaptors< IAdaptor >();
+    auto adaptors = this->getRenderService()->getAdaptors<IAdaptor>();
 
     auto notInLayer = [this](const IAdaptor::sptr& _adapt)
                       {
@@ -1095,10 +1124,12 @@ void Layer::restartAdaptors()
     adaptors.erase(std::remove_if(adaptors.begin(), adaptors.end(), notInLayer), adaptors.end());
 
     // Search for all adaptors created as subservices by other adaptors.
-    std::vector< service::IService::wptr > subAdaptors;
+    std::vector<service::IService::wptr> subAdaptors;
+
     for(auto& adapt : adaptors)
     {
-        SPTR( service::IHasServices ) hasServices = std::dynamic_pointer_cast< service::IHasServices >(adapt);
+        SPTR(service::IHasServices) hasServices = std::dynamic_pointer_cast<service::IHasServices>(adapt);
+
         if(hasServices != nullptr)
         {
             const auto& subServices = hasServices->getRegisteredServices();
@@ -1126,17 +1157,16 @@ void Layer::restartAdaptors()
             adapt->start().wait();
         }
     }
-
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 viz::scene3d::compositor::ChainManager::CompositorChainType Layer::getCompositorChain() const
 {
     return m_compositorChainManager->getCompositorChain();
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 service::IHasServices::ServiceVector Layer::getRegisteredAdaptors() const
 {
@@ -1144,36 +1174,38 @@ service::IHasServices::ServiceVector Layer::getRegisteredAdaptors() const
     {
         return m_compositorChainManager->getRegisteredServices();
     }
+
     return service::IHasServices::ServiceVector();
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 ::Ogre::Viewport* Layer::getViewport() const
 {
     return m_viewport;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 bool Layer::isSceneCreated() const
 {
     return m_sceneCreated;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 ::Ogre::Camera* Layer::getDefaultCamera() const
 {
     return m_camera;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 Ogre::Matrix4 Layer::getCameraProjMat(const uint8_t cameraIdx) const
 {
-    SIGHT_ASSERT("Index exceeds the number of cameras used for this stereo mode",
-                 cameraIdx < this->getNumberOfCameras());
+    SIGHT_ASSERT(
+        "Index exceeds the number of cameras used for this stereo mode",
+        cameraIdx < this->getNumberOfCameras());
     ::Ogre::Matrix4 extrinsicTransform(::Ogre::Matrix4::IDENTITY);
 
     if(m_stereoMode == viz::scene3d::compositor::Core::StereoModeType::AUTOSTEREO_5)
@@ -1196,10 +1228,23 @@ Ogre::Matrix4 Layer::getCameraProjMat(const uint8_t cameraIdx) const
         {
             SIGHT_WARN("Only a single calibration was set but stereo rendering is set.");
             // Kept for compatibility purposes.
-            extrinsicTransform = ::Ogre::Matrix4(1, 0, 0, 5,
-                                                 0, 1, 0, 0,
-                                                 0, 0, 1, 0,
-                                                 0, 0, 0, 1);
+            extrinsicTransform = ::Ogre::Matrix4(
+                1,
+                0,
+                0,
+                5,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1);
         }
         else if(!m_stereoCameraCalibration.empty())
         {
@@ -1212,30 +1257,35 @@ Ogre::Matrix4 Layer::getCameraProjMat(const uint8_t cameraIdx) const
     return projMat * extrinsicTransform;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 uint8_t Layer::getNumberOfCameras() const
 {
-    return m_stereoMode == viz::scene3d::compositor::Core::StereoModeType::AUTOSTEREO_8 ? 8 :
-           m_stereoMode == viz::scene3d::compositor::Core::StereoModeType::AUTOSTEREO_5 ? 5 :
-           m_stereoMode == viz::scene3d::compositor::Core::StereoModeType::STEREO       ? 2 : 1;
+    return m_stereoMode == viz::scene3d::compositor::Core::StereoModeType::AUTOSTEREO_8 ? 8
+                                                                                        : m_stereoMode
+           == viz::scene3d::compositor::Core::StereoModeType::AUTOSTEREO_5 ? 5
+                                                                           :
+           m_stereoMode == viz::scene3d::compositor::Core::StereoModeType::STEREO ? 2 : 1;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 void Layer::setHasDefaultLight(bool hasDefaultLight)
 {
     m_hasDefaultLight = hasDefaultLight;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 int Layer::getLightsNumber() const
 {
-    auto lightAdaptors = this->getRenderService()->getAdaptors< viz::scene3d::ILight >();
+    auto lightAdaptors = this->getRenderService()->getAdaptors<viz::scene3d::ILight>();
     int lightsNumber(0);
 
-    std::for_each(lightAdaptors.begin(), lightAdaptors.end(), [&](viz::scene3d::ILight::sptr adaptor)
+    std::for_each(
+        lightAdaptors.begin(),
+        lightAdaptors.end(),
+        [&](viz::scene3d::ILight::sptr adaptor)
         {
             if(adaptor->getLayerID() == this->getLayerID())
             {
@@ -1246,14 +1296,17 @@ int Layer::getLightsNumber() const
     return lightsNumber;
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
-std::vector< viz::scene3d::ILight::sptr > Layer::getLightAdaptors() const
+std::vector<viz::scene3d::ILight::sptr> Layer::getLightAdaptors() const
 {
-    auto lightAdaptors = this->getRenderService()->getAdaptors< viz::scene3d::ILight >();
-    std::vector< viz::scene3d::ILight::sptr > layerLightAdaptors;
+    auto lightAdaptors = this->getRenderService()->getAdaptors<viz::scene3d::ILight>();
+    std::vector<viz::scene3d::ILight::sptr> layerLightAdaptors;
 
-    std::for_each(lightAdaptors.begin(), lightAdaptors.end(), [&](viz::scene3d::ILight::sptr lightAdaptor)
+    std::for_each(
+        lightAdaptors.begin(),
+        lightAdaptors.end(),
+        [&](viz::scene3d::ILight::sptr lightAdaptor)
         {
             if(lightAdaptor->getLayerID() == this->getLayerID())
             {
@@ -1264,7 +1317,7 @@ std::vector< viz::scene3d::ILight::sptr > Layer::getLightAdaptors() const
     return layerLightAdaptors;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::Ogre::OverlayContainer* Layer::getOverlayTextPanel()
 {
@@ -1273,8 +1326,8 @@ std::vector< viz::scene3d::ILight::sptr > Layer::getLightAdaptors() const
         auto& overlayManager   = ::Ogre::OverlayManager::getSingleton();
         const auto textPanelId = m_renderService.lock()->getID() + m_id + "_GUI";
 
-        m_overlayTextPanel =
-            static_cast< ::Ogre::OverlayContainer* >(overlayManager.createOverlayElement("Panel", textPanelId));
+        m_overlayTextPanel
+            = static_cast< ::Ogre::OverlayContainer*>(overlayManager.createOverlayElement("Panel", textPanelId));
 
         m_overlayTextPanel->setMetricsMode(::Ogre::GMM_PIXELS);
         m_overlayTextPanel->setPosition(0, 0);
@@ -1290,27 +1343,27 @@ std::vector< viz::scene3d::ILight::sptr > Layer::getLightAdaptors() const
     return m_overlayTextPanel;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::setEnabledOverlays(const std::vector<std::string>& _overlayScripts)
 {
     m_overlayScripts = _overlayScripts;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const Layer::OverlaySetType& Layer::getEnabledOverlays() const
 {
     return m_enabledOverlays;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Layer::cancelFurtherInteraction()
 {
     m_cancelFurtherInteraction = true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d.

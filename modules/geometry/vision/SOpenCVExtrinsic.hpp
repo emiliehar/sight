@@ -28,6 +28,7 @@
 
 namespace sight::module::geometry::vision
 {
+
 /**
  * @brief   SOpenCVExtrinsic service that computes extrinsic calibration with openCV.
  *
@@ -64,7 +65,7 @@ public:
     SIGHT_DECLARE_SERVICE(SOpenCVExtrinsic, service::ICalibration)
 
     /// Double changed signal type
-    typedef core::com::Signal< void (double) > ErrorComputedSignalType;
+    typedef core::com::Signal<void (double)> ErrorComputedSignalType;
 
     /// Constructor.
     MODULE_GEOMETRY_VISION_API SOpenCVExtrinsic() noexcept;
@@ -73,7 +74,6 @@ public:
     MODULE_GEOMETRY_VISION_API virtual ~SOpenCVExtrinsic() noexcept;
 
 protected:
-
     /// Configures the service.
     MODULE_GEOMETRY_VISION_API void configuring() override;
 
@@ -90,7 +90,6 @@ protected:
     MODULE_GEOMETRY_VISION_API void stopping() override;
 
 private:
-
     /**
      * @brief SLOT: update the chessboard size.
      */
@@ -123,4 +122,5 @@ private:
     /// Index of the camera in cameraSeries used to compute extrinsic matrix (from camera[0] to camera[index]).
     size_t m_camIndex;
 };
+
 } // namespace sight::module::geometry::vision

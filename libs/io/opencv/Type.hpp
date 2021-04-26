@@ -36,7 +36,7 @@ public:
     IO_OPENCV_API static std::int32_t toCv(const core::tools::Type _type, const size_t _numComponents);
 
     /// Returns a Sight pixel type and a number of components given an OpenCV format
-    IO_OPENCV_API static std::pair< core::tools::Type, std::uint8_t> fromCv(std::int32_t _cvType);
+    IO_OPENCV_API static std::pair<core::tools::Type, std::uint8_t> fromCv(std::int32_t _cvType);
 };
 
 } // namespace sight::io::opencv

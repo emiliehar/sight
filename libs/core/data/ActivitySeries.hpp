@@ -27,11 +27,13 @@
 
 #include <data/factory/new.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(ActivitySeries))
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (ActivitySeries))
 
 namespace sight::data
 {
+
 class Composite;
+
 }
 
 namespace sight::data
@@ -44,11 +46,10 @@ class Series;
  */
 class DATA_CLASS_API ActivitySeries : public data::Series
 {
-
 public:
-    SIGHT_DECLARE_CLASS(ActivitySeries, data::Series, data::factory::New< ActivitySeries >)
+    SIGHT_DECLARE_CLASS(ActivitySeries, data::Series, data::factory::New<ActivitySeries>)
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(ActivitySeries))
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (ActivitySeries))
 
     typedef std::string ConfigIdType;
 
@@ -65,14 +66,14 @@ public:
      * @brief Defines shallow copy.
      * @param _source the source object to copy into this one.
      */
-    DATA_API void shallowCopy( const data::Object::csptr& _source) override;
+    DATA_API void shallowCopy(const data::Object::csptr& _source) override;
 
     /**
      * @brief Defines deep copy.
      * @param _source the source object to copy into this one.
      * @param _cache contains all copied objects to avoid duplication.
      */
-    DATA_API void cachedDeepCopy( const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
+    DATA_API void cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
 
     /// Gets the activity container.
     SPTR(data::Composite) getData() const;
@@ -81,49 +82,47 @@ public:
     void setData(const SPTR(data::Composite)& _val);
 
     /// Gets the activity configuration ID.
-    const ConfigIdType& getActivityConfigId () const;
+    const ConfigIdType& getActivityConfigId() const;
 
     /// Sets the activity configuration ID.
-    void setActivityConfigId (const ConfigIdType& _val);
+    void setActivityConfigId(const ConfigIdType& _val);
 
 protected:
-
     /// Defines the activity configuration ID.
     ConfigIdType m_activityConfigId;
 
     /// Stores the composite used to stores activities.
     SPTR(data::Composite) m_data;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SPTR(data::Composite) ActivitySeries::getData() const
 {
     return m_data;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void ActivitySeries::setData(const SPTR(data::Composite)& _val)
 {
     m_data = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline const ActivitySeries::ConfigIdType& ActivitySeries::getActivityConfigId () const
+inline const ActivitySeries::ConfigIdType& ActivitySeries::getActivityConfigId() const
 {
     return m_activityConfigId;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void ActivitySeries::setActivityConfigId(const ActivitySeries::ConfigIdType& _val)
 {
     m_activityConfigId = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // Namespace fwMedData.

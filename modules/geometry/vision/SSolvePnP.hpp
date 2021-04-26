@@ -32,6 +32,7 @@
 
 namespace sight::module::geometry::vision
 {
+
 /**
  * @brief This service estimates the object pose given a set of object points, their corresponding image projections,
  *  as well as the camera matrix and the distortion coefficients.
@@ -64,7 +65,6 @@ namespace sight::module::geometry::vision
 class MODULE_GEOMETRY_VISION_CLASS_API SSolvePnP : public service::IRegisterer
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SSolvePnP, sight::service::IRegisterer)
 
     /// Constructor.
@@ -93,7 +93,6 @@ protected:
     MODULE_GEOMETRY_VISION_API void updating() override;
 
 private:
-
     /**
      * @brief Camera structure: handles intrinsic parameters and distorsion coefficients in OpenCV format.
      */
@@ -113,7 +112,6 @@ private:
 
     /// reverse or not output matrix (camera pose vs object pose)
     bool m_reverseMatrix = {false};
-
 };
 
 } // namespace sight::module::geometry::vision

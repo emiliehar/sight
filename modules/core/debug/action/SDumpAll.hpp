@@ -28,15 +28,14 @@
 
 namespace sight::module::debug
 {
+
 namespace action
 {
 
 /// Implements an action that dump all buffer (if possible)
 class MODULE_DEBUG_CLASS_API SDumpAll : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SDumpAll, ::sight::ui::base::IAction)
 
     /// Does nothing
@@ -46,7 +45,6 @@ public:
     MODULE_DEBUG_API virtual ~SDumpAll() noexcept;
 
 protected:
-
     /// Calls classic IAction methods to configure
     void configuring() override;
 
@@ -58,8 +56,8 @@ protected:
 
     /// Calls classic IAction methods to stop
     void stopping() override;
-
 };
 
 } // namespace action
+
 } // namespace sight::module::debug

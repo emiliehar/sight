@@ -26,13 +26,14 @@
 
 namespace sight::atoms
 {
+
 namespace ut
 {
 
-class StringTest :  public CPPUNIT_NS::TestFixture
+class StringTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( StringTest );
-CPPUNIT_TEST( conversion );
+CPPUNIT_TEST_SUITE(StringTest);
+CPPUNIT_TEST(conversion);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,5 +44,6 @@ public:
     void conversion();
 };
 
-}  // namespace ut
-}  // namespace sight::atoms
+} // namespace ut
+
+} // namespace sight::atoms

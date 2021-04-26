@@ -47,19 +47,19 @@ static const std::string s_FONT_SOURCE_CONFIG  = "fontSource";
 static const std::string s_ORIGIN_CONFIG       = "origin";
 static const std::string s_ORIGIN_COLOR_CONFIG = "originColor";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SAxis::SAxis() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SAxis::~SAxis() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SAxis::configuring()
 {
@@ -85,11 +85,11 @@ void SAxis::configuring()
         "Color string should start with '#' and followed by 6 or 8 "
         "hexadecimal digits. Given color: " << m_originColor,
             m_originColor[0] == '#'
-            && ( m_originColor.length() == 7 || m_originColor.length() == 9)
+            && (m_originColor.length() == 7 || m_originColor.length() == 9)
         );
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SAxis::starting()
 {
@@ -99,7 +99,7 @@ void SAxis::starting()
 
     ::Ogre::SceneNode* const rootSceneNode = this->getSceneManager()->getRootSceneNode();
     ::Ogre::SceneNode* const transformNode = this->getTransformNode(rootSceneNode);
-    m_sceneNode                            = transformNode->createChildSceneNode(this->getID() + "_mainNode");
+    m_sceneNode = transformNode->createChildSceneNode(this->getID() + "_mainNode");
 
     ::Ogre::SceneManager* const sceneMgr = this->getSceneManager();
 
@@ -119,13 +119,13 @@ void SAxis::starting()
     // set the material
     m_material = data::Material::New();
 
-    const module::viz::scene3d::adaptor::SMaterial::sptr materialAdaptor =
-        this->registerService< module::viz::scene3d::adaptor::SMaterial >(
-            "::sight::module::viz::scene3d::adaptor::SMaterial");
+    const module::viz::scene3d::adaptor::SMaterial::sptr materialAdaptor
+        = this->registerService<module::viz::scene3d::adaptor::SMaterial>(
+              "::sight::module::viz::scene3d::adaptor::SMaterial");
     materialAdaptor->registerInOut(m_material, module::viz::scene3d::adaptor::SMaterial::s_MATERIAL_INOUT, true);
     materialAdaptor->setID(this->getID() + materialAdaptor->getID());
     materialAdaptor->setMaterialName(this->getID() + materialAdaptor->getID());
-    materialAdaptor->setRenderService( this->getRenderService() );
+    materialAdaptor->setRenderService(this->getRenderService());
     materialAdaptor->setLayerID(m_layerID);
     materialAdaptor->setMaterialTemplateName(sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
     materialAdaptor->start();
@@ -140,7 +140,7 @@ void SAxis::starting()
     const float cylinderLength = m_length * 0.85f;
     const float cylinderRadius = m_length * 0.025f;
     const float coneLength     = m_length - cylinderLength;
-    const float coneRadius     = cylinderRadius*2.f;
+    const float coneRadius     = cylinderRadius * 2.f;
     const unsigned sample      = 64;
 
     // Draw
@@ -150,44 +150,51 @@ void SAxis::starting()
     {
         const data::Color::sptr originColor = data::Color::New();
         originColor->setRGBA(m_originColor);
-        sight::viz::scene3d::helper::ManualObject::createSphere(m_origin, materialAdaptor->getMaterialName(),
-                                                                ::Ogre::ColourValue(originColor->red(),
-                                                                                    originColor->green(),
-                                                                                    originColor->blue(),
-                                                                                    originColor->alpha()),
-                                                                originRadius,
-                                                                sample);
+        sight::viz::scene3d::helper::ManualObject::createSphere(
+            m_origin,
+            materialAdaptor->getMaterialName(),
+            ::Ogre::ColourValue(
+                originColor->red(),
+                originColor->green(),
+                originColor->blue(),
+                originColor->alpha()),
+            originRadius,
+            sample);
         m_sceneNode->attachObject(m_origin);
     }
 
     // X axis
-    sight::viz::scene3d::helper::ManualObject::createCylinder(m_xLine, materialAdaptor->getMaterialName(),
-                                                              ::Ogre::ColourValue(::Ogre::ColourValue::Red),
-                                                              cylinderRadius,
-                                                              cylinderLength,
-                                                              sample);
+    sight::viz::scene3d::helper::ManualObject::createCylinder(
+        m_xLine,
+        materialAdaptor->getMaterialName(),
+        ::Ogre::ColourValue(::Ogre::ColourValue::Red),
+        cylinderRadius,
+        cylinderLength,
+        sample);
     ::Ogre::SceneNode* const xLineNode = m_sceneNode->createChildSceneNode(this->getID() + "_xLine");
     xLineNode->attachObject(m_xLine);
     xLineNode->pitch(::Ogre::Degree(90));
 
     // Y axis
-    sight::viz::scene3d::helper::ManualObject::createCylinder(m_yLine,
-                                                              materialAdaptor->getMaterialName(),
-                                                              ::Ogre::ColourValue(::Ogre::ColourValue::Green),
-                                                              cylinderRadius,
-                                                              cylinderLength,
-                                                              sample);
+    sight::viz::scene3d::helper::ManualObject::createCylinder(
+        m_yLine,
+        materialAdaptor->getMaterialName(),
+        ::Ogre::ColourValue(::Ogre::ColourValue::Green),
+        cylinderRadius,
+        cylinderLength,
+        sample);
     ::Ogre::SceneNode* const yLineNode = m_sceneNode->createChildSceneNode(this->getID() + "_yLine");
     yLineNode->attachObject(m_yLine);
     yLineNode->roll(::Ogre::Degree(90));
 
     // Z axis
-    sight::viz::scene3d::helper::ManualObject::createCylinder(m_zLine,
-                                                              materialAdaptor->getMaterialName(),
-                                                              ::Ogre::ColourValue(::Ogre::ColourValue::Blue),
-                                                              cylinderRadius,
-                                                              cylinderLength,
-                                                              sample);
+    sight::viz::scene3d::helper::ManualObject::createCylinder(
+        m_zLine,
+        materialAdaptor->getMaterialName(),
+        ::Ogre::ColourValue(::Ogre::ColourValue::Blue),
+        cylinderRadius,
+        cylinderLength,
+        sample);
     ::Ogre::SceneNode* const zLineNode = m_sceneNode->createChildSceneNode(this->getID() + "_zLine");
     zLineNode->attachObject(m_zLine);
     zLineNode->yaw(::Ogre::Degree(-90));
@@ -196,17 +203,25 @@ void SAxis::starting()
     ::Ogre::Camera* const cam                     = this->getLayer()->getDefaultCamera();
 
     // X cone
-    sight::viz::scene3d::helper::ManualObject::createCone(m_xCone, materialAdaptor->getMaterialName(),
-                                                          ::Ogre::ColourValue(::Ogre::ColourValue::Red),
-                                                          coneRadius,
-                                                          coneLength,
-                                                          sample);
+    sight::viz::scene3d::helper::ManualObject::createCone(
+        m_xCone,
+        materialAdaptor->getMaterialName(),
+        ::Ogre::ColourValue(::Ogre::ColourValue::Red),
+        coneRadius,
+        coneLength,
+        sample);
     ::Ogre::SceneNode* const xConeNode = m_sceneNode->createChildSceneNode(this->getID() + "_xCone");
 
     if(m_enableLabel)
     {
         m_axisLabels[0] = sight::viz::scene3d::Text::New(
-            this->getID() + "_xAxisLabel", sceneMgr, textContainer, m_fontSource, m_fontSize, dpi, cam);
+            this->getID() + "_xAxisLabel",
+            sceneMgr,
+            textContainer,
+            m_fontSource,
+            m_fontSize,
+            dpi,
+            cam);
         m_axisLabels[0]->setText("X");
         xConeNode->attachObject(m_axisLabels[0]);
     }
@@ -215,18 +230,26 @@ void SAxis::starting()
     xConeNode->translate(cylinderLength, 0.f, 0.f);
 
     // Y cone
-    sight::viz::scene3d::helper::ManualObject::createCone(m_yCone, materialAdaptor->getMaterialName(),
-                                                          ::Ogre::ColourValue(::Ogre::ColourValue::Green),
-                                                          coneRadius,
-                                                          coneLength,
-                                                          sample);
+    sight::viz::scene3d::helper::ManualObject::createCone(
+        m_yCone,
+        materialAdaptor->getMaterialName(),
+        ::Ogre::ColourValue(::Ogre::ColourValue::Green),
+        coneRadius,
+        coneLength,
+        sample);
     ::Ogre::SceneNode* const yConeNode = m_sceneNode->createChildSceneNode(this->getID() + "_yCone");
     yConeNode->attachObject(m_yCone);
 
     if(m_enableLabel)
     {
         m_axisLabels[1] = sight::viz::scene3d::Text::New(
-            this->getID() + "_yAxisLabel", sceneMgr, textContainer, m_fontSource, m_fontSize, dpi, cam);
+            this->getID() + "_yAxisLabel",
+            sceneMgr,
+            textContainer,
+            m_fontSource,
+            m_fontSize,
+            dpi,
+            cam);
         m_axisLabels[1]->setText("Y");
         yConeNode->attachObject(m_axisLabels[1]);
     }
@@ -235,18 +258,26 @@ void SAxis::starting()
     yConeNode->roll(::Ogre::Degree(90));
 
     // Z cone
-    sight::viz::scene3d::helper::ManualObject::createCone(m_zCone, materialAdaptor->getMaterialName(),
-                                                          ::Ogre::ColourValue(::Ogre::ColourValue::Blue),
-                                                          coneRadius,
-                                                          coneLength,
-                                                          sample);
+    sight::viz::scene3d::helper::ManualObject::createCone(
+        m_zCone,
+        materialAdaptor->getMaterialName(),
+        ::Ogre::ColourValue(::Ogre::ColourValue::Blue),
+        coneRadius,
+        coneLength,
+        sample);
     ::Ogre::SceneNode* const zConeNode = m_sceneNode->createChildSceneNode(this->getID() + "_zCone");
     zConeNode->attachObject(m_zCone);
 
     if(m_enableLabel)
     {
         m_axisLabels[2] = sight::viz::scene3d::Text::New(
-            this->getID() + "_zAxisLabel", sceneMgr, textContainer, m_fontSource, m_fontSize, dpi, cam);
+            this->getID() + "_zAxisLabel",
+            sceneMgr,
+            textContainer,
+            m_fontSource,
+            m_fontSize,
+            dpi,
+            cam);
         m_axisLabels[2]->setText("Z");
         zConeNode->attachObject(m_axisLabels[2]);
     }
@@ -259,14 +290,14 @@ void SAxis::starting()
     this->requestRender();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SAxis::updating()
 {
     this->requestRender();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SAxis::stopping()
 {
@@ -316,13 +347,14 @@ void SAxis::stopping()
     m_material.reset();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SAxis::setVisible(bool _visible)
 {
     if(m_sceneNode)
     {
         m_sceneNode->setVisible(_visible);
+
         if(m_enableLabel)
         {
             for(sight::viz::scene3d::Text* const label : m_axisLabels)
@@ -336,6 +368,6 @@ void SAxis::setVisible(bool _visible)
     this->updating();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

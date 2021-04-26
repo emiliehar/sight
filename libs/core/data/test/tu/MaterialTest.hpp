@@ -26,14 +26,15 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class MaterialTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( MaterialTest );
-    CPPUNIT_TEST( methode1 );
+    CPPUNIT_TEST_SUITE(MaterialTest);
+    CPPUNIT_TEST(methode1);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,5 +44,7 @@ public:
 
     void methode1();
 };
-} //namespace ut
-} //namespace sight::data
+
+} // namespace ut
+
+} // namespace sight::data

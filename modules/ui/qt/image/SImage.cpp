@@ -34,28 +34,29 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace image
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SImage::SImage() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SImage::~SImage() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImage::starting()
 {
     this->create();
 
-    const auto qtContainer = ::sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer() );
+    const auto qtContainer = ::sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer());
 
     QVBoxLayout* const layout = new QVBoxLayout();
     QLabel* const label       = new QLabel("");
@@ -85,42 +86,41 @@ void SImage::starting()
     {
         label->setPixmap(*pixmap);
     }
+
     layout->addWidget(label);
     qtContainer->setLayout(layout);
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImage::stopping()
 {
     this->destroy();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImage::configuring()
 {
     this->initialize();
 
     const ConfigType cfg = this->getConfigTree();
-    std::string pathCfg  = cfg.get< std::string >("path");
+    std::string pathCfg  = cfg.get<std::string>("path");
 
     m_path = core::runtime::getModuleResourceFilePath(pathCfg);
 
-    m_width  = cfg.get< int >("width", m_width);
-    m_height = cfg.get< int >("height", m_height);
-
+    m_width  = cfg.get<int>("width", m_width);
+    m_height = cfg.get<int>("height", m_height);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SImage::updating()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace image
+
 } // namespace sight::module::ui::base

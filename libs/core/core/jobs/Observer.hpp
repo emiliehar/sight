@@ -40,11 +40,11 @@ public:
     /**
      * @name Typedefs
      * @{ */
-    typedef SPTR (core::jobs::Observer) sptr;
-    typedef WPTR (core::jobs::Observer) wptr;
+    typedef SPTR(core::jobs::Observer) sptr;
+    typedef WPTR(core::jobs::Observer) wptr;
 
     /// Progress callback type
-    typedef std::function< void (std::uint64_t) > ProgressCallback;
+    typedef std::function<void (std::uint64_t)> ProgressCallback;
     /**  @} */
 
     /**
@@ -85,8 +85,7 @@ public:
     CORE_API ProgressCallback progressCallback();
 
 protected:
-
-    ///Exposing run function of IJob in the interface.
+    /// Exposing run function of IJob in the interface.
     using IJob::run;
 
     /**
@@ -97,11 +96,10 @@ protected:
     CORE_API virtual SharedFuture runImpl();
 
     /// Task type
-    typedef std::packaged_task< void () > PackagedTask;
+    typedef std::packaged_task<void ()> PackagedTask;
 
     /// Task observed
     PackagedTask m_finishTask;
-
 };
 
-} //namespace sight::core::jobs
+} // namespace sight::core::jobs

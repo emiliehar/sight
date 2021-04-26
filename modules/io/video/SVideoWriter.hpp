@@ -52,9 +52,7 @@ namespace sight::module::io::video
  */
 class MODULE_IO_VIDEO_CLASS_API SVideoWriter : public sight::io::base::service::IWriter
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SVideoWriter, sight::io::base::service::IWriter)
 
     /// Constructor.
@@ -80,7 +78,6 @@ public:
     MODULE_IO_VIDEO_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 protected:
-
     /// Does nothing
     MODULE_IO_VIDEO_API void configuring() override;
 
@@ -94,7 +91,6 @@ protected:
     MODULE_IO_VIDEO_API void updating() override;
 
 private:
-
     /// SLOT: adds the current frame in the video
     void saveFrame(core::HiResClock::HiResClockType timestamp);
 
@@ -120,17 +116,16 @@ private:
     bool m_isRecording{false};
 
     /// container used to store first video frame timestamps to compute framerate of the video stream
-    std::vector< core::HiResClock::HiResClockType > m_timestamps;
+    std::vector<core::HiResClock::HiResClockType> m_timestamps;
 
     /// Extension selected in file dialog
     std::string m_selectedExtension;
 
-    ///  static string containing the file extension
+    /// static string containing the file extension
     static const std::string s_MP4_EXTENSION;
 
-    ///  static string containing the codec to use
+    /// static string containing the codec to use
     static const std::string s_AVC1_CODEC;
-
 };
 
 } // videoOpenCV

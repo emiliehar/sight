@@ -31,17 +31,19 @@ namespace sight::utest
 
 struct LogInitialization
 {
-    LogInitialization ()
+    LogInitialization()
     {
         core::log::SpyLogger& logger = core::log::SpyLogger::getSpyLogger();
 
         std::string logFile = "fwTest.log";
 
         FILE* pFile = fopen(logFile.c_str(), "w");
-        if (pFile == NULL)
+
+        if(pFile == NULL)
         {
             std::error_code err;
             std::filesystem::path sysTmp = std::filesystem::temp_directory_path(err);
+
             if(err.value() != 0)
             {
                 // replace log file appender by stream appender: default dir and temp dir unreachable
@@ -62,7 +64,6 @@ struct LogInitialization
             logger.addFileAppender(logFile);
         }
     }
-
 };
 
 static LogInitialization init;

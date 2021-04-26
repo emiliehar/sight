@@ -35,60 +35,60 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-fwDicomIOFilterRegisterMacro( ::sight::ui::dicom::sorter::TagValueConfigurableSorter );
+fwDicomIOFilterRegisterMacro(::sight::ui::dicom::sorter::TagValueConfigurableSorter);
 
 namespace sight::ui::dicom
 {
+
 namespace sorter
 {
 
-const std::string TagValueConfigurableSorter::s_FILTER_NAME        = "Tag value configurable sorter";
-const std::string TagValueConfigurableSorter::s_FILTER_DESCRIPTION =
-    "Sort instances using a tag value.";
+const std::string TagValueConfigurableSorter::s_FILTER_NAME = "Tag value configurable sorter";
+const std::string TagValueConfigurableSorter::s_FILTER_DESCRIPTION
+    = "Sort instances using a tag value.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TagValueConfigurableSorter::TagValueConfigurableSorter(filter::dicom::IFilter::Key key) :
     filter::dicom::sorter::TagValueSorter(key)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TagValueConfigurableSorter::~TagValueConfigurableSorter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string TagValueConfigurableSorter::getName() const
 {
     return TagValueConfigurableSorter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string TagValueConfigurableSorter::getDescription() const
 {
-
     return TagValueConfigurableSorter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool TagValueConfigurableSorter::isConfigurationRequired() const
 {
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool TagValueConfigurableSorter::isConfigurableWithGUI() const
 {
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void TagValueConfigurableSorter::configureWithGUI()
 {
@@ -99,8 +99,8 @@ void TagValueConfigurableSorter::configureWithGUI()
     dialog->setMinimumWidth(500);
 
     // Create tag selectors
-    ui::dicom::widget::QTagSelectorWidget* tagSelector =
-        new ui::dicom::widget::QTagSelectorWidget();
+    ui::dicom::widget::QTagSelectorWidget* tagSelector
+        = new ui::dicom::widget::QTagSelectorWidget();
     tagSelector->setTagValue(m_tag);
     mainLayout->addWidget(tagSelector);
 
@@ -114,6 +114,7 @@ void TagValueConfigurableSorter::configureWithGUI()
     QObject::connect(cancelButton, SIGNAL(clicked(void)), dialog, SLOT(reject(void)));
 
     int result = dialog->exec();
+
     if(result == QDialog::Accepted)
     {
         m_tag = tagSelector->getTag();
@@ -121,4 +122,5 @@ void TagValueConfigurableSorter::configureWithGUI()
 }
 
 } // namespace sorter
+
 } // namespace sight::ui::dicom

@@ -36,71 +36,70 @@ namespace sight::module::geometry::base
 const service::IService::KeyType s_MATRICES_INPUT  = "matrices";
 const service::IService::KeyType s_POINTLIST_INOUT = "pointList";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPointListFromMatrices::SPointListFromMatrices() :
     m_append(false)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPointListFromMatrices::~SPointListFromMatrices()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPointListFromMatrices::configuring()
 {
     const ConfigType configTree = this->getConfigTree();
     const ConfigType config     = configTree.get_child("config.<xmlattr>");
-    if (!config.empty())
+
+    if(!config.empty())
     {
         m_append = config.get<bool>("append", m_append);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPointListFromMatrices::starting()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPointListFromMatrices::stopping()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPointListFromMatrices::updating()
 {
-
     const size_t numMatrices = this->getKeyGroupSize(s_MATRICES_INPUT);
     SIGHT_ASSERT("no matrices found", numMatrices != 0);
 
-    auto pointList = this->getLockedInOut< data::PointList >(s_POINTLIST_INOUT);
+    auto pointList = this->getLockedInOut<data::PointList>(s_POINTLIST_INOUT);
+
     if(!m_append)
     {
         pointList->getPoints().clear();
     }
 
-    for(size_t j = 0; j < numMatrices; ++j)
+    for(size_t j = 0 ; j < numMatrices ; ++j)
     {
-        const auto mat = this->getLockedInput< data::Matrix4 >(
-            s_MATRICES_INPUT, j);
+        const auto mat = this->getLockedInput<data::Matrix4>(
+            s_MATRICES_INPUT,
+            j);
         data::Matrix4::TMCoefArray coefs = mat->getCoefficients();
 
-        //extract translation
+        // extract translation
         data::Point::sptr p = data::Point::New(coefs[3], coefs[7], coefs[11]);
 
         std::string label;
+
         if(m_append)
         {
             label = std::to_string(pointList->getPoints().size());
@@ -111,17 +110,16 @@ void SPointListFromMatrices::updating()
         }
 
         data::String::sptr fwLabel = data::String::New(label);
-        p->setField( data::fieldHelper::Image::m_labelId, fwLabel );
+        p->setField(data::fieldHelper::Image::m_labelId, fwLabel);
         pointList->pushBack(p);
-
     }
 
-    auto sig = pointList->signal< data::PointList::ModifiedSignalType >(data::PointList::s_MODIFIED_SIG);
+    auto sig = pointList->signal<data::PointList::ModifiedSignalType>(data::PointList::s_MODIFIED_SIG);
     sig->asyncEmit();
 
     m_sigComputed->asyncEmit();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::module

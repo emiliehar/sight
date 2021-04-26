@@ -32,62 +32,63 @@ namespace camp_ext
 {
 
 /// New value mapper to manage conversion in camp world between sight::atoms::Blob and a core::memory::BufferObject
-template <>
-struct ValueMapper< sight::atoms::Blob::sptr >
+template<>
+struct ValueMapper<sight::atoms::Blob::sptr>
 {
     typedef sight::atoms::Blob::sptr ReturnType;
 
     static const int type = camp::userType;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static const sight::core::memory::BufferObject::sptr to(const ReturnType& source)
     {
         return source->getBufferObject();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static ReturnType from(bool source)
     {
         CAMP_ERROR(camp::BadType(camp::boolType, camp::mapType<ReturnType>()));
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static ReturnType from(long source)
     {
         CAMP_ERROR(camp::BadType(camp::intType, camp::mapType<ReturnType>()));
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static ReturnType from(double source)
     {
         CAMP_ERROR(camp::BadType(camp::realType, camp::mapType<ReturnType>()));
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static ReturnType from(const std::string& source)
     {
         CAMP_ERROR(camp::BadType(camp::realType, camp::mapType<ReturnType>()));
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static ReturnType from(const camp::EnumObject& source)
     {
         CAMP_ERROR(camp::BadType(camp::enumType, camp::mapType<ReturnType>()));
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static ReturnType from(const camp::UserObject& source)
     {
-        sight::core::memory::BufferObject::sptr tmp = source.get< sight::core::memory::BufferObject::sptr>()->getSptr();
+        sight::core::memory::BufferObject::sptr tmp = source.get<sight::core::memory::BufferObject::sptr>()->getSptr();
+
         return sight::atoms::Blob::New(tmp);
     }
 };
 
-}
+} // namespace camp_ext

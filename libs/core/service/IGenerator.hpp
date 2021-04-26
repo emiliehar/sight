@@ -35,19 +35,15 @@ namespace sight::service
  */
 class SERVICE_CLASS_API IGenerator : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IGenerator, service::IService)
 
 protected:
-
     /// Does nothing.
     SERVICE_API IGenerator();
 
     /// Destroys the interface.
     SERVICE_API ~IGenerator() override;
-
 };
 
 } // namespace sight::service

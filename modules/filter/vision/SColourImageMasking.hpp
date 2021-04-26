@@ -85,7 +85,6 @@ namespace sight::module::filter::vision
 class MODULE_FILTER_VISION_CLASS_API SColourImageMasking final : public service::IOperator
 {
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SColourImageMasking, sight::service::IOperator)
 
@@ -99,7 +98,6 @@ public:
     service::IService::KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// Initializes segmentation method parameters.
     MODULE_FILTER_VISION_API void configuring() override;
 
@@ -113,7 +111,6 @@ protected:
     MODULE_FILTER_VISION_API void updating() override;
 
 private:
-
     /// SLOT: Sets background image and learn background model.
     void setBackground();
 
@@ -136,7 +133,7 @@ private:
     void clearMaskTL();
 
     /// Object performing the Expectation Maximization segmentation.
-    std::unique_ptr< sight::filter::vision::Masker > m_masker;
+    std::unique_ptr<sight::filter::vision::Masker> m_masker;
 
     /// Current timestamp.
     core::HiResClock::HiResClockType m_lastVideoTimestamp;

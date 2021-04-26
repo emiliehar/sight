@@ -40,9 +40,9 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace video
 {
-
 
 const core::com::Signals::SignalKeyType SSlider::s_POSITION_CHANGED_SIG = "positionChanged";
 
@@ -51,7 +51,7 @@ const core::com::Slots::SlotKeyType SSlider::s_SET_DURATION_SLIDER_SLOT = "setDu
 
 static const char* s_UNKNOWN_TIME = "--:--:--";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QString convertMSecToHHMMSS(int64_t milliseconds)
 {
@@ -63,29 +63,30 @@ QString convertMSecToHHMMSS(int64_t milliseconds)
     std::chrono::seconds seconds = std::chrono::duration_cast<std::chrono::seconds>(ms);
 
     QTime time(hours.count(), minutes.count(), static_cast<std::int32_t>(seconds.count()));
+
     return time.toString("hh:mm:ss");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSlider::SSlider() noexcept :
     m_sliderPressed(false)
 {
     /// Slot to change the position of the slider
-    newSlot(s_SET_POSITION_SLIDER_SLOT,  &SSlider::setPosition, this);
+    newSlot(s_SET_POSITION_SLIDER_SLOT, &SSlider::setPosition, this);
     /// Slot to change the duration of the slider
-    newSlot(s_SET_DURATION_SLIDER_SLOT,  &SSlider::setDuration, this);
+    newSlot(s_SET_DURATION_SLIDER_SLOT, &SSlider::setDuration, this);
 
     m_sigPositionChanged = newSignal<PositionChangedSignalType>(s_POSITION_CHANGED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSlider::~SSlider() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::starting()
 {
@@ -113,39 +114,40 @@ void SSlider::starting()
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::configuring()
 {
     this->initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::swapping()
 {
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::changePosition()
 {
     int64_t newPos = m_positionSlider->sliderPosition();
     m_positionSlider->setSliderPosition(static_cast<int>(newPos));
+
     if(newPos == -1)
     {
         m_currentPosition->setText(s_UNKNOWN_TIME);
@@ -161,13 +163,14 @@ void SSlider::changePosition()
     m_sliderPressed = false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::sliderPressed()
 {
     m_sliderPressed = true;
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void SSlider::setPosition(int64_t newPos)
 {
@@ -186,7 +189,7 @@ void SSlider::setPosition(int64_t newPos)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSlider::setDuration(int64_t duration)
 {
@@ -202,7 +205,8 @@ void SSlider::setDuration(int64_t duration)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace video
-} //namespace sight::module::ui::qt
+} // namespace video
+
+} // namespace sight::module::ui::qt

@@ -37,13 +37,14 @@ namespace sight::viz::scene3d
 
 namespace compositor
 {
-//----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
 
 static const std::map<Core::StereoModeType, std::string> s_stereoCompositorMap = {
-    { Core::StereoModeType::AUTOSTEREO_5, "AutoStereo5" },
-    { Core::StereoModeType::AUTOSTEREO_8, "AutoStereo8" },
-    { Core::StereoModeType::STEREO, "Stereo" },
-    { Core::StereoModeType::NONE, "Default" }
+    {Core::StereoModeType::AUTOSTEREO_5, "AutoStereo5"},
+    {Core::StereoModeType::AUTOSTEREO_8, "AutoStereo8"},
+    {Core::StereoModeType::STEREO, "Stereo"},
+    {Core::StereoModeType::NONE, "Default"}
 };
 
 // ----------------------------------------------------------------------------
@@ -53,127 +54,132 @@ const std::string Core::FINAL_CHAIN_COMPOSITOR = "FinalChainCompositor";
 // ----------------------------------------------------------------------------
 
 Core::Core(::Ogre::Viewport* viewport) :
-    //m_transparencyTechniqueMaxDepth(8),
+    // m_transparencyTechniqueMaxDepth(8),
     m_transparencyTechnique(DEFAULT),
     m_coreCompositorName("Default"),
     m_compositorInstance(nullptr),
-    //m_useOcclusionQuery(false),
-    //m_doOcclusionQuery(false),
-    //m_OITQuery(nullptr),
-    //m_activeQuery(nullptr),
-    //m_currNumPass(0),
-    //m_isPing(false),
-    //m_isPong(false),
+    // m_useOcclusionQuery(false),
+    // m_doOcclusionQuery(false),
+    // m_OITQuery(nullptr),
+    // m_activeQuery(nullptr),
+    // m_currNumPass(0),
+    // m_isPing(false),
+    // m_isPong(false),
     m_celShadingName(""),
     m_numPass(8),
     m_viewport(viewport)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Core::~Core()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 transparencyTechnique Core::getTransparencyTechnique()
 {
     return m_transparencyTechnique;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int Core::getTransparencyDepth()
 {
     return m_numPass;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool Core::setTransparencyTechnique(transparencyTechnique technique)
 {
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, m_coreCompositorName, false );
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, m_coreCompositorName, false);
     m_transparencyTechnique = technique;
 
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::update()
 {
     m_celShadingName = "";
 
-    SIGHT_ERROR_IF("OIT isn't supported when stereo is enabled, falling back to mono rendering.",
-                   m_transparencyTechnique != DEFAULT && m_stereoMode != StereoModeType::NONE);
+    SIGHT_ERROR_IF(
+        "OIT isn't supported when stereo is enabled, falling back to mono rendering.",
+        m_transparencyTechnique != DEFAULT && m_stereoMode != StereoModeType::NONE);
 
-    switch (m_transparencyTechnique)
+    switch(m_transparencyTechnique)
     {
         case DEFAULT:
             m_coreCompositorName = s_stereoCompositorMap.at(m_stereoMode);
             this->setupTransparency();
             this->setupDefaultTransparency();
             break;
+
         case CELSHADING_DEPTHPEELING:
             m_celShadingName = "CelShading";
             BOOST_FALLTHROUGH;
+
         case DEPTHPEELING:
-            m_coreCompositorName = m_celShadingName+"DepthPeeling";
+            m_coreCompositorName = m_celShadingName + "DepthPeeling";
             this->setupTransparency();
             this->setTransparencyDepthOfDepthPeeling(m_numPass);
             break;
+
         case DUALDEPTHPEELING:
             m_coreCompositorName = "DualDepthPeeling";
             this->setupTransparency();
             this->setTransparencyDepthOfDualDepthPeeling(m_numPass);
             break;
+
         case WEIGHTEDBLENDEDOIT:
             m_coreCompositorName = "WeightedBlended";
             this->setupTransparency();
-            ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, "WeightedBlended", true );
+            ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, "WeightedBlended", true);
             break;
+
         case HYBRIDTRANSPARENCY:
             m_coreCompositorName = "HybridTransparency";
             this->setupTransparency();
             this->setTransparencyDepthOfHybridTransparency(m_numPass);
             break;
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setTransparencyDepth(int depth)
 {
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, m_coreCompositorName, false );
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, m_coreCompositorName, false);
     m_numPass = depth;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setStereoMode(Core::StereoModeType stereoMode)
 {
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, m_coreCompositorName, false );
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, m_coreCompositorName, false);
     m_stereoMode = stereoMode;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Core::StereoModeType Core::getStereoMode() const
 {
     return m_stereoMode;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setupDefaultTransparency()
 {
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, m_coreCompositorName, true );
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, m_coreCompositorName, true);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setupTransparency()
 {
@@ -208,10 +214,11 @@ void Core::setupTransparency()
         }
 
         // Now, we can add the new compositor to the compositor chain
-        m_compositorInstance = compositorManager.addCompositor( m_viewport,
-                                                                m_coreCompositorName,
-                                                                0);
-        compositorManager.setCompositorEnabled( m_viewport, m_coreCompositorName, true );
+        m_compositorInstance = compositorManager.addCompositor(
+            m_viewport,
+            m_coreCompositorName,
+            0);
+        compositorManager.setCompositorEnabled(m_viewport, m_coreCompositorName, true);
 
         // If the final compositor has been removed, we need to add it to the compositor chain
         if(needFinalCompositorSwap)
@@ -222,13 +229,14 @@ void Core::setupTransparency()
 
         if(m_compositorInstance == nullptr)
         {
-            SIGHT_ERROR( "Compositor " + m_coreCompositorName +
-                         " script is missing in resources (check your resources' paths)");
+            SIGHT_ERROR(
+                "Compositor " + m_coreCompositorName
+                + " script is missing in resources (check your resources' paths)");
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setTransparencyDepthOfDepthPeeling(int depth)
 {
@@ -239,7 +247,8 @@ void Core::setTransparencyDepthOfDepthPeeling(int depth)
 
     // 3 is the first ping pong target
     const int firstPingPongTarget = 4;
-    for (int i = firstPingPongTarget; i < numOfTargetPass; i++)
+
+    for(int i = firstPingPongTarget ; i < numOfTargetPass ; i++)
     {
         // When a target is discarded, the next one becomes the current one (eg : if I remove the 2nd target,
         // the 3rd target becomes the new 2nd target)
@@ -247,9 +256,9 @@ void Core::setTransparencyDepthOfDepthPeeling(int depth)
     }
 
     // Ping pong peel and blend
-    for(int i = 0; i < depth; i++)
+    for(int i = 0 ; i < depth ; i++)
     {
-        std::string pingPong = (i%2) ? "ing" : "ong";
+        std::string pingPong = (i % 2) ? "ing" : "ong";
 
         // Peel buffer
         {
@@ -266,7 +275,7 @@ void Core::setTransparencyDepthOfDepthPeeling(int depth)
             }
 
             // Material scheme
-            dpCompTargetPeel->setMaterialScheme(m_celShadingName+"DepthPeeling/peelP"+pingPong);
+            dpCompTargetPeel->setMaterialScheme(m_celShadingName + "DepthPeeling/peelP" + pingPong);
 
             // No shadow
             dpCompTargetPeel->setShadowsEnabled(false);
@@ -291,22 +300,22 @@ void Core::setTransparencyDepthOfDepthPeeling(int depth)
             {
                 ::Ogre::CompositionPass* dpCompPassRenderQuad = dpCompTargetBlend->createPass();
                 dpCompPassRenderQuad->setType(::Ogre::CompositionPass::PT_RENDERQUAD);
-                dpCompPassRenderQuad->setMaterialName(m_celShadingName+"DepthPeeling/Blend");
+                dpCompPassRenderQuad->setMaterialName(m_celShadingName + "DepthPeeling/Blend");
                 dpCompPassRenderQuad->setInput(0, "p" + pingPong + "Buffer", 0);
+
                 if(!m_celShadingName.empty())
                 {
                     dpCompPassRenderQuad->setInput(1, "p" + pingPong + "Buffer", 1);
                     dpCompPassRenderQuad->setInput(2, "p" + pingPong + "Buffer", 2);
                 }
-
             }
         }
     }
 
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, m_celShadingName+"DepthPeeling", true );
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, m_celShadingName + "DepthPeeling", true);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setTransparencyDepthOfDualDepthPeeling(int depth)
 {
@@ -317,7 +326,8 @@ void Core::setTransparencyDepthOfDualDepthPeeling(int depth)
 
     // 3 is the first ping pong target
     const int firstPingPongTarget = 2;
-    for (int i = firstPingPongTarget; i < numOfTargetPass; i++)
+
+    for(int i = firstPingPongTarget ; i < numOfTargetPass ; i++)
     {
         // When a target is discarded, the next one becomes the current one (eg : if I remove the 2nd target,
         // the 3rd target becomes the new 2nd target)
@@ -325,9 +335,9 @@ void Core::setTransparencyDepthOfDualDepthPeeling(int depth)
     }
 
     // Ping pong peel and blend
-    for(int i = 0; i < depth; i++)
+    for(int i = 0 ; i < depth ; i++)
     {
-        std::string pingPong = (i%2) ? "ing" : "ong";
+        std::string pingPong = (i % 2) ? "ing" : "ong";
 
         // Peel buffer
         {
@@ -345,7 +355,7 @@ void Core::setTransparencyDepthOfDualDepthPeeling(int depth)
             }
 
             // Material scheme
-            dpCompTargetPeel->setMaterialScheme("DualDepthPeeling/peelP"+pingPong);
+            dpCompTargetPeel->setMaterialScheme("DualDepthPeeling/peelP" + pingPong);
 
             // No shadow
             dpCompTargetPeel->setShadowsEnabled(false);
@@ -377,10 +387,10 @@ void Core::setTransparencyDepthOfDualDepthPeeling(int depth)
         }
     }
 
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, "DualDepthPeeling", true );
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, "DualDepthPeeling", true);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Core::setTransparencyDepthOfHybridTransparency(int depth)
 {
@@ -392,7 +402,7 @@ void Core::setTransparencyDepthOfHybridTransparency(int depth)
     // 3 is the first ping pong target
     const int firstPingPongTarget = 4;
 
-    for (int i = firstPingPongTarget; i < numOfTargetPass; i++)
+    for(int i = firstPingPongTarget ; i < numOfTargetPass ; i++)
     {
         // When a target is discarded, the next one becomes the current one (eg : if I remove the 2nd target,
         // the 3rd target becomes the new 2nd target)
@@ -400,9 +410,9 @@ void Core::setTransparencyDepthOfHybridTransparency(int depth)
     }
 
     // Ping pong peel and blend
-    for(int i = 0; i < (depth/2)*2; i++)
+    for(int i = 0 ; i < (depth / 2) * 2 ; i++)
     {
-        std::string pingPong = (i%2) ? "ing" : "ong";
+        std::string pingPong = (i % 2) ? "ing" : "ong";
 
         // Peel buffer
         {
@@ -419,7 +429,7 @@ void Core::setTransparencyDepthOfHybridTransparency(int depth)
             }
 
             // Material scheme
-            dpCompTargetPeel->setMaterialScheme("HybridTransparency/peelP"+pingPong);
+            dpCompTargetPeel->setMaterialScheme("HybridTransparency/peelP" + pingPong);
 
             // No shadow
             dpCompTargetPeel->setShadowsEnabled(false);
@@ -572,11 +582,10 @@ void Core::setTransparencyDepthOfHybridTransparency(int depth)
         }
     }
 
-    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled( m_viewport, "HybridTransparency", true );
-
+    ::Ogre::CompositorManager::getSingleton().setCompositorEnabled(m_viewport, "HybridTransparency", true);
 }
 
-//-------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 /*void Core::setupQueries()
    {
@@ -729,7 +738,7 @@ void Core::setTransparencyDepthOfHybridTransparency(int depth)
     return true;
    }*/
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace compositor
 

@@ -47,30 +47,30 @@
 namespace sight::module::ui::qt::viz
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const core::com::Signals::SignalKeyType SnapshotEditor::s_SNAPPED_SIG = "snapped";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SnapshotEditor::SnapshotEditor() noexcept
 {
-    m_sigSnapped = newSignal< SnappedSignalType >(s_SNAPPED_SIG);
+    m_sigSnapped = newSignal<SnappedSignalType>(s_SNAPPED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SnapshotEditor::~SnapshotEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SnapshotEditor::starting()
 {
     this->create();
 
-    auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer() );
+    auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer());
 
     std::filesystem::path path = core::runtime::getModuleResourceFilePath("sight::module::ui::qt", "camera-photo.png");
     QIcon icon(QString::fromStdString(path.string()));
@@ -84,51 +84,50 @@ void SnapshotEditor::starting()
     qtContainer->setLayout(hlayout);
 
     QObject::connect(m_snapButton, SIGNAL(clicked()), this, SLOT(onSnapButton()));
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SnapshotEditor::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SnapshotEditor::configuring()
 {
     this->initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SnapshotEditor::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SnapshotEditor::swapping()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SnapshotEditor::info( std::ostream& _sstream )
+void SnapshotEditor::info(std::ostream& _sstream)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SnapshotEditor::onSnapButton()
 {
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(
-        this->getContainer() );
+        this->getContainer());
     QWidget* container = qtContainer->getQtContainer();
     SIGHT_ASSERT("container not instanced", container);
-    if( container->isVisible() )
+
+    if(container->isVisible())
     {
         std::string filename = this->requestFileName();
 
@@ -142,14 +141,14 @@ void SnapshotEditor::onSnapButton()
         std::string msgInfo("It is not possible to snapshot the negato view. This view is not shown on screen.");
         sight::ui::base::dialog::MessageDialog messageBox;
         messageBox.setTitle("Negato view snapshot");
-        messageBox.setMessage( msgInfo );
+        messageBox.setMessage(msgInfo);
         messageBox.setIcon(sight::ui::base::dialog::IMessageDialog::WARNING);
         messageBox.addButton(sight::ui::base::dialog::IMessageDialog::OK);
         messageBox.show();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SnapshotEditor::requestFileName()
 {
@@ -168,7 +167,8 @@ std::string SnapshotEditor::requestFileName()
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         fileName = result->getFile().string();
         defaultDirectory->setFolder(result->getFile().parent_path());
@@ -177,6 +177,7 @@ std::string SnapshotEditor::requestFileName()
 
     return fileName;
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt::viz

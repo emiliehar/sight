@@ -36,43 +36,43 @@
 namespace sight::module::filter::image
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 static const std::string s_IMAGE_INPUT  = "source";
 static const std::string s_IMAGE_OUTPUT = "target";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SThreshold::SThreshold() noexcept :
     m_threshold(50.0)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SThreshold::~SThreshold() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SThreshold::starting()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SThreshold::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SThreshold::configuring()
 {
     const service::IService::ConfigType& srvConfig = this->getConfigTree();
 
-    SIGHT_ASSERT("You must have one <config/> element.", srvConfig.count("config") == 1 );
+    SIGHT_ASSERT("You must have one <config/> element.", srvConfig.count("config") == 1);
 
     const service::IService::ConfigType& config = srvConfig.get_child("config");
 
@@ -81,7 +81,7 @@ void SThreshold::configuring()
     m_threshold = thresholdCfg.get_value<double>();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 /**
  * Functor to apply a threshold filter.
@@ -110,7 +110,7 @@ struct ThresholdFilter
         const PIXELTYPE thresholdValue = static_cast<PIXELTYPE>(param.thresholdValue);
         data::Image::csptr imageIn     = param.imageIn;
         data::Image::sptr imageOut     = param.imageOut;
-        SIGHT_ASSERT("Sorry, image must be 3D", imageIn->getNumberOfDimensions() == 3 );
+        SIGHT_ASSERT("Sorry, image must be 3D", imageIn->getNumberOfDimensions() == 3);
 
         imageOut->copyInformation(imageIn); // Copy image size, type... without copying the buffer
         imageOut->resize(); // Allocate the image buffer
@@ -124,21 +124,21 @@ struct ThresholdFilter
         const PIXELTYPE maxValue = std::numeric_limits<PIXELTYPE>::max();
 
         // Fill the target buffer considering the thresholding
-        for(; it1 != it1End && it2 != it2End; ++it1, ++it2 )
+        for( ; it1 != it1End && it2 != it2End ; ++it1, ++it2)
         {
-            * it2 = ( *it1 < thresholdValue ) ? 0 : maxValue;
+            *it2 = (*it1 < thresholdValue) ? 0 : maxValue;
         }
     }
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SThreshold::updating()
 {
     ThresholdFilter::Parameter param; // filter parameters: threshold value, image source, image target
 
     // retrieve the input object
-    auto input = this->getLockedInput< data::Object >(s_IMAGE_INPUT);
+    auto input = this->getLockedInput<data::Object>(s_IMAGE_INPUT);
 
     // try to dynamic cast to an Image and an ImageSeries to know whick type of data we use
     data::ImageSeries::csptr imageSeriesSrc = data::ImageSeries::dynamicConstCast(input.get_shared());
@@ -188,12 +188,12 @@ void SThreshold::updating()
      *   - type: core::tools::Type of the image
      *   - param: struct containing the functor parameters (here the input and output images and the threshold value)
      */
-    core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, ThresholdFilter >::invoke( type, param );
+    core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, ThresholdFilter>::invoke(type, param);
 
     // register the output image to be accesible by the other service from the XML configuration
     this->setOutput(s_IMAGE_OUTPUT, output);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::filter::image

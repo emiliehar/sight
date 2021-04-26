@@ -35,12 +35,16 @@
 
 namespace sight::data
 {
+
 class Mesh;
+
 }
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::module::io::vtk
@@ -76,9 +80,7 @@ namespace sight::module::io::vtk
  */
 class MODULE_IO_VTK_CLASS_API SModelSeriesWriter : public sight::io::base::service::IWriter
 {
-
 public:
-
     SModelSeriesWriter() noexcept;
 
     ~SModelSeriesWriter() noexcept
@@ -87,7 +89,7 @@ public:
 
     SIGHT_DECLARE_SERVICE(SModelSeriesWriter, sight::io::base::service::IWriter)
 
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignalType;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignalType;
 
     /**
      * @brief Configure the mesh path.
@@ -106,7 +108,6 @@ public:
     MODULE_IO_VTK_API void openLocationDialog() override;
 
 protected:
-
     MODULE_IO_VTK_API sight::io::base::service::IOPathType getIOPathType() const override;
 
     /**
@@ -144,10 +145,9 @@ protected:
      * This method is used to give
      * informations about the service.
      */
-    MODULE_IO_VTK_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_VTK_API void info(std::ostream& _sstream) override;
 
 private:
-
     /**
      * @brief write the mesh on disk, using _filename
      * @param[in] _filename : name of the file to write with extension. extension will be used to choose the writer.
@@ -158,9 +158,8 @@ private:
     /// Job Created signal
     SPTR(JobCreatedSignalType) m_sigJobCreated;
 
-    ///  Stores the selectedExtension from dialog.
+    /// Stores the selectedExtension from dialog.
     std::string m_selectedExtension;
-
 };
 
 } // namespace sight::module::io::vtk

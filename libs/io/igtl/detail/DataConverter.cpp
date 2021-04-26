@@ -35,80 +35,87 @@
 namespace sight::io::igtl::detail
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DataConverter::sptr DataConverter::getInstance()
 {
-    return core::LazyInstantiator< DataConverter >::getInstance();
+    return core::LazyInstantiator<DataConverter>::getInstance();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void DataConverter::registerConverter(converter::IConverter::sptr c)
 {
     (DataConverter::getInstance())->m_converters.push_back(c);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 DataConverter::DataConverter()
 {
     m_defaultConverter = io::igtl::detail::converter::AtomConverter::New();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 DataConverter::~DataConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer DataConverter::fromFwObject(data::Object::csptr src) const
 {
     const std::string classname = src->getClassname();
-    for(const converter::IConverter::sptr& converter :  m_converters)
+
+    for(const converter::IConverter::sptr& converter : m_converters)
     {
-        if (converter->getFwDataObjectType() == classname)
+        if(converter->getFwDataObjectType() == classname)
         {
             core::mt::ReadLock lock(src->getMutex());
+
             return converter->fromFwDataObject(src);
         }
     }
+
     return m_defaultConverter->fromFwDataObject(src);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Object::sptr DataConverter::fromIgtlMessage(const ::igtl::MessageBase::Pointer src) const
 {
     data::Object::sptr obj;
     const std::string deviceType = src->GetDeviceType();
 
-    if (deviceType == "ATOMS")
+    if(deviceType == "ATOMS")
     {
         obj = m_defaultConverter->fromIgtlMessage(src);
+
         return obj;
     }
 
     for(const converter::IConverter::sptr& converter : m_converters)
     {
-        if (converter->getIgtlType() == deviceType)
+        if(converter->getIgtlType() == deviceType)
         {
             obj = converter->fromIgtlMessage(src);
+
             return obj;
         }
     }
 
     SIGHT_WARN("Message type not supported : " + std::string(src->GetDeviceType()));
+
     return obj;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-::igtl::MessageBase::Pointer DataConverter::getStatusMessage(int igtlCode,
-                                                             int igtlSubCode,
-                                                             const std::string& errMsg) const
+::igtl::MessageBase::Pointer DataConverter::getStatusMessage(
+    int igtlCode,
+    int igtlSubCode,
+    const std::string& errMsg) const
 {
     ::igtl::StatusMessage::Pointer statusMsg;
 
@@ -116,20 +123,23 @@ data::Object::sptr DataConverter::fromIgtlMessage(const ::igtl::MessageBase::Poi
     statusMsg->SetCode(igtlCode);
     statusMsg->SetErrorName(errMsg.c_str());
     statusMsg->SetSubCode(igtlSubCode);
+
     return ::igtl::MessageBase::Pointer(statusMsg);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer DataConverter::getCapabilitiesMessage() const
 {
     ::igtl::CapabilityMessage::Pointer msg = ::igtl::CapabilityMessage::New();
     msg->SetNumberOfTypes(static_cast<int>(m_converters.size()));
-    for(size_t i = 0; i < m_converters.size(); ++i)
+
+    for(size_t i = 0 ; i < m_converters.size() ; ++i)
     {
         msg->SetType(static_cast<int>(i), m_converters[i]->getIgtlType().c_str());
     }
+
     return ::igtl::MessageBase::Pointer(msg);
 }
 
-}//namespace sight::io::igtl::detail
+} // namespace sight::io::igtl::detail

@@ -28,14 +28,15 @@
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
 class FwIDTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( FwIDTest );
-CPPUNIT_TEST( objectFwIDTest );
-CPPUNIT_TEST( concurrentAccessOnFwIDMapTest );
+CPPUNIT_TEST_SUITE(FwIDTest);
+CPPUNIT_TEST(objectFwIDTest);
+CPPUNIT_TEST(concurrentAccessOnFwIDMapTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -52,4 +53,5 @@ private:
 };
 
 } // namespace ut
+
 } // namespace sight::core::tools

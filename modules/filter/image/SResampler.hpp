@@ -55,7 +55,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SResampler : public service::IOperator
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SResampler, service::IOperator)
 
     /// Constructor, does nothing.
@@ -65,7 +64,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SResampler();
 
 protected:
-
     /// Does nothing.
     MODULE_FILTER_IMAGE_API void configuring() override;
 
@@ -86,7 +84,6 @@ protected:
      * - Update service when the target image is modified.
      */
     MODULE_FILTER_IMAGE_API KeyConnectionsMap getAutoConnections() const override;
-
 };
 
 } // namespace sight::module::filter::image

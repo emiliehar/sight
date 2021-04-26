@@ -43,14 +43,14 @@ namespace reader
  * is .trf. This format is basic. This is an ascii file which contains matrix 4x4 values
  */
 class IO_BASE_CLASS_API Matrix4Reader :
-    public GenericObjectReader< data::Matrix4 >,
+    public GenericObjectReader<data::Matrix4>,
     public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(Matrix4Reader, GenericObjectReader< data::Matrix4 >,
-                        io::base::reader::factory::New< Matrix4Reader >)
+    SIGHT_DECLARE_CLASS(
+        Matrix4Reader,
+        GenericObjectReader<data::Matrix4>,
+        io::base::reader::factory::New<Matrix4Reader>)
 
     /// Constructor. Do nothing.
     IO_BASE_API Matrix4Reader(io::base::reader::IObjectReader::Key key);
@@ -63,7 +63,6 @@ public:
 
     /// Defines extension supported by this reader ".trf"
     IO_BASE_API std::string extension() override;
-
 };
 
 }

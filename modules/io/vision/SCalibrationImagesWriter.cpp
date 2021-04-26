@@ -43,34 +43,33 @@
 namespace sight::module::io::vision
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCalibrationImagesWriter::SCalibrationImagesWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCalibrationImagesWriter::~SCalibrationImagesWriter() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SCalibrationImagesWriter::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationImagesWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationImagesWriter::openLocationDialog()
 {
@@ -84,7 +83,7 @@ void SCalibrationImagesWriter::openLocationDialog()
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
 
-    if (result)
+    if(result)
     {
         this->setFolder(result->getFolder());
         defaultDirectory->setFolder(result->getFolder().parent_path());
@@ -96,7 +95,7 @@ void SCalibrationImagesWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationImagesWriter::configuring()
 {
@@ -106,26 +105,27 @@ void SCalibrationImagesWriter::configuring()
     m_fileExtension = configTree.get("format", ".tiff");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationImagesWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationImagesWriter::updating()
 {
-    if( !m_fileExtension.empty() && this->hasLocationDefined() )
+    if(!m_fileExtension.empty() && this->hasLocationDefined())
     {
-        data::CalibrationInfo::csptr calibInfo =
-            this->getInput< data::CalibrationInfo >(sight::io::base::service::s_DATA_KEY);
+        data::CalibrationInfo::csptr calibInfo
+            = this->getInput<data::CalibrationInfo>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("Missing calibration info input.", calibInfo);
 
         sight::ui::base::Cursor cursor;
         cursor.setCursor(ui::base::ICursor::BUSY);
 
         size_t count(0);
+
         for(const auto& calibImg : calibInfo->getImageContainer())
         {
             std::ostringstream imageNumber;
@@ -144,7 +144,7 @@ void SCalibrationImagesWriter::updating()
 
             try
             {
-                if (cvImg.type() == CV_8UC3 || cvImg.type() == CV_8UC4)
+                if(cvImg.type() == CV_8UC3 || cvImg.type() == CV_8UC4)
                 {
                     // convert the image from BGR to RGB
                     const auto colConvType = cvImg.type() == CV_8UC3 ? ::cv::COLOR_BGR2RGB : ::cv::COLOR_BGRA2RGBA;
@@ -156,9 +156,10 @@ void SCalibrationImagesWriter::updating()
             catch(const ::cv::Exception& e)
             {
                 m_writeFailed = true;
-                sight::ui::base::dialog::MessageDialog::show("Error writing calibration images.",
-                                                             e.what(),
-                                                             sight::ui::base::dialog::MessageDialog::CRITICAL);
+                sight::ui::base::dialog::MessageDialog::show(
+                    "Error writing calibration images.",
+                    e.what(),
+                    sight::ui::base::dialog::MessageDialog::CRITICAL);
             }
         }
 
@@ -170,12 +171,12 @@ void SCalibrationImagesWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationImagesWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::vision

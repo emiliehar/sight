@@ -33,17 +33,23 @@
 
 namespace fwTools
 {
+
 class Object;
+
 }
 
 namespace sight::data
 {
+
 class Object;
+
 }
 
 namespace fwRuntime
 {
+
 struct ConfigurationElement;
+
 }
 
 namespace sight::service
@@ -59,16 +65,14 @@ class SigSlotConnection;
  */
 class Config
 {
-
 public:
-
-    typedef std::pair< std::string, core::com::Signals::SignalKeyType > SignalInfoType;
-    typedef std::pair< std::string, core::com::Slots::SlotKeyType > SlotInfoType;
-    typedef std::vector< SlotInfoType > SlotInfoContainerType;
+    typedef std::pair<std::string, core::com::Signals::SignalKeyType> SignalInfoType;
+    typedef std::pair<std::string, core::com::Slots::SlotKeyType> SlotInfoType;
+    typedef std::vector<SlotInfoType> SlotInfoContainerType;
 
     typedef std::string ObjectIdType;
     typedef std::vector<ProxyConnections> ProxyConnectionsVectType;
-    typedef std::map< ObjectIdType, ProxyConnectionsVectType > ProxyConnectionsMapType;
+    typedef std::map<ObjectIdType, ProxyConnectionsVectType> ProxyConnectionsMapType;
 
     struct ConnectionInfo
     {
@@ -83,9 +87,10 @@ public:
      * @param cfg configuration element containing "<connect>" tags
      * @param obj optional object used to retrieve signal if uid is not defined [deprecated]
      */
-    SERVICE_API static ConnectionInfo parseConnections(const CSPTR(core::runtime::ConfigurationElement)& cfg,
-                                                       const CSPTR(core::tools::Object)& obj =
-                                                           CSPTR(core::tools::Object)());
+    SERVICE_API static ConnectionInfo parseConnections(
+        const CSPTR(core::runtime::ConfigurationElement)& cfg,
+        const CSPTR(core::tools::Object)& obj =
+        CSPTR(core::tools::Object)());
 
     /**
      * @brief Parses "<connect>" tags from given configuration and return a structure containing the signal and
@@ -125,8 +130,9 @@ public:
         const CSPTR(data::Object)& obj = CSPTR(data::Object)());
 
     /// Disconnects all proxies associated to objectKey
-    SERVICE_API static void disconnectProxies(const std::string& objectKey,
-                                              Config::ProxyConnectionsMapType& proxyMap);
+    SERVICE_API static void disconnectProxies(
+        const std::string& objectKey,
+        Config::ProxyConnectionsMapType& proxyMap);
 
     /// Parse a service and return a service configuration
     SERVICE_API static service::IService::Config parseService(

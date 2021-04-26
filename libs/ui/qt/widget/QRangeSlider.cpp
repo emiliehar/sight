@@ -34,15 +34,16 @@ namespace sight::ui::qt
 namespace widget
 {
 
-template <typename T>
+template<typename T>
 struct Castable
 {
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    template <typename U>
+    template<typename U>
     static T* safeCast(U* p)
     {
         T* casted = dynamic_cast<T*>(p);
+
         return casted;
     }
 };
@@ -62,54 +63,56 @@ public:
         m_tolerance       = std::max(0, 10 - m_width);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual void draw(QPainter& painter, bool /*enabled*/)
     {
-        int height       = drawingArea().height()-1;
+        int height       = drawingArea().height() - 1;
         int top          = height * m_verticalPadding;
-        int handleHeight = height - 2*top;
+        int handleHeight = height - 2 * top;
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setPen(m_pen);
         painter.setBrush(m_brush);
         painter.drawRect(m_pos - halfWidth(), top, m_width, handleHeight);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual bool pick(const QPoint& point) const
     {
         bool picked = false;
 
-        int height       = drawingArea().height()-1;
+        int height       = drawingArea().height() - 1;
         int top          = height * m_verticalPadding;
-        int handleHeight = height - 2*top;
+        int handleHeight = height - 2 * top;
 
-        if ( abs(point.x() - m_pos) <= (halfWidth() + m_tolerance)
-             && (top+handleHeight) >= point.y() && point.y() >= top )
+        if(abs(point.x() - m_pos) <= (halfWidth() + m_tolerance)
+           && (top + handleHeight) >= point.y() && point.y() >= top)
         {
             picked = true;
         }
+
         return picked;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int setHandleSize(int size)
     {
-        //handle size should be odd
-        m_width = size + ((size+1)%2);
+        // handle size should be odd
+        m_width = size + ((size + 1) % 2);
+
         return m_width;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int halfWidth() const
     {
-        return m_width/2;
+        return m_width / 2;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int setPos(const int& pos)
     {
@@ -123,55 +126,56 @@ public:
         return p;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int pos()
     {
         return m_pos;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int xPosMin()
     {
         return halfWidth();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int xPosMax()
     {
         return drawingArea().width() - halfWidth() - 1;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     double toFloatingPos(int p)
     {
         int posMin = xPosMin();
         int posMax = xPosMax();
-        return ( (double) (p - posMin) / (double)(posMax - posMin) );
+
+        return (double) (p - posMin) / (double) (posMax - posMin);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int fromFloatingPos(double p)
     {
-        assert( 0. <= p && p <= 1.);
+        assert(0. <= p && p <= 1.);
         int posMin = xPosMin();
         int extend = (xPosMax()) - posMin;
 
-        return posMin + (int) (p*extend);
+        return posMin + (int) (p * extend);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     double floatingPos()
     {
-        return toFloatingPos( pos() );
+        return toFloatingPos(pos());
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setFloatingPos(double pos)
     {
@@ -203,14 +207,14 @@ public:
         m_right = 0;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int width() const
     {
-        return m_right-m_left;
+        return m_right - m_left;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual void draw(QPainter& painter, bool enabled)
     {
@@ -220,7 +224,7 @@ public:
 
         if(enabled)
         {
-            if ( w < 0 )
+            if(w < 0)
             {
                 pen   = m_reversePen;
                 brush = m_reverseBrush;
@@ -240,10 +244,10 @@ public:
         painter.setPen(pen);
         painter.setBrush(brush);
         painter.setRenderHint(QPainter::Antialiasing);
-        painter.drawRect(m_left, 0, w, drawingArea().height()-1);
+        painter.drawRect(m_left, 0, w, drawingArea().height() - 1);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual bool pick(const QPoint& point) const
     {
@@ -251,10 +255,11 @@ public:
         int min     = std::min(m_left, m_right);
         int max     = std::max(m_left, m_right);
         picked = min <= point.x() && point.x() <= max;
+
         return picked;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setPos(const int& left, const int& right)
     {
@@ -270,10 +275,9 @@ protected:
     QBrush m_brush;
     QPen m_reversePen;
     QBrush m_reverseBrush;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QRangeSlider::QRangeSlider(QWidget* parent) :
     QWidget(parent)
@@ -306,7 +310,7 @@ QRangeSlider::~QRangeSlider()
     delete m_window;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void QRangeSlider::setPos(double _min, double _max)
 {
@@ -328,7 +332,7 @@ void QRangeSlider::setPos(double _min, double _max)
     this->update();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void QRangeSlider::move(int delta)
 {
@@ -346,16 +350,16 @@ void QRangeSlider::move(int delta)
     high  = maxHandle->pos();
     width = high - low;
 
-    if(  (movingRight  && dir < 0)
-         || (!movingRight && dir > 0 ) )
+    if((movingRight && dir < 0)
+       || (!movingRight && dir > 0))
     {
-        low  = minHandle->setPos(low-delta);
+        low  = minHandle->setPos(low - delta);
         high = low + width;
         maxHandle->setPos(high);
     }
     else
     {
-        high = maxHandle->setPos(high-delta);
+        high = maxHandle->setPos(high - delta);
         low  = high - width;
         minHandle->setPos(low);
     }
@@ -363,31 +367,33 @@ void QRangeSlider::move(int delta)
     window->setPos(low, high);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool QRangeSlider::movedTo(double _min, double _max)
 {
     bool changed = m_minValue != _min || m_maxValue != _max;
-    if (changed)
+
+    if(changed)
     {
         m_minValue = _min;
         m_maxValue = _max;
-        Q_EMIT sliderRangeChanged( m_minValue, m_maxValue );
+        Q_EMIT sliderRangeChanged(m_minValue, m_maxValue);
     }
+
     return changed;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void QRangeSlider::paintEvent ( QPaintEvent* /*event*/ )
+void QRangeSlider::paintEvent(QPaintEvent* /*event*/)
 {
     bool enabled = this->isEnabled();
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
     QRect rect = this->rect();
-    rect.setLeft(rect.left() + m_handleSize/2);
-    rect.setRight(rect.right() - m_handleSize/2);
+    rect.setLeft(rect.left() + m_handleSize / 2);
+    rect.setRight(rect.right() - m_handleSize / 2);
     painter.fillRect(rect, QApplication::palette().base());
 
     painter.setBrush(Qt::cyan);
@@ -399,35 +405,34 @@ void QRangeSlider::paintEvent ( QPaintEvent* /*event*/ )
 
     painter.setPen(Qt::darkRed);
     m_maxHandle->draw(painter, enabled);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void QRangeSlider::mouseMoveEvent ( QMouseEvent* event )
+void QRangeSlider::mouseMoveEvent(QMouseEvent* event)
 {
-    if (m_current)
+    if(m_current)
     {
-
         Handle* minHandle = Handle::safeCast(m_minHandle);
         Handle* maxHandle = Handle::safeCast(m_maxHandle);
         Window* window    = Window::safeCast(m_window);
         Handle* currentHandle;
 
-        if( (currentHandle = Handle::safeCast(m_current)) )
+        if((currentHandle = Handle::safeCast(m_current)))
         {
             int oldPos = currentHandle->pos();
             int newPos = event->pos().x();
             currentHandle->setPos(newPos);
 
-            if(!m_allowMinGreaterThanMax &&
-               minHandle->floatingPos() + m_minimumMinMaxDelta >= maxHandle->floatingPos() )
+            if(!m_allowMinGreaterThanMax
+               && minHandle->floatingPos() + m_minimumMinMaxDelta >= maxHandle->floatingPos())
             {
                 currentHandle->setPos(oldPos);
             }
+
             window->setPos(minHandle->pos(), maxHandle->pos());
         }
-        else if( Window::safeCast(m_current) )
+        else if(Window::safeCast(m_current))
         {
             QPoint delta = m_pressPos - event->pos();
 
@@ -439,21 +444,23 @@ void QRangeSlider::mouseMoveEvent ( QMouseEvent* event )
 
         double min = minHandle->floatingPos();
         double max = maxHandle->floatingPos();
-        if( this->movedTo(min, max) )
+
+        if(this->movedTo(min, max))
         {
-            Q_EMIT sliderRangeEdited( min, max );
+            Q_EMIT sliderRangeEdited(min, max);
         }
+
         this->update();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void QRangeSlider::mousePressEvent ( QMouseEvent* event )
+void QRangeSlider::mousePressEvent(QMouseEvent* event)
 {
     Handle* minHandle = Handle::safeCast(m_minHandle);
     Handle* maxHandle = Handle::safeCast(m_maxHandle);
-//    Window *window     = Window::safeCast(m_window);
+// Window *window     = Window::safeCast(m_window);
 
     m_pressPos = event->pos();
     m_pressMin = minHandle->pos();
@@ -473,22 +480,22 @@ void QRangeSlider::mousePressEvent ( QMouseEvent* event )
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void QRangeSlider::mouseReleaseEvent ( QMouseEvent* /*event*/)
+void QRangeSlider::mouseReleaseEvent(QMouseEvent* /*event*/)
 {
     m_current = NULL;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void QRangeSlider::wheelEvent ( QWheelEvent* event )
+void QRangeSlider::wheelEvent(QWheelEvent* event)
 {
     Handle* minHandle = Handle::safeCast(m_minHandle);
     Handle* maxHandle = Handle::safeCast(m_maxHandle);
     Window* window    = Window::safeCast(m_window);
 
-    int delta = this->size().width()/( ((double) event->delta())/4. );
+    int delta = this->size().width() / (((double) event->delta()) / 4.);
     int low   = minHandle->pos();
     int high  = maxHandle->pos();
 
@@ -498,10 +505,10 @@ void QRangeSlider::wheelEvent ( QWheelEvent* event )
         {
             int diff    = (high - low);
             int minDiff = minHandle->fromFloatingPos(m_minimumMinMaxDelta);
-            delta = std::max(delta,  -(diff - minDiff)/2);
+            delta = std::max(delta, -(diff - minDiff) / 2);
         }
 
-        low  = minHandle->setPos(low -  delta);
+        low  = minHandle->setPos(low - delta);
         high = maxHandle->setPos(high + delta);
         window->setPos(low, high);
     }
@@ -512,19 +519,22 @@ void QRangeSlider::wheelEvent ( QWheelEvent* event )
 
     double min = minHandle->floatingPos();
     double max = maxHandle->floatingPos();
-    if( this->movedTo(min, max) )
+
+    if(this->movedTo(min, max))
     {
-        Q_EMIT sliderRangeEdited( min, max );
+        Q_EMIT sliderRangeEdited(min, max);
     }
+
     this->update();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void QRangeSlider::resizeEvent ( QResizeEvent* event )
+void QRangeSlider::resizeEvent(QResizeEvent* event)
 {
     this->setPos(m_minValue, m_maxValue);
 }
 
 } // namespace widget
+
 } // namespace sight::ui::qt

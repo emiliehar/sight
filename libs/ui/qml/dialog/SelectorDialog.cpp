@@ -32,41 +32,43 @@
 
 #include <QGuiApplication>
 
-fwGuiRegisterMacro( ::sight::ui::qml::dialog::SelectorDialog,
-                    ::sight::ui::base::dialog::ISelectorDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(
+    ::sight::ui::qml::dialog::SelectorDialog,
+    ::sight::ui::base::dialog::ISelectorDialog::REGISTRY_KEY);
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SelectorDialog::SelectorDialog(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SelectorDialog::~SelectorDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SelectorDialog::setSelections(std::vector< std::string > _selections)
+void SelectorDialog::setSelections(std::vector<std::string> _selections)
 {
     this->m_selections = _selections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::setTitle(std::string _title)
 {
     this->m_title = QString::fromStdString(_title);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SelectorDialog::show()
 {
@@ -95,13 +97,15 @@ std::string SelectorDialog::show()
     // create all radiobutton
     model.addRole(Qt::UserRole + 1, "textOption");
     model.addRole(Qt::UserRole + 2, "check");
-    for(const std::string& selection :  m_selections)
+
+    for(const std::string& selection : m_selections)
     {
         QHash<QByteArray, QVariant> data;
         data.insert("check", false);
         data.insert("textOption", QString::fromStdString(selection));
         model.addData(QHash<QByteArray, QVariant>(data));
     }
+
     SIGHT_ASSERT("The SelectorDialog need at least one option", !model.isEmpty());
 
     if(!m_message.isEmpty())
@@ -111,7 +115,7 @@ std::string SelectorDialog::show()
 
     m_selection = "";
     QEventLoop loop;
-    //slot to retrieve the result and open the dialog with invoke
+    // slot to retrieve the result and open the dialog with invoke
     connect(dialog, SIGNAL(accepted()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(reset()), &loop, SLOT(quit()));
@@ -120,30 +124,32 @@ std::string SelectorDialog::show()
     loop.exec();
 
     delete window;
+
     return m_selection.toStdString();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::setMessage(const std::string& msg)
 {
     m_message = QString::fromStdString(msg);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::resultDialog(QVariant selection)
 {
     m_selection = selection.toString();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::addCustomButton(const std::string& label, std::function<void()> clickedFn)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

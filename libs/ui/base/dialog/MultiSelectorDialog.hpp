@@ -29,8 +29,10 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief   MultiSelectorDialog allows the choice of some element among several (_selections)
  *
@@ -40,9 +42,7 @@ namespace dialog
  */
 class UI_BASE_CLASS_API MultiSelectorDialog : public IMultiSelectorDialog
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(MultiSelectorDialog, ui::base::dialog::IMultiSelectorDialog, new MultiSelectorDialog)
 
     /// will instanciate the concrete implementation
@@ -63,10 +63,9 @@ public:
     UI_BASE_API void setMessage(const std::string& msg) override;
 
 protected:
-
     ui::base::dialog::IMultiSelectorDialog::sptr m_implementation;
-
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

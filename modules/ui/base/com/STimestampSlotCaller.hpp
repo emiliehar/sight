@@ -33,6 +33,7 @@
 
 namespace sight::module::ui::base
 {
+
 namespace com
 {
 
@@ -55,7 +56,6 @@ namespace com
 class MODULE_UI_BASE_CLASS_API STimestampSlotCaller : public ::sight::ui::base::IAction
 {
 public:
-
     SIGHT_DECLARE_SERVICE(STimestampSlotCaller, ::sight::ui::base::IAction)
 
     /// Constructor
@@ -65,11 +65,10 @@ public:
     MODULE_UI_BASE_API ~STimestampSlotCaller();
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
     typedef std::string HasSlotIDType;
-    typedef std::pair< HasSlotIDType, core::com::Slots::SlotKeyType> SlotInfoType;
-    typedef std::vector< SlotInfoType > SlotInfoContainerType;
+    typedef std::pair<HasSlotIDType, core::com::Slots::SlotKeyType> SlotInfoType;
+    typedef std::vector<SlotInfoType> SlotInfoContainerType;
 
     /// Does nothing
     MODULE_UI_BASE_API void starting() override;
@@ -90,4 +89,5 @@ protected:
 };
 
 } // namespace com
+
 } // namespace sight::module::ui::base

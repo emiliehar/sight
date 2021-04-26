@@ -27,77 +27,78 @@
 
 #include <core/base.hpp>
 
-SIGHT_REGISTER_DATA( sight::data::ReconstructionTraits );
+SIGHT_REGISTER_DATA(sight::data::ReconstructionTraits);
 
 namespace sight::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ReconstructionTraits::setMaskOpNode(const data::Node::sptr& maskOpNode )
+void ReconstructionTraits::setMaskOpNode(const data::Node::sptr& maskOpNode)
 {
     m_maskOpNode = maskOpNode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Node::sptr ReconstructionTraits::getMaskOpNode()
 {
-
     return m_maskOpNode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ReconstructionTraits::setMeshOpNode(const data::Node::sptr& meshOpNode )
+void ReconstructionTraits::setMeshOpNode(const data::Node::sptr& meshOpNode)
 {
     m_meshOpNode = meshOpNode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Node::sptr ReconstructionTraits::getMeshOpNode()
 {
     return m_meshOpNode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ReconstructionTraits::setStructureTraits(const data::StructureTraits::sptr& structureTraits )
+void ReconstructionTraits::setStructureTraits(const data::StructureTraits::sptr& structureTraits)
 {
     m_structureTraits = structureTraits;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::StructureTraits::sptr ReconstructionTraits::getStructureTraits()
 {
     return m_structureTraits;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ReconstructionTraits::ReconstructionTraits(data::Object::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ReconstructionTraits::~ReconstructionTraits()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ReconstructionTraits::cachedDeepCopy(const Object::csptr& source, DeepCopyCacheType& cache)
 {
     ReconstructionTraits::csptr other = ReconstructionTraits::dynamicConstCast(source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (source ? source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (source ? source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(source, cache);
 
-    SIGHT_FATAL("Not implemented." );
+    SIGHT_FATAL("Not implemented.");
 }
 
 } // namespace sight::data

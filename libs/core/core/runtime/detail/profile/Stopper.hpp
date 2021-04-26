@@ -40,17 +40,15 @@ namespace profile
 /**
  * @brief   Stops a given module.
  */
-class Stopper :  public boost::noncopyable
+class Stopper : public boost::noncopyable
 {
-
 public:
-
     /**
      * @brief       Constructor
      *
      * @param[in]   _identifier  a string containing a module identifier
      */
-    Stopper( const std::string& _identifier );
+    Stopper(const std::string& _identifier);
 
     /**
      * @brief   Applies the Stopper on the system.
@@ -60,8 +58,7 @@ public:
     void apply();
 
 private:
-
-    const std::string m_identifier;     ///< the module identifier
+    const std::string m_identifier; ///< the module identifier
 };
 
 } // namespace profile

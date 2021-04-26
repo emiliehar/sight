@@ -32,7 +32,9 @@
 
 namespace sight::atoms
 {
+
 class Object;
+
 }
 
 namespace sight::io::atoms::patch
@@ -43,18 +45,17 @@ namespace sight::io::atoms::patch
  */
 class IO_ATOMS_CLASS_API IStructuralPatch : public IPatch
 {
-
 public:
     SIGHT_DECLARE_CLASS(IStructuralPatch, IPatch)
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
-    ///Constructor
+    /// Constructor
     IO_ATOMS_API IStructuralPatch();
 
-    ///Copy constructor
-    IO_ATOMS_API IStructuralPatch( const IStructuralPatch& cpy );
+    /// Copy constructor
+    IO_ATOMS_API IStructuralPatch(const IStructuralPatch& cpy);
 
-    ///Destructor
+    /// Destructor
     IO_ATOMS_API virtual ~IStructuralPatch();
 
     /**
@@ -66,9 +67,10 @@ public:
      *
      * @pre previous and current objects must have the same classname and version.
      */
-    IO_ATOMS_API virtual void apply(const SPTR(sight::atoms::Object)& previous,
-                                    const SPTR(sight::atoms::Object)& current,
-                                    io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
+    IO_ATOMS_API virtual void apply(
+        const SPTR(sight::atoms::Object)& previous,
+        const SPTR(sight::atoms::Object)& current,
+        io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
 
     /// Returns the target classname of the object
     IO_ATOMS_API virtual const std::string& getTargetClassname() const;
@@ -77,7 +79,6 @@ public:
     IO_ATOMS_API virtual const std::string& getTargetVersion() const;
 
 protected:
-
     /// Updates the version of the patched object
     IO_ATOMS_API void updateVersion(SPTR(sight::atoms::Object) current);
 

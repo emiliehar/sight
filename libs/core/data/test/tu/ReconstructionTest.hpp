@@ -26,16 +26,17 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class ReconstructionTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( ReconstructionTest );
-    CPPUNIT_TEST( methode1 );
-    CPPUNIT_TEST( methode2 );
-    CPPUNIT_TEST( image );
+    CPPUNIT_TEST_SUITE(ReconstructionTest);
+    CPPUNIT_TEST(methode1);
+    CPPUNIT_TEST(methode2);
+    CPPUNIT_TEST(image);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,5 +49,6 @@ public:
     void image();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

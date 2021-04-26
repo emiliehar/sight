@@ -83,7 +83,6 @@ public:
     MODULE_GEOMETRY_VISION_API ~SMarkerToPoint() noexcept;
 
 protected:
-
     /// Does nothing
     MODULE_GEOMETRY_VISION_API void configuring() override;
 
@@ -106,4 +105,4 @@ protected:
     MODULE_GEOMETRY_VISION_API void clear();
 };
 
-} //namespace sight::module::geometry::vision
+} // namespace sight::module::geometry::vision

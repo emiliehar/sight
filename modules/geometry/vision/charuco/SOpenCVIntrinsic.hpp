@@ -61,9 +61,8 @@ namespace sight::module::geometry::vision::charuco
 class MODULE_GEOMETRY_VISION_CLASS_API SOpenCVIntrinsic : public service::ICalibration
 {
 public:
-
     /// Double changed signal type
-    typedef core::com::Signal< void (double) > ErrorComputedSignalType;
+    typedef core::com::Signal<void (double)> ErrorComputedSignalType;
 
     SIGHT_DECLARE_SERVICE(SOpenCVIntrinsic, sight::service::ICalibration)
 
@@ -74,7 +73,6 @@ public:
     MODULE_GEOMETRY_VISION_API virtual ~SOpenCVIntrinsic() noexcept;
 
 protected:
-
     /// Configures the service.
     MODULE_GEOMETRY_VISION_API void configuring() override;
 
@@ -96,7 +94,6 @@ protected:
     void updateCharucoBoardSize();
 
 private:
-
     /// Preference key to retrieve width of the chessboard used for calibration
     std::string m_widthKey;
 
@@ -128,10 +125,10 @@ private:
     int m_markerSizeInBits;
 
     /// Charuco dictionary
-    ::cv::Ptr< ::cv::aruco::Dictionary > m_dictionary;
+    ::cv::Ptr< ::cv::aruco::Dictionary> m_dictionary;
 
     /// Chessboard-aruco board
-    ::cv::Ptr< ::cv::aruco::CharucoBoard > m_board;
+    ::cv::Ptr< ::cv::aruco::CharucoBoard> m_board;
 };
 
 } // namespace sight::module::geometry::vision::charuco

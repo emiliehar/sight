@@ -35,6 +35,7 @@
 
 namespace sight::module::ui::base
 {
+
 namespace com
 {
 
@@ -48,9 +49,7 @@ namespace com
 
 class MODULE_UI_BASE_CLASS_API SBooleanSlotCaller : public module::ui::base::com::SSlotCaller
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SBooleanSlotCaller, ::sight::ui::base::IAction)
 
     /**
@@ -64,13 +63,12 @@ public:
     MODULE_UI_BASE_API ~SBooleanSlotCaller() noexcept override;
 
 protected:
-
     /**
      * @brief This method run the specified slots.
      */
     MODULE_UI_BASE_API void updating() override;
-
 };
 
 } // namespace com
+
 } // namespace sight::module::ui::base

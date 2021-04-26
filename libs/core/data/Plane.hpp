@@ -31,22 +31,22 @@
 
 #include <vector>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(Plane));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (Plane));
 namespace sight::data
 {
+
 /**
  * @brief   This class defines a plane defined by tree points.
  * @see     data::Point
  */
 class DATA_CLASS_API Plane : public Object
 {
-
 public:
-    SIGHT_DECLARE_CLASS(Plane, data::Object, data::factory::New< Plane >)
+    SIGHT_DECLARE_CLASS(Plane, data::Object, data::factory::New<Plane>)
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(Plane));
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (Plane));
 
-    typedef std::array< data::Point::sptr, 3> PointContainer;
+    typedef std::array<data::Point::sptr, 3> PointContainer;
 
     /**
      * @brief Constructor
@@ -58,14 +58,16 @@ public:
     DATA_API virtual ~Plane();
 
     /// Defines shallow copy
-    DATA_API void shallowCopy( const Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const Object::csptr& _source) override;
 
     /// Defines deep copy
     DATA_API void cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache) override;
 
     /// Re-initialize the plane with 3 points
-    DATA_API void setValue(data::Point::sptr _point1, data::Point::sptr _point2,
-                           data::Point::sptr _point3);
+    DATA_API void setValue(
+        data::Point::sptr _point1,
+        data::Point::sptr _point2,
+        data::Point::sptr _point3);
 
     /** @{
      *  @brief get/set points container
@@ -78,7 +80,7 @@ public:
     /** @{
      *  @brief get/set flag if the plane is an intersection one (else an union one)
      */
-    bool getIsIntersection () const;
+    bool getIsIntersection() const;
     void setIsIntersection(bool _isIntersection);
     /// @}
 
@@ -87,57 +89,55 @@ public:
      * @{
      */
     /// Signal emitted when plane is selected/deselected
-    typedef core::com::Signal< void (bool) > SelectedSignalType;
+    typedef core::com::Signal<void (bool)> SelectedSignalType;
     DATA_API static const core::com::Signals::SignalKeyType s_SELECTED_SIG;
-    /**
-     * @}
-     */
+/**
+ * @}
+ */
 
 protected:
-
     //! Points container
     PointContainer m_vPoints;
 
     //! flag if the plane is an intersection (else an union)
     bool m_isIntersection;
-
 }; // end class Plane
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline Plane::PointContainer& Plane::getPoints()
 {
     return this->m_vPoints;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const Plane::PointContainer& Plane::getPoints() const
 {
     return this->m_vPoints;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Plane::setPoints(const Plane::PointContainer& _vPoints)
 {
     this->m_vPoints = _vPoints;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline bool Plane::getIsIntersection () const
+inline bool Plane::getIsIntersection() const
 {
     return m_isIntersection;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Plane::setIsIntersection(bool _isIntersection)
 {
     this->m_isIntersection = _isIntersection;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // end namespace sight::data

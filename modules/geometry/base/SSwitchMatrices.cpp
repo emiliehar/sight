@@ -74,6 +74,7 @@ service::IService::KeyConnectionsMap SSwitchMatrices::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_MATRIX_INPUT, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
@@ -81,13 +82,13 @@ service::IService::KeyConnectionsMap SSwitchMatrices::getAutoConnections() const
 
 void SSwitchMatrices::updating()
 {
-    data::Matrix4::sptr matrix = this->getInOut< data::Matrix4 >(s_MATRIX_OUTPUT);
+    data::Matrix4::sptr matrix = this->getInOut<data::Matrix4>(s_MATRIX_OUTPUT);
 
-    auto desiredMatrix = this->getInput< data::Matrix4 >(s_MATRIX_INPUT, m_indexOfDesiredMatrix);
+    auto desiredMatrix = this->getInput<data::Matrix4>(s_MATRIX_INPUT, m_indexOfDesiredMatrix);
 
     matrix->shallowCopy(desiredMatrix);
 
-    auto sig = matrix->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+    auto sig = matrix->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();
@@ -99,10 +100,12 @@ void SSwitchMatrices::updating()
 void SSwitchMatrices::switchMatrix()
 {
     ++m_indexOfDesiredMatrix;
+
     if(m_indexOfDesiredMatrix >= this->getKeyGroupSize(s_MATRIX_INPUT))
     {
         m_indexOfDesiredMatrix = 0;
     }
+
     this->updating();
 }
 
@@ -125,4 +128,4 @@ void SSwitchMatrices::switchToMatrix(size_t index)
 
 // ----------------------------------------------------------------------------
 
-}  // namespace sight::module::geometry::base
+} // namespace sight::module::geometry::base

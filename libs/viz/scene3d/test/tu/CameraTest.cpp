@@ -37,7 +37,7 @@
 #include <tuple>
 #include <vector>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::viz::scene3d::ut::CameraTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::viz::scene3d::ut::CameraTest);
 
 namespace sight::viz::scene3d
 {
@@ -45,32 +45,32 @@ namespace sight::viz::scene3d
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void compareMatrix(const ::Ogre::Matrix4& _m1, const ::Ogre::Matrix4& _m2)
 {
-    for(unsigned int i = 0; i < 4; ++i)
+    for(unsigned int i = 0 ; i < 4 ; ++i)
     {
-        for(unsigned int j = 0; j < 4; ++j)
+        for(unsigned int j = 0 ; j < 4 ; ++j)
         {
             CPPUNIT_ASSERT_DOUBLES_EQUAL(_m1[i][j], _m2[i][j], 0.00000000000001);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void comparePoint(const Ogre::Vector4& _p1, const Ogre::Vector3& _p2)
 {
@@ -79,7 +79,7 @@ void comparePoint(const Ogre::Vector4& _p1, const Ogre::Vector3& _p2)
     CPPUNIT_ASSERT_DOUBLES_EQUAL(_p1[2], _p2[2], 0.0001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraTest::computeProjectionMatrix()
 {
@@ -94,10 +94,10 @@ void CameraTest::computeProjectionMatrix()
     const float f       = 100;
 
     // Original matrix
-    ::Ogre::Matrix4 expected(1.6568645238876f,  0.f,    -0.0295966863632202f,   0.f,
-                             0.f,   3.01612949371338f,  0.0245949625968933f,    0.f,
-                             0.f,   0.f,    -1.00200200080872f, -0.200200200080872f,
-                             0.f,   0.f,    -1.f,   0.f);
+    ::Ogre::Matrix4 expected(1.6568645238876f, 0.f, -0.0295966863632202f, 0.f,
+                             0.f, 3.01612949371338f, 0.0245949625968933f, 0.f,
+                             0.f, 0.f, -1.00200200080872f, -0.200200200080872f,
+                             0.f, 0.f, -1.f, 0.f);
 
     // Original camera
     data::Camera::sptr camera = data::Camera::New();
@@ -110,8 +110,8 @@ void CameraTest::computeProjectionMatrix()
 
     {
         // Function of the camera to set, followed by the new value in the expected matrix
-        typedef std::tuple< std::function< void (const data::Camera::sptr, double) >, double, unsigned int,
-                            unsigned int, float> tupleType;
+        typedef std::tuple<std::function<void (const data::Camera::sptr, double)>, double, unsigned int,
+                           unsigned int, float> tupleType;
         const std::vector<tupleType> permutation{
             tupleType(&::sight::data::Camera::setCx, cx, 0, 2, -0.0295966863632202f),
             tupleType(&::sight::data::Camera::setCy, cy, 1, 2, 0.0245949625968933f),
@@ -130,10 +130,18 @@ void CameraTest::computeProjectionMatrix()
 
             tupleType(&::sight::data::Camera::setCx, std::numeric_limits<float>::max(), 0, 2, -3.5464549820937e+35f),
             tupleType(&::sight::data::Camera::setCy, std::numeric_limits<float>::max(), 1, 2, 6.30736510970334e+35f),
-            tupleType(&::sight::data::Camera::setFx,
-                      std::numeric_limits<float>::max(), 0, 0, std::numeric_limits<float>::infinity()),
-            tupleType(&::sight::data::Camera::setFy,
-                      std::numeric_limits<float>::max(), 1, 1, std::numeric_limits<float>::infinity()),
+            tupleType(
+                &::sight::data::Camera::setFx,
+                std::numeric_limits<float>::max(),
+                0,
+                0,
+                std::numeric_limits<float>::infinity()),
+            tupleType(
+                &::sight::data::Camera::setFy,
+                std::numeric_limits<float>::max(),
+                1,
+                1,
+                std::numeric_limits<float>::infinity()),
         };
 
         // Apply permutations and check the expected result
@@ -145,19 +153,20 @@ void CameraTest::computeProjectionMatrix()
             // Change the expected result
             expected[std::get<2>(tu)][std::get<3>(tu)] = std::get<4>(tu);
 
-            ::Ogre::Matrix4 actual =
-                viz::scene3d::helper::Camera::computeProjectionMatrix(    *camera,
-                                                                          static_cast< float >(camera->getWidth()),
-                                                                          static_cast< float >(camera->getHeight()),
-                                                                          n,
-                                                                          f);
+            ::Ogre::Matrix4 actual
+                = viz::scene3d::helper::Camera::computeProjectionMatrix(
+                      *camera,
+                      static_cast<float>(camera->getWidth()),
+                      static_cast<float>(camera->getHeight()),
+                      n,
+                      f);
             compareMatrix(expected, actual);
         }
     }
 
     {
         // Function of the camera to set, followed by the new value in the expected matrix
-        typedef std::tuple<std::function< void (const data::Camera::sptr, size_t) >, size_t, unsigned int,
+        typedef std::tuple<std::function<void (const data::Camera::sptr, size_t)>, size_t, unsigned int,
                            unsigned int, float> tupleType;
         const std::vector<tupleType> permutation{
             tupleType(&::sight::data::Camera::setWidth, width, 0, 2, -3.5464549820937e+35f),
@@ -166,10 +175,18 @@ void CameraTest::computeProjectionMatrix()
             tupleType(&::sight::data::Camera::setWidth, 1, 0, 2, -std::numeric_limits<float>::infinity()),
             tupleType(&::sight::data::Camera::setHeight, 1, 1, 2, std::numeric_limits<float>::infinity()),
 
-            tupleType(&::sight::data::Camera::setWidth, std::numeric_limits<size_t>::max(), 0, 2,
-                      -3.68934859483958e+19f),
-            tupleType(&::sight::data::Camera::setHeight, std::numeric_limits<size_t>::max(), 1, 2,
-                      3.68934859483958e+19f),
+            tupleType(
+                &::sight::data::Camera::setWidth,
+                std::numeric_limits<size_t>::max(),
+                0,
+                2,
+                -3.68934859483958e+19f),
+            tupleType(
+                &::sight::data::Camera::setHeight,
+                std::numeric_limits<size_t>::max(),
+                1,
+                2,
+                3.68934859483958e+19f),
         };
 
         // Apply permutations and check the expected result
@@ -181,28 +198,30 @@ void CameraTest::computeProjectionMatrix()
             // Change the expected result
             expected[std::get<2>(tu)][std::get<3>(tu)] = std::get<4>(tu);
 
-            ::Ogre::Matrix4 actual =
-                viz::scene3d::helper::Camera::computeProjectionMatrix(    *camera,
-                                                                          static_cast< float >(camera->getWidth()),
-                                                                          static_cast< float >(camera->getHeight()),
-                                                                          n,
-                                                                          f);
+            ::Ogre::Matrix4 actual
+                = viz::scene3d::helper::Camera::computeProjectionMatrix(
+                      *camera,
+                      static_cast<float>(camera->getWidth()),
+                      static_cast<float>(camera->getHeight()),
+                      n,
+                      f);
             compareMatrix(expected, actual);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraTest::convertPixelToWorldSpace()
 {
     auto* const root         = viz::scene3d::Utils::getOgreRoot();
     auto* const sceneManager = root->createSceneManager("DefaultSceneManager", "TestSceneManager");
-    auto* const renderWindow = root->createRenderWindow("TestRenderWindow",
-                                                        1u,
-                                                        1u,
-                                                        false,
-                                                        nullptr);
+    auto* const renderWindow = root->createRenderWindow(
+        "TestRenderWindow",
+        1u,
+        1u,
+        false,
+        nullptr);
     renderWindow->setVisible(false);
     renderWindow->setAutoUpdated(false);
     auto* const camera = sceneManager->createCamera("TestCamera");
@@ -219,17 +238,17 @@ void CameraTest::convertPixelToWorldSpace()
         // Manualy project a point
         const ::Ogre::Vector4 standardPoint(1.f, 2.f, 3.f, 1.f);
         const ::Ogre::Vector4 clippedPoint = camera->getProjectionMatrix() * camera->getViewMatrix() * standardPoint;
-        const ::Ogre::Vector3 ndcPoint     = clippedPoint.xyz()/clippedPoint.w;
-        // /!\ in openGl, y coordinate begin from the upper left corner, we need to set him from the lower left corner.
-        const ::Ogre::Real fX = (ndcPoint.x+1.f) * 0.5f;
-        const ::Ogre::Real fY = 1.f - (ndcPoint.y+1.f) * 0.5f;
-        const ::Ogre::Real fZ = (ndcPoint.z+1.f) * 0.5f;
+        const ::Ogre::Vector3 ndcPoint     = clippedPoint.xyz() / clippedPoint.w;
+        ///!\ in openGl, y coordinate begin from the upper left corner, we need to set him from the lower left corner.
+        const ::Ogre::Real fX = (ndcPoint.x + 1.f) * 0.5f;
+        const ::Ogre::Real fY = 1.f - (ndcPoint.y + 1.f) * 0.5f;
+        const ::Ogre::Real fZ = (ndcPoint.z + 1.f) * 0.5f;
         const ::Ogre::Vector3 viewportPoint(fX, fY, fZ);
 
         // Unproject the projected point
         const ::Ogre::Vector3 point(viewportPoint[0], viewportPoint[1], viewportPoint[2]);
-        const ::Ogre::Vector3 unprojectedPoint =
-            viz::scene3d::helper::Camera::convertScreenSpaceToViewSpace(*camera, point);
+        const ::Ogre::Vector3 unprojectedPoint
+            = viz::scene3d::helper::Camera::convertScreenSpaceToViewSpace(*camera, point);
 
         comparePoint(standardPoint, unprojectedPoint);
     }
@@ -239,17 +258,17 @@ void CameraTest::convertPixelToWorldSpace()
         // Manualy project a point
         const ::Ogre::Vector4 standardPoint(1.f, 2.f, 3.f, 1.f);
         const ::Ogre::Vector4 clippedPoint = camera->getProjectionMatrix() * camera->getViewMatrix() * standardPoint;
-        const ::Ogre::Vector3 ndcPoint     = clippedPoint.xyz()/clippedPoint.w;
-        // /!\ in openGl, y coordinate begin from the upper left corner, we need to set him from the lower left corner.
-        const ::Ogre::Real fX = (ndcPoint.x+1.f) * 0.5f;
-        const ::Ogre::Real fY = 1.f - (ndcPoint.y+1.f) * 0.5f;
-        const ::Ogre::Real fZ = (ndcPoint.z+1.f) * 0.5f;
+        const ::Ogre::Vector3 ndcPoint     = clippedPoint.xyz() / clippedPoint.w;
+        ///!\ in openGl, y coordinate begin from the upper left corner, we need to set him from the lower left corner.
+        const ::Ogre::Real fX = (ndcPoint.x + 1.f) * 0.5f;
+        const ::Ogre::Real fY = 1.f - (ndcPoint.y + 1.f) * 0.5f;
+        const ::Ogre::Real fZ = (ndcPoint.z + 1.f) * 0.5f;
         const ::Ogre::Vector3 viewportPoint(fX, fY, fZ);
 
         // Unproject the projected point
         const ::Ogre::Vector3 point(viewportPoint[0], viewportPoint[1], viewportPoint[2]);
-        const ::Ogre::Vector3 unprojectedPoint =
-            viz::scene3d::helper::Camera::convertScreenSpaceToViewSpace(*camera, point);
+        const ::Ogre::Vector3 unprojectedPoint
+            = viz::scene3d::helper::Camera::convertScreenSpaceToViewSpace(*camera, point);
 
         comparePoint(standardPoint, unprojectedPoint);
     }
@@ -257,7 +276,8 @@ void CameraTest::convertPixelToWorldSpace()
     Utils::destroyOgreRoot();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::viz::scene3d
+} // namespace ut
+
+} // namespace sight::viz::scene3d

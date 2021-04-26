@@ -31,6 +31,7 @@
 
 namespace sight::io::base
 {
+
 namespace writer
 {
 
@@ -41,7 +42,7 @@ namespace registry
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(io::base::writer::IObjectWriter) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(io::base::writer::IObjectWriter)(), KeyType> Type;
 
 IO_BASE_API SPTR(Type) get();
 

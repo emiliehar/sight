@@ -27,22 +27,22 @@
 #include <data/factory/new.hpp>
 #include <data/Object.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(io)(dimse)(data)(PacsConfiguration), IO_DIMSE_API);
+SIGHT_DECLARE_DATA_REFLECTION((sight) (io) (dimse) (data) (PacsConfiguration), IO_DIMSE_API);
 
 namespace sight::io::dimse
 {
+
 namespace data
 {
+
 /**
  * @brief   This class defines a Pacs configuration.
  */
 class IO_DIMSE_CLASS_API PacsConfiguration : public sight::data::Object
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(PacsConfiguration, sight::data::Object, sight::data::factory::New< PacsConfiguration >)
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(io)(dimse)(data)(PacsConfiguration));
+    SIGHT_DECLARE_CLASS(PacsConfiguration, sight::data::Object, sight::data::factory::New<PacsConfiguration>)
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (io) (dimse) (data) (PacsConfiguration));
 
     /**
      * @brief Constructor
@@ -54,7 +54,7 @@ public:
     IO_DIMSE_API virtual ~PacsConfiguration();
 
     /// Defines shallow copy
-    IO_DIMSE_API void shallowCopy( const sight::data::Object::csptr& _source ) override;
+    IO_DIMSE_API void shallowCopy(const sight::data::Object::csptr& _source) override;
 
     /// Defines deep copy
     IO_DIMSE_API void cachedDeepCopy(const sight::data::Object::csptr& _source, DeepCopyCacheType& cache) override;
@@ -65,7 +65,7 @@ public:
     typedef enum
     {
         MOVE_RETRIEVE_METHOD = 1,
-        GET_RETRIEVE_METHOD  = 2,
+        GET_RETRIEVE_METHOD  = 2
     } RETRIEVE_METHOD;
 
     /**
@@ -80,7 +80,7 @@ public:
         return m_localApplicationTitle;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setLocalApplicationTitle(const std::string& localApplicationTitle)
     {
@@ -97,7 +97,7 @@ public:
         return m_pacsHostName;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setPacsHostName(const std::string& pacsHostName)
     {
@@ -114,7 +114,7 @@ public:
         return m_pacsApplicationTitle;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setPacsApplicationTitle(const std::string& pacsApplicationTitle)
     {
@@ -131,7 +131,7 @@ public:
         return m_pacsApplicationPort;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setPacsApplicationPort(const unsigned short& pacsApplicationPort)
     {
@@ -148,7 +148,7 @@ public:
         return m_moveApplicationTitle;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setMoveApplicationTitle(const std::string& moveApplicationTitle)
     {
@@ -165,7 +165,7 @@ public:
         return m_moveApplicationPort;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setMoveApplicationPort(unsigned short moveApplicationPort)
     {
@@ -182,16 +182,16 @@ public:
         return m_retrieveMethod;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setRetrieveMethod(RETRIEVE_METHOD retrieveMethod)
     {
         m_retrieveMethod = retrieveMethod;
     }
 
-    /**  @} */
+/**  @} */
 
-    /**  @} */
+/**  @} */
 
 protected:
     /// Local application title
@@ -214,8 +214,8 @@ protected:
 
     /// Retrieve method
     RETRIEVE_METHOD m_retrieveMethod;
-
 };
 
-} //namespace data
-} //namespace sight::io::dimse
+} // namespace data
+
+} // namespace sight::io::dimse

@@ -25,28 +25,29 @@
 #include <core/tools/NumericRoundCast.hxx>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::NumericRoundCastTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::NumericRoundCastTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::castFloatToIntTest()
 {
@@ -67,7 +68,7 @@ void NumericRoundCastTest::castFloatToIntTest()
     CPPUNIT_ASSERT_EQUAL(static_cast<std::uint16_t>(4826), castedVal2);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::castDoubleToIntTest()
 {
@@ -82,10 +83,9 @@ void NumericRoundCastTest::castDoubleToIntTest()
     double val3               = 88.9005;
     unsigned short castedVal3 = core::tools::numericRoundCast<unsigned short>(val3);
     CPPUNIT_ASSERT_EQUAL(static_cast<unsigned short>(89), castedVal3);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::castIntToFloatTest()
 {
@@ -102,7 +102,7 @@ void NumericRoundCastTest::castIntToFloatTest()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(5394.0, castedVal3, 0.00000001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::castDoubleToFloatTest()
 {
@@ -114,12 +114,12 @@ void NumericRoundCastTest::castDoubleToFloatTest()
     castedVal = core::tools::numericRoundCast<float>(val);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(-4564.851f, castedVal, 0.00000001);
 
-    val       = -84.851/3.0;
+    val       = -84.851 / 3.0;
     castedVal = core::tools::numericRoundCast<float>(val);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(-84.851f/3.0f, castedVal, 0.00000001);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(-84.851f / 3.0f, castedVal, 0.00000001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NumericRoundCastTest::castIntToIntTest()
 {
@@ -136,7 +136,8 @@ void NumericRoundCastTest::castIntToIntTest()
     CPPUNIT_ASSERT_EQUAL(static_cast<unsigned short>(121), castedVal3);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::core::tools

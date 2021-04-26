@@ -40,9 +40,9 @@
 namespace sight::module::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const core::com::Slots::SlotKeyType SSeriesSignal::s_REPORT_SERIES_SLOT = "reportSeries";
 
@@ -50,59 +50,60 @@ const core::com::Signals::SignalKeyType SSeriesSignal::s_SERIES_ADDED_SIG = "ser
 
 static const std::string s_SERIES_DB_INPUT = "seriesDB";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesSignal::SSeriesSignal() noexcept
 {
-    m_sigSeriesAdded = newSignal< SeriesAddedSignalType >(s_SERIES_ADDED_SIG);
+    m_sigSeriesAdded = newSignal<SeriesAddedSignalType>(s_SERIES_ADDED_SIG);
 
     newSlot(s_REPORT_SERIES_SLOT, &SSeriesSignal::reportSeries, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesSignal::~SSeriesSignal() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesSignal::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesSignal::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesSignal::configuring()
 {
-
     const service::IService::ConfigType srvconfig = this->getConfigTree();
 
-    if(srvconfig.count("filter") == 1 )
+    if(srvconfig.count("filter") == 1)
     {
         const service::IService::ConfigType& configFilter = srvconfig.get_child("filter");
         SIGHT_ASSERT("A maximum of 1 <mode> tag is allowed", configFilter.count("mode") < 2);
 
-        const std::string mode = configFilter.get< std::string >("mode");
-        SIGHT_ASSERT("'" + mode + "' value for <mode> tag isn't valid. Allowed values are : 'include', 'exclude'.",
-                     mode == "include" || mode == "exclude");
+        const std::string mode = configFilter.get<std::string>("mode");
+        SIGHT_ASSERT(
+            "'" + mode + "' value for <mode> tag isn't valid. Allowed values are : 'include', 'exclude'.",
+            mode == "include" || mode == "exclude");
         m_filterMode = mode;
 
-        BOOST_FOREACH( const ConfigType::value_type& v,  configFilter.equal_range("type") )
+        BOOST_FOREACH(const ConfigType::value_type& v, configFilter.equal_range("type"))
         {
             m_types.push_back(v.second.get<std::string>(""));
         }
     }
+
     SIGHT_ASSERT("A maximum of 1 <filter> tag is allowed", srvconfig.count("filter") < 2);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesSignal::reportSeries(sight::data::SeriesDB::ContainerType addedSeries)
 {
@@ -124,27 +125,28 @@ void SSeriesSignal::reportSeries(sight::data::SeriesDB::ContainerType addedSerie
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesSignal::updating()
 {
-    const auto seriesDB = this->getInput< sight::data::SeriesDB >(s_SERIES_DB_INPUT);
+    const auto seriesDB = this->getInput<sight::data::SeriesDB>(s_SERIES_DB_INPUT);
     SIGHT_ASSERT("input '" + s_SERIES_DB_INPUT + "' does not exist.", seriesDB);
     sight::data::mt::ObjectReadLock lock(seriesDB);
 
     this->reportSeries(seriesDB->getContainer());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SSeriesSignal::getAutoConnections() const
 {
     KeyConnectionsMap connections;
     connections.push(s_SERIES_DB_INPUT, sight::data::SeriesDB::s_ADDED_SERIES_SIG, s_REPORT_SERIES_SLOT);
     connections.push(s_SERIES_DB_INPUT, sight::data::SeriesDB::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::data

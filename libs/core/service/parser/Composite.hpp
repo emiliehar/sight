@@ -33,8 +33,10 @@
 
 namespace sight::service
 {
+
 namespace parser
 {
+
 /**
  * @brief   Specific service for the construction of a Composite and its associated services from an XML-based
  * description.
@@ -43,13 +45,12 @@ namespace parser
 class SERVICE_CLASS_API Composite : public service::IXMLParser
 {
 public:
-
     SIGHT_DECLARE_SERVICE(Composite, service::IXMLParser)
 
     /**
      * @brief   Constructor : does nothing.
      */
-    Composite( )
+    Composite()
     {
     }
 
@@ -60,7 +61,7 @@ public:
     {
     }
 
-    SERVICE_API void createConfig( core::tools::Object::sptr _obj ) override;
+    SERVICE_API void createConfig(core::tools::Object::sptr _obj) override;
 
     SERVICE_API void startConfig() override;
 
@@ -71,21 +72,20 @@ public:
     SERVICE_API void destroyConfig() override;
 
 protected:
-
     /**
      * @brief   Updating method : create composite object.
      *
      * Parse the composite configuration element to configure and add its objects.
      */
-    SERVICE_API void updating( ) override;
+    SERVICE_API void updating() override;
 
 private:
-
     /// To verify some conditions in xml file
-    bool refObjectValidator( core::runtime::ConfigurationElement::sptr _cfgElement );
+    bool refObjectValidator(core::runtime::ConfigurationElement::sptr _cfgElement);
 
-    std::vector< service::IAppConfigManager::sptr > m_ctmContainer;
+    std::vector<service::IAppConfigManager::sptr> m_ctmContainer;
 };
 
-} //namespace parser
-} //namespace sight::service
+} // namespace parser
+
+} // namespace sight::service

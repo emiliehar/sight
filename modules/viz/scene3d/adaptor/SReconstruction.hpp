@@ -34,10 +34,12 @@ namespace sight::data
 {
 
 class Mesh;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
 {
+
 /**
  * @brief This adaptor displays a reconstruction.
  *
@@ -71,9 +73,7 @@ class MODULE_VIZ_SCENE3D_CLASS_API SReconstruction final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SReconstruction, ::sight::viz::scene3d::IAdaptor)
 
@@ -108,7 +108,6 @@ public:
     MODULE_VIZ_SCENE3D_API module::viz::scene3d::adaptor::SMesh::sptr getMeshAdaptor();
 
 protected:
-
     /// Configures the adaptor.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -137,7 +136,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void setVisible(bool _visible) override;
 
 private:
-
     /// Changes the attached mesh.
     void changeMesh(data::Mesh::sptr);
 
@@ -151,42 +149,42 @@ private:
     sight::viz::scene3d::IAdaptor::wptr m_meshAdaptor;
 
     /// Defines if the camera has to be reset automatically.
-    bool m_autoResetCamera { true };
+    bool m_autoResetCamera{true};
 
     /// Defines the material name.
-    std::string m_materialTemplateName {sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME };
+    std::string m_materialTemplateName{sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
 
     /// Defines if the mesh changes dynamically.
-    bool m_isDynamic { false };
+    bool m_isDynamic{false};
 
     /// Defines if the vertices change dynamically.
-    bool m_isDynamicVertices { false };
+    bool m_isDynamicVertices{false};
 
     /// Defines the mask used for picking request.
-    std::uint32_t m_queryFlags { ::Ogre::SceneManager::ENTITY_TYPE_MASK };
+    std::uint32_t m_queryFlags{::Ogre::SceneManager::ENTITY_TYPE_MASK};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SReconstruction::setAutoResetCamera(bool _autoResetCamera)
 {
     m_autoResetCamera = _autoResetCamera;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SReconstruction::setMaterialTemplateName(const std::string& _materialName)
 {
     m_materialTemplateName = _materialName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SReconstruction::setQueryFlags(uint32_t _queryFlags)
 {
     m_queryFlags = _queryFlags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

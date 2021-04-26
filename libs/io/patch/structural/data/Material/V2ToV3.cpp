@@ -52,7 +52,7 @@ V2ToV3::~V2ToV3()
 
 // ----------------------------------------------------------------------------
 
-V2ToV3::V2ToV3( const V2ToV3& cpy ) :
+V2ToV3::V2ToV3(const V2ToV3& cpy) :
     io::atoms::patch::IStructuralPatch(cpy)
 {
 }
@@ -71,7 +71,7 @@ void V2ToV3::apply(
 
     // Create helper
     io::atoms::patch::helper::Object helper(current);
-    helper.addAttribute("lighting", sight::atoms::Boolean::New(true) );
+    helper.addAttribute("lighting", sight::atoms::Boolean::New(true));
 }
 
 } // namespace Material

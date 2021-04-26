@@ -24,8 +24,10 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 const IInputDialog::FactoryRegistryKeyType IInputDialog::REGISTRY_KEY = "::ui::base::dialog::InputDialog";
 
 IInputDialog::IInputDialog()
@@ -36,5 +38,6 @@ IInputDialog::~IInputDialog()
 {
 }
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

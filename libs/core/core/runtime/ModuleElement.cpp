@@ -28,42 +28,42 @@ namespace sight::core::runtime
 {
 
 ModuleElement::ModuleElement() :
-    m_module( detail::Module::getLoadingModule() ),
+    m_module(detail::Module::getLoadingModule()),
     m_enable(true)
 {
     // Post-condition
-    SIGHT_ASSERT("Module '" << m_module.lock()->getIdentifier() << "' not initialized", m_module.lock() != nullptr );
+    SIGHT_ASSERT("Module '" << m_module.lock()->getIdentifier() << "' not initialized", m_module.lock() != nullptr);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-ModuleElement::ModuleElement( std::shared_ptr< Module > module ) :
-    m_module( module ),
+ModuleElement::ModuleElement(std::shared_ptr<Module> module) :
+    m_module(module),
     m_enable(true)
 {
     // Post-condition
-    SIGHT_ASSERT("Module '" << m_module.lock()->getIdentifier() << "' not initialized", m_module.lock() != nullptr );
+    SIGHT_ASSERT("Module '" << m_module.lock()->getIdentifier() << "' not initialized", m_module.lock() != nullptr);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::shared_ptr<Module> ModuleElement::getModule() const
 {
     return m_module.lock();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool ModuleElement::isEnabled() const
 {
     // Pre-condition.
-    std::shared_ptr< detail::Module > module = std::dynamic_pointer_cast< detail::Module >(m_module.lock());
-    SIGHT_ASSERT("module not initialized", module != nullptr );
+    std::shared_ptr<detail::Module> module = std::dynamic_pointer_cast<detail::Module>(m_module.lock());
+    SIGHT_ASSERT("module not initialized", module != nullptr);
 
     return module->isEnabled() && m_enable;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModuleElement::setEnable(const bool enable)
 {

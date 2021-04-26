@@ -30,6 +30,7 @@ namespace sight::viz::scene3d
  */
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace sight::viz::scene3d

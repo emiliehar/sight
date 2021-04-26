@@ -51,22 +51,23 @@ CPPUNIT_TEST_SUITE_REGISTRATION(sight::filter::image::ut::MIPMatchingRegistratio
 
 namespace sight::filter::image
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MIPMatchingRegistrationTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MIPMatchingRegistrationTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MIPMatchingRegistrationTest::identityTest()
 {
@@ -79,16 +80,19 @@ void MIPMatchingRegistrationTest::identityTest()
     params.moving    = moving;
     params.transform = data::Matrix4::New();
     core::tools::Type type = moving->getType();
-    core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, RegistrationDispatch >::invoke( type, params );
+    core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, RegistrationDispatch>::invoke(type, params);
 
-    for(size_t i = 0; i != 3; ++i)
+    for(size_t i = 0 ; i != 3 ; ++i)
     {
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Translation value is not equal to '0' ", 0.,
-                                             params.transform->getCoefficient(i, 3), 1e-8);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+            "Translation value is not equal to '0' ",
+            0.,
+            params.transform->getCoefficient(i, 3),
+            1e-8);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MIPMatchingRegistrationTest::translateTransformTest()
 {
@@ -101,44 +105,48 @@ void MIPMatchingRegistrationTest::translateTransformTest()
     transform->setCoefficient(2, 3, 7.);
     sight::filter::image::Resampler::resample(moving, fixed, transform);
 
-    std::array<double, 3> expected {{ 4., 12., 7. }};
+    std::array<double, 3> expected{{4., 12., 7.}};
     filter::image::RegistrationDispatch::Parameters params;
     params.fixed     = fixed;
     params.moving    = moving;
     params.transform = data::Matrix4::New();
     core::tools::Type type = moving->getType();
-    core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, RegistrationDispatch >::invoke( type, params );
-    for(size_t i = 0; i < 3; ++i)
+    core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, RegistrationDispatch>::invoke(type, params);
+
+    for(size_t i = 0 ; i < 3 ; ++i)
     {
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Actual transform does not match expected results",
-                                             expected[i], params.transform->getCoefficient(i, 3), 1e-2);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+            "Actual transform does not match expected results",
+            expected[i],
+            params.transform->getCoefficient(i, 3),
+            1e-2);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MIPMatchingRegistrationTest::translateTransformWithScalesTest()
 {
-    using ImageType = ::itk::Image< std::uint16_t, 3>;
+    using ImageType = ::itk::Image<std::uint16_t, 3>;
 
     // Create the moving image
     auto movingSpacing = ImageType::SpacingType(1.);
     movingSpacing[1] = 1.3;
     data::Image::sptr moving = createSphereImage< ::std::uint16_t, 3>(movingSpacing);
     data::Image::sptr fixed  = data::Image::New();
-    moving->setOrigin2({ 107., 50., -30. });
+    moving->setOrigin2({107., 50., -30.});
 
     // Translate the image a bit
-    std::array<double, 3> vTrans {{ 4., 19., 7. }};
+    std::array<double, 3> vTrans{{4., 19., 7.}};
     data::Matrix4::sptr transform = data::Matrix4::New();
     transform->setCoefficient(0, 3, vTrans[0]);
     transform->setCoefficient(1, 3, vTrans[1]);
     transform->setCoefficient(2, 3, vTrans[2]);
     sight::filter::image::Resampler::resample(moving, fixed, transform);
-    auto fixedOrigin  = std::array<double, 3> {{ 20., 10., 35. }},
+    auto fixedOrigin  = std::array<double, 3> {{20., 10., 35.}},
          movingOrigin = moving->getOrigin2();
     fixed->setOrigin2(fixedOrigin);
-    std::array<float, 3> expected {
+    std::array<float, 3> expected{
         {
             float(movingOrigin[0] + vTrans[0] - fixedOrigin[0]),
             float(movingOrigin[1] + vTrans[1] - fixedOrigin[1]),
@@ -151,10 +159,12 @@ void MIPMatchingRegistrationTest::translateTransformWithScalesTest()
     // Resample the image to get a different spacing
     ImageType::SizeType newSize;
     ImageType::SpacingType newSpacing(2.);
-    for(uint8_t i = 0; i != 3; ++i)
+
+    for(uint8_t i = 0 ; i != 3 ; ++i)
     {
         newSize[i] = static_cast<unsigned int>(movingSpacing[i] / newSpacing[i] * moving->getSize2()[i]);
     }
+
     auto resample = ::itk::ResampleImageFilter<ImageType, ImageType>::New();
     resample->SetInput(itkFixed);
     resample->SetSize(newSize);
@@ -169,14 +179,18 @@ void MIPMatchingRegistrationTest::translateTransformWithScalesTest()
     params.moving    = moving;
     params.transform = data::Matrix4::New();
     core::tools::Type type = moving->getType();
-    core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, RegistrationDispatch >::invoke( type, params );
-    for(size_t i = 0; i < 3; ++i)
+    core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, RegistrationDispatch>::invoke(type, params);
+
+    for(size_t i = 0 ; i < 3 ; ++i)
     {
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Actual transform does not match expected results",
-                                             double(expected[i]), params.transform->getCoefficient(i, 3),
-                                             double(movingSpacing[i]));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+            "Actual transform does not match expected results",
+            double(expected[i]),
+            params.transform->getCoefficient(i, 3),
+            double(movingSpacing[i]));
     }
 }
 
 } // ut
+
 } // itkRegistrationOp

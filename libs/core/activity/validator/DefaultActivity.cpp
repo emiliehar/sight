@@ -30,32 +30,33 @@
 
 namespace sight::activity
 {
+
 namespace validator
 {
 
 fwActivitiesValidatorRegisterMacro(::sight::activity::validator::DefaultActivity);
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 DefaultActivity::DefaultActivity(activity::IValidator::Key key)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 DefaultActivity::~DefaultActivity()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-IValidator::ValidationType DefaultActivity::validate(const data::ActivitySeries::csptr& activitySeries ) const
+IValidator::ValidationType DefaultActivity::validate(const data::ActivitySeries::csptr& activitySeries) const
 {
     IValidator::ValidationType validation;
 
     validation = IActivityValidator::checkRequirements(activitySeries);
 
-    if (validation.first)
+    if(validation.first)
     {
         validation = IActivityValidator::checkParameters(activitySeries);
     }
@@ -63,7 +64,8 @@ IValidator::ValidationType DefaultActivity::validate(const data::ActivitySeries:
     return validation;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace validator
+
 } // namespace sight::activity

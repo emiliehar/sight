@@ -49,12 +49,11 @@ const core::com::Slots::SlotKeyType s_REMOVE_POINT_SLOT   = "removePoint";
 
 // -----------------------------------------------------------------------------
 
-
 // -----------------------------------------------------------------------------
 
 STransformLandmark::STransformLandmark() noexcept
 {
-    newSignal< LandmarkUpdatedSignalType>(LANDMARK_UPDATED_SIG);
+    newSignal<LandmarkUpdatedSignalType>(LANDMARK_UPDATED_SIG);
     newSlot(s_SELECTED_POINT_SLOT, &STransformLandmark::updateSelectedPoint, this);
     newSlot(s_UPDATE_POINT_SLOT, &STransformLandmark::updatePoint, this);
     newSlot(s_REMOVE_POINT_SLOT, &STransformLandmark::removePoint, this);
@@ -70,7 +69,7 @@ STransformLandmark::~STransformLandmark() noexcept
 
 void STransformLandmark::starting()
 {
-    const auto transformLocked = this->getLockedInput< data::Matrix4>(s_TRANSFORM_INPUT);
+    const auto transformLocked = this->getLockedInput<data::Matrix4>(s_TRANSFORM_INPUT);
     m_transform = transformLocked.get_shared();
 }
 
@@ -85,12 +84,12 @@ void STransformLandmark::stopping()
 void STransformLandmark::configuring()
 {
     const ConfigType configuration = this->getConfigTree();
-    m_label = configuration.get< std::string >("label", m_label);
+    m_label = configuration.get<std::string>("label", m_label);
+
     if(!m_label.empty())
     {
         m_landmarkSelected = true;
     }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -99,7 +98,7 @@ void STransformLandmark::updating()
 {
     if(m_landmarkSelected)
     {
-        const auto landmark = this->getLockedInOut< data::Landmarks >(s_LANDMARK_INOUT);
+        const auto landmark = this->getLockedInOut<data::Landmarks>(s_LANDMARK_INOUT);
         try
         {
             data::Landmarks::PointType& point = landmark->getPoint(m_label, m_index);
@@ -108,17 +107,18 @@ void STransformLandmark::updating()
             point[1] = array[7];
             point[2] = array[11];
 
-            //notify point is modified
-            auto sig = landmark->signal< data::Landmarks::PointModifiedSigType >(
+            // notify point is modified
+            auto sig = landmark->signal<data::Landmarks::PointModifiedSigType>(
                 data::Landmarks::s_POINT_MODIFIED_SIG);
             sig->asyncEmit(m_label, m_index);
         }
-        catch (data::Exception& e )
+        catch(data::Exception& e)
         {
-            sight::ui::base::dialog::MessageDialog::showMessageDialog("Transform Landmarks",
-                                                                      "It is impossible to modify landmarks: "
-                                                                      + std::string(e.what()),
-                                                                      sight::ui::base::dialog::IMessageDialog::WARNING);
+            sight::ui::base::dialog::MessageDialog::showMessageDialog(
+                "Transform Landmarks",
+                "It is impossible to modify landmarks: "
+                + std::string(e.what()),
+                sight::ui::base::dialog::IMessageDialog::WARNING);
         }
     }
 }
@@ -129,6 +129,7 @@ service::IService::KeyConnectionsMap STransformLandmark::getAutoConnections() co
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_TRANSFORM_INPUT, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
@@ -139,16 +140,16 @@ void STransformLandmark::updateSelectedPoint(std::string name, size_t index)
     m_landmarkSelected = true;
     m_index            = index;
     this->update();
-
 }
+
 // -----------------------------------------------------------------------------
 
 void STransformLandmark::updatePoint(std::string name)
 {
     m_landmarkSelected = true;
-    const auto landmark = this->getLockedInOut< data::Landmarks >(s_LANDMARK_INOUT);
+    const auto landmark = this->getLockedInOut<data::Landmarks>(s_LANDMARK_INOUT);
     const size_t size   = landmark->getGroup(name).m_points.size();
-    m_index = size -1;
+    m_index = size - 1;
     this->update();
 }
 

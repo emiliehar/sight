@@ -45,7 +45,6 @@ namespace ExNotifications
  */
 class EXNOTIFICATIONS_CLASS_API SDisplayTestNotifications final : public ::sight::ui::base::IAction
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SDisplayTestNotifications, ::sight::ui::base::IAction)
 
@@ -64,7 +63,6 @@ public:
     EXNOTIFICATIONS_API void setBoolParameter(bool _val, std::string _key);
 
 protected:
-
     /// Initializes IAction.
     void configuring() override;
 
@@ -81,16 +79,14 @@ protected:
     void info(std::ostream& _sstream) override;
 
 private:
-
     /// Position of the notification relative to active window.
-    ::dial::NotificationDialog::Position m_position {::dial::NotificationDialog::Position::DEFAULT};
+    ::dial::NotificationDialog::Position m_position{::dial::NotificationDialog::Position::DEFAULT};
     /// Type of the notification.
-    ::dial::NotificationDialog::Type m_type {::dial::NotificationDialog::Type::DEFAULT};
+    ::dial::NotificationDialog::Type m_type{::dial::NotificationDialog::Type::DEFAULT};
     /// Display notification at all position, default true.
-    bool m_displayAll {false};
+    bool m_displayAll{false};
     /// Use centralized Mode.
-    bool m_useSNotifier {true};
-
+    bool m_useSNotifier{true};
 };
 
 } // namespace ExNotifications

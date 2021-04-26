@@ -49,28 +49,28 @@ namespace sight::module::io::vtk
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SModelSeriesObjWriter::SModelSeriesObjWriter() noexcept
 {
-    m_sigJobCreated = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
+    m_sigJobCreated = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SModelSeriesObjWriter::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesObjWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesObjWriter::openLocationDialog()
 {
@@ -86,7 +86,7 @@ void SModelSeriesObjWriter::openLocationDialog()
 
     while(result = core::location::SingleFolder::dynamicCast(dialog.show()))
     {
-        if( std::filesystem::is_empty(result->getFolder()) )
+        if(std::filesystem::is_empty(result->getFolder()))
         {
             break;
         }
@@ -98,7 +98,8 @@ void SModelSeriesObjWriter::openLocationDialog()
         messageBox.setIcon(ui::base::dialog::IMessageDialog::QUESTION);
         messageBox.addButton(ui::base::dialog::IMessageDialog::YES);
         messageBox.addButton(ui::base::dialog::IMessageDialog::CANCEL);
-        if( messageBox.show() == sight::ui::base::dialog::IMessageDialog::YES)
+
+        if(messageBox.show() == sight::ui::base::dialog::IMessageDialog::YES)
         {
             break;
         }
@@ -116,42 +117,41 @@ void SModelSeriesObjWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesObjWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesObjWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesObjWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SModelSeriesObjWriter::info(std::ostream& _sstream )
+void SModelSeriesObjWriter::info(std::ostream& _sstream)
 {
     _sstream << "SModelSeriesObjWriter::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesObjWriter::updating()
 {
-
-    if(  this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::ModelSeries::csptr modelSeries =
-            this->getInput< data::ModelSeries >(sight::io::base::service::s_DATA_KEY);
+        data::ModelSeries::csptr modelSeries
+            = this->getInput<data::ModelSeries>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", modelSeries);
 
         auto writer = sight::io::vtk::ModelSeriesObjWriter::New();
@@ -166,7 +166,7 @@ void SModelSeriesObjWriter::updating()
             m_sigJobCreated->emit(writer->getJob());
             writer->write();
         }
-        catch (const std::exception& e)
+        catch(const std::exception& e)
         {
             m_writeFailed = true;
             std::stringstream ss;
@@ -174,12 +174,12 @@ void SModelSeriesObjWriter::updating()
 
             sight::ui::base::dialog::MessageDialog messageBox;
             messageBox.setTitle("Warning");
-            messageBox.setMessage( ss.str() );
+            messageBox.setMessage(ss.str());
             messageBox.setIcon(ui::base::dialog::IMessageDialog::WARNING);
             messageBox.addButton(ui::base::dialog::IMessageDialog::OK);
             messageBox.show();
         }
-        catch( ... )
+        catch(...)
         {
             m_writeFailed = true;
             std::stringstream ss;
@@ -187,7 +187,7 @@ void SModelSeriesObjWriter::updating()
 
             sight::ui::base::dialog::MessageDialog messageBox;
             messageBox.setTitle("Warning");
-            messageBox.setMessage( ss.str() );
+            messageBox.setMessage(ss.str());
             messageBox.setIcon(ui::base::dialog::IMessageDialog::WARNING);
             messageBox.addButton(ui::base::dialog::IMessageDialog::OK);
             messageBox.show();
@@ -201,6 +201,6 @@ void SModelSeriesObjWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ioVtk

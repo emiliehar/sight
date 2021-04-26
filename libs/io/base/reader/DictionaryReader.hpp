@@ -33,7 +33,9 @@
 
 namespace sight::data
 {
+
 class StructureTraitsDictionary;
+
 }
 
 namespace sight::io::base
@@ -50,15 +52,14 @@ namespace reader
  * is .dic. This is an ascii file the structure of each line is defined on the first line of this file.
  */
 class IO_BASE_CLASS_API DictionaryReader :
-    public GenericObjectReader< data::StructureTraitsDictionary>,
+    public GenericObjectReader<data::StructureTraitsDictionary>,
     public core::location::SingleFile
-
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(DictionaryReader, GenericObjectReader< data::StructureTraitsDictionary >,
-                        io::base::reader::factory::New< DictionaryReader >)
+    SIGHT_DECLARE_CLASS(
+        DictionaryReader,
+        GenericObjectReader<data::StructureTraitsDictionary>,
+        io::base::reader::factory::New<DictionaryReader>)
 
     /// Constructor. Do nothing .
     IO_BASE_API DictionaryReader(io::base::reader::IObjectReader::Key key);
@@ -72,7 +73,7 @@ public:
     IO_BASE_API std::string extension() override;
 
     /// Returns the default dictionary path ( file in rc directory path of fwDataIO library )
-    IO_BASE_API static std::filesystem::path  getDefaultDictionaryPath();
+    IO_BASE_API static std::filesystem::path getDefaultDictionaryPath();
 };
 
 } // namespace reader

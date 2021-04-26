@@ -78,13 +78,11 @@ namespace sight::module::filter::vision
  */
 class MODULE_FILTER_VISION_CLASS_API SUltrasoundImage final : public service::IOperator
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SUltrasoundImage, service::IOperator)
 
-    typedef core::com::Signal< void (int, std::string) > IntegerChangedSignalType;
+    typedef core::com::Signal<void (int, std::string)> IntegerChangedSignalType;
 
     /// Initialize members.
     MODULE_FILTER_VISION_API SUltrasoundImage() noexcept;
@@ -107,8 +105,8 @@ public:
         fwVec3d direction{1., 0., 0.};
         fwVec3d normal{0., 1., 0.};
     };
-private:
 
+private:
     /**
      * @brief Proposals to connect service slots to associated object signals.
      * @return A map of each proposed connection.
@@ -151,8 +149,10 @@ private:
      * @return the list of intersection points between a circle defined by a center (center) and a radius (R), and a
      * line (eql).
      */
-    std::vector< ::cv::Vec2d > computeLineCircleIntersection(const ::cv::Vec2d& eql, const ::cv::Vec2d& center,
-                                                             const double R) const;
+    std::vector< ::cv::Vec2d> computeLineCircleIntersection(
+        const ::cv::Vec2d& eql,
+        const ::cv::Vec2d& center,
+        const double R) const;
 
     /**
      * @brief Computes angle between vertical line and a line equation.
@@ -184,10 +184,11 @@ private:
      * @param binaryConvex rough binary ultrasound shape of the input image.
      * @return convex probe simulation settings.
      */
-    ProbeSimulationSettings processConvexShape(::cv::Mat input,
-                                               std::vector< ::cv::Vec2d> lines,
-                                               ::cv::Mat thresh,
-                                               ::cv::Mat binaryConvex);
+    ProbeSimulationSettings processConvexShape(
+        ::cv::Mat input,
+        std::vector< ::cv::Vec2d> lines,
+        ::cv::Mat thresh,
+        ::cv::Mat binaryConvex);
 
     /**
      * @brief Extracts the data from the ultrasound plane as a texture with a rectangular shape.
@@ -231,7 +232,7 @@ private:
     void updateBeamExtractionMap();
 
     /// Handles if the probe settings are initialized.
-    bool m_probeSettingsInitialized {false};
+    bool m_probeSettingsInitialized{false};
 
     /// Probe settings.
     ProbeSimulationSettings m_probeSettings;
@@ -239,22 +240,22 @@ private:
     /// Remember the four corners of the ultrasound plane to prevent cases
     /// when the points can not be computed (use the previous points in those cases).
     /// Order is: top-left, top-right, bottom-left and bottom-right.
-    std::array< fwVec3d, 4> m_echoRefPoints;
+    std::array<fwVec3d, 4> m_echoRefPoints;
 
     /// Stores the minimum threshold used for ultrasound plane extraction.
-    int m_thresholdMin {4};
+    int m_thresholdMin{4};
 
     /// Stores the current value of depth of the US probe (must be read from the monitor).
-    double m_usDepth {19.};
+    double m_usDepth{19.};
 
     /// Debug mode.
-    bool m_debug {false};
+    bool m_debug{false};
 
     /// Convex shape of extracted image.
-    bool m_convexShape {true};
+    bool m_convexShape{true};
 
     /// Map used to extract the ultrasound beam from the video.
-    ::cv::Mat m_extractionMap { 1, 1, CV_32FC2 };
+    ::cv::Mat m_extractionMap{1, 1, CV_32FC2};
 };
 
 } // namespace sight::module::filter::vision.

@@ -30,8 +30,10 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
+
 const std::string MatrixConverter::s_IGTL_TYPE          = "TRANSFORM";
 const std::string MatrixConverter::s_FWDATA_OBJECT_TYPE = data::Matrix4::classname();
 
@@ -41,13 +43,13 @@ MatrixConverter::MatrixConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MatrixConverter::~MatrixConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer MatrixConverter::fromFwDataObject(data::Object::csptr src) const
 {
@@ -57,29 +59,33 @@ MatrixConverter::~MatrixConverter()
 
     msg = ::igtl::TransformMessage::New();
     msg->GetMatrix(dest);
-    for (int i = 0; i < 4; ++i)
+
+    for(int i = 0 ; i < 4 ; ++i)
     {
-        for (int j = 0; j < 4; ++j)
+        for(int j = 0 ; j < 4 ; ++j)
         {
             dest[i][j] = srcMatrix->getCoefficient(i, j);
         }
     }
+
     msg->SetMatrix(dest);
+
     return ::igtl::MessageBase::Pointer(msg.GetPointer());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Object::sptr MatrixConverter::fromIgtlMessage(const ::igtl::MessageBase::Pointer src) const
 {
     ::igtl::Matrix4x4 matrix;
-    ::igtl::TransformMessage* msg                  = dynamic_cast< ::igtl::TransformMessage* >(src.GetPointer());
+    ::igtl::TransformMessage* msg                  = dynamic_cast< ::igtl::TransformMessage*>(src.GetPointer());
     ::igtl::TransformMessage::Pointer srcTransform = ::igtl::TransformMessage::Pointer(msg);
-    data::Matrix4::sptr dest = data::Matrix4::New();
+    data::Matrix4::sptr dest                       = data::Matrix4::New();
     srcTransform->GetMatrix(matrix);
-    for (int i = 0; i < 4; ++i)
+
+    for(int i = 0 ; i < 4 ; ++i)
     {
-        for (int j = 0; j < 4; ++j)
+        for(int j = 0 ; j < 4 ; ++j)
         {
             dest->setCoefficient(i, j, matrix[i][j]);
         }
@@ -88,21 +94,21 @@ data::Object::sptr MatrixConverter::fromIgtlMessage(const ::igtl::MessageBase::P
     return dest;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IConverter::sptr MatrixConverter::New()
 {
-    return std::make_shared< MatrixConverter >();
+    return std::make_shared<MatrixConverter>();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& MatrixConverter::getIgtlType() const
 {
     return MatrixConverter::s_IGTL_TYPE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& MatrixConverter::getFwDataObjectType() const
 {
@@ -110,4 +116,5 @@ std::string const& MatrixConverter::getFwDataObjectType() const
 }
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

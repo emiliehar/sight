@@ -35,7 +35,7 @@ namespace sight::module::data
 static const std::string s_SOURCE_INOUT  = "source";
 static const std::string s_TARGET_OUTPUT = "target";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SExtractObj::SExtractObj()
 {
@@ -43,13 +43,13 @@ SExtractObj::SExtractObj()
     this->registerObjectGroup(s_TARGET_OUTPUT, AccessType::OUTPUT, 0);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SExtractObj::~SExtractObj()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractObj::configuring()
 {
@@ -58,7 +58,7 @@ void SExtractObj::configuring()
     const ConfigurationType inoutCfg = m_configuration->findConfigurationElement("inout");
     SIGHT_ASSERT("At one 'inout' tag is required.", inoutCfg);
 
-    const std::vector< ConfigurationType > extractCfg = inoutCfg->find("extract");
+    const std::vector<ConfigurationType> extractCfg = inoutCfg->find("extract");
     SIGHT_ASSERT("At least one 'extract' tag is required.", !extractCfg.empty());
 
     for(ConfigurationType cfg : extractCfg)
@@ -70,19 +70,20 @@ void SExtractObj::configuring()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractObj::starting()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractObj::updating()
 {
-    auto sourceObject = this->getInOut< sight::data::Object >(s_SOURCE_INOUT);
+    auto sourceObject = this->getInOut<sight::data::Object>(s_SOURCE_INOUT);
 
     size_t index = 0;
+
     for(auto path : m_sourcePaths)
     {
         const std::string from = path;
@@ -90,7 +91,7 @@ void SExtractObj::updating()
         sight::data::Object::sptr object;
         try
         {
-            object = sight::data::reflection::getObject( sourceObject, from, true );
+            object = sight::data::reflection::getObject(sourceObject, from, true);
         }
         catch(sight::data::reflection::exception::NullPointer&)
         {
@@ -98,33 +99,35 @@ void SExtractObj::updating()
         }
         catch(sight::data::reflection::exception::ObjectNotFound&)
         {
-            SIGHT_WARN("Object from '"+ from +"' not found");
+            SIGHT_WARN("Object from '" + from + "' not found");
         }
         catch(std::exception& e)
         {
             SIGHT_FATAL("Unhandled exception: " << e.what());
         }
 
-        SIGHT_WARN_IF("Object from '"+ from +"' not found", !object);
+        SIGHT_WARN_IF("Object from '" + from + "' not found", !object);
+
         if(object)
         {
             this->setOutput(s_TARGET_OUTPUT, object, index);
         }
+
         ++index;
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractObj::stopping()
 {
     // Unregister outputs
-    for (size_t i = 0; i < this->getKeyGroupSize(s_TARGET_OUTPUT); ++i)
+    for(size_t i = 0 ; i < this->getKeyGroupSize(s_TARGET_OUTPUT) ; ++i)
     {
         this->setOutput("target", nullptr, i);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::data

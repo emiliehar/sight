@@ -30,6 +30,7 @@
 
 namespace sight::module::filter::image
 {
+
 /**
  * @brief Gets centroids of shapes from a labeled image and adds them as a 'landmark' field to it.
  *
@@ -68,7 +69,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SLabelGeometryImage final : public service::IOperator
 {
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SLabelGeometryImage, service::IOperator)
 
@@ -79,7 +79,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SLabelGeometryImage() override;
 
 protected:
-
     /// Does nothing.
     MODULE_FILTER_IMAGE_API void starting() override;
 
@@ -93,7 +92,6 @@ protected:
     MODULE_FILTER_IMAGE_API void updating() override;
 
 private:
-
     /**
      * @brief Update the selected point list
      * @param value
@@ -101,8 +99,8 @@ private:
      */
     void updateSelectedPointList(std::string value, std::string key);
 
-    std::vector< std::vector<size_t> > m_lPointListLabels;
-    std::vector< data::PointList::sptr > m_lPointListCentroids;
+    std::vector<std::vector<size_t> > m_lPointListLabels;
+    std::vector<data::PointList::sptr> m_lPointListCentroids;
 };
 
 } // namespace sight::module::filter::image

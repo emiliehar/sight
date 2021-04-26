@@ -32,13 +32,17 @@
 
 namespace sight::data
 {
+
 class Mesh;
+
 }
 
 namespace sight::module::geometry
 {
+
 namespace generator
 {
+
 /**
  * @brief Generate the mesh used to display the ultrasound image.
  *
@@ -72,9 +76,7 @@ namespace generator
  */
 class MODULE_GEOMETRY_GENERATOR_CLASS_API SUltrasoundMesh final : public sight::service::IGenerator
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SUltrasoundMesh, sight::service::IService)
 
@@ -85,7 +87,6 @@ public:
     MODULE_GEOMETRY_GENERATOR_API ~SUltrasoundMesh() override;
 
 protected:
-
     /// Configures the service.
     MODULE_GEOMETRY_GENERATOR_API void configuring() override;
 
@@ -99,7 +100,6 @@ protected:
     MODULE_GEOMETRY_GENERATOR_API void stopping() override;
 
 private:
-
     /// Updates the mesh points position.
     void updateMeshPosition();
 
@@ -130,29 +130,30 @@ private:
     void setBoolParameter(bool _val, std::string _key);
 
     /// Defines the resolution in X.
-    size_t m_resolutionX {25u};
+    size_t m_resolutionX{25u};
 
     /// Defines the resolution in Y.
-    size_t m_resolutionY {25u};
+    size_t m_resolutionY{25u};
 
     /// Defines the depth of the US plane.
-    int m_depth {132};
+    int m_depth{132};
 
     /// Defines the angle of the US plane.
-    int m_angle {60};
+    int m_angle{60};
 
     /// Defines the width of the US plane.
-    int m_width {90};
+    int m_width{90};
 
     /// Defines the delta depth of the US plane.
-    int m_deltaDepth {50};
+    int m_deltaDepth{50};
 
     /// Defines the shape of the US plane, rectangle or US beam.
-    bool m_shape {false};
+    bool m_shape{false};
 
     /// Stores mesh positions.
     ::boost::multi_array<float, 3> m_meshPositionArray;
-
 };
+
 } // namespace generator
+
 } // namespace sight::module::geometry

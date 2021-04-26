@@ -26,15 +26,16 @@
 
 namespace sight::geometry::data
 {
+
 namespace ut
 {
 
 class CompareTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( CompareTest );
-    CPPUNIT_TEST( checkEquality);
-    CPPUNIT_TEST( checkContainerEquality);
+    CPPUNIT_TEST_SUITE(CompareTest);
+    CPPUNIT_TEST(checkEquality);
+    CPPUNIT_TEST(checkContainerEquality);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -46,5 +47,6 @@ public:
     void checkContainerEquality();
 };
 
-} //namespace ut
-} //namespace sight::geometry::data
+} // namespace ut
+
+} // namespace sight::geometry::data

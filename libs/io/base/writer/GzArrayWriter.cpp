@@ -29,36 +29,38 @@
 #include <filesystem>
 #include <iostream>
 
-SIGHT_REGISTER_IO_WRITER( ::sight::io::base::writer::GzArrayWriter);
+SIGHT_REGISTER_IO_WRITER(::sight::io::base::writer::GzArrayWriter);
 
 namespace sight::io::base
 {
+
 namespace writer
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GzArrayWriter::GzArrayWriter(io::base::writer::IObjectWriter::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GzArrayWriter::~GzArrayWriter()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GzArrayWriter::write()
 {
-    SIGHT_ASSERT("File path is empty.", getFile().empty() == false );
+    SIGHT_ASSERT("File path is empty.", getFile().empty() == false);
 
     data::Array::csptr array = this->getConcreteObject();
 
     /// test if can open archive
-    gzFile rawFile = gzopen( this->getFile().string().c_str(), "wb1");
-    if ( rawFile == 0 )
+    gzFile rawFile = gzopen(this->getFile().string().c_str(), "wb1");
+
+    if(rawFile == 0)
     {
         std::string str = "GzArrayWriter::write unable to open ";
         str += getFile().string();
@@ -70,10 +72,11 @@ void GzArrayWriter::write()
     // file is OK : process now
     const size_t arraySizeInBytes = array->getSizeInBytes();
 
-    const int uncompressedbyteswrited =
-        gzwrite(rawFile, array->getBuffer(), static_cast<unsigned int>(arraySizeInBytes));
+    const int uncompressedbyteswrited
+        = gzwrite(rawFile, array->getBuffer(), static_cast<unsigned int>(arraySizeInBytes));
     gzclose(rawFile);
-    if ( uncompressedbyteswrited != static_cast<int>(arraySizeInBytes) )
+
+    if(uncompressedbyteswrited != static_cast<int>(arraySizeInBytes))
     {
         std::string str = "GzArrayWriter::write unable to write ";
         str += getFile().string();
@@ -81,14 +84,14 @@ void GzArrayWriter::write()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string GzArrayWriter::extension()
 {
     return ".raw.gz";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace writer
 

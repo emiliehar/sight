@@ -30,26 +30,28 @@
 
 namespace sight::service
 {
+
 namespace parser
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-bool List::refObjectValidator( core::runtime::ConfigurationElement::sptr _cfgElement )
+bool List::refObjectValidator(core::runtime::ConfigurationElement::sptr _cfgElement)
 {
     bool isOk = true;
 
-    for(    core::runtime::ConfigurationElement::Iterator configEltIter = _cfgElement->begin();
-            configEltIter != _cfgElement->end();
-            ++configEltIter)
+    for(core::runtime::ConfigurationElement::Iterator configEltIter = _cfgElement->begin() ;
+        configEltIter != _cfgElement->end() ;
+        ++configEltIter)
     {
         std::string subElementName = (*configEltIter)->getName();
-        if(     subElementName != "service" &&
-                subElementName != "serviceList"    )
+
+        if(subElementName != "service"
+           && subElementName != "serviceList")
         {
             SIGHT_ERROR(
-                "xml subelement \""<< subElementName <<
-                    "\" for element object is not supported for the moment when you use a reference on item List.");
+                "xml subelement \"" << subElementName
+                                    << "\" for element object is not supported for the moment when you use a reference on item List.");
             isOk = false;
         }
     }
@@ -57,16 +59,16 @@ bool List::refObjectValidator( core::runtime::ConfigurationElement::sptr _cfgEle
     return isOk;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void List::updating( )
+void List::updating()
 {
     SIGHT_FATAL("This method is deprecated, and thus shouldn't be used.");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void List::createConfig( core::tools::Object::sptr _obj )
+void List::createConfig(core::tools::Object::sptr _obj)
 {
     // Declaration of attributes values
     const std::string OBJECT_BUILD_MODE = "src";
@@ -76,37 +78,35 @@ void List::createConfig( core::tools::Object::sptr _obj )
     data::List::sptr dataList = data::List::dynamicCast(_obj);
     SIGHT_ASSERT("The passed object must be a data::List", dataList);
 
-    for( core::runtime::ConfigurationElement::csptr elem :  m_cfg->getElements() )
+    for(core::runtime::ConfigurationElement::csptr elem : m_cfg->getElements())
     {
-        if( elem->getName() == "item" )
+        if(elem->getName() == "item")
         {
-
             // Test build mode
             std::string buildMode = BUILD_OBJECT;
 
-            if ( elem->hasAttribute( OBJECT_BUILD_MODE ) )
+            if(elem->hasAttribute(OBJECT_BUILD_MODE))
             {
-                buildMode = elem->getExistingAttributeValue( OBJECT_BUILD_MODE );
-                SIGHT_ASSERT( "The buildMode \""<< buildMode <<"\" is not supported, it should be either BUILD_OBJECT"
-                              "or GET_OBJECT.",
-                              buildMode == BUILD_OBJECT || buildMode == GET_OBJECT );
+                buildMode = elem->getExistingAttributeValue(OBJECT_BUILD_MODE);
+                SIGHT_ASSERT(
+                    "The buildMode \"" << buildMode << "\" is not supported, it should be either BUILD_OBJECT"
+                                                       "or GET_OBJECT.",
+                        buildMode == BUILD_OBJECT || buildMode == GET_OBJECT);
             }
 
-            if( buildMode == BUILD_OBJECT )
+            if(buildMode == BUILD_OBJECT)
             {
-
                 // Create and manage object config
                 service::IAppConfigManager::sptr ctm = service::IAppConfigManager::New();
-                ctm->service::IAppConfigManager::setConfig( elem );
+                ctm->service::IAppConfigManager::setConfig(elem);
 
-                m_ctmContainer.push_back( ctm );
+                m_ctmContainer.push_back(ctm);
                 ctm->create();
                 data::Object::sptr localObj = ctm->getConfigRoot();
 
                 // Add object
-                SIGHT_ASSERT("A data::List can contain only data::Object", localObj );
-                dataList->getContainer().push_back( localObj );
-
+                SIGHT_ASSERT("A data::List can contain only data::Object", localObj);
+                dataList->getContainer().push_back(localObj);
             }
             else // if( buildMode == GET_OBJECT )
             {
@@ -116,48 +116,49 @@ void List::createConfig( core::tools::Object::sptr _obj )
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void List::startConfig()
 {
-    for( service::IAppConfigManager::sptr ctm :  m_ctmContainer )
+    for(service::IAppConfigManager::sptr ctm : m_ctmContainer)
     {
         ctm->start();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void List::updateConfig()
 {
-    for( service::IAppConfigManager::sptr ctm :  m_ctmContainer )
+    for(service::IAppConfigManager::sptr ctm : m_ctmContainer)
     {
         ctm->update();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void List::stopConfig()
 {
-    BOOST_REVERSE_FOREACH( service::IAppConfigManager::sptr ctm, m_ctmContainer )
+    BOOST_REVERSE_FOREACH(service::IAppConfigManager::sptr ctm, m_ctmContainer)
     {
         ctm->stop();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void List::destroyConfig()
 {
-    BOOST_REVERSE_FOREACH( service::IAppConfigManager::sptr ctm, m_ctmContainer )
+    BOOST_REVERSE_FOREACH(service::IAppConfigManager::sptr ctm, m_ctmContainer)
     {
         ctm->destroy();
     }
     m_ctmContainer.clear();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace parser
-} //namespace sight::service
+} // namespace parser
+
+} // namespace sight::service

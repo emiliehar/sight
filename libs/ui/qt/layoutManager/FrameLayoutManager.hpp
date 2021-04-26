@@ -47,10 +47,12 @@ class UI_QT_CLASS_API FrameLayoutManager : public QObject,
                                            public ui::base::layoutManager::IFrameLayoutManager
 {
 Q_OBJECT
-public:
 
-    SIGHT_DECLARE_CLASS(FrameLayoutManager, ui::base::layoutManager::IFrameLayoutManager,
-                        ui::base::factory::New< FrameLayoutManager >)
+public:
+    SIGHT_DECLARE_CLASS(
+        FrameLayoutManager,
+        ui::base::layoutManager::IFrameLayoutManager,
+        ui::base::factory::New<FrameLayoutManager>)
 
     UI_QT_API FrameLayoutManager(ui::base::GuiBaseObject::Key key);
 
@@ -70,7 +72,6 @@ private Q_SLOTS:
     void onCloseFrame();
 
 private:
-
     void setState(FrameState state);
     FrameState getState();
     bool isOnScreen(const QPoint& pos);

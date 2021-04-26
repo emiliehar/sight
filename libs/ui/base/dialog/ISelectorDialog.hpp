@@ -30,18 +30,18 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief   ISelectorDialog allows the choice of an element among several (_selections)
  */
 class UI_BASE_CLASS_API ISelectorDialog : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(ISelectorDialog, ui::base::GuiBaseObject)
 
     typedef std::string FactoryRegistryKeyType;
@@ -60,7 +60,7 @@ public:
     /**
      * @brief The string list that can be chosen by the selector.
      */
-    UI_BASE_API virtual void setSelections(std::vector< std::string > _selections) = 0;
+    UI_BASE_API virtual void setSelections(std::vector<std::string> _selections) = 0;
 
     /**
      * @brief Sets the selector title.
@@ -79,5 +79,6 @@ public:
     UI_BASE_API virtual void addCustomButton(const std::string& label, std::function<void()> clickedFn) = 0;
 };
 
-} //namespace dialog
-} //namespace sight::ui::base
+} // namespace dialog
+
+} // namespace sight::ui::base

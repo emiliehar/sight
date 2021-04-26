@@ -35,9 +35,7 @@ namespace ExTimeLine
  */
 class EXTIMELINE_CLASS_API SMain final : public sight::service::IService
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SMain, sight::service::IService)
 
@@ -48,7 +46,6 @@ public:
     EXTIMELINE_API virtual ~SMain() noexcept;
 
 protected:
-
     /// Does nothing.
     EXTIMELINE_API void configuring() override;
 
@@ -63,7 +60,6 @@ protected:
 
     /// Does nothing.
     EXTIMELINE_API void stopping() override;
-
 };
 
-}  // namespace ExTimeLine.
+} // namespace ExTimeLine.

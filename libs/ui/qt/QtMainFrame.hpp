@@ -38,7 +38,6 @@ namespace sight::ui::qt
  */
 class QtMainFrame : public QMainWindow
 {
-
 Q_OBJECT
 
 public:

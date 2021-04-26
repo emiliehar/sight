@@ -31,7 +31,9 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::module::io::vtk
@@ -60,10 +62,8 @@ namespace sight::module::io::vtk
  */
 class MODULE_IO_VTK_CLASS_API SImageSeriesReader : public sight::io::base::service::IReader
 {
-
 public:
-
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignalType;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignalType;
 
     /**
      * @brief Constructor. Do nothing.
@@ -89,7 +89,6 @@ public:
     MODULE_IO_VTK_API void openLocationDialog() override;
 
 protected:
-
     MODULE_IO_VTK_API sight::io::base::service::IOPathType getIOPathType() const override;
 
     /**
@@ -126,10 +125,9 @@ protected:
      *
      * This method is used to give informations about the service.
      */
-    MODULE_IO_VTK_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_VTK_API void info(std::ostream& _sstream) override;
 
 private:
-
     /// This method notifies other ImageSeries services that a new image has been loaded.
     void notificationOfDBUpdate();
 

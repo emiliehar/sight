@@ -43,44 +43,44 @@
 namespace sight::module::io::matrix
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Matrix4WriterService::info(std::ostream& _sstream )
+void Matrix4WriterService::info(std::ostream& _sstream)
 {
-    this->SuperClass::info( _sstream );
+    this->SuperClass::info(_sstream);
     _sstream << std::endl << " Matrix4 object writer";
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Matrix4WriterService::starting( )
+void Matrix4WriterService::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType Matrix4WriterService::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4WriterService::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Matrix4WriterService::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4WriterService::openLocationDialog()
 {
@@ -93,7 +93,8 @@ void Matrix4WriterService::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFile().parent_path());
         dialogFile.saveDefaultLocation(defaultDirectory);
@@ -103,28 +104,27 @@ void Matrix4WriterService::openLocationDialog()
     {
         this->clearLocations();
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4WriterService::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4WriterService::updating()
 {
     if(this->hasLocationDefined())
     {
         // Retrieve object
-        data::Matrix4::csptr matrix =
-            this->getInput< data::Matrix4 >(sight::io::base::service::s_DATA_KEY);
+        data::Matrix4::csptr matrix
+            = this->getInput<data::Matrix4>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", matrix);
 
         auto writer = sight::io::base::writer::Matrix4Writer::New();
-        writer->setObject( matrix );
+        writer->setObject(matrix);
         writer->setFile(this->getFile());
         writer->write();
     }
@@ -134,6 +134,6 @@ void Matrix4WriterService::updating()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::module

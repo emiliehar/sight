@@ -31,11 +31,14 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::module::ui::base
 {
+
 namespace series
 {
 
@@ -93,8 +96,8 @@ public:
      * @name Signal/Slot typedefs
      * @{
      */
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignalType;
-    typedef core::com::Slot< void ( SPTR(core::jobs::IJob) ) > ForwardJobSlotType;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignalType;
+    typedef core::com::Slot<void (SPTR(core::jobs::IJob))> ForwardJobSlotType;
     /// @}
 
     MODULE_UI_BASE_API SExportWithSeriesDB() noexcept;
@@ -102,7 +105,6 @@ public:
     MODULE_UI_BASE_API virtual ~SExportWithSeriesDB() noexcept;
 
 protected:
-
     /**
      * @brief Configure action. Retrieves the IOSelector config.
      */
@@ -117,10 +119,9 @@ protected:
     /// Stop action.
     void stopping() override;
 
-    void info(std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
     /// SLOT: Allows to forward job process between io selector service and other services.
     void forwardJob(SPTR(core::jobs::IJob) iJob);
 
@@ -128,8 +129,8 @@ private:
 
     SPTR(JobCreatedSignalType) m_sigJobCreated; ///< signal emitted to forward SSelector job process
     SPTR(ForwardJobSlotType) m_slotForwardJob; ///< slot used to forward SSelector job process
-
 };
 
 } // namespace series
+
 } // namespace sight::module::ui::base

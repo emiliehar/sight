@@ -35,15 +35,21 @@
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
+
 class QtContainer;
+
 }
+
 }
 
 namespace Qt3DExtras
 {
+
 class Qt3DWindow;
+
 }
 
 namespace sight::module::viz::qt3d
@@ -53,11 +59,9 @@ namespace sight::module::viz::qt3d
 class MODULE_VIZ_QT3D_CLASS_API WindowInteractor final : public QObject,
                                                          public sight::viz::qt3d::IWindowInteractor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_CLASS(WindowInteractor, sight::viz::qt3d::IWindowInteractor)
 
     /// Initialize members.
@@ -76,13 +80,11 @@ public:
     MODULE_VIZ_QT3D_API void set3DView(Qt3DExtras::Qt3DWindow* _3dView) final;
 
 private:
-
     /// Contains the parent of the widget.
     SPTR(ui::qt::container::QtContainer) m_parentContainer;
 
     /// Contains the window container.
-    QPointer< QWidget > m_windowContainer;
-
+    QPointer<QWidget> m_windowContainer;
 };
 
 } // namespace sight::module::viz::qt3d.

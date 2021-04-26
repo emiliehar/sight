@@ -47,26 +47,26 @@
 namespace sight::module::io::dicom
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSurfaceSegmentationWriter::SSurfaceSegmentationWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSurfaceSegmentationWriter::~SSurfaceSegmentationWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSurfaceSegmentationWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSurfaceSegmentationWriter::openLocationDialog()
 {
@@ -79,7 +79,8 @@ void SSurfaceSegmentationWriter::openLocationDialog()
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFolder());
         this->setFolder(result->getFolder());
@@ -91,45 +92,48 @@ void SSurfaceSegmentationWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSurfaceSegmentationWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSurfaceSegmentationWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSurfaceSegmentationWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSurfaceSegmentationWriter::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         const std::filesystem::path& folder = this->getFolder();
+
         if(!std::filesystem::is_empty(folder))
         {
             sight::ui::base::dialog::MessageDialog dialog;
-            dialog.setMessage("Folder '"+folder.string()+"' isn't empty, files can be overwritten."
-                              "\nDo you want to continue ?");
+            dialog.setMessage(
+                "Folder '" + folder.string() + "' isn't empty, files can be overwritten."
+                                               "\nDo you want to continue ?");
             dialog.setTitle("Folder not empty.");
             dialog.setIcon(ui::base::dialog::MessageDialog::QUESTION);
-            dialog.addButton( sight::ui::base::dialog::MessageDialog::YES_NO );
+            dialog.addButton(sight::ui::base::dialog::MessageDialog::YES_NO);
             sight::ui::base::dialog::MessageDialog::Buttons button = dialog.show();
 
             if(button == sight::ui::base::dialog::MessageDialog::NO)
             {
                 m_writeFailed = true;
+
                 return;
             }
         }
@@ -139,14 +143,16 @@ void SSurfaceSegmentationWriter::updating()
         }
 
         // Retrieve dataStruct associated with this service
-        data::ModelSeries::csptr model = this->getInput< data::ModelSeries >(sight::io::base::service::s_DATA_KEY);
+        data::ModelSeries::csptr model = this->getInput<data::ModelSeries>(sight::io::base::service::s_DATA_KEY);
 
         if(!model->getDicomReference())
         {
             m_writeFailed = true;
             sight::ui::base::dialog::MessageDialog::show(
-                "Warning", "DICOM image reference is missing, DICOM Surface Segmentation cannot be generated",
+                "Warning",
+                "DICOM image reference is missing, DICOM Surface Segmentation cannot be generated",
                 sight::ui::base::dialog::IMessageDialog::WARNING);
+
             return;
         }
 
@@ -156,7 +162,7 @@ void SSurfaceSegmentationWriter::updating()
         /* Write the data */
         sight::ui::base::Cursor cursor;
         cursor.setCursor(ui::base::ICursor::BUSY);
-        saveSurfaceSegmentation( outputPath, model );
+        saveSurfaceSegmentation(outputPath, model);
         cursor.setDefaultCursor();
     }
     else
@@ -165,10 +171,11 @@ void SSurfaceSegmentationWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SSurfaceSegmentationWriter::saveSurfaceSegmentation( const std::filesystem::path filename,
-                                                          const data::ModelSeries::csptr& model)
+void SSurfaceSegmentationWriter::saveSurfaceSegmentation(
+    const std::filesystem::path filename,
+    const data::ModelSeries::csptr& model)
 {
     auto writer = sight::io::dicom::writer::SurfaceSegmentation::New();
 
@@ -179,23 +186,27 @@ void SSurfaceSegmentationWriter::saveSurfaceSegmentation( const std::filesystem:
     {
         writer->write();
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         m_writeFailed = true;
         std::stringstream ss;
         ss << "Warning during saving: " << e.what();
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", ss.str(), sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
         m_writeFailed = true;
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", "Warning during saving", sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            "Warning during saving",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SSurfaceSegmentationWriter::getIOPathType() const
 {

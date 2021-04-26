@@ -28,7 +28,9 @@
 
 namespace thread
 {
+
 class Timer;
+
 }
 
 namespace ExTimeLine
@@ -68,7 +70,6 @@ public:
     EXTIMELINE_API virtual ~SConsumer() noexcept;
 
 protected:
-
     /// Configure the service
     void configuring() final;
 
@@ -85,9 +86,8 @@ protected:
     void consume(sight::core::HiResClock::HiResClockType timestamp);
 
 private:
-
     /// Timer used to read messages periodically
-    SPTR( sight::core::thread::Timer ) m_timer;
+    SPTR(sight::core::thread::Timer) m_timer;
 
     /// Id of the receiver
     unsigned int m_receiverId;
@@ -96,4 +96,4 @@ private:
     unsigned int m_period;
 };
 
-}  // namespace ExTimeLine
+} // namespace ExTimeLine

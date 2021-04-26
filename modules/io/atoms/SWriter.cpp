@@ -61,11 +61,11 @@
 namespace sight::module::io::atoms
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SWriter::SWriter() :
     m_useAtomsPatcher(false),
@@ -73,27 +73,27 @@ SWriter::SWriter() :
     m_context("Undefined"),
     m_version("Undefined")
 {
-    m_sigJobCreated = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
+    m_sigJobCreated = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
 
-    for(SReader::FileExtension2NameType::value_type ext :  SReader::s_EXTENSIONS)
+    for(SReader::FileExtension2NameType::value_type ext : SReader::s_EXTENSIONS)
     {
         m_allowedExts.insert(m_allowedExts.end(), ext.first);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SWriter::starting()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SWriter::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SWriter::configuring()
 {
@@ -106,16 +106,17 @@ void SWriter::configuring()
 
     const auto archiveCfgs = config.equal_range("archive");
 
-    for (auto it = archiveCfgs.first; it != archiveCfgs.second; ++it)
+    for(auto it = archiveCfgs.first ; it != archiveCfgs.second ; ++it)
     {
         const std::string backend = it->second.get<std::string>("<xmlattr>.backend");
         SIGHT_ASSERT("No backend attribute given in archive tag", backend != "");
-        SIGHT_ASSERT("Unsupported backend '" + backend + "'",
-                     SReader::s_EXTENSIONS.find("." + backend) != SReader::s_EXTENSIONS.end());
+        SIGHT_ASSERT(
+            "Unsupported backend '" + backend + "'",
+            SReader::s_EXTENSIONS.find("." + backend) != SReader::s_EXTENSIONS.end());
 
         const auto extCfgs = it->second.equal_range("extension");
 
-        for (auto itExt = extCfgs.first; itExt != extCfgs.second; ++itExt)
+        for(auto itExt = extCfgs.first ; itExt != extCfgs.second ; ++itExt)
         {
             const std::string extension = itExt->second.get<std::string>("");
             SIGHT_ASSERT("No extension given for backend '" + backend + "'", !extension.empty());
@@ -128,12 +129,13 @@ void SWriter::configuring()
 
     const auto extensionsCfg = config.get_child_optional("extensions");
 
-    if (extensionsCfg)
+    if(extensionsCfg)
     {
         m_allowedExts.clear();
 
         const auto extCfgs = extensionsCfg->equal_range("extension");
-        for (auto it = extCfgs.first; it != extCfgs.second; ++it)
+
+        for(auto it = extCfgs.first ; it != extCfgs.second ; ++it)
         {
             const std::string ext = it->second.get<std::string>("");
 
@@ -156,12 +158,12 @@ void SWriter::configuring()
     {
         m_allowedExts.clear();
 
-        for(FileExtension2NameType::value_type ext :  m_customExts)
+        for(FileExtension2NameType::value_type ext : m_customExts)
         {
             m_allowedExts.insert(m_allowedExts.end(), ext.first);
         }
 
-        for(SReader::FileExtension2NameType::value_type ext :  SReader::s_EXTENSIONS)
+        for(SReader::FileExtension2NameType::value_type ext : SReader::s_EXTENSIONS)
         {
             m_allowedExts.insert(m_allowedExts.end(), ext.first);
             m_allowedExtLabels[ext.first] = ext.second;
@@ -170,44 +172,55 @@ void SWriter::configuring()
 
     const auto patcherCfg = config.get_child_optional("patcher");
 
-    if (patcherCfg)
+    if(patcherCfg)
     {
         m_context = patcherCfg->get<std::string>("<xmlattr>.context", "MedicalData");
-        m_version = patcherCfg->get<std::string>("<xmlattr>.version",
-                                                 sight::io::patch::semantic::PatchLoader::getCurrentVersion());
+        m_version = patcherCfg->get<std::string>(
+            "<xmlattr>.version",
+            sight::io::patch::semantic::PatchLoader::getCurrentVersion());
         m_useAtomsPatcher = true;
     }
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 bool SWriter::versionSelection()
 {
     auto vg = sight::io::atoms::patch::VersionsManager::getDefault()->getGraph(m_context);
 
     // have some information about this format
-    if ( vg )
+    if(vg)
     {
-        std::vector< std::string > versions = vg->getConnectedVersions(m_version);
-        if ( versions.size() == 0 )
+        std::vector<std::string> versions = vg->getConnectedVersions(m_version);
+
+        if(versions.size() == 0)
         {
             m_exportedVersion = m_version;
+
             return true;
         }
         else
         {
             versions.push_back(m_version);
 
-            std::transform(versions.begin(), versions.end(), versions.begin(), [](const std::string& _version)
+            std::transform(
+                versions.begin(),
+                versions.end(),
+                versions.begin(),
+                [](const std::string& _version)
                 {
                     static const std::regex ala("ALA");
+
                     return std::regex_replace(_version, ala, "");
-                } );
+                });
 
             // Sort versions according to repository/number. This is not really honnest since we should not make any
             // assumption about the versioning convention, especially for child repositories... But since this is
             // how things are organized currently I don't think this is such a big issue
-            std::sort(versions.begin(), versions.end(), [](const std::string& _a, const std::string& _b)
+            std::sort(
+                versions.begin(),
+                versions.end(),
+                [](const std::string& _a, const std::string& _b)
                 {
                     try
                     {
@@ -215,23 +228,27 @@ bool SWriter::versionSelection()
                         // Sort with the version number
                         const std::string repoA = _a.substr(3, _a.size());
                         const std::string repoB = _b.substr(3, _b.size());
+
                         if(repoA == repoB)
                         {
                             const std::string numA = _a.substr(1, 2);
                             const std::string numB = _b.substr(1, 2);
+
                             return numA > numB;
                         }
+
                         return repoA < repoB;
                     }
-                    catch ( std::out_of_range e)
+                    catch(std::out_of_range e)
                     {
                         SIGHT_ERROR("Bad version format: either " + _a + " or " + _b);
+
                         return false;
                     }
                 });
 
-            std::vector< std::string > prettyVersionsAll;
-            std::map< std::string, std::string > prettyVersionsToVersions;
+            std::vector<std::string> prettyVersionsAll;
+            std::map<std::string, std::string> prettyVersionsToVersions;
 
             for(const auto& v : versions)
             {
@@ -242,22 +259,22 @@ bool SWriter::versionSelection()
 
                     const std::string prettyVersion = num + ((repo.empty()) ? "" : " (" + repo + ")");
                     prettyVersionsAll.push_back(prettyVersion);
-                    prettyVersionsToVersions[ prettyVersion ] = v;
-
+                    prettyVersionsToVersions[prettyVersion] = v;
                 }
-                catch ( std::out_of_range e)
+                catch(std::out_of_range e)
                 {
                     SIGHT_ERROR("Bad version format: " + v);
 
                     prettyVersionsAll.push_back(v);
-                    prettyVersionsToVersions[ v ] = v;
+                    prettyVersionsToVersions[v] = v;
                 }
             }
 
             // Create a shortened list of versions, with only the latest ones of each repo
-            std::vector< std::string > prettyVersions;
+            std::vector<std::string> prettyVersions;
             prettyVersions.push_back(prettyVersionsAll[0]);
-            for(auto itVersion = prettyVersionsAll.begin() + 1; itVersion != prettyVersionsAll.end(); ++itVersion)
+
+            for(auto itVersion = prettyVersionsAll.begin() + 1 ; itVersion != prettyVersionsAll.end() ; ++itVersion)
             {
                 const auto& versionA    = *(itVersion - 1);
                 const auto& versionB    = *(itVersion);
@@ -276,13 +293,16 @@ bool SWriter::versionSelection()
             dialogVersion.setMessage("Select an archive version");
 
             bool selectAmongstAllVersions = false;
-            dialogVersion.addCustomButton("Advanced", [&selectAmongstAllVersions]()
+            dialogVersion.addCustomButton(
+                "Advanced",
+                [&selectAmongstAllVersions]()
                 {
                     selectAmongstAllVersions = true;
                 });
 
             dialogVersion.setSelections(prettyVersions);
             std::string result = dialogVersion.show();
+
             if(selectAmongstAllVersions)
             {
                 sight::ui::base::dialog::SelectorDialog dialogVersionAll;
@@ -292,21 +312,24 @@ bool SWriter::versionSelection()
                 dialogVersionAll.setSelections(prettyVersionsAll);
                 result = dialogVersionAll.show();
             }
-            if( !result.empty() )
+
+            if(!result.empty())
             {
                 m_exportedVersion = prettyVersionsToVersions[result];
             }
+
             return !result.empty();
         }
     }
     else
     {
         m_exportedVersion = m_version;
+
         return true;
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SWriter::updating()
 {
@@ -316,10 +339,11 @@ void SWriter::updating()
     if(!this->hasLocationDefined())
     {
         m_writeFailed = true;
+
         return;
     }
 
-    data::Object::csptr obj = this->getInput< data::Object >(sight::io::base::service::s_DATA_KEY);
+    data::Object::csptr obj = this->getInput<data::Object>(sight::io::base::service::s_DATA_KEY);
     SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", obj);
 
     sight::ui::base::Cursor cursor;
@@ -340,40 +364,45 @@ void SWriter::updating()
         else
         {
             const std::string errorMessage("File extension '" + requestedExtension + "' is not handled.");
-            sight::ui::base::dialog::MessageDialog::show("Medical data writer failed",
-                                                         errorMessage,
-                                                         sight::ui::base::dialog::IMessageDialog::CRITICAL);
+            sight::ui::base::dialog::MessageDialog::show(
+                "Medical data writer failed",
+                errorMessage,
+                sight::ui::base::dialog::IMessageDialog::CRITICAL);
             m_writeFailed = true;
+
             return;
         }
     }
 
     std::filesystem::path filePath = requestedFilePath;
-    if( std::filesystem::exists( requestedFilePath ) )
+
+    if(std::filesystem::exists(requestedFilePath))
     {
-        SIGHT_THROW_IF( "can't write to : " << requestedFilePath << ", it is a directory.",
-                        std::filesystem::is_directory(requestedFilePath)
-                        );
+        SIGHT_THROW_IF(
+            "can't write to : " << requestedFilePath << ", it is a directory.",
+                std::filesystem::is_directory(requestedFilePath)
+            );
     }
 
     const std::filesystem::path folderPath = filePath.parent_path();
     std::string extension                  = filePath.extension().string();
 
     // Check if the extension of the filename is set. If not, assign it to the selected extension.
-    if (extension.empty())
+    if(extension.empty())
     {
         extension = m_selectedExtension;
 
         filePath += extension;
     }
 
-    SIGHT_THROW_IF( "Extension is empty", extension.empty() );
+    SIGHT_THROW_IF("Extension is empty", extension.empty());
 
-    SIGHT_THROW_IF("The file extension '" << extension << "' is not managed",
-                   m_allowedExts.find(extension) == m_allowedExts.end());
+    SIGHT_THROW_IF(
+        "The file extension '" << extension << "' is not managed",
+            m_allowedExts.find(extension) == m_allowedExts.end());
 
     // Find in custom extensions if our extension exists.
-    if (m_customExts.find(extension) != m_customExts.end())
+    if(m_customExts.find(extension) != m_customExts.end())
     {
         extension = "." + m_customExts[extension];
     }
@@ -385,41 +414,44 @@ void SWriter::updating()
     const unsigned int progressBarOffset = 10;
 
     // Convert data to atom : job 1
-    core::jobs::Job::sptr convertJob = core::jobs::Job::New("Writing " + extension + " file",
-                                                            [ =, &atom](core::jobs::Job& runningJob)
+    core::jobs::Job::sptr convertJob = core::jobs::Job::New(
+        "Writing " + extension + " file",
+        [ =, &atom](core::jobs::Job& runningJob)
         {
             runningJob.doneWork(progressBarOffset);
 
             atom = sight::atoms::conversion::convert(data::Object::constCast(obj));
             runningJob.done();
-        }, m_associatedWorker );
+        },
+        m_associatedWorker);
 
     // Path atom : job 2
-    core::jobs::Job::sptr patchingJob = core::jobs::Job::New("Writing " + extension + " file",
-                                                             [ =, &atom](core::jobs::Job& runningJob)
+    core::jobs::Job::sptr patchingJob = core::jobs::Job::New(
+        "Writing " + extension + " file",
+        [ =, &atom](core::jobs::Job& runningJob)
         {
-
             atom->setMetaInfo("context", m_context);
             atom->setMetaInfo("version_name", m_version);
 
             if(runningJob.cancelRequested())
             {
                 m_writeFailed = true;
+
                 return;
             }
 
             runningJob.doneWork(progressBarOffset);
 
-            if( m_useAtomsPatcher )
+            if(m_useAtomsPatcher)
             {
-                sight::io::atoms::patch::PatchingManager globalPatcher( atom );
-                atom = globalPatcher.transformTo( m_exportedVersion );
+                sight::io::atoms::patch::PatchingManager globalPatcher(atom);
+                atom = globalPatcher.transformTo(m_exportedVersion);
             }
 
             runningJob.done();
         },
-                                                             m_associatedWorker
-                                                             );
+        m_associatedWorker
+        );
 
     // Generate a temporary file name for saving the file.
     const std::filesystem::path tmpFolderPath = core::tools::System::getTemporaryFolder();
@@ -427,21 +459,23 @@ void SWriter::updating()
     const std::filesystem::path tmpFilename   = tmpFilePath.filename();
 
     // Writing file : job 3
-    core::jobs::Job::sptr writeJob = core::jobs::Job::New("Writing " + extension + " file",
-                                                          [ =, &atom](core::jobs::Job& runningJob)
+    core::jobs::Job::sptr writeJob = core::jobs::Job::New(
+        "Writing " + extension + " file",
+        [ =, &atom](core::jobs::Job& runningJob)
         {
             runningJob.doneWork(progressBarOffset);
             // Write atom
             sight::io::zip::IWriteArchive::sptr writeArchive;
             sight::io::atoms::FormatType format;
             std::filesystem::path archiveRootName;
-            if ( extension == ".json" )
+
+            if(extension == ".json")
             {
                 writeArchive    = sight::io::zip::WriteDirArchive::New(tmpFolderPath.string());
                 archiveRootName = tmpFilename;
                 format          = sight::io::atoms::JSON;
             }
-            else if ( extension == ".jsonz")
+            else if(extension == ".jsonz")
             {
                 writeArchive = sight::io::zip::WriteZipArchive::New(
                     tmpFilePath.string(),
@@ -452,7 +486,7 @@ void SWriter::updating()
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
             }
-            else if ( extension == ".cpz" )
+            else if(extension == ".cpz")
             {
                 writeArchive = sight::io::zip::WriteZipArchive::New(
                     tmpFilePath.string(),
@@ -463,7 +497,7 @@ void SWriter::updating()
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
             }
-            else if ( extension == ".sight" )
+            else if(extension == ".sight")
             {
                 writeArchive = sight::io::zip::WriteZipArchive::New(
                     tmpFilePath.string(),
@@ -474,13 +508,13 @@ void SWriter::updating()
                 archiveRootName = "root.json";
                 format          = sight::io::atoms::JSON;
             }
-            else if ( extension == ".xml" )
+            else if(extension == ".xml")
             {
                 writeArchive    = sight::io::zip::WriteDirArchive::New(tmpFolderPath.string());
                 archiveRootName = tmpFilename;
                 format          = sight::io::atoms::XML;
             }
-            else if ( extension == ".xmlz" )
+            else if(extension == ".xmlz")
             {
                 writeArchive    = sight::io::zip::WriteZipArchive::New(tmpFilePath.string());
                 archiveRootName = "root.xml";
@@ -488,11 +522,11 @@ void SWriter::updating()
             }
             else
             {
-                SIGHT_THROW( "This file extension '" << extension << "' is not managed" );
+                SIGHT_THROW("This file extension '" << extension << "' is not managed");
             }
 
-            const std::filesystem::path folderDirName =
-                sight::io::atoms::Writer(atom).write( writeArchive, archiveRootName, format );
+            const std::filesystem::path folderDirName
+                = sight::io::atoms::Writer(atom).write(writeArchive, archiveRootName, format);
             writeArchive.reset();
 
             // If the save is successful, remove the old file if it exists.
@@ -505,13 +539,14 @@ void SWriter::updating()
 
             core::tools::System::robustRename(tmpFilePath, filePath);
 
-            if(std::filesystem::exists(tmpFolderPath/folderDirName))
+            if(std::filesystem::exists(tmpFolderPath / folderDirName))
             {
-                core::tools::System::robustRename(tmpFolderPath/folderDirName, folderPath/folderDirName);
+                core::tools::System::robustRename(tmpFolderPath / folderDirName, folderPath / folderDirName);
             }
 
             runningJob.done();
-        }, m_associatedWorker );
+        },
+        m_associatedWorker);
 
     core::jobs::Aggregator::sptr jobs = core::jobs::Aggregator::New(extension + " writer");
     jobs->add(convertJob);
@@ -535,9 +570,10 @@ void SWriter::updating()
 
         // Handle the error.
         SIGHT_ERROR(_e.what());
-        sight::ui::base::dialog::MessageDialog::show("Medical data writer failed",
-                                                     _e.what(),
-                                                     sight::ui::base::dialog::IMessageDialog::CRITICAL);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Medical data writer failed",
+            _e.what(),
+            sight::ui::base::dialog::IMessageDialog::CRITICAL);
         m_writeFailed = true;
     }
     catch(...)
@@ -549,36 +585,37 @@ void SWriter::updating()
         }
 
         // Handle the error.
-        sight::ui::base::dialog::MessageDialog::show("Medical data writer failed",
-                                                     "Writing process aborted",
-                                                     sight::ui::base::dialog::IMessageDialog::CRITICAL);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Medical data writer failed",
+            "Writing process aborted",
+            sight::ui::base::dialog::IMessageDialog::CRITICAL);
         m_writeFailed = true;
     }
 
     cursor.setDefaultCursor();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SWriter::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SWriter::openLocationDialog()
 {
     static auto defaultDirectory = core::location::SingleFolder::New();
 
-    if( !m_useAtomsPatcher || versionSelection() )
+    if(!m_useAtomsPatcher || versionSelection())
     {
         sight::ui::base::dialog::LocationDialog dialogFile;
         dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);
@@ -586,14 +623,14 @@ void SWriter::openLocationDialog()
         dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
         dialogFile.setType(ui::base::dialog::LocationDialog::SINGLE_FILE);
 
-        for(const std::string& ext :  m_allowedExts)
+        for(const std::string& ext : m_allowedExts)
         {
             dialogFile.addFilter(m_allowedExtLabels[ext], "*" + ext);
         }
 
         auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
 
-        if (result)
+        if(result)
         {
             this->setFile(result->getFile());
             m_selectedExtension = dialogFile.getCurrentSelection();
@@ -604,10 +641,9 @@ void SWriter::openLocationDialog()
         {
             this->clearLocations();
         }
-
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::io::atoms

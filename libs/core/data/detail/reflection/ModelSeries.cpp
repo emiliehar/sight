@@ -29,9 +29,9 @@
 
 #include <data/Reconstruction.hpp>
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(ModelSeries))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (ModelSeries))
 {
     builder
     .tag("object_version", "3")

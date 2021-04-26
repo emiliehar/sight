@@ -31,7 +31,7 @@ namespace sight::io::patch::semantic
 
 std::string PatchLoader::s_currentVersion = "V17AR";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatchLoader::loadPatches()
 {
@@ -43,20 +43,20 @@ void PatchLoader::loadPatches()
     io::patch::semantic::PatchLoader::setCurrentVersion(s_currentVersion);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatchLoader::setCurrentVersion(const std::string& version)
 {
     s_currentVersion = version;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string PatchLoader::getCurrentVersion()
 {
     return s_currentVersion;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sight::io::patch::semantic
+} // namespace sight::io::patch::semantic

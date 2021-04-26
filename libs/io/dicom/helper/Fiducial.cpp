@@ -33,10 +33,11 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Fiducial::containsLandmarks(const SPTR(data::SeriesDB)& seriesDB)
 {
@@ -44,13 +45,16 @@ bool Fiducial::containsLandmarks(const SPTR(data::SeriesDB)& seriesDB)
     for(const data::Series::sptr& series : seriesDB->getContainer())
     {
         data::ImageSeries::sptr imageSeries = data::ImageSeries::dynamicCast(series);
+
         if(imageSeries)
         {
             data::Image::sptr image = imageSeries->getImage();
+
             if(image)
             {
-                data::PointList::sptr pointList =
-                    image->getField< data::PointList >(data::fieldHelper::Image::m_imageLandmarksId);
+                data::PointList::sptr pointList
+                    = image->getField<data::PointList>(data::fieldHelper::Image::m_imageLandmarksId);
+
                 if(pointList && !pointList->getPoints().empty())
                 {
                     return true;
@@ -62,7 +66,7 @@ bool Fiducial::containsLandmarks(const SPTR(data::SeriesDB)& seriesDB)
     return false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Fiducial::containsDistances(const SPTR(data::SeriesDB)& seriesDB)
 {
@@ -70,13 +74,16 @@ bool Fiducial::containsDistances(const SPTR(data::SeriesDB)& seriesDB)
     for(const data::Series::sptr& series : seriesDB->getContainer())
     {
         data::ImageSeries::sptr imageSeries = data::ImageSeries::dynamicCast(series);
+
         if(imageSeries)
         {
             data::Image::sptr image = imageSeries->getImage();
+
             if(image)
             {
-                data::Vector::sptr distanceVector =
-                    image->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
+                data::Vector::sptr distanceVector
+                    = image->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
+
                 if(distanceVector && !distanceVector->empty())
                 {
                     return true;
@@ -88,7 +95,7 @@ bool Fiducial::containsDistances(const SPTR(data::SeriesDB)& seriesDB)
     return false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Fiducial::contains3DDistances(const SPTR(data::SeriesDB)& seriesDB)
 {
@@ -96,26 +103,31 @@ bool Fiducial::contains3DDistances(const SPTR(data::SeriesDB)& seriesDB)
     for(const data::Series::sptr& series : seriesDB->getContainer())
     {
         data::ImageSeries::sptr imageSeries = data::ImageSeries::dynamicCast(series);
+
         if(imageSeries)
         {
             data::Image::csptr image = imageSeries->getImage();
+
             if(image)
             {
-                data::Vector::sptr distanceVector =
-                    image->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
+                data::Vector::sptr distanceVector
+                    = image->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
+
                 if(distanceVector && !distanceVector->empty())
                 {
                     for(const data::Object::sptr& object : distanceVector->getContainer())
                     {
                         data::PointList::sptr pointList = data::PointList::dynamicCast(object);
+
                         if(pointList && pointList->getPoints().size() >= 2)
                         {
                             const data::Point::csptr point1 = *pointList->getPoints().begin();
                             const data::Point::csptr point2 = *(++pointList->getPoints().begin());
-                            const size_t frameNumber1       =
-                                io::dicom::helper::DicomDataTools::convertPointToFrameNumber(image, point1);
-                            const size_t frameNumber2 =
-                                io::dicom::helper::DicomDataTools::convertPointToFrameNumber(image, point2);
+                            const size_t frameNumber1
+                                = io::dicom::helper::DicomDataTools::convertPointToFrameNumber(image, point1);
+                            const size_t frameNumber2
+                                = io::dicom::helper::DicomDataTools::convertPointToFrameNumber(image, point2);
+
                             if(frameNumber1 != frameNumber2)
                             {
                                 return true;
@@ -130,7 +142,8 @@ bool Fiducial::contains3DDistances(const SPTR(data::SeriesDB)& seriesDB)
     return false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace helper
+
 } // namespace sight::io::dicom

@@ -28,18 +28,24 @@
 
 namespace sight::data
 {
+
 class Reconstruction;
+
 }
 
 namespace sight::data
 {
+
 class ModelSeries;
+
 }
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace iod
 {
 
@@ -48,9 +54,7 @@ namespace iod
  */
 class IO_DICOM_CLASS_API SurfaceSegmentationIOD : public io::dicom::reader::iod::InformationObjectDefinition
 {
-
 public:
-
     /**
      * @brief Constructor
      * @param[in] dicomSeries DicomSeries
@@ -59,11 +63,12 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API SurfaceSegmentationIOD(const data::DicomSeries::csptr& dicomSeries,
-                                        const SPTR(io::dicom::container::DicomInstance)& instance,
-                                        const core::log::Logger::sptr& logger = nullptr,
-                                        ProgressCallback progress             = nullptr,
-                                        CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API SurfaceSegmentationIOD(
+        const data::DicomSeries::csptr& dicomSeries,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~SurfaceSegmentationIOD();
@@ -74,9 +79,10 @@ public:
      * @throw io::dicom::exception::Failed
      */
     IO_DICOM_API void read(data::Series::sptr series);
-
 };
 
-}  // namespace iod
-}  // namespace reader
-}  // namespace sight::io::dicom
+} // namespace iod
+
+} // namespace reader
+
+} // namespace sight::io::dicom

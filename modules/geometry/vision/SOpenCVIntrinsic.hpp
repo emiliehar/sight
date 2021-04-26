@@ -56,9 +56,8 @@ namespace sight::module::geometry::vision
 class MODULE_GEOMETRY_VISION_CLASS_API SOpenCVIntrinsic : public service::ICalibration
 {
 public:
-
     /// Double changed signal type
-    typedef core::com::Signal< void (double) > ErrorComputedSignalType;
+    typedef core::com::Signal<void (double)> ErrorComputedSignalType;
 
     SIGHT_DECLARE_SERVICE(SOpenCVIntrinsic, service::ICalibration)
 
@@ -69,7 +68,6 @@ public:
     MODULE_GEOMETRY_VISION_API virtual ~SOpenCVIntrinsic() noexcept;
 
 protected:
-
     /// Configures the service.
     MODULE_GEOMETRY_VISION_API void configuring() override;
 
@@ -91,7 +89,6 @@ protected:
     void updateChessboardSize();
 
 private:
-
     /// Preference key to retrieve width of the chessboard used for calibration
     std::string m_widthKey;
 

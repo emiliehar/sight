@@ -34,23 +34,25 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace archiver
 {
 
-MemoryArchiveSink::MemoryArchiveSink(struct archive* archive,
-                                     const std::filesystem::path& path) :
+MemoryArchiveSink::MemoryArchiveSink(
+    struct archive* archive,
+    const std::filesystem::path& path) :
     m_archive(archive),
     m_path(path)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MemoryArchiveSink::~MemoryArchiveSink()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryArchiveSink::archive()
 {
@@ -69,41 +71,47 @@ void MemoryArchiveSink::archive()
     archive_entry_set_birthtime(entry, seconds, nanoseconds);
     archive_entry_set_ctime(entry, seconds, nanoseconds);
     archive_entry_set_mtime(entry, seconds, nanoseconds);
-    if (archive_write_header(m_archive, entry) != ARCHIVE_OK)
+
+    if(archive_write_header(m_archive, entry) != ARCHIVE_OK)
     {
         throw io::zip::exception::Write("Cannot write header");
     }
+
     archive_entry_free(entry);
-    for (int i = 0; i < m_buffer.size(); i += MemoryArchiveSink::s_WRITE_BUFFER_SIZE)
+
+    for(int i = 0 ; i < m_buffer.size() ; i += MemoryArchiveSink::s_WRITE_BUFFER_SIZE)
     {
         size = MemoryArchiveSink::s_WRITE_BUFFER_SIZE;
-        if (i + MemoryArchiveSink::s_WRITE_BUFFER_SIZE > m_buffer.size())
+
+        if(i + MemoryArchiveSink::s_WRITE_BUFFER_SIZE > m_buffer.size())
         {
             size = m_buffer.size() - i;
         }
-        if (archive_write_data(m_archive, &m_buffer[i], size) < 0)
+
+        if(archive_write_data(m_archive, &m_buffer[i], size) < 0)
         {
             io::zip::exception::Write("Cannot write data in archive");
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::streamsize MemoryArchiveSink::write(const char* buf, std::streamsize n)
 {
     m_buffer.insert(m_buffer.end(), buf, buf + n);
+
     return n;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int MemoryWriteArchive::open(struct archive* archive, void* client_data)
 {
     return ARCHIVE_OK;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ssize_t MemoryWriteArchive::write(struct archive* a, void* client_data, const void* buff, size_t size)
 {
@@ -111,19 +119,20 @@ ssize_t MemoryWriteArchive::write(struct archive* a, void* client_data, const vo
     const char* bytesToWrite = reinterpret_cast<const char*>(buff);
 
     bytes->insert(bytes->end(), bytesToWrite, bytesToWrite + size);
+
     return size;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int MemoryWriteArchive::close(struct archive* archive, void* client_data)
 {
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-MemoryWriteArchive::MemoryWriteArchive(std::vector< char >& buffer) :
+MemoryWriteArchive::MemoryWriteArchive(std::vector<char>& buffer) :
     m_buffer(buffer)
 {
     int ret;
@@ -134,46 +143,49 @@ MemoryWriteArchive::MemoryWriteArchive(std::vector< char >& buffer) :
     archive_write_set_format_ustar(m_archive);
     archive_write_set_bytes_in_last_block(m_archive, 1);
     userData = reinterpret_cast<void*>(&m_buffer);
-    ret      = archive_write_open(m_archive,
-                                  userData,
-                                  &MemoryWriteArchive::open,
-                                  &MemoryWriteArchive::write,
-                                  &MemoryWriteArchive::close);
-    if (ret != ARCHIVE_OK)
+    ret      = archive_write_open(
+        m_archive,
+        userData,
+        &MemoryWriteArchive::open,
+        &MemoryWriteArchive::write,
+        &MemoryWriteArchive::close);
+
+    if(ret != ARCHIVE_OK)
     {
         throw io::zip::exception::Write("Cannot open archive in write mode");
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MemoryWriteArchive::~MemoryWriteArchive()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryWriteArchive::writeArchive()
 {
     std::vector<StreamSPtr>::iterator it;
 
-    for (it = m_sinks.begin(); it != m_sinks.end(); ++it)
+    for(it = m_sinks.begin() ; it != m_sinks.end() ; ++it)
     {
         it->get()->flush();
         it->get()->component()->archive();
     }
+
     archive_write_close(m_archive);
     archive_write_free(m_archive);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool MemoryWriteArchive::createDir(const std::filesystem::path& path)
 {
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPTR(std::ostream) MemoryWriteArchive::createFile(const std::filesystem::path& path)
 {
@@ -181,18 +193,20 @@ SPTR(std::ostream) MemoryWriteArchive::createFile(const std::filesystem::path& p
 
     os = std::make_shared< ::boost::iostreams::stream<MemoryArchiveSink> >(m_archive, path);
     m_sinks.push_back(os);
+
     return os;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void MemoryWriteArchive::putFile(const std::filesystem::path& sourceFile,
-                                 const std::filesystem::path& archiveFile)
+void MemoryWriteArchive::putFile(
+    const std::filesystem::path& sourceFile,
+    const std::filesystem::path& archiveFile)
 {
     SPTR(std::ostream)  os;
     std::ifstream is(sourceFile.string().c_str(), std::ios::binary);
 
-    if (is.is_open())
+    if(is.is_open())
     {
         os = this->createFile(archiveFile);
         *os << is.rdbuf();
@@ -204,7 +218,7 @@ void MemoryWriteArchive::putFile(const std::filesystem::path& sourceFile,
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::filesystem::path MemoryWriteArchive::getArchivePath() const
 {
@@ -212,4 +226,5 @@ const std::filesystem::path MemoryWriteArchive::getArchivePath() const
 }
 
 } // namespace archiver
+
 } // namespace sight::io::igtl::detail

@@ -179,17 +179,16 @@ namespace sight::module::io::realsense
 class MODULE_IO_REALSENSE_CLASS_API SScan : public service::IRGBDGrabber
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SScan, ::sight::service::IRGBDGrabber)
 
     /// Signal send when Distance is computed.
-    typedef core::com::Signal< void (double) > DistanceComputedSignalType;
+    typedef core::com::Signal<void (double)> DistanceComputedSignalType;
 
     /// Signal send when stream from a realsense device, can be useful to enable/disable some gui actions.
-    typedef core::com::Signal< void (void) > DevicePlayedSignalType;
+    typedef core::com::Signal<void (void)> DevicePlayedSignalType;
 
     /// Signal send when stream from a file (.bag), can be useful to enable/disable some gui actions.
-    typedef core::com::Signal< void (void) > FilePlayedSignalType;
+    typedef core::com::Signal<void (void)> FilePlayedSignalType;
 
     /// Constructor. Initializes signals/slots.
     MODULE_IO_REALSENSE_API SScan() noexcept;
@@ -198,7 +197,6 @@ public:
     MODULE_IO_REALSENSE_API ~SScan() noexcept override;
 
 protected:
-
     /// Starts the service, get the timelines and set the outputs.
     MODULE_IO_REALSENSE_API void starting() override;
 
@@ -212,7 +210,6 @@ protected:
     MODULE_IO_REALSENSE_API void configuring() override;
 
 private:
-
     // Internal structures
 
     /// min and max depth range (from realsense-viewer application).
@@ -235,7 +232,7 @@ private:
         int maxRange          = s_MAX_DEPTH_RANGE; ///< max depth range.
         int minRange          = s_MIN_DEPTH_RANGE; ///< min depth range.
         bool needHardReset    = false; ///< if device needs to be hard-reset before at stop.
-        ///If frames needs to be aligned on in a particular STREAM.
+        /// If frames needs to be aligned on in a particular STREAM.
         /// Value can be RS2_STREAM_COUNT = No alignement, RS_STREAM_DEPTH, RS_STREAM_COLOR, RS_STREAM_INFRARED, others
         // values are ignored.
         ::rs2_stream streamToAlignTo = RS2_STREAM_COUNT;
@@ -254,7 +251,6 @@ private:
             minRange        = s_MIN_DEPTH_RANGE;
             needHardReset   = false;
             streamToAlignTo = RS2_STREAM_COUNT;
-
         }
     };
 
@@ -267,7 +263,7 @@ private:
         bool enableHolesFilling{false}; ///< Enable Holes Filling filter
 
         // spacial filter settings
-        std::uint8_t spacialMagnitude{2}; ///<  Number of filter iterations [1-5]
+        std::uint8_t spacialMagnitude{2}; ///< Number of filter iterations [1-5]
         /// Alpha factor in an exponential moving average with Alpha=1 - no filter. Alpha = 0 - infinite filter [0.25-1]
         float spacialSmoothAlpha{0.5f};
         /// Step-size boundary. Establishes the threshold used to preserve "edges" [1-50]
@@ -296,7 +292,7 @@ private:
     {
         COLOR,
         DEPTH,
-        INFRARED,
+        INFRARED
     } PointcloudColormapEnumType;
 
     // Overriden functions/slots
@@ -311,15 +307,14 @@ private:
     /// Does nothing (re-implemented from IGrabber)
     void toggleLoopMode() override
     {
-
     }
+
     /// Does nothing (re-implemented from IGrabber)
     void setPosition(int64_t) override
     {
-
     }
 
-    ///SLOT: Start recording session, also open dialog to select filename if m_recordingFileName is not set.
+    /// SLOT: Start recording session, also open dialog to select filename if m_recordingFileName is not set.
     void record();
 
     /// SLOT: Configure recording filename path.
@@ -388,16 +383,16 @@ private:
 
     // Slots
 
-    ///SLOT: When "boolean" parameter changes
+    /// SLOT: When "boolean" parameter changes
     void setBoolParameter(bool, std::string);
 
     /// SLOT: When "enum" parameter changes
     void setEnumParameter(std::string, std::string);
 
-    ///SLOT: When "int" parameter changes
+    /// SLOT: When "int" parameter changes
     void setIntParameter(int, std::string);
 
-    ///SLOT: When "double" parameter changes
+    /// SLOT: When "double" parameter changes
     void setDoubleParameter(double, std::string);
 
     /// Pop a message dialog to the user with _message.
@@ -437,25 +432,25 @@ private:
     ::rs2::device m_currentDevice;
 
     /// Map of json presets (in RC folder).
-    std::map< std::string, ::fs::path > m_jsonPresets;
+    std::map<std::string, ::fs::path> m_jsonPresets;
 
     /// Current device ID (to sort cameras if multiple realsense are plugged-in).
     std::string m_deviceID;
 
     /// True when grabbing thread is running, set to false to stop the thread.
-    std::atomic_bool m_running { false };
+    std::atomic_bool m_running{false};
 
     /// True to pause the streaming, false otherwise
-    std::atomic_bool m_pause { false };
+    std::atomic_bool m_pause{false};
 
     /// True to push infrared frames in color TL.
-    std::atomic_bool m_switchInfra2Color { false };
+    std::atomic_bool m_switchInfra2Color{false};
 
     /// True when the first real frame has been grabbed. Set the point cloud output.
-    std::atomic_bool m_grabbingStarted { false };
+    std::atomic_bool m_grabbingStarted{false};
 
     /// True if device needs to be recorded.
-    bool m_record { false };
+    bool m_record{false};
 
     /// Name of the recording file.
     std::string m_recordingFileName;
@@ -464,7 +459,7 @@ private:
     std::string m_playbackFileName;
 
     /// Enable if camera source = FILE, enable playing from .bag files.
-    bool m_playbackMode { false };
+    bool m_playbackMode{false};
 
     /// Condition Variable used to pause grabbing thread
     std::condition_variable m_pauseConditionVariable;
@@ -472,4 +467,5 @@ private:
     /// Mutex used for the Condition Variable
     std::mutex m_pauseMutex;
 };
-} //namespace sight::module::io::realsense
+
+} // namespace sight::module::io::realsense

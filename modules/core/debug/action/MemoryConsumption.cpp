@@ -34,15 +34,16 @@
 
 namespace sight::module::debug
 {
+
 namespace action
 {
 
 /// Static variable shared by both actions
-static std::vector< data::Array::sptr > memoryConsumer;
+static std::vector<data::Array::sptr> memoryConsumer;
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MemoryConsumption::pushNewArray(size_t memorySizeInBytes)
 {
@@ -52,14 +53,14 @@ void MemoryConsumption::pushNewArray(size_t memorySizeInBytes)
         data::Array::SizeType size(1, memorySizeInBytes);
         buffer->resize(size, core::tools::Type::s_UINT8_TYPENAME, true);
 
-        SIGHT_INFO("Creating a data::array consuming "<< memorySizeInBytes/(1024*1024) << " Mo ");
+        SIGHT_INFO("Creating a data::array consuming " << memorySizeInBytes / (1024 * 1024) << " Mo ");
 
-        memoryConsumer.push_back( buffer );
+        memoryConsumer.push_back(buffer);
     }
-    catch( std::exception& e )
+    catch(std::exception& e)
     {
         std::stringstream msg;
-        msg << "Cannot allocate buffer ("<< memorySizeInBytes/(1024*1024) <<" Mo) :\n" << e.what() << std::endl;
+        msg << "Cannot allocate buffer (" << memorySizeInBytes / (1024 * 1024) << " Mo) :\n" << e.what() << std::endl;
         sight::ui::base::dialog::MessageDialog::show(
             "Action increase memory",
             msg.str(),
@@ -67,21 +68,21 @@ void MemoryConsumption::pushNewArray(size_t memorySizeInBytes)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-MemoryConsumption::MemoryConsumption( ) noexcept :
+MemoryConsumption::MemoryConsumption() noexcept :
     m_isIncreaseMode(true),
-    m_memorySizeInBytes(1024*1024*256)                             // 256 Mo
+    m_memorySizeInBytes(1024 * 1024 * 256) // 256 Mo
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MemoryConsumption::~MemoryConsumption() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MemoryConsumption::updating()
 {
@@ -91,7 +92,7 @@ void MemoryConsumption::updating()
     }
     else
     {
-        if( !memoryConsumer.empty() )
+        if(!memoryConsumer.empty())
         {
             SIGHT_INFO("Removing one data::Array");
             memoryConsumer.pop_back();
@@ -99,7 +100,7 @@ void MemoryConsumption::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MemoryConsumption::configuring()
 {
@@ -111,7 +112,7 @@ void MemoryConsumption::configuring()
 
     SIGHT_ASSERT("Missing attribute 'value'", consumptionCfg->hasAttribute("mode"));
     std::string mode = consumptionCfg->getAttributeValue("mode");
-    SIGHT_ASSERT("Wrong value ("<< mode <<") for mode tag", mode == "increase" || mode == "decrease");
+    SIGHT_ASSERT("Wrong value (" << mode << ") for mode tag", mode == "increase" || mode == "decrease");
     m_isIncreaseMode = (mode == "increase");
 
     if(m_isIncreaseMode && consumptionCfg->hasAttribute("value"))
@@ -122,20 +123,21 @@ void MemoryConsumption::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MemoryConsumption::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 void MemoryConsumption::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace action
+
 } // namespace basicOpCtrl

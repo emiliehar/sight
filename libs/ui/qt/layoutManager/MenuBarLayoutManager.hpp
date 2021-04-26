@@ -34,6 +34,7 @@
 
 namespace sight::ui::qt
 {
+
 namespace layoutManager
 {
 
@@ -43,8 +44,10 @@ namespace layoutManager
 class UI_QT_CLASS_API MenuBarLayoutManager : public ui::base::layoutManager::IMenuBarLayoutManager
 {
 public:
-    SIGHT_DECLARE_CLASS(MenuBarLayoutManager, ui::base::layoutManager::IMenuBarLayoutManager,
-                        ui::base::factory::New< MenuBarLayoutManager >)
+    SIGHT_DECLARE_CLASS(
+        MenuBarLayoutManager,
+        ui::base::layoutManager::IMenuBarLayoutManager,
+        ui::base::factory::New<MenuBarLayoutManager>)
 
     UI_QT_API MenuBarLayoutManager(ui::base::GuiBaseObject::Key key);
 
@@ -55,7 +58,7 @@ public:
      * @pre LayoutManager must be initialized before.
      * @pre parent menuBar must be instanced.
      */
-    UI_QT_API void createLayout( ui::base::container::fwMenuBar::sptr parent ) override;
+    UI_QT_API void createLayout(ui::base::container::fwMenuBar::sptr parent) override;
 
     /**
      * @brief Destroy local menus.
@@ -78,4 +81,5 @@ protected:
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::qt

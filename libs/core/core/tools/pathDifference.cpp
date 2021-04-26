@@ -26,9 +26,10 @@
 
 namespace sight::core::tools
 {
-//------------------------------------------------------------------------------
 
-std::filesystem::path getPathDifference( std::filesystem::path path1, std::filesystem::path path2 )
+// ------------------------------------------------------------------------------
+
+std::filesystem::path getPathDifference(std::filesystem::path path1, std::filesystem::path path2)
 {
     using std::filesystem::path;
     path pathDiff;
@@ -41,14 +42,14 @@ std::filesystem::path getPathDifference( std::filesystem::path path1, std::files
     path::iterator i2 = fstChange.second;
 
     // move updir from path1 position : climb to first difference in folder hierarchy
-    while (i1 != path1.end() )
+    while(i1 != path1.end())
     {
         pathDiff /= "..";
         ++i1;
     }
 
     // mode down_dir to path2
-    while (i2 != path2.end() )
+    while(i2 != path2.end())
     {
         pathDiff /= *i2;
         ++i2;

@@ -32,7 +32,7 @@ namespace sight::core::com
 namespace exception
 {
 
-NoWorker::NoWorker ( const std::string& err ) :
+NoWorker::NoWorker(const std::string& err) :
     core::Exception(err)
 {
 }

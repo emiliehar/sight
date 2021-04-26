@@ -50,7 +50,6 @@ namespace sight::io::base::service
  */
 class IO_BASE_CLASS_API IWriter : public sight::service::IService
 {
-
 public:
     SIGHT_DECLARE_SERVICE(IWriter, sight::service::IService)
 
@@ -163,7 +162,6 @@ public:
     IO_BASE_API bool hasFailed() const;
 
 protected:
-
     IO_BASE_API IWriter() noexcept;
 
     IO_BASE_API virtual ~IWriter() noexcept;
@@ -214,7 +212,6 @@ protected:
     bool m_writeFailed{false};
 
 private:
-
     /// Slot: temporary slot to display a deprecated message when calling 'configureWithIHM', remove this in sight 22.0.
     void deprecateConfigureWithIHM();
 
@@ -229,4 +226,4 @@ private:
     mutable std::filesystem::path m_currentLocation;
 };
 
-} //namespace sight::io::base::service
+} // namespace sight::io::base::service

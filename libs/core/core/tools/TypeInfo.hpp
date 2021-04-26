@@ -28,6 +28,7 @@
 
 namespace sight::core::tools
 {
+
 /**
  * @brief   Purpose: offer a first-class, comparable wrapper over std::type_info ( but copy construcible )
  *
@@ -37,7 +38,6 @@ namespace sight::core::tools
 class CORE_CLASS_API TypeInfo
 {
 public:
-
     /// default constructor
     CORE_API TypeInfo(); // needed for containers
 
@@ -80,7 +80,6 @@ public:
     CORE_API const char* name() const;
 
 private:
-
     /// std::type_info are not copiable but its pointer yes and typeid always return same reference !!!
     const std::type_info* pInfo_;
 };

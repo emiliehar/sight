@@ -23,14 +23,15 @@
 #include "StudyTest.hpp"
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::StudyTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::StudyTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::setUp()
 {
@@ -38,7 +39,7 @@ void StudyTest::setUp()
     m_study = data::Study::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::tearDown()
 {
@@ -46,7 +47,7 @@ void StudyTest::tearDown()
     m_study.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::instanceUIDTest()
 {
@@ -56,7 +57,7 @@ void StudyTest::instanceUIDTest()
     CPPUNIT_ASSERT_EQUAL(instanceUID, m_study->getInstanceUID());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::dateTest()
 {
@@ -66,7 +67,7 @@ void StudyTest::dateTest()
     CPPUNIT_ASSERT_EQUAL(date, m_study->getDate());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::timeTest()
 {
@@ -76,7 +77,7 @@ void StudyTest::timeTest()
     CPPUNIT_ASSERT_EQUAL(time, m_study->getTime());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::referringPhysicianNameTest()
 {
@@ -86,7 +87,7 @@ void StudyTest::referringPhysicianNameTest()
     CPPUNIT_ASSERT_EQUAL(rpn, m_study->getReferringPhysicianName());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::descriptionTest()
 {
@@ -96,7 +97,7 @@ void StudyTest::descriptionTest()
     CPPUNIT_ASSERT_EQUAL(desc, m_study->getDescription());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StudyTest::patientAgeTest()
 {
@@ -106,7 +107,8 @@ void StudyTest::patientAgeTest()
     CPPUNIT_ASSERT_EQUAL(age, m_study->getPatientAge());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

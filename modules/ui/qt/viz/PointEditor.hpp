@@ -47,7 +47,6 @@ class MODULE_UI_QT_CLASS_API PointEditor : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(PointEditor, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -57,13 +56,12 @@ public:
     MODULE_UI_QT_API virtual ~PointEditor() noexcept;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
-    ///This method launches the IEditor::starting method.
+    /// This method launches the IEditor::starting method.
     void starting() override;
 
-    ///This method launches the IEditor::stopping method.
+    /// This method launches the IEditor::stopping method.
     void stopping() override;
 
     void updating() override;
@@ -73,17 +71,15 @@ protected:
     void configuring() override;
 
     /// Overrides
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
     /// Slot: get the interaction information
     void getInteraction(data::tools::PickingInfo info);
 
-    QPointer< QLineEdit >   m_textCtrl_x;
-    QPointer< QLineEdit >   m_textCtrl_y;
-    QPointer< QLineEdit >   m_textCtrl_z;
-
+    QPointer<QLineEdit> m_textCtrl_x;
+    QPointer<QLineEdit> m_textCtrl_y;
+    QPointer<QLineEdit> m_textCtrl_z;
 };
 
 } // uiData

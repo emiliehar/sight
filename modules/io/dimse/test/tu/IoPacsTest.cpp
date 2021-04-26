@@ -33,37 +33,38 @@
 #include <io/dimse/data/PacsConfiguration.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::module::io::dimse::ut::IoPacsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::module::io::dimse::ut::IoPacsTest);
 
 namespace sight::module::io::dimse
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IoPacsTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IoPacsTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IoPacsTest::pacsConfigurationInitializer()
 {
     // Pacs Conifguration
-    sight::io::dimse::data::PacsConfiguration::sptr pacsConfiguration =
-        sight::io::dimse::data::PacsConfiguration::New();
+    sight::io::dimse::data::PacsConfiguration::sptr pacsConfiguration
+        = sight::io::dimse::data::PacsConfiguration::New();
 
     // Create service
-    service::IService::sptr srv = service::add( "::sight::module::io::dimse::SPacsConfigurationInitializer" );
+    service::IService::sptr srv = service::add("::sight::module::io::dimse::SPacsConfigurationInitializer");
     CPPUNIT_ASSERT(srv);
 
     // Create service configuration
@@ -79,13 +80,13 @@ void IoPacsTest::pacsConfigurationInitializer()
     configElement->setAttributeValue("retrieveMethod", "GET");
 
     // Use the service
-    srv->registerInOut(pacsConfiguration, "config" );
-    srv->setConfiguration( srvElement );
+    srv->registerInOut(pacsConfiguration, "config");
+    srv->setConfiguration(srvElement);
     srv->configure();
     srv->start();
     srv->update();
     srv->stop();
-    service::OSR::unregisterService( srv );
+    service::OSR::unregisterService(srv);
 
     unsigned short pacsApplicationPort = 11112u;
     unsigned short moveApplicationPort = 11110u;
@@ -95,12 +96,13 @@ void IoPacsTest::pacsConfigurationInitializer()
     CPPUNIT_ASSERT_EQUAL(pacsApplicationPort, pacsConfiguration->getPacsApplicationPort());
     CPPUNIT_ASSERT_EQUAL(std::string("MoveApplicationTitle"), pacsConfiguration->getMoveApplicationTitle());
     CPPUNIT_ASSERT_EQUAL(moveApplicationPort, pacsConfiguration->getMoveApplicationPort());
-    CPPUNIT_ASSERT_EQUAL(sight::io::dimse::data::PacsConfiguration::GET_RETRIEVE_METHOD,
-                         pacsConfiguration->getRetrieveMethod());
-
+    CPPUNIT_ASSERT_EQUAL(
+        sight::io::dimse::data::PacsConfiguration::GET_RETRIEVE_METHOD,
+        pacsConfiguration->getRetrieveMethod());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::module::io::dimse
+} // namespace ut
+
+} // namespace sight::module::io::dimse

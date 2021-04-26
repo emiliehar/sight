@@ -37,12 +37,12 @@
 
 #include <QQmlEngine>
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 namespace sight::module::viz::qt3d::adaptor
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 static const core::com::Slots::SlotKeyType s_MODIFY_VERTICES_SLOT = "modifyVertices";
 
@@ -52,24 +52,24 @@ static const std::string s_AUTORESET_CAMERA_CONFIG = "autoresetcamera";
 static const std::string s_MATERIAL_NAME_CONFIG    = "materialName";
 static const std::string s_VISIBLE_CONFIG          = "visible";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SMesh::SMesh() noexcept
 {
     // Allow using Mesh as QML type when using SMesh service in QML applications.
-    qmlRegisterType< sight::viz::qt3d::data::Mesh >("sight::viz::qt3d", 1, 0, "Mesh");
-    qRegisterMetaType< sight::viz::qt3d::data::Mesh* >("sight::viz::qt3d::data::Mesh*");
+    qmlRegisterType<sight::viz::qt3d::data::Mesh>("sight::viz::qt3d", 1, 0, "Mesh");
+    qRegisterMetaType<sight::viz::qt3d::data::Mesh*>("sight::viz::qt3d::data::Mesh*");
 
     newSlot(s_MODIFY_VERTICES_SLOT, &SMesh::modifyVertices, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SMesh::~SMesh() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMesh::configuring()
 {
@@ -84,14 +84,14 @@ void SMesh::configuring()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMesh::starting()
 {
     this->initialize();
 
     // Read the mesh from the input as sight data.
-    auto mesh = this->getLockedInOut< data::Mesh >(s_MESH_INOUT);
+    auto mesh = this->getLockedInOut<data::Mesh>(s_MESH_INOUT);
     SIGHT_ASSERT("input '" + s_MESH_INOUT + "' does not exist.", mesh.get_shared());
 
     // Create a Qt3D mesh from sight data.
@@ -101,17 +101,20 @@ void SMesh::starting()
     if(!m_materialName.empty())
     {
         // A material adaptor has been configured in the XML scene
-        auto mtlAdaptors = service::OSR::getServices< module::viz::qt3d::adaptor::SMaterial >();
+        auto mtlAdaptors = service::OSR::getServices<module::viz::qt3d::adaptor::SMaterial>();
 
-        auto result =
-            std::find_if(mtlAdaptors.begin(), mtlAdaptors.end(),
-                         [this](const module::viz::qt3d::adaptor::SMaterial::sptr srv)
+        auto result
+            = std::find_if(
+                  mtlAdaptors.begin(),
+                  mtlAdaptors.end(),
+                  [this](const module::viz::qt3d::adaptor::SMaterial::sptr srv)
             {
                 return srv->getMaterialName() == m_materialName;
             });
 
-        SIGHT_ASSERT("SMaterial adaptor managing material'" + m_materialName + "' is not found",
-                     result != mtlAdaptors.end());
+        SIGHT_ASSERT(
+            "SMaterial adaptor managing material'" + m_materialName + "' is not found",
+            result != mtlAdaptors.end());
 
         const module::viz::qt3d::adaptor::SMaterial::sptr materialAdaptor = *result;
 
@@ -128,26 +131,28 @@ void SMesh::starting()
     m_mesh->setEnabled(m_isVisible);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SMesh::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_MESH_INOUT, data::Mesh::s_MODIFIED_SIG, s_UPDATE_SLOT);
     connections.push(s_MESH_INOUT, data::Mesh::s_VERTEX_MODIFIED_SIG, s_MODIFY_VERTICES_SLOT);
+
     return connections;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMesh::updating()
 {
     // Read the mesh from the input as sight data.
-    auto mesh = this->getLockedInOut< data::Mesh >(s_MESH_INOUT);
+    auto mesh = this->getLockedInOut<data::Mesh>(s_MESH_INOUT);
     SIGHT_ASSERT("input '" + s_MESH_INOUT + "' does not exist.", mesh.get_shared());
 
     // Update the mesh and center camera if necessary.
     m_mesh->setMesh(mesh.get_shared());
+
     if(m_autoResetCamera)
     {
         m_mesh->centerCameraOnMesh();
@@ -159,30 +164,33 @@ void SMesh::updating()
     if(!m_materialName.empty())
     {
         // A material adaptor has been configured in the XML scene
-        auto mtlAdaptors = service::OSR::getServices< module::viz::qt3d::adaptor::SMaterial >();
+        auto mtlAdaptors = service::OSR::getServices<module::viz::qt3d::adaptor::SMaterial>();
 
-        auto result =
-            std::find_if(mtlAdaptors.begin(), mtlAdaptors.end(),
-                         [this](const module::viz::qt3d::adaptor::SMaterial::sptr& srv)
+        auto result
+            = std::find_if(
+                  mtlAdaptors.begin(),
+                  mtlAdaptors.end(),
+                  [this](const module::viz::qt3d::adaptor::SMaterial::sptr& srv)
             {
                 return srv->getMaterialName() == m_materialName;
             });
 
         auto materialAdaptor = *result;
 
-        SIGHT_ASSERT("SMaterial adaptor managing material'" + m_materialName + "' is not found",
-                     result != mtlAdaptors.end());
+        SIGHT_ASSERT(
+            "SMaterial adaptor managing material'" + m_materialName + "' is not found",
+            result != mtlAdaptors.end());
         m_mesh->setMaterial(materialAdaptor->getMaterial());
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMesh::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMesh::updateVisibility(bool _visibility)
 {
@@ -191,12 +199,12 @@ void SMesh::updateVisibility(bool _visibility)
     m_mesh->setEnabled(m_isVisible);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMesh::modifyVertices()
 {
     // Read the mesh from the input as sight data.
-    auto mesh = this->getLockedInOut< data::Mesh >(s_MESH_INOUT);
+    auto mesh = this->getLockedInOut<data::Mesh>(s_MESH_INOUT);
     SIGHT_ASSERT("input '" + s_MESH_INOUT + "' does not exist.", mesh.get_shared());
 
     // Update mesh position and normal buffers.

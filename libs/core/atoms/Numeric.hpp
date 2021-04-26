@@ -40,8 +40,7 @@ namespace sight::atoms
 class ATOMS_CLASS_API Numeric : public Base
 {
 public:
-
-    SIGHT_DECLARE_CLASS(Numeric, atoms::Base, atoms::factory::New< Numeric >)
+    SIGHT_DECLARE_CLASS(Numeric, atoms::Base, atoms::factory::New<Numeric>)
 
     typedef enum
     {
@@ -52,7 +51,7 @@ public:
         DOUBLE
     } NumericType;
 
-    typedef ::boost::variant< ::boost::blank, std::int64_t, std::uint64_t, float, double > ValueType;
+    typedef ::boost::variant< ::boost::blank, std::int64_t, std::uint64_t, float, double> ValueType;
 
     /**
      * @brief Constructor
@@ -74,7 +73,7 @@ public:
      * @param value reference of all numeric type
      * Supported tested type are (int8/16/32/64, uint8/16/32/64, float, double)
      **/
-    template< typename T >
+    template<typename T>
     static Numeric::sptr New(T value);
 
     /**
@@ -95,7 +94,7 @@ public:
      */
     NumericType variantType() const
     {
-        return static_cast< NumericType >(m_value.which());
+        return static_cast<NumericType>(m_value.which());
     }
 
     /**
@@ -141,13 +140,11 @@ public:
      * @throw boost::positive_overflow
      * @throw boost::negative_overflow
      */
-    template <typename T>
+    template<typename T>
     T getValue() const;
 
 protected:
-
     ValueType m_value;
-
 };
 
-}
+} // namespace sight::atoms

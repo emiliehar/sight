@@ -26,23 +26,24 @@
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QtMenuBarContainer::QtMenuBarContainer(ui::base::GuiBaseObject::Key key) noexcept :
     m_menuBar(0)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QtMenuBarContainer::~QtMenuBarContainer() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtMenuBarContainer::clean()
 {
@@ -51,14 +52,15 @@ void QtMenuBarContainer::clean()
     m_menuBar->clear();
 
     QList<QMenu*> list = m_menuBar->findChildren<QMenu*>();
-    Q_FOREACH (QMenu* m, list)
+
+    Q_FOREACH(QMenu* m, list)
     {
         m->hide();
         delete m;
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtMenuBarContainer::destroyContainer()
 {
@@ -71,21 +73,22 @@ void QtMenuBarContainer::destroyContainer()
     delete m_menuBar;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtMenuBarContainer::setQtMenuBar(QMenuBar* menuBar)
 {
     this->m_menuBar = menuBar;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QMenuBar* QtMenuBarContainer::getQtMenuBar()
 {
     return this->m_menuBar;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace container
+
 } // namespace sight::ui::qt

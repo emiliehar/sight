@@ -56,7 +56,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SFlip : public service::IOperator
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SFlip, ::sight::service::IOperator)
 
     MODULE_FILTER_IMAGE_API static const core::com::Slots::SlotKeyType s_FLIP_AXISX_SLOT;
@@ -70,7 +69,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SFlip();
 
 protected:
-
     /// Configures the service.
     MODULE_FILTER_IMAGE_API void configuring() override;
 
@@ -92,7 +90,6 @@ protected:
     MODULE_FILTER_IMAGE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// Slot: flip the first axis
     void flipAxisX();
     /// Slot: flip the second axis
@@ -101,7 +98,7 @@ private:
     void flipAxisZ();
 
     // Store whether to flip or not one of the 3 axis
-    std::array<bool, 3> m_flipAxes {{false, false, false}};
+    std::array<bool, 3> m_flipAxes{{false, false, false}};
 };
 
 } // namespace sight::module::filter::image

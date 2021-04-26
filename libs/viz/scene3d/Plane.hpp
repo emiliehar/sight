@@ -41,7 +41,9 @@
 
 namespace Ogre
 {
+
 class SceneNode;
+
 }
 
 namespace sight::viz::scene3d
@@ -52,9 +54,7 @@ namespace sight::viz::scene3d
  */
 class VIZ_SCENE3D_CLASS_API Plane
 {
-
 public:
-
     typedef data::helper::MedicalImage::Orientation OrientationMode;
 
     /// Defines the texture filtering mode.
@@ -77,9 +77,15 @@ public:
      * @param _filtering filtering method used to apply the texture.
      * @param _entityOpacity opacity of the entity.
      */
-    VIZ_SCENE3D_API Plane(const core::tools::fwID::IDType& _negatoId, ::Ogre::SceneNode* _parentSceneNode,
-                          ::Ogre::SceneManager* _sceneManager, OrientationMode _orientation, ::Ogre::TexturePtr _tex,
-                          FilteringEnumType _filtering, float _entityOpacity = 1.0f, bool _displayBorder = true);
+    VIZ_SCENE3D_API Plane(
+        const core::tools::fwID::IDType& _negatoId,
+        ::Ogre::SceneNode* _parentSceneNode,
+        ::Ogre::SceneManager* _sceneManager,
+        OrientationMode _orientation,
+        ::Ogre::TexturePtr _tex,
+        FilteringEnumType _filtering,
+        float _entityOpacity = 1.0f,
+        bool _displayBorder  = true);
 
     /// Cleans ogre resources.
     VIZ_SCENE3D_API virtual ~Plane();
@@ -176,7 +182,6 @@ public:
     VIZ_SCENE3D_API void setRenderQueuerGroupAndPriority(std::uint8_t _groupId, std::uint16_t _priority);
 
 private:
-
     /// Sets the plane's original position.
     void initializePosition();
 
@@ -193,10 +198,10 @@ private:
     ::Ogre::MovablePlane setDimensions();
 
     /// Indicates whether whe want to threshold instead of windowing.
-    bool m_threshold { false };
+    bool m_threshold{false};
 
     /// Defines the filtering type for this plane.
-    FilteringEnumType m_filtering { FilteringEnum::ANISOTROPIC };
+    FilteringEnumType m_filtering{FilteringEnum::ANISOTROPIC};
 
     /// Defines the orientation mode of the plane.
     OrientationMode m_orientation;
@@ -205,22 +210,22 @@ private:
     ::Ogre::MeshPtr m_slicePlane;
 
     /// Contains the manual object that represent borders.
-    ::Ogre::ManualObject* m_border { nullptr };
+    ::Ogre::ManualObject* m_border{nullptr};
 
     /// Defines the origin position of the slice plane according to the source image's origin.
-    ::Ogre::Vector3 m_originPosition { ::Ogre::Vector3::ZERO };
+    ::Ogre::Vector3 m_originPosition{::Ogre::Vector3::ZERO};
 
     /// Contains the plane material.
-    ::Ogre::MaterialPtr m_texMaterial { nullptr };
+    ::Ogre::MaterialPtr m_texMaterial{nullptr};
 
     /// Contains the material used to display borders.
-    ::Ogre::MaterialPtr m_borderMaterial { nullptr };
+    ::Ogre::MaterialPtr m_borderMaterial{nullptr};
 
     /// Contains the texture.
     ::Ogre::TexturePtr m_texture;
 
     /// Contains the scenemanager containing the plane.
-    ::Ogre::SceneManager* m_sceneManager { nullptr };
+    ::Ogre::SceneManager* m_sceneManager{nullptr};
 
     /// Defines a strings needed to initialize mesh, scenenode, etc.
     std::string m_slicePlaneName;
@@ -232,69 +237,68 @@ private:
     std::string m_sceneNodeName;
 
     /// Contains the scene node on which we will attach the mesh.
-    ::Ogre::SceneNode* m_planeSceneNode { nullptr };
+    ::Ogre::SceneNode* m_planeSceneNode{nullptr};
 
     /// Contains the parent scene node.
-    ::Ogre::SceneNode* m_parentSceneNode { nullptr };
+    ::Ogre::SceneNode* m_parentSceneNode{nullptr};
 
     /// Defines the entity's width.
-    ::Ogre::Real m_width { 0.f };
+    ::Ogre::Real m_width{0.f};
 
     /// Defines the entity's height.
-    ::Ogre::Real m_height { 0.f };
+    ::Ogre::Real m_height{0.f};
 
     /// Defines the entity's depth.
-    ::Ogre::Real m_depth { 0.f };
+    ::Ogre::Real m_depth{0.f};
 
     /// Defines the spacing in the texture 3d image file.
-    ::Ogre::Vector3 m_spacing { ::Ogre::Vector3::ZERO };
+    ::Ogre::Vector3 m_spacing{::Ogre::Vector3::ZERO};
 
     /// Defines the depth range.
-    float m_relativePosition { 0.8f };
+    float m_relativePosition{0.8f};
 
     /// Defines the opacity applied to the entity.
-    float m_entityOpacity { 1.f };
+    float m_entityOpacity{1.f};
 
     /// Defines if the border is displayed.
-    bool m_displayBorder { true };
-
+    bool m_displayBorder{true};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Plane::setOriginPosition(const ::Ogre::Vector3& _origPos)
 {
     m_originPosition = _origPos;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline Plane::OrientationMode Plane::getOrientationMode() const
 {
     return m_orientation;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::MaterialPtr Plane::getMaterial()
 {
     return m_texMaterial;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::Real Plane::getWidth() const
 {
     return m_width;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::Real Plane::getHeight() const
 {
     return m_height;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // Namespace fwRenderOgre.

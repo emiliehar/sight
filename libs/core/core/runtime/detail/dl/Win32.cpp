@@ -35,36 +35,38 @@ namespace detail
 namespace dl
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Win32::Win32( const std::filesystem::path& modulePath ) noexcept :
+Win32::Win32(const std::filesystem::path& modulePath) noexcept :
     Native(modulePath.string()),
-    m_handle( 0 )
+    m_handle(0)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Win32::isLoaded() const noexcept
 {
     return m_handle != 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void* Win32::getSymbol( const std::string& name ) const
+void* Win32::getSymbol(const std::string& name) const
 {
     FARPROC symbol;
 
-    symbol = GetProcAddress( m_handle, name.c_str() );
+    symbol = GetProcAddress(m_handle, name.c_str());
+
     if(symbol == 0)
     {
         throw RuntimeException("'" + name + "': symbol retrieval failed.");
     }
+
     return symbol;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Win32::load()
 {
@@ -72,22 +74,23 @@ void Win32::load()
     {
         // Opens the dynamic library.
         std::string lib(getFullPath().string());
-        m_handle = LoadLibrary( lib.c_str() );
+        m_handle = LoadLibrary(lib.c_str());
+
         if(m_handle == 0)
         {
             // Retrieves the last error message.
             DWORD lastError = GetLastError();
             char buffer[1024];
-            FormatMessage( FORMAT_MESSAGE_FROM_SYSTEM, 0, lastError, 0, buffer, 1024, 0 );
+            FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, lastError, 0, buffer, 1024, 0);
 
             // Builds the error message and throws the exception.
-            std::string message( buffer );
-            throw RuntimeException( message );
+            std::string message(buffer);
+            throw RuntimeException(message);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Win32::unload()
 {
@@ -95,15 +98,17 @@ void Win32::unload()
     {
         BOOL result;
         result = FreeLibrary(m_handle);
+
         if(!result)
         {
             throw RuntimeException("Module unload failed.");
         }
+
         m_handle = 0;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dl
 

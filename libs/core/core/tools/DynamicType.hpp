@@ -63,20 +63,20 @@ public:
     /**
      * @brief  define an order (lexicographic) for dynamicType
      */
-    CORE_API bool operator<( const DynamicType& ) const;
+    CORE_API bool operator<(const DynamicType&) const;
 
     /**
      * @brief   Set DynamicType value according given template
      * @note    A BOOST_ASSERTION can be raised if TYPE is not managed by isMapping
      **/
-    template< class TYPE>
+    template<class TYPE>
     void setType();
 
     /**
      * @brief   Return true iff the DynamicType value represents the TYPE
      * @note    A BOOST_ASSERTION can be raised if TYPE is not managed by isMapping
      **/
-    template< class TYPE>
+    template<class TYPE>
     bool isType() const;
 
     /**
@@ -133,12 +133,11 @@ public:
             >::type SupportedTypes;
 
 protected:
-
     std::string m_value; // aka key
     unsigned char m_sizeof;
 
     /// Container of types managed by DynamicType
-    CORE_API static std::list< std::string > m_managedTypes;
+    CORE_API static std::list<std::string> m_managedTypes;
 
     /// Value for not specified type
     CORE_API static const std::string m_unSpecifiedType;
@@ -164,6 +163,6 @@ CORE_API std::string getString(const DynamicType& dt);
 template<>
 CORE_API std::string getString(const std::vector<DynamicType>& dtv);
 
-} //end namespace sight::core::tools
+} // end namespace sight::core::tools
 
 #include "core/tools/DynamicType.hxx"

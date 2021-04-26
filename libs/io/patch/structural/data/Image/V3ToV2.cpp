@@ -42,7 +42,6 @@ V3ToV2::V3ToV2() :
     m_targetClassname = "::sight::data::Image";
     m_originVersion   = "3";
     m_targetVersion   = "2";
-
 }
 
 // ----------------------------------------------------------------------------
@@ -53,7 +52,7 @@ V3ToV2::~V3ToV2()
 
 // ----------------------------------------------------------------------------
 
-V3ToV2::V3ToV2( const V3ToV2& cpy ) :
+V3ToV2::V3ToV2(const V3ToV2& cpy) :
     io::atoms::patch::IStructuralPatch(cpy)
 {
 }

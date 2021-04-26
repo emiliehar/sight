@@ -27,19 +27,23 @@
 #include <algorithm>
 #include <functional>
 
-fwAtomsRegisterMacro( sight::atoms::Sequence );
+fwAtomsRegisterMacro(sight::atoms::Sequence);
 
 namespace sight::atoms
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Base::sptr Sequence::clone() const
 {
     Sequence::sptr cloneSeq = Sequence::New();
     cloneSeq->m_value.resize(m_value.size());
-    std::transform(m_value.begin(), m_value.end(), cloneSeq->m_value.begin(),
-                   std::bind(&atoms::Base::clone, std::placeholders::_1));
+    std::transform(
+        m_value.begin(),
+        m_value.end(),
+        cloneSeq->m_value.begin(),
+        std::bind(&atoms::Base::clone, std::placeholders::_1));
+
     return cloneSeq;
 }
 

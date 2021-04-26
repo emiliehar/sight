@@ -31,36 +31,36 @@
 
 #include <data/factory/new.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(FrameTL));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (FrameTL));
 
 namespace sight::data
 {
+
 /**
  * @brief   This class defines a timeline of images.
  */
-class DATA_CLASS_API FrameTL : public GenericTL< uint8_t >
+class DATA_CLASS_API FrameTL : public GenericTL<uint8_t>
 {
-
 public:
-    SIGHT_DECLARE_CLASS(FrameTL, data::TimeLine, data::factory::New< FrameTL >)
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(FrameTL))
+    SIGHT_DECLARE_CLASS(FrameTL, data::TimeLine, data::factory::New<FrameTL>)
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (FrameTL))
 
     /// Frame format
     enum class PixelFormat
     {
         UNDEFINED = 0, ///< Undefined pixel format
-        RGB,           ///< Frame with 3 component RGB.
-        RGBA,          ///< Frame with 4 component RGBA.
-        BGR,           ///< Frame with 3 component BGR.
-        BGRA,          ///< Frame with 4 component BGRA.
-        GRAY_SCALE     ///< Frame with 1 component.
+        RGB, ///< Frame with 3 component RGB.
+        RGBA, ///< Frame with 4 component RGBA.
+        BGR, ///< Frame with 3 component BGR.
+        BGRA, ///< Frame with 4 component BGRA.
+        GRAY_SCALE ///< Frame with 1 component.
     };
 
     /**
      * @brief Constructor
      * @param key Private construction key
      */
-    DATA_API FrameTL( data::Object::Key key );
+    DATA_API FrameTL(data::Object::Key key);
 
     /// Destructor
     DATA_API virtual ~FrameTL();
@@ -75,13 +75,20 @@ public:
      * unsigned int maxElementNum = 1) instead, it will be removed in sight 22.0
      */
     [[deprecated("Initialize FrameTL with pixel format instead, it will be removed in sight 22.0")]]
-    DATA_API void initPoolSize(size_t width, size_t height,
-                               const core::tools::Type& type, size_t numberOfComponents = 1,
-                               unsigned int maxElementNum = 1);
+    DATA_API void initPoolSize(
+        size_t width,
+        size_t height,
+        const core::tools::Type& type,
+        size_t numberOfComponents  = 1,
+        unsigned int maxElementNum = 1);
 
     /// Initializes the size of the pool buffer.
-    DATA_API void initPoolSize(size_t width, size_t height, const core::tools::Type& type, const PixelFormat format,
-                               unsigned int maxElementNum = 1);
+    DATA_API void initPoolSize(
+        size_t width,
+        size_t height,
+        const core::tools::Type& type,
+        const PixelFormat format,
+        unsigned int maxElementNum = 1);
 
     /// Returns the width of an image in the timeline
     size_t getWidth() const
@@ -114,7 +121,6 @@ public:
     void setPixelFormat(PixelFormat format);
 
 private:
-
     /// Forbid the use of this inherited method.
     DATA_API void initPoolSize(unsigned int maxElementNum) override;
 
@@ -131,18 +137,17 @@ private:
     core::tools::Type m_type;
 
     /// Frame format
-    PixelFormat m_pixelFormat {PixelFormat::UNDEFINED};
-
+    PixelFormat m_pixelFormat{PixelFormat::UNDEFINED};
 }; // class FrameTL
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void FrameTL::setPixelFormat(PixelFormat format)
 {
     m_pixelFormat = format;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline FrameTL::PixelFormat FrameTL::getPixelFormat() const
 {

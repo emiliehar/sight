@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -36,7 +37,6 @@ class GenericDeserializer : public IDataDeserializer
 {
 public:
     SIGHT_DECLARE_CLASS(GenericDeserializer<T>, IDataDeserializer)
-
     /// Delete default copy constructors and assignment operators
     GenericDeserializer(const GenericDeserializer&)            = delete;
     GenericDeserializer(GenericDeserializer&&)                 = delete;
@@ -62,30 +62,31 @@ public:
     inline sight::data::Object::sptr create() override;
 
 protected:
-
     /// Default constructor
     GenericDeserializer() = default;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 typename GenericDeserializer<T>::sptr GenericDeserializer<T>::shared()
 {
     struct make_shared_enabler final : public GenericDeserializer<T> {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 typename GenericDeserializer<T>::uptr GenericDeserializer<T>::unique()
 {
     struct make_unique_enabler final : public GenericDeserializer<T> {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 sight::data::Object::sptr GenericDeserializer<T>::deserialize(
@@ -105,7 +106,7 @@ sight::data::Object::sptr GenericDeserializer<T>::deserialize(
     return newObject;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 sight::data::Object::sptr GenericDeserializer<T>::create()
@@ -115,4 +116,5 @@ sight::data::Object::sptr GenericDeserializer<T>::create()
 }
 
 } // namespace detail::data
+
 } // namespace sight::io::session

@@ -33,12 +33,16 @@
 
 namespace sight::data
 {
+
 class Image;
+
 }
 
 namespace sight::data
 {
+
 class Series;
+
 }
 
 namespace sight::module::io::itk
@@ -66,7 +70,6 @@ namespace sight::module::io::itk
  */
 class MODULE_IO_ITK_CLASS_API SInrSeriesDBReader : public sight::io::base::service::IReader
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SInrSeriesDBReader, sight::io::base::service::IReader)
 
@@ -75,7 +78,6 @@ public:
     MODULE_IO_ITK_API virtual ~SInrSeriesDBReader() noexcept;
 
 protected:
-
     /// Does nothing.
     void starting() override
     {
@@ -112,12 +114,11 @@ protected:
     MODULE_IO_ITK_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 private:
-
     /// Initializes Series with dummy values and Study with specified instanceUID.
     void initSeries(SPTR(data::Series) series, const std::string& instanceUID);
 
     /// Reads specified inr file in image.
-    bool createImage( const std::filesystem::path inrFile, SPTR(data::Image) image );
+    bool createImage(const std::filesystem::path inrFile, SPTR(data::Image) image);
 };
 
 } // namespace sight::module::io::itk

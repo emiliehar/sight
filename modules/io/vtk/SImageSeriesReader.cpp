@@ -60,28 +60,28 @@ namespace sight::module::io::vtk
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageSeriesReader::SImageSeriesReader() noexcept
 {
-    m_sigJobCreated = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
+    m_sigJobCreated = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SImageSeriesReader::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::openLocationDialog()
 {
@@ -95,7 +95,8 @@ void SImageSeriesReader::openLocationDialog()
     if(ext.size() > 0)
     {
         availableExtensions = "*" + ext.at(0);
-        for(size_t i = 1; i < ext.size(); i++)
+
+        for(size_t i = 1 ; i < ext.size() ; i++)
         {
             availableExtensions = availableExtensions + " *" + ext.at(i);
         }
@@ -112,7 +113,8 @@ void SImageSeriesReader::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFile().parent_path());
         dialogFile.saveDefaultLocation(defaultDirectory);
@@ -124,33 +126,33 @@ void SImageSeriesReader::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::configuring()
 {
     sight::io::base::service::IReader::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SImageSeriesReader::info(std::ostream& _sstream )
+void SImageSeriesReader::info(std::ostream& _sstream)
 {
     _sstream << "SImageSeriesReader::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void initSeries(data::Series::sptr series)
 {
@@ -164,26 +166,28 @@ void initSeries(data::Series::sptr series)
     series->setTime(time);
     series->setDescription("Image imported with VTK");
     data::DicomValuesType physicians = series->getPerformingPhysiciansName();
+
     if(physicians.empty())
     {
         const std::string username = core::tools::os::getEnv("USERNAME", core::tools::os::getEnv("LOGNAME", "Unknown"));
         physicians.push_back(username);
     }
+
     series->setPerformingPhysiciansName(physicians);
     series->getStudy()->setInstanceUID(instanceUID);
     series->getStudy()->setDate(date);
     series->getStudy()->setTime(time);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::ImageSeries::sptr imageSeries =
-            this->getInOut< data::ImageSeries >(sight::io::base::service::s_DATA_KEY);
+        data::ImageSeries::sptr imageSeries
+            = this->getInOut<data::ImageSeries>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("ImageSeries is not instanced", imageSeries);
 
         sight::ui::base::Cursor cursor;
@@ -193,7 +197,7 @@ void SImageSeriesReader::updating()
         {
             data::Image::sptr image = data::Image::New();
 
-            if ( SImageReader::loadImage( this->getFile(), image, m_sigJobCreated ) )
+            if(SImageReader::loadImage(this->getFile(), image, m_sigJobCreated))
             {
                 imageSeries->setImage(image);
                 initSeries(imageSeries);
@@ -208,20 +212,20 @@ void SImageSeriesReader::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesReader::notificationOfDBUpdate()
 {
-    data::ImageSeries::sptr imageSeries = this->getInOut< data::ImageSeries >(sight::io::base::service::s_DATA_KEY);
+    data::ImageSeries::sptr imageSeries = this->getInOut<data::ImageSeries>(sight::io::base::service::s_DATA_KEY);
     SIGHT_ASSERT("imageSeries not instanced", imageSeries);
 
-    auto sig = imageSeries->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+    auto sig = imageSeries->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ioVtk

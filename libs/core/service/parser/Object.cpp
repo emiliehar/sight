@@ -28,36 +28,38 @@
 
 namespace sight::service
 {
+
 namespace parser
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Object::Object( )
+Object::Object()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Object::~Object()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-bool Object::refObjectValidator( core::runtime::ConfigurationElement::csptr _cfgElement )
+bool Object::refObjectValidator(core::runtime::ConfigurationElement::csptr _cfgElement)
 {
     bool isOk = true;
 
-    for( core::runtime::ConfigurationElement::csptr elem :  _cfgElement->getElements() )
+    for(core::runtime::ConfigurationElement::csptr elem : _cfgElement->getElements())
     {
         std::string subElementName = elem->getName();
-        if(     subElementName != "service" &&
-                subElementName != "serviceList"    )
+
+        if(subElementName != "service"
+           && subElementName != "serviceList")
         {
             SIGHT_ERROR(
-                "xml subelement \""<< subElementName <<
-                    "\" for element object is not supported for the moment when you use a reference on item composite.");
+                "xml subelement \"" << subElementName
+                                    << "\" for element object is not supported for the moment when you use a reference on item composite.");
             isOk = false;
         }
     }
@@ -65,16 +67,16 @@ bool Object::refObjectValidator( core::runtime::ConfigurationElement::csptr _cfg
     return isOk;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Object::updating( )
+void Object::updating()
 {
     SIGHT_FATAL("This method is deprecated, and thus, shouldn't be used.");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Object::createConfig( core::tools::Object::sptr _obj )
+void Object::createConfig(core::tools::Object::sptr _obj)
 {
     // Declaration of attributes values
     const std::string OBJECT_BUILD_MODE = "src";
@@ -84,41 +86,46 @@ void Object::createConfig( core::tools::Object::sptr _obj )
     data::Object::sptr associatedObject = data::Object::dynamicCast(_obj);
     SIGHT_ASSERT("associatedObject not instanced", associatedObject);
 
-    for( core::runtime::ConfigurationElement::csptr elem :  m_cfg->getElements() )
+    for(core::runtime::ConfigurationElement::csptr elem : m_cfg->getElements())
     {
-
-        if( elem->getName() == "item" )
+        if(elem->getName() == "item")
         {
             // Test build mode
             std::string buildMode = BUILD_OBJECT;
 
-            if ( elem->hasAttribute( OBJECT_BUILD_MODE ) )
+            if(elem->hasAttribute(OBJECT_BUILD_MODE))
             {
-                buildMode = elem->getExistingAttributeValue( OBJECT_BUILD_MODE );
-                SIGHT_ASSERT( "The buildMode \""<< buildMode <<"\" is not supported, it should either be BUILD_OBJECT "
-                              "or GET_OBJECT.",
-                              buildMode == BUILD_OBJECT || buildMode == GET_OBJECT );
+                buildMode = elem->getExistingAttributeValue(OBJECT_BUILD_MODE);
+                SIGHT_ASSERT(
+                    "The buildMode \"" << buildMode << "\" is not supported, it should either be BUILD_OBJECT "
+                                                       "or GET_OBJECT.",
+                        buildMode == BUILD_OBJECT || buildMode == GET_OBJECT);
             }
 
-            SIGHT_ASSERT( "The xml element \"item\" must have an attribute named \"key\" .",
-                          elem->hasAttribute("key") );
+            SIGHT_ASSERT(
+                "The xml element \"item\" must have an attribute named \"key\" .",
+                elem->hasAttribute("key"));
             std::string key = elem->getExistingAttributeValue("key");
-            SIGHT_ASSERT( "The xml element \"item\" must have an attribute named \"key\" whick is not empty.",
-                          !key.empty() );
-            SIGHT_ASSERT( "The xml element \"item\" must have one (and only one) xml sub-element \"object\".",
-                          elem->size() == 1 && (*(elem->getElements().begin()))->getName() == "object" );
+            SIGHT_ASSERT(
+                "The xml element \"item\" must have an attribute named \"key\" whick is not empty.",
+                !key.empty());
+            SIGHT_ASSERT(
+                "The xml element \"item\" must have one (and only one) xml sub-element \"object\".",
+                elem->size() == 1 && (*(elem->getElements().begin()))->getName() == "object");
 
-            if( buildMode == BUILD_OBJECT )
+            if(buildMode == BUILD_OBJECT)
             {
                 // Test if key already exist in object
-                SIGHT_ASSERT("The key "<< key <<" already exists in the object.", !associatedObject->getField(
-                                 key ) );
+                SIGHT_ASSERT(
+                    "The key " << key << " already exists in the object.",
+                        !associatedObject->getField(
+                        key));
 
                 // Create and manage object config
                 service::IAppConfigManager::sptr ctm = service::IAppConfigManager::New();
-                ctm->service::IAppConfigManager::setConfig( elem );
+                ctm->service::IAppConfigManager::setConfig(elem);
 
-                m_ctmContainer.push_back( ctm );
+                m_ctmContainer.push_back(ctm);
                 ctm->create();
                 data::Object::sptr localObj = ctm->getConfigRoot();
 
@@ -134,48 +141,49 @@ void Object::createConfig( core::tools::Object::sptr _obj )
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Object::startConfig()
 {
-    for( service::IAppConfigManager::sptr ctm :  m_ctmContainer )
+    for(service::IAppConfigManager::sptr ctm : m_ctmContainer)
     {
         ctm->start();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Object::updateConfig()
 {
-    for( service::IAppConfigManager::sptr ctm :  m_ctmContainer )
+    for(service::IAppConfigManager::sptr ctm : m_ctmContainer)
     {
         ctm->update();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Object::stopConfig()
 {
-    BOOST_REVERSE_FOREACH( service::IAppConfigManager::sptr ctm, m_ctmContainer )
+    BOOST_REVERSE_FOREACH(service::IAppConfigManager::sptr ctm, m_ctmContainer)
     {
         ctm->stop();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Object::destroyConfig()
 {
-    BOOST_REVERSE_FOREACH( service::IAppConfigManager::sptr ctm, m_ctmContainer )
+    BOOST_REVERSE_FOREACH(service::IAppConfigManager::sptr ctm, m_ctmContainer)
     {
         ctm->destroy();
     }
     m_ctmContainer.clear();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace parser
-} //namespace sight::service
+} // namespace parser
+
+} // namespace sight::service

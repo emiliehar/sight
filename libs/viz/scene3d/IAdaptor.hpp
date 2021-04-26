@@ -61,11 +61,9 @@ class VIZ_SCENE3D_CLASS_API IAdaptor :
     public service::IService,
     public service::IHasServices
 {
-
 friend class SRender;
 
 public:
-
     /// Generates default methods.
     SIGHT_DECLARE_CLASS(IAdaptor, service::IService)
 
@@ -92,7 +90,6 @@ public:
     VIZ_SCENE3D_API void updateVisibility(bool _isVisible);
 
 protected:
-
     VIZ_SCENE3D_API static const core::com::Slots::SlotKeyType s_UPDATE_VISIBILITY_SLOT;
 
     VIZ_SCENE3D_API static const core::com::Slots::SlotKeyType s_TOGGLE_VISIBILITY_SLOT;
@@ -158,10 +155,9 @@ protected:
     viz::scene3d::SRender::wptr m_renderService;
 
     /// Enables the adaptor visibility.
-    bool m_isVisible { true };
-
+    bool m_isVisible{true};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d.

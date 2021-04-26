@@ -48,15 +48,15 @@ struct SpheroidExtractor
         double elongationMax;
     };
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<class PIXELTYPE>
     void operator()(Parameters& params)
     {
-        typedef typename ::itk::Image< PIXELTYPE, 3 > ImageType;
-        typedef typename ::itk::Image< std::uint16_t, 3 > BinaryImageType;
+        typedef typename ::itk::Image<PIXELTYPE, 3> ImageType;
+        typedef typename ::itk::Image<std::uint16_t, 3> BinaryImageType;
 
-        typename ImageType::Pointer inputImage = io::itk::itkImageFactory< ImageType >(params.inputImage);
+        typename ImageType::Pointer inputImage = io::itk::itkImageFactory<ImageType>(params.inputImage);
 
         typename ::itk::BinaryThresholdImageFilter<ImageType, BinaryImageType>::Pointer thresholdFilter
             = ::itk::BinaryThresholdImageFilter<ImageType, BinaryImageType>::New();
@@ -70,10 +70,10 @@ struct SpheroidExtractor
 
         thresholdFilter->Update();
 
-        BinaryImageType::Pointer binaryImage =
-            thresholdFilter->GetOutput();
-        ::itk::ConnectedComponentImageFilter<BinaryImageType, BinaryImageType>::Pointer cc =
-            ::itk::ConnectedComponentImageFilter<BinaryImageType, BinaryImageType>::New();
+        BinaryImageType::Pointer binaryImage
+            = thresholdFilter->GetOutput();
+        ::itk::ConnectedComponentImageFilter<BinaryImageType, BinaryImageType>::Pointer cc
+            = ::itk::ConnectedComponentImageFilter<BinaryImageType, BinaryImageType>::New();
 
         cc->SetInput(thresholdFilter->GetOutput());
         cc->FullyConnectedOn();
@@ -88,10 +88,11 @@ struct SpheroidExtractor
 
         typename LabelStatsFilterType::LabelsType labels = labelGeometryFilter->GetLabels();
 
-        SIGHT_DEBUG( "Number of labels : " << labelGeometryFilter->GetNumberOfLabels() );
+        SIGHT_DEBUG("Number of labels : " << labelGeometryFilter->GetNumberOfLabels());
 
         typename LabelStatsFilterType::LabelsType::iterator labelsIt;
-        for(labelsIt = labels.begin(); labelsIt != labels.end(); labelsIt++)
+
+        for(labelsIt = labels.begin() ; labelsIt != labels.end() ; labelsIt++)
         {
             typename LabelStatsFilterType::LabelPixelType labelValue = *labelsIt;
 
@@ -103,8 +104,8 @@ struct SpheroidExtractor
             const double e        = labelGeometryFilter->GetElongation(labelValue);
             const auto axesLength = labelGeometryFilter->GetAxesLength(labelValue);
 
-            SIGHT_DEBUG( "Elongation" << e );
-            SIGHT_DEBUG( "Axes length" << axesLength );
+            SIGHT_DEBUG("Elongation" << e);
+            SIGHT_DEBUG("Axes length" << axesLength);
 
             const double ge  = std::pow(e - meanElongation, 2.) / std::pow(elongationSTD, 2.);
             const double gr0 = std::pow(axesLength[0] - radiusMean, 2.) / std::pow(radiusSTD, 2.);
@@ -113,7 +114,7 @@ struct SpheroidExtractor
 
             const double mahalanobisDistance = std::sqrt(ge + gr0 + gr1 + gr2);
 
-            SIGHT_DEBUG( "Mahalanobis distance : " << mahalanobisDistance );
+            SIGHT_DEBUG("Mahalanobis distance : " << mahalanobisDistance);
 
             // Empirical value. You shouldn't have to change it.
             // If you believe the detection wrongly failed/succeeded, please consider changing your radius
@@ -125,7 +126,8 @@ struct SpheroidExtractor
                 const auto centroidPoint = labelGeometryFilter->GetCentroid(labelValue);
 
                 std::array<double, 3> realPointCoords;
-                for(std::uint8_t i = 0; i < 3; ++i)
+
+                for(std::uint8_t i = 0 ; i < 3 ; ++i)
                 {
                     realPointCoords[i] = double(centroidPoint[i]) * inputImage->GetSpacing()[i]
                                          + inputImage->GetOrigin()[i];
@@ -138,12 +140,15 @@ struct SpheroidExtractor
     }
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::PointList::sptr SpheroidExtraction::extract(const data::Image::csptr& _image,
-                                                  const double _threshold,
-                                                  const double _radiusMin, const double _radiusMax,
-                                                  const double _elongationMin, const double _elongationMax)
+data::PointList::sptr SpheroidExtraction::extract(
+    const data::Image::csptr& _image,
+    const double _threshold,
+    const double _radiusMin,
+    const double _radiusMax,
+    const double _elongationMin,
+    const double _elongationMax)
 {
     data::PointList::sptr outputPointList = data::PointList::New();
 
@@ -156,8 +161,9 @@ data::PointList::sptr SpheroidExtraction::extract(const data::Image::csptr& _ima
     params.elongationMin   = _elongationMin;
     params.elongationMax   = _elongationMax;
 
-    core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, SpheroidExtractor >::invoke(
-        _image->getType(), params);
+    core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, SpheroidExtractor>::invoke(
+        _image->getType(),
+        params);
 
     return outputPointList;
 }

@@ -31,8 +31,7 @@
 namespace sight::module::ui::base
 {
 
-//------------------------------------------------------------------------------
-
+// ------------------------------------------------------------------------------
 
 const core::com::Signals::SignalKeyType SConfigLauncher::s_LAUNCHED_SIG = "launched";
 
@@ -40,24 +39,24 @@ static const core::com::Slots::SlotKeyType s_STOP_CONFIG_SLOT = "stopConfig";
 
 static const std::string s_CLOSE_CONFIG_CHANNEL_ID = "CLOSE_CONFIG_CHANNEL";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SConfigLauncher::SConfigLauncher() noexcept
 {
-    m_configLauncher = std::make_unique< service::helper::ConfigLauncher>();
+    m_configLauncher = std::make_unique<service::helper::ConfigLauncher>();
 
     m_sigLaunched = newSignal<LaunchedSignalType>(s_LAUNCHED_SIG);
 
     newSlot(s_STOP_CONFIG_SLOT, &SConfigLauncher::stopConfig, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SConfigLauncher::~SConfigLauncher() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SConfigLauncher::starting()
 {
@@ -66,7 +65,7 @@ void SConfigLauncher::starting()
     this->actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SConfigLauncher::stopping()
 {
@@ -74,7 +73,7 @@ void SConfigLauncher::stopping()
     this->actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SConfigLauncher::configuring()
 {
@@ -83,11 +82,12 @@ void SConfigLauncher::configuring()
     m_configLauncher->parseConfig(this->getConfigTree(), this->getSptr());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SConfigLauncher::setIsActive(bool isActive)
 {
     this->::sight::ui::base::IAction::setIsActive(isActive);
+
     if(isActive)
     {
         // Check if the config is already running, this avoids to start a running config.
@@ -107,17 +107,17 @@ void SConfigLauncher::setIsActive(bool isActive)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SConfigLauncher::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SConfigLauncher::stopConfig()
 {
-    if (m_configLauncher->configIsRunning())
+    if(m_configLauncher->configIsRunning())
     {
         m_configLauncher->stopConfig();
         service::registry::Proxy::sptr proxies = service::registry::Proxy::getDefault();
@@ -126,6 +126,6 @@ void SConfigLauncher::stopConfig()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}
+} // namespace sight::module

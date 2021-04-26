@@ -40,27 +40,26 @@ const service::IService::KeyType s_MODEL_SERIES_INOUT = "modelSeries";
 SModelSeriesList::SModelSeriesList() noexcept :
     m_listModel(nullptr)
 {
-    m_sigReconstructionSelected = newSignal< ReconstructionSelectedSignalType >( s_RECONSTRUCTION_SELECTED_SIG );
-    m_sigEmptiedSelection       = newSignal< EmptiedSelectionSignalType >( s_EMPTIED_SELECTION_SIG );
+    m_sigReconstructionSelected = newSignal<ReconstructionSelectedSignalType>(s_RECONSTRUCTION_SELECTED_SIG);
+    m_sigEmptiedSelection       = newSignal<EmptiedSelectionSignalType>(s_EMPTIED_SELECTION_SIG);
 
     this->registerObject(s_MODEL_SERIES_INOUT, AccessType::INOUT, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SModelSeriesList::~SModelSeriesList() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesList::starting()
 {
     sight::ui::qml::IQmlEditor::starting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesList::stopping()
 {
@@ -69,32 +68,31 @@ void SModelSeriesList::stopping()
     sight::ui::qml::IQmlEditor::stopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesList::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesList::updating()
 {
-    data::ModelSeries::sptr modelSeries = this->getInOut< data::ModelSeries >(s_MODEL_SERIES_INOUT);
+    data::ModelSeries::sptr modelSeries = this->getInOut<data::ModelSeries>(s_MODEL_SERIES_INOUT);
     SIGHT_ASSERT("inout 'modelSeries' is missing", modelSeries);
 
     SIGHT_ASSERT("list model is not defined.", m_listModel);
     m_listModel->updateModelSeries(modelSeries);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesList::onOrganSelected(int index)
 {
-    if (index >= 0)
+    if(index >= 0)
     {
-        data::ModelSeries::sptr modelSeries = this->getInOut< data::ModelSeries >(s_MODEL_SERIES_INOUT);
-        SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT+ "' must be defined as 'inout'", modelSeries);
+        data::ModelSeries::sptr modelSeries = this->getInOut<data::ModelSeries>(s_MODEL_SERIES_INOUT);
+        SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT + "' must be defined as 'inout'", modelSeries);
 
         const auto& recs = modelSeries->getReconstructionDB();
 
@@ -107,71 +105,72 @@ void SModelSeriesList::onOrganSelected(int index)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SModelSeriesList::onShowReconstructions(int state )
+void SModelSeriesList::onShowReconstructions(int state)
 {
-    data::ModelSeries::sptr modelSeries = this->getInOut< data::ModelSeries >(s_MODEL_SERIES_INOUT);
-    SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT+ "' must be defined as 'inout'", modelSeries);
-    data::helper::Field helper( modelSeries );
+    data::ModelSeries::sptr modelSeries = this->getInOut<data::ModelSeries>(s_MODEL_SERIES_INOUT);
+    SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT + "' must be defined as 'inout'", modelSeries);
+    data::helper::Field helper(modelSeries);
     helper.addOrSwap("ShowReconstructions", data::Boolean::New(state == Qt::Unchecked));
     helper.notify();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeriesList::onOrganVisibilityChanged(int index, bool visible)
 {
-    if (index >= 0)
+    if(index >= 0)
     {
-        data::ModelSeries::sptr modelSeries = this->getInOut< data::ModelSeries >(s_MODEL_SERIES_INOUT);
-        SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT+ "' must be defined as 'inout'", modelSeries);
+        data::ModelSeries::sptr modelSeries = this->getInOut<data::ModelSeries>(s_MODEL_SERIES_INOUT);
+        SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT + "' must be defined as 'inout'", modelSeries);
 
         const auto& recs        = modelSeries->getReconstructionDB();
         const auto& selectedRec = recs.at(static_cast<size_t>(index));
 
-        if (selectedRec->getIsVisible() != visible)
+        if(selectedRec->getIsVisible() != visible)
         {
             selectedRec->setIsVisible(visible);
 
             data::Reconstruction::VisibilityModifiedSignalType::sptr sig;
-            sig = selectedRec->signal< data::Reconstruction::VisibilityModifiedSignalType >(
+            sig = selectedRec->signal<data::Reconstruction::VisibilityModifiedSignalType>(
                 data::Reconstruction::s_VISIBILITY_MODIFIED_SIG);
             sig->asyncEmit(visible);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SModelSeriesList::onCheckAllBoxes( bool checked )
+void SModelSeriesList::onCheckAllBoxes(bool checked)
 {
-    data::ModelSeries::sptr modelSeries = this->getInOut< data::ModelSeries >(s_MODEL_SERIES_INOUT);
-    SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT+ "' must be defined as 'inout'", modelSeries);
+    data::ModelSeries::sptr modelSeries = this->getInOut<data::ModelSeries>(s_MODEL_SERIES_INOUT);
+    SIGHT_ASSERT("'" + s_MODEL_SERIES_INOUT + "' must be defined as 'inout'", modelSeries);
 
-    for (const auto& rec : modelSeries->getReconstructionDB())
+    for(const auto& rec : modelSeries->getReconstructionDB())
     {
-        if (rec->getIsVisible() != checked)
+        if(rec->getIsVisible() != checked)
         {
             rec->setIsVisible(checked);
 
             data::Reconstruction::VisibilityModifiedSignalType::sptr sig;
-            sig = rec->signal< data::Reconstruction::VisibilityModifiedSignalType >(
+            sig = rec->signal<data::Reconstruction::VisibilityModifiedSignalType>(
                 data::Reconstruction::s_VISIBILITY_MODIFIED_SIG);
             sig->asyncEmit(checked);
         }
     }
+
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SModelSeriesList::getAutoConnections() const
 {
     KeyConnectionsMap connections;
 
     // FIXME hack to support deprecated getObject() with any key
-    if (this->getInOut< data::ModelSeries >(s_MODEL_SERIES_INOUT))
+    if(this->getInOut<data::ModelSeries>(s_MODEL_SERIES_INOUT))
     {
         connections.push(s_MODEL_SERIES_INOUT, data::ModelSeries::s_MODIFIED_SIG, s_UPDATE_SLOT);
         connections.push(s_MODEL_SERIES_INOUT, data::ModelSeries::s_RECONSTRUCTIONS_ADDED_SIG, s_UPDATE_SLOT);
@@ -181,6 +180,6 @@ service::IService::KeyConnectionsMap SModelSeriesList::getAutoConnections() cons
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qml::model

@@ -52,9 +52,7 @@ namespace sight::module::viz::sample
  */
 class MODULE_VIZ_SAMPLE_CLASS_API SMesh : public sight::ui::base::IGuiContainer
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SMesh, sight::ui::base::IGuiContainer)
 
@@ -62,7 +60,7 @@ public:
 
     MODULE_VIZ_SAMPLE_API static const core::com::Signals::SignalKeyType s_CAM_UPDATED_SIG;
 
-    typedef core::com::Signal< void (data::Matrix4::sptr) > CamUpdatedSignalType;
+    typedef core::com::Signal<void (data::Matrix4::sptr)> CamUpdatedSignalType;
 
     /// Creates slots and the signal.
     MODULE_VIZ_SAMPLE_API SMesh() noexcept;
@@ -71,7 +69,6 @@ public:
     MODULE_VIZ_SAMPLE_API virtual ~SMesh() noexcept;
 
 private:
-
     /// Checks if the input mesh is autoconnect.
     MODULE_VIZ_SAMPLE_API void configuring() override;
 
@@ -95,7 +92,6 @@ private:
     MODULE_VIZ_SAMPLE_API void stopping() override;
 
 private:
-
     /// SLOT: receives new camera transform and update the camera.
     void updateCamPosition(data::Matrix4::sptr _transform);
 
@@ -118,14 +114,13 @@ private:
     data::Matrix4::sptr m_cameraTransform;
 
     /// Defines whether or not to autoConnect to the mesh, needed for the purpose of tutorials.
-    bool m_meshAutoConnect { false };
+    bool m_meshAutoConnect{false};
 
     /// Contains the signal emitted when camera position is updated.
     CamUpdatedSignalType::sptr m_sigCamUpdated;
 
     /// Stores connection with the camera transform.
     core::com::helper::SigSlotConnection m_connections;
-
 };
 
 } // namespace sight::module::viz::sample.

@@ -26,10 +26,11 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string IDataDeserializer::readFromTree(
     const boost::property_tree::ptree& tree,
@@ -50,4 +51,5 @@ std::string IDataDeserializer::readFromTree(
 }
 
 } // namespace detail::data
+
 } // namespace sight::io::session

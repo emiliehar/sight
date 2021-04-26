@@ -43,61 +43,58 @@ namespace sight::module::filter::image
 static const service::IService::KeyType s_IMAGE_IN        = "image";
 static const service::IService::KeyType s_TRANSFORM_INOUT = "transform";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageCenter::SImageCenter()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageCenter::~SImageCenter()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageCenter::configuring()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageCenter::starting()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageCenter::updating()
 {
-
-    data::Image::csptr image = this->getInput< data::Image >(s_IMAGE_IN);
+    data::Image::csptr image = this->getInput<data::Image>(s_IMAGE_IN);
     data::mt::ObjectReadLock imLock(image);
 
-    SIGHT_ASSERT("Missing image '"+ s_IMAGE_IN + "'", image);
+    SIGHT_ASSERT("Missing image '" + s_IMAGE_IN + "'", image);
 
     const bool imageValidity = data::fieldHelper::MedicalImageHelpers::checkImageValidity(image);
 
     if(!imageValidity)
     {
         SIGHT_WARN("Can not compute center of a invalid image.");
+
         return;
     }
 
-    data::Matrix4::sptr matrix =
-        this->getInOut< data::Matrix4 >(s_TRANSFORM_INOUT);
+    data::Matrix4::sptr matrix
+        = this->getInOut<data::Matrix4>(s_TRANSFORM_INOUT);
 
-    SIGHT_ASSERT("Missing matrix '"+ s_TRANSFORM_INOUT +"'", matrix);
+    SIGHT_ASSERT("Missing matrix '" + s_TRANSFORM_INOUT + "'", matrix);
 
     data::mt::ObjectWriteLock matLock(matrix);
 
     geometry::data::identity(matrix);
 
-    //compute the center
+    // compute the center
     const data::Image::Size size       = image->getSize2();
     const data::Image::Spacing spacing = image->getSpacing2();
     const data::Image::Origin origin   = image->getOrigin2();
@@ -110,7 +107,7 @@ void SImageCenter::updating()
     center[1] = (static_cast<double>(size[1]) * spacing[1]) / 2.;
     center[2] = (static_cast<double>(size[2]) * spacing[2]) / 2.;
 
-    //compute origin -center
+    // compute origin -center
 
     center[0] += origin[0];
     center[1] += origin[1];
@@ -122,7 +119,7 @@ void SImageCenter::updating()
 
     // output the translation matrix
 
-    auto sig = matrix->signal< data::Matrix4::ModifiedSignalType >
+    auto sig = matrix->signal<data::Matrix4::ModifiedSignalType>
                    (data::Matrix4::s_MODIFIED_SIG);
 
     sig->asyncEmit();
@@ -130,14 +127,13 @@ void SImageCenter::updating()
     m_sigComputed->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageCenter::stopping()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SImageCenter::getAutoConnections() const
 {
@@ -147,6 +143,6 @@ service::IService::KeyConnectionsMap SImageCenter::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::filter::image

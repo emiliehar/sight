@@ -38,12 +38,11 @@
 namespace sight::ui::qt
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 App::App(int& argc, char** argv, bool guiEnabled) :
     QApplication(argc, argv, guiEnabled)
 {
-
     setlocale(LC_ALL, "C"); // needed for mfo save process
     QLocale::setDefault(QLocale::C); // on Linux we need that as well...
 
@@ -51,27 +50,26 @@ App::App(int& argc, char** argv, bool guiEnabled) :
 
     core::runtime::Profile::sptr profile = core::runtime::getCurrentProfile();
 
-    if (profile)
+    if(profile)
     {
         appName = profile->getName();
     }
 
-    this->setApplicationName( QString::fromStdString(appName) );
+    this->setApplicationName(QString::fromStdString(appName));
 
     QObject::connect(this, SIGNAL(aboutToQuit()), this, SLOT(aboutToQuit()));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void App::aboutToQuit()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void App::onExit()
 {
-
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QApplication::restoreOverrideCursor();
 
@@ -79,6 +77,6 @@ void App::onExit()
     qApp->exit(0);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::ui::qt

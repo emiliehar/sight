@@ -31,12 +31,16 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::data
 {
+
 class DicomSeries;
+
 }
 
 namespace sight::module::io::dicom
@@ -61,9 +65,8 @@ namespace sight::module::io::dicom
  */
 class MODULE_IO_DICOM_CLASS_API SDicomSeriesWriter : public sight::io::base::service::IWriter
 {
-
 public:
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignal;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignal;
 
     SIGHT_DECLARE_SERVICE(SDicomSeriesWriter, sight::io::base::service::IWriter)
 
@@ -88,7 +91,6 @@ public:
     MODULE_IO_DICOM_API void openLocationDialog() override;
 
 protected:
-
     /// Does nothing
     MODULE_IO_DICOM_API void starting() override;
 
@@ -106,8 +108,9 @@ protected:
 
 private:
     /// Save the selected Dicom series
-    void saveDicomSeries( const std::filesystem::path folder,
-                          const CSPTR(data::DicomSeries)& series ) const;
+    void saveDicomSeries(
+        const std::filesystem::path folder,
+        const CSPTR(data::DicomSeries)& series) const;
 
     /// Signal emitted when a job is created
     SPTR(JobCreatedSignal) m_sigJobCreated;

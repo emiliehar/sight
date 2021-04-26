@@ -38,7 +38,6 @@ namespace sight::data
 class DATA_CLASS_API Exception : public core::Exception
 {
 public:
-
     /**
      * @brief       Constructor
      *

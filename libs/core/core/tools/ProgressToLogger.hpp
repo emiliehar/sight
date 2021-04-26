@@ -39,7 +39,6 @@ namespace sight::core::tools
 class CORE_CLASS_API ProgressToLogger : public ::boost::signals2::trackable
 {
 public:
-
     /**
      * @brief constructor : define an output to log system as :  [prefix] message percent [postfix]
      * @param[in] prefix  allow to add a prefix in the formated log message
@@ -57,7 +56,6 @@ public:
     CORE_API void operator()(float percent, const std::string& msg);
 
 protected:
-
     std::string m_prefix;
     std::string m_postfix;
 };

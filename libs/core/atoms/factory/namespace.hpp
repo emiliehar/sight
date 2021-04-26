@@ -30,6 +30,7 @@ namespace sight::atoms
  */
 namespace factory
 {
+
 } // namespace factory
 
 } // namespace sight::atoms

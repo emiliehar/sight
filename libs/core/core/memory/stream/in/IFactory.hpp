@@ -30,8 +30,10 @@
 
 namespace sight::core::memory
 {
+
 namespace stream
 {
+
 namespace in
 {
 
@@ -48,11 +50,11 @@ public:
     }
 
 protected:
-
     virtual SPTR(std::istream) get() = 0;
-
 };
 
 } // namespace in
+
 } // namespace stream
+
 } // namespace sight::core::memory

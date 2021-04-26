@@ -36,9 +36,7 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API IMenu : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IMenu, service::IService)
 
     /// Method called when an action service is stopping
@@ -57,7 +55,6 @@ public:
     UI_BASE_API void actionServiceSetVisible(std::string actionSrvSID, bool isVisible);
 
 protected:
-
     UI_BASE_API IMenu();
 
     UI_BASE_API virtual ~IMenu();
@@ -116,8 +113,7 @@ protected:
     UI_BASE_API void destroy();
 
 private:
-
-    void initializeLayoutManager( core::runtime::ConfigurationElement::sptr layoutConfig );
+    void initializeLayoutManager(core::runtime::ConfigurationElement::sptr layoutConfig);
 
     ui::base::layoutManager::IMenuLayoutManager::sptr m_layoutManager;
     ui::base::registry::Menu::sptr m_registry;

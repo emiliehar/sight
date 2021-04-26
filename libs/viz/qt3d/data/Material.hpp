@@ -33,8 +33,10 @@
 
 namespace Qt3DRender
 {
+
 class QParameter;
 class QTechnique;
+
 }
 
 namespace sight::viz::qt3d
@@ -48,7 +50,6 @@ namespace data
  */
 class VIZ_QT3D_CLASS_QT_API Material : public Qt3DRender::QMaterial
 {
-
 Q_OBJECT
 
 /// Q_PROPERTY macros associate scene objects with QML properties.
@@ -58,7 +59,6 @@ Q_PROPERTY(QVector3D specular READ getSpecular WRITE setSpecular NOTIFY specular
 Q_PROPERTY(float shininess READ getShininess WRITE setShininess NOTIFY shininessChanged)
 
 public:
-
     /// Constructs a Qt3D Material.
     VIZ_QT3D_QT_API Material(Qt3DCore::QNode* _parent = nullptr);
 
@@ -114,7 +114,6 @@ public:
     VIZ_QT3D_QT_API Q_INVOKABLE void updateRGBAMode(sight::data::Material::sptr _sightMaterial);
 
 Q_SIGNALS:
-
     /// Signal emitted when ambient color is modified.
     void ambientChanged();
 
@@ -128,23 +127,21 @@ Q_SIGNALS:
     void shininessChanged();
 
 private:
-
     /// Contains material ambient color.
-    QPointer< Qt3DRender::QParameter > m_ambientColor;
+    QPointer<Qt3DRender::QParameter> m_ambientColor;
 
     /// Contains material ambient color. Used in default fragment shader. Uses of another copy
     /// of the ambient color is needed due to incompatibilities between sheldon and qt3d rules.
-    QPointer< Qt3DRender::QParameter > m_ambientColorCopy;
+    QPointer<Qt3DRender::QParameter> m_ambientColorCopy;
 
     /// Contains material diffuse color.
-    QPointer< Qt3DRender::QParameter > m_diffuseColor;
+    QPointer<Qt3DRender::QParameter> m_diffuseColor;
 
     /// Contains material specular color.
-    QPointer< Qt3DRender::QParameter > m_specularColor;
+    QPointer<Qt3DRender::QParameter> m_specularColor;
 
     /// Contains material shininess.
-    QPointer< Qt3DRender::QParameter > m_shininess;
-
+    QPointer<Qt3DRender::QParameter> m_shininess;
 };
 
 } // namespace data.

@@ -36,14 +36,15 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::itk::ut::ImageReaderWriterTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::itk::ut::ImageReaderWriterTest);
 
 namespace sight::io::itk
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterTest::setUp()
 {
@@ -51,63 +52,63 @@ void ImageReaderWriterTest::setUp()
     srand(time(NULL));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterTest::testSaveLoadInr()
 {
     // create Image
     data::Image::sptr image = data::Image::New();
     utestData::generator::Image::generateRandomImage(image, core::tools::Type::create("int16"));
-    this->checkSaveLoadInr( image );
+    this->checkSaveLoadInr(image);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterTest::stressTestInr()
 {
-    core::tools::Type type = core::tools::Type::create< std::int8_t >();
-//    this->stressTestInrWithType(type, 5);
+    core::tools::Type type = core::tools::Type::create<std::int8_t>();
+// this->stressTestInrWithType(type, 5);
 
-    type = core::tools::Type::create< std::uint8_t >();
+    type = core::tools::Type::create<std::uint8_t>();
     this->stressTestInrWithType(type, 5);
 
-    type = core::tools::Type::create< std::int16_t >();
+    type = core::tools::Type::create<std::int16_t>();
     this->stressTestInrWithType(type, 5);
 
-    type = core::tools::Type::create< std::uint16_t >();
+    type = core::tools::Type::create<std::uint16_t>();
     this->stressTestInrWithType(type, 5);
 
-    type = core::tools::Type::create< std::int32_t >();
+    type = core::tools::Type::create<std::int32_t>();
     this->stressTestInrWithType(type, 5);
 
-    type = core::tools::Type::create< std::uint32_t >();
+    type = core::tools::Type::create<std::uint32_t>();
     this->stressTestInrWithType(type, 5);
 
-//    type = core::tools::Type::create< std::int64_t >();
-//    this->stressTestInrWithType(type, 5);
+// type = core::tools::Type::create< std::int64_t >();
+// this->stressTestInrWithType(type, 5);
 
-//    type = core::tools::Type::create< std::uint64_t >();
-//    this->stressTestInrWithType(type, 5);
+// type = core::tools::Type::create< std::uint64_t >();
+// this->stressTestInrWithType(type, 5);
 
-    type = core::tools::Type::create< float >();
+    type = core::tools::Type::create<float>();
     this->stressTestInrWithType(type, 5);
 
-//    type = core::tools::Type::create< double >();
-//    this->stressTestInrWithType(type, 5);
+// type = core::tools::Type::create< double >();
+// this->stressTestInrWithType(type, 5);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterTest::stressTestInrWithType(core::tools::Type type, int nbTest)
 {
-    for (int nb = 0; nb < nbTest; ++nb)
+    for(int nb = 0 ; nb < nbTest ; ++nb)
     {
         data::Image::sptr image = data::Image::New();
         utestData::generator::Image::generateRandomImage(image, type);
@@ -115,9 +116,9 @@ void ImageReaderWriterTest::stressTestInrWithType(core::tools::Type type, int nb
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ImageReaderWriterTest::checkSaveLoadInr( data::Image::sptr image )
+void ImageReaderWriterTest::checkSaveLoadInr(data::Image::sptr image)
 {
     // inr only support image origin (0,0,0)
     const data::Image::Origin origin = {0., 0., 0.};
@@ -125,7 +126,7 @@ void ImageReaderWriterTest::checkSaveLoadInr( data::Image::sptr image )
 
     // save image in inr
     const std::filesystem::path PATH = core::tools::System::getTemporaryFolder() / "imageInrTest/image.inr.gz";
-    std::filesystem::create_directories( PATH.parent_path() );
+    std::filesystem::create_directories(PATH.parent_path());
     io::itk::ImageWriter::sptr myWriter = io::itk::ImageWriter::New();
     myWriter->setObject(image);
     myWriter->setFile(PATH);
@@ -148,7 +149,8 @@ void ImageReaderWriterTest::checkSaveLoadInr( data::Image::sptr image )
     CPPUNIT_ASSERT(utestData::helper::compare(image, image2, exclude));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::io::itk
+} // namespace ut
+
+} // namespace sight::io::itk

@@ -28,4 +28,5 @@
 
 namespace sight::core::tools
 {
+
 }

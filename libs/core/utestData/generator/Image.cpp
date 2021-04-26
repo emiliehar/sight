@@ -29,23 +29,25 @@
 
 namespace sight::utestData
 {
+
 namespace generator
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Image::initRand()
 {
-    std::srand(core::tools::numericRoundCast< unsigned int >(std::time(NULL)));
+    std::srand(core::tools::numericRoundCast<unsigned int>(std::time(NULL)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Image::generateImage(data::Image::sptr image,
-                          data::Image::SizeType size,
-                          std::vector<double> spacing,
-                          std::vector<double> origin,
-                          core::tools::Type type)
+void Image::generateImage(
+    data::Image::sptr image,
+    data::Image::SizeType size,
+    std::vector<double> spacing,
+    std::vector<double> origin,
+    core::tools::Type type)
 {
     image->setSpacing(spacing);
     image->setOrigin(origin);
@@ -58,14 +60,15 @@ void Image::generateImage(data::Image::sptr image,
     std::fill(image->begin(), image->end(), 0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Image::generateImage(data::Image::sptr image,
-                          data::Image::Size size,
-                          data::Image::Spacing spacing,
-                          data::Image::Origin origin,
-                          core::tools::Type type,
-                          data::Image::PixelFormat format)
+void Image::generateImage(
+    data::Image::sptr image,
+    data::Image::Size size,
+    data::Image::Spacing spacing,
+    data::Image::Origin origin,
+    core::tools::Type type,
+    data::Image::PixelFormat format)
 {
     image->resize(size, type, format);
     image->setSpacing2(spacing);
@@ -75,7 +78,7 @@ void Image::generateImage(data::Image::sptr image,
     std::fill(image->begin(), image->end(), 0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Image::generateRandomImage(data::Image::sptr image, core::tools::Type type)
 {
@@ -90,9 +93,9 @@ void Image::generateRandomImage(data::Image::sptr image, core::tools::Type type)
     image->setSize2(size);
 
     data::Image::Spacing spacing;
-    spacing[0] = (rand() % DOUBLE_SIZE +1) / double(SIZE);
-    spacing[1] = (rand() % DOUBLE_SIZE +1) / double(SIZE);
-    spacing[2] = (rand() % DOUBLE_SIZE +1) / double(SIZE);
+    spacing[0] = (rand() % DOUBLE_SIZE + 1) / double(SIZE);
+    spacing[1] = (rand() % DOUBLE_SIZE + 1) / double(SIZE);
+    spacing[2] = (rand() % DOUBLE_SIZE + 1) / double(SIZE);
     image->setSpacing2(spacing);
 
     data::Image::Origin origin;
@@ -106,11 +109,11 @@ void Image::generateRandomImage(data::Image::sptr image, core::tools::Type type)
 
     randomizeImage(image);
 
-    image->setWindowWidth( (rand() % DOUBLE_SIZE) / double(SIZE / 10.) + 1);
+    image->setWindowWidth((rand() % DOUBLE_SIZE) / double(SIZE / 10.) + 1);
     image->setWindowCenter((rand() % DOUBLE_SIZE - SIZE) / double(SIZE / 10.));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Image::randomizeImage(data::Image::sptr image)
 {
@@ -118,13 +121,13 @@ void Image::randomizeImage(data::Image::sptr image)
     auto iter          = image->begin();
     const auto iterEnd = image->end();
 
-    for (; iter != iterEnd; ++iter)
+    for( ; iter != iterEnd ; ++iter)
     {
-        *iter = static_cast<char>(rand()%256);
+        *iter = static_cast<char>(rand() % 256);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Image::randomizeArray(data::Array::sptr array)
 {
@@ -132,26 +135,27 @@ void Image::randomizeArray(data::Array::sptr array)
     auto iter           = array->begin();
     const auto end      = array->end();
 
-    for (; iter != end; ++iter)
+    for( ; iter != end ; ++iter)
     {
-        *iter = static_cast<char>(rand()%256);
+        *iter = static_cast<char>(rand() % 256);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Array::sptr Image::createRandomizedArray(const std::string& type, data::Array::SizeType sizes)
 {
     data::Array::sptr array = data::Array::New();
 
-    array->resize(sizes,  core::tools::Type::create(type), true );
+    array->resize(sizes, core::tools::Type::create(type), true);
 
-    Image::randomizeArray( array );
+    Image::randomizeArray(array);
 
     return array;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace generator
+
 } // namespace sight::utestData

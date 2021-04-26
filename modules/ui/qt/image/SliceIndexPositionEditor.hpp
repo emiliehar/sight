@@ -57,9 +57,7 @@ namespace sight::module::ui::qt::image
  */
 class MODULE_UI_QT_CLASS_API SliceIndexPositionEditor : public sight::ui::base::IEditor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SliceIndexPositionEditor, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -69,7 +67,6 @@ public:
     MODULE_UI_QT_API virtual ~SliceIndexPositionEditor() noexcept;
 
 protected:
-
     /// @brief The slice type: axial, frontal, sagittal.
     typedef data::helper::MedicalImage::Orientation Orientation;
 
@@ -114,22 +111,21 @@ protected:
     MODULE_UI_QT_API KeyConnectionsMap getAutoConnections() const override;
 
     /// Overrides
-    MODULE_UI_QT_API void info( std::ostream& _sstream ) override;
+    MODULE_UI_QT_API void info(std::ostream& _sstream) override;
 
     /// Update the editor slider from the image slice index.
     MODULE_UI_QT_API void updateSliceIndexFromImg();
 
     /// Update the editor slice type choice from the image slice type.
-    MODULE_UI_QT_API void updateSliceTypeFromImg(Orientation type );
+    MODULE_UI_QT_API void updateSliceTypeFromImg(Orientation type);
 
     /// This method is called when the slider is move. Notify the slice index is modified.
     MODULE_UI_QT_API void sliceIndexNotification(unsigned int index);
 
     /// This method is called when the slice type selected change. Notify the slice type is modified.
-    MODULE_UI_QT_API void sliceTypeNotification( int type );
+    MODULE_UI_QT_API void sliceTypeNotification(int type);
 
 private:
-
     /**
      * @name Slots
      * @{
@@ -147,12 +143,11 @@ private:
      */
 
     /// @brief The field IDs for the slice index.
-    static const std::string* SLICE_INDEX_FIELDID[ 3 ];
+    static const std::string* SLICE_INDEX_FIELDID[3];
 
     sight::ui::qt::SliceSelector* m_sliceSelectorPanel;
 
     data::helper::MedicalImage m_helper;
-
 };
 
 } // uiImageQt

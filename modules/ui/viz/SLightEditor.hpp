@@ -58,7 +58,6 @@ class MODULE_UI_VIZ_CLASS_API SLightEditor : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SLightEditor, sight::ui::base::IEditor)
 
     /// Creates the service.
@@ -68,7 +67,6 @@ public:
     MODULE_UI_VIZ_API virtual ~SLightEditor() noexcept;
 
 private:
-
     /// Configures the service.
     MODULE_UI_VIZ_API void configuring() final;
 
@@ -140,7 +138,6 @@ private:
     sight::viz::scene3d::ILight::sptr m_currentLight;
 
 private Q_SLOTS:
-
     /**
      * @brief Opens a color picker and lets the user choose a new diffuse color.
      * @see m_diffuseColorBtn.
@@ -219,7 +216,6 @@ private Q_SLOTS:
      * @see m_zReset.
      */
     void onResetZTranslation(bool);
-
 };
 
 } // namespace sight::module::ui::viz

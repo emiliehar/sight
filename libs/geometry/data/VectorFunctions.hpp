@@ -71,7 +71,7 @@ GEOMETRY_DATA_API double vecLength(const fwVec3d& _vec);
  */
 GEOMETRY_DATA_API void negate(fwVec3d& _vec);
 
-} //namespace sight::geometry::data
+} // namespace sight::geometry::data
 
 /**
  *  @brief operator *= for fwVec3d
@@ -87,7 +87,7 @@ GEOMETRY_DATA_API fwVec3d& operator*=(fwVec3d& vec1, double val);
  *  @param [in] val
  *  @return vec[0]/=val, vec[1]/=val, vec[2]/=val
  */
-GEOMETRY_DATA_API fwVec3d& operator/=(fwVec3d& vec, double val );
+GEOMETRY_DATA_API fwVec3d& operator/=(fwVec3d& vec, double val);
 
 /**
  *  @brief operator += for fwVec3d

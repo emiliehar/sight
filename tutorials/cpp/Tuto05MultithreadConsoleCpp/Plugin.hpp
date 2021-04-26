@@ -32,9 +32,7 @@ namespace Tuto05MultithreadConsoleCpp
 /// This class is started when the module is loaded.
 class TUTO05MULTITHREADCONSOLECPP_CLASS_API Plugin : public sight::core::runtime::Plugin
 {
-
 public:
-
     /// Destroys the plugin.
     TUTO05MULTITHREADCONSOLECPP_API ~Plugin() noexcept override;
 

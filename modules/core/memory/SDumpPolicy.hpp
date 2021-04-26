@@ -34,9 +34,7 @@ namespace sight::module::memory
 
 class MODULE_MEMORY_CLASS_API SDumpPolicy : public service::IController
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SDumpPolicy, ::sight::service::IController)
 
     MODULE_MEMORY_API SDumpPolicy();
@@ -72,8 +70,7 @@ public:
     MODULE_MEMORY_API void swapping() override;
 
 protected:
-
-    typedef std::vector< std::pair< core::memory::IPolicy::ParamNamesType::value_type, std::string > > ParametersType;
+    typedef std::vector<std::pair<core::memory::IPolicy::ParamNamesType::value_type, std::string> > ParametersType;
 
     std::string m_policy;
     ParametersType m_policyParams;

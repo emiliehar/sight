@@ -67,7 +67,6 @@ class MODULE_UI_QT_CLASS_API SImagesSelector : public QObject,
 Q_OBJECT;
 
 public:
-
     SIGHT_DECLARE_SERVICE(SImagesSelector, sight::ui::base::IEditor)
 
     /// Constructor.
@@ -91,7 +90,6 @@ public:
     ///@}
 
 protected:
-
     /// Configure the editor.
     MODULE_UI_QT_API void configuring() override;
 
@@ -105,7 +103,6 @@ protected:
     MODULE_UI_QT_API void updating() override;
 
 protected:
-
     /// Slot: called when the user presses the remove acquisition button.
     MODULE_UI_QT_API void remove();
 
@@ -116,7 +113,6 @@ protected:
     MODULE_UI_QT_API void add(core::HiResClock::HiResClockType timestamp);
 
 private:
-
     /// Frame timeline used to extract images
     data::FrameTL::csptr m_frameTL;
 
@@ -124,11 +120,10 @@ private:
     int m_captureIdx;
 
     /// Label displaying the number of point acquisitions.
-    QPointer< QLabel > m_nbCapturesLabel;
+    QPointer<QLabel> m_nbCapturesLabel;
 
     /// Calibration point list.
-    QPointer< QListWidget > m_capturesListWidget;
-
+    QPointer<QListWidget> m_capturesListWidget;
 };
 
 } // uiCalibration

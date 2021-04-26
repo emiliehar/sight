@@ -42,10 +42,9 @@ namespace sight::data
  *
  * @see     data::Float, data::Boolean, data::Integer
  */
-template< typename T >
+template<typename T>
 class DATA_CLASS_API GenericField : public GenericFieldBase
 {
-
 public:
     SIGHT_DECLARE_CLASS(GenericField<T>, data::Object)
 
@@ -76,145 +75,152 @@ public:
     }
 
     /// @brief Conversion to a scalar type.
-    operator T() noexcept { return m_value; }
+    operator T() noexcept {
+        return m_value;
+    }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    bool operator== (const GenericFieldBase& lf) override
+    bool operator==(const GenericFieldBase& lf) override
     {
         bool result = false;
         try
         {
-            const data::GenericField<T>& gField = dynamic_cast< const data::GenericField<T>& >(lf);
-            result = ( this->m_value == gField.value() );
+            const data::GenericField<T>& gField = dynamic_cast<const data::GenericField<T>&>(lf);
+            result = (this->m_value == gField.value());
         }
         catch(const std::bad_cast& exp)
         {
 #ifndef _DEBUG
             SIGHT_NOT_USED(exp);
 #endif
-            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false );
+            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false);
         }
+
         return result;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    bool operator!= (const GenericFieldBase& lf ) override
+    bool operator!=(const GenericFieldBase& lf) override
     {
         bool result = false;
         try
         {
-            const data::GenericField<T>& gField = dynamic_cast< const data::GenericField<T>& >(lf);
-            result = ( this->m_value != gField.value() );
+            const data::GenericField<T>& gField = dynamic_cast<const data::GenericField<T>&>(lf);
+            result = (this->m_value != gField.value());
         }
         catch(const std::bad_cast& exp)
         {
 #ifndef _DEBUG
             SIGHT_NOT_USED(exp);
 #endif
-            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false );
+            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false);
         }
+
         return result;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    bool operator< (const GenericFieldBase& lf ) override
+    bool operator<(const GenericFieldBase& lf) override
     {
         bool result = false;
         try
         {
-            const data::GenericField<T>& gField = dynamic_cast< const data::GenericField<T>& >(lf);
-            result = ( this->m_value < gField.value() );
+            const data::GenericField<T>& gField = dynamic_cast<const data::GenericField<T>&>(lf);
+            result = (this->m_value < gField.value());
         }
         catch(const std::bad_cast& exp)
         {
 #ifndef _DEBUG
             SIGHT_NOT_USED(exp);
 #endif
-            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false );
+            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false);
         }
+
         return result;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    bool operator> (const GenericFieldBase& lf) override
+    bool operator>(const GenericFieldBase& lf) override
     {
         bool result = false;
         try
         {
-            const data::GenericField<T>& gField = dynamic_cast< const data::GenericField<T>& >(lf);
-            result = ( this->m_value > gField.value() );
+            const data::GenericField<T>& gField = dynamic_cast<const data::GenericField<T>&>(lf);
+            result = (this->m_value > gField.value());
         }
         catch(const std::bad_cast& exp)
         {
 #ifndef _DEBUG
             SIGHT_NOT_USED(exp);
 #endif
-            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false );
+            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false);
         }
+
         return result;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    bool operator<= (const GenericFieldBase& lf) override
+    bool operator<=(const GenericFieldBase& lf) override
     {
         bool result = false;
         try
         {
-            const data::GenericField<T>& gField = dynamic_cast< const data::GenericField<T>& >(lf);
-            result = ( this->m_value <= gField.value() );
+            const data::GenericField<T>& gField = dynamic_cast<const data::GenericField<T>&>(lf);
+            result = (this->m_value <= gField.value());
         }
         catch(const std::bad_cast& exp)
         {
 #ifndef _DEBUG
             SIGHT_NOT_USED(exp);
 #endif
-            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false );
+            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false);
         }
+
         return result;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    bool operator>= (const GenericFieldBase& lf ) override
+    bool operator>=(const GenericFieldBase& lf) override
     {
         bool result = false;
         try
         {
-            const data::GenericField<T>& gField = dynamic_cast< const data::GenericField<T>& >(lf);
-            result = ( this->m_value >= gField.value() );
+            const data::GenericField<T>& gField = dynamic_cast<const data::GenericField<T>&>(lf);
+            result = (this->m_value >= gField.value());
         }
         catch(const std::bad_cast& exp)
         {
 #ifndef _DEBUG
             SIGHT_NOT_USED(exp);
 #endif
-            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false );
+            SIGHT_ASSERT("GenericField must have same ValueType: " << exp.what(), false);
         }
+
         return result;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     ::std::string toString() const override
     {
-        return ::boost::lexical_cast< ::std::string >(this->m_value);
+        return ::boost::lexical_cast< ::std::string>(this->m_value);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void fromString(const ::std::string& _value) override
     {
-        this->m_value = ::boost::lexical_cast< T >(_value);
+        this->m_value = ::boost::lexical_cast<T>(_value);
     }
 
 protected:
-
-    template< typename GT >
+    template<typename GT>
     static typename GT::sptr GenericFieldFactory(const typename GT::ValueType value);
 
     static sptr GenericFieldFactory(const T value);
@@ -223,8 +229,8 @@ protected:
      * @brief Constructor.
      * @param[in] value The initial value.
      */
-    GenericField( const T value = T( ) ) noexcept :
-        m_value( value )
+    GenericField(const T value = T()) noexcept :
+        m_value(value)
     {
     }
 
@@ -235,9 +241,9 @@ protected:
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    std::ostream& toOStream( std::ostream& _os ) const override
+    std::ostream& toOStream(std::ostream& _os) const override
     {
         return _os << this->value();
     }
@@ -246,26 +252,28 @@ protected:
     T m_value;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename T >
-template< typename GT >
+template<typename T>
+template<typename GT>
 typename GT::sptr GenericField<T>::GenericFieldFactory(const typename GT::ValueType value)
 {
     typename GT::sptr field;
-    field          = data::factory::New< GT >();
+    field          = data::factory::New<GT>();
     field->value() = value;
+
     return field;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename T >
+template<typename T>
 typename GenericField<T>::sptr GenericField<T>::GenericFieldFactory(const T value)
 {
     typename GenericField<T>::sptr field;
-    field          = GenericFieldFactory< GenericField<T> >(value);
+    field          = GenericFieldFactory<GenericField<T> >(value);
     field->value() = value;
+
     return field;
 }
 

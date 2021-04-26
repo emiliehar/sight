@@ -71,9 +71,7 @@ class MODULE_VIZ_SCENE3D_CLASS_API SFrustumList final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SFrustumList, ::sight::viz::scene3d::IAdaptor)
 
@@ -84,7 +82,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SFrustumList() noexcept override;
 
 protected:
-
     /// Configures.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -112,7 +109,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void setVisible(bool _visible) override;
 
 private:
-
     /// SLOT: clears frustum list.
     void clear();
 
@@ -120,32 +116,31 @@ private:
     void addFrustum();
 
     /// Defines the near clipping distance.
-    float m_near { 1.f };
+    float m_near{1.f};
 
     /// Defines the far clipping distance.
-    float m_far { 20.f };
+    float m_far{20.f};
 
     /// Defines the color of frustum.
-    std::string m_color { "#0000FF" };
+    std::string m_color{"#0000FF"};
 
     /// Defines the maximum capacity of frustum list.
-    unsigned int m_capacity {50};
+    unsigned int m_capacity{50};
 
     /// Stores a circular list of frustum adaptors.
-    ::boost::circular_buffer< ::Ogre::Camera* > m_frustumList {};
+    ::boost::circular_buffer< ::Ogre::Camera*> m_frustumList{};
 
     /// Uses to generate unique ID for each ::Ogre::Camera.
-    size_t m_currentCamIndex {0};
+    size_t m_currentCamIndex{0};
 
     /// Contains the Ogre material adaptor.
-    module::viz::scene3d::adaptor::SMaterial::sptr m_materialAdaptor {nullptr};
+    module::viz::scene3d::adaptor::SMaterial::sptr m_materialAdaptor{nullptr};
 
     /// Contains the material data.
-    data::Material::sptr m_material {nullptr};
+    data::Material::sptr m_material{nullptr};
 
     /// Contains the scene node where all frustums are attached.
-    ::Ogre::SceneNode* m_sceneNode { nullptr };
-
+    ::Ogre::SceneNode* m_sceneNode{nullptr};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

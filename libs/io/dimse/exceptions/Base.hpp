@@ -28,6 +28,7 @@
 
 namespace sight::io::dimse
 {
+
 namespace exceptions
 {
 
@@ -45,8 +46,8 @@ public:
 
     /// Destructor
     IO_DIMSE_API virtual ~Base() noexcept;
-
 };
 
-} //exceptions
-} //fwPacsIO
+} // exceptions
+
+} // fwPacsIO

@@ -29,6 +29,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -37,7 +38,6 @@ class StringDeserializer : public GenericDeserializer<sight::data::String>
 {
 public:
     SIGHT_DECLARE_CLASS(StringDeserializer, GenericDeserializer<sight::data::String>)
-
     /// Delete default copy constructors and assignment operators
     StringDeserializer(const StringDeserializer&)            = delete;
     StringDeserializer(StringDeserializer&&)                 = delete;
@@ -63,10 +63,10 @@ public:
     sight::data::Object::sptr create() override;
 
 protected:
-
     /// Default constructor
     StringDeserializer() = default;
 };
 
 } // namespace detail::data
+
 } // namespace sight::io::session

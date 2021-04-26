@@ -31,14 +31,15 @@
 #include <fstream>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::DicomSeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::DicomSeriesTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesTest::setUp()
 {
@@ -46,7 +47,7 @@ void DicomSeriesTest::setUp()
     m_series = data::DicomSeries::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesTest::tearDown()
 {
@@ -54,38 +55,39 @@ void DicomSeriesTest::tearDown()
     m_series.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesTest::dicomTest()
 {
     CPPUNIT_ASSERT(m_series);
 
-    //Create Path
+    // Create Path
     const std::filesystem::path path = core::tools::System::getTemporaryFolder() / "dicomtest";
     std::filesystem::create_directories(path);
-    const std::string filename = path.string()+"/"+"file";
+    const std::string filename = path.string() + "/" + "file";
     std::ofstream file;
     file.open(filename.c_str(), std::ofstream::out);
     file << "42";
     file.close();
 
-    //None
+    // None
     const size_t nbInstances = 100;
     CPPUNIT_ASSERT(!m_series->isInstanceAvailable(42));
     m_series->setNumberOfInstances(nbInstances);
     CPPUNIT_ASSERT_EQUAL(nbInstances, m_series->getNumberOfInstances());
 
-    //Paths
+    // Paths
     m_series->addDicomPath(42, filename);
     CPPUNIT_ASSERT(m_series->isInstanceAvailable(42));
 
-    //Binaries
+    // Binaries
     core::memory::BufferObject::sptr bufferObj = core::memory::BufferObject::New();
     m_series->addBinary(1664, bufferObj);
     CPPUNIT_ASSERT_EQUAL(bufferObj, m_series->getDicomContainer().at(1664));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

@@ -31,6 +31,7 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
 
@@ -44,21 +45,22 @@ TrackingStopConverter::TrackingStopConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TrackingStopConverter::~TrackingStopConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer TrackingStopConverter::fromFwDataObject(data::Object::csptr src) const
 {
     ::igtl::StopTrackingDataMessage::Pointer trackingMsg = ::igtl::StopTrackingDataMessage::New();
+
     return ::igtl::MessageBase::Pointer(trackingMsg.GetPointer());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Object::sptr TrackingStopConverter::fromIgtlMessage(const ::igtl::MessageBase::Pointer src) const
 {
@@ -71,21 +73,21 @@ data::Object::sptr TrackingStopConverter::fromIgtlMessage(const ::igtl::MessageB
     return composite;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IConverter::sptr TrackingStopConverter::New()
 {
-    return std::make_shared< TrackingStopConverter >();
+    return std::make_shared<TrackingStopConverter>();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& TrackingStopConverter::getIgtlType() const
 {
     return TrackingStopConverter::s_IGTL_TYPE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& TrackingStopConverter::getFwDataObjectType() const
 {
@@ -93,4 +95,5 @@ std::string const& TrackingStopConverter::getFwDataObjectType() const
 }
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

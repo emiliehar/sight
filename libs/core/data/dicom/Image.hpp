@@ -37,7 +37,6 @@ namespace sight::data::dicom
 class DATA_CLASS_API Image
 {
 public:
-
     /**
      * @brief Constructor
      * @param[in] samplesPerPixel Samples per pixel
@@ -64,7 +63,6 @@ public:
     DATA_API core::tools::Type findImageTypeFromMinMaxValues() const;
 
 protected:
-
     /// Return minimum possible value of the pixel
     DATA_API int64_t getPixelMin() const;
 
@@ -91,7 +89,6 @@ protected:
 
     /// Rescale Intercept
     double m_rescaleIntercept;
-
 };
 
-} //fwDicomTools
+} // fwDicomTools

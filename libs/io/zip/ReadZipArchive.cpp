@@ -28,18 +28,18 @@
 
 #include <core/exceptionmacros.hpp>
 
-#include <boost/iostreams/categories.hpp>  // source_tag
+#include <boost/iostreams/categories.hpp> // source_tag
 #include <boost/iostreams/stream.hpp>
 
 #include <filesystem>
-#include <iosfwd>    // streamsize
+#include <iosfwd> // streamsize
 
 namespace sight::io::zip
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void* openReadZipArchive( const std::filesystem::path& archive )
+void* openReadZipArchive(const std::filesystem::path& archive)
 {
     SIGHT_THROW_EXCEPTION_IF(
         io::zip::exception::Read("Archive '" + archive.string() + "' doesn't exist."),
@@ -54,7 +54,7 @@ void* openReadZipArchive( const std::filesystem::path& archive )
     return zip;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 class ZipSource
 {
@@ -62,16 +62,18 @@ public:
     typedef char char_type;
     typedef ::boost::iostreams::source_tag category;
 
-    ZipSource( const std::filesystem::path& archive, const core::crypto::secure_string& key = "") :
-        m_zipDescriptor( openReadZipArchive(archive), &unzClose ),
+    ZipSource(const std::filesystem::path& archive, const core::crypto::secure_string& key = "") :
+        m_zipDescriptor(openReadZipArchive(archive), &unzClose),
         m_archive(archive),
         m_key(key)
     {
     }
 
-    ZipSource( const std::filesystem::path& archive, const std::filesystem::path& path,
-               const core::crypto::secure_string& key = "") :
-        m_zipDescriptor( openReadZipArchive(archive), &unzClose ),
+    ZipSource(
+        const std::filesystem::path& archive,
+        const std::filesystem::path& path,
+        const core::crypto::secure_string& key = "") :
+        m_zipDescriptor(openReadZipArchive(archive), &unzClose),
         m_archive(archive),
         m_path(path),
         m_key(key)
@@ -108,11 +110,11 @@ public:
             nRet != UNZ_OK);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     std::streamsize read(char* s, std::streamsize n)
     {
-        const int nRet = unzReadCurrentFile(m_zipDescriptor.get(), s, static_cast< unsigned int >(n));
+        const int nRet = unzReadCurrentFile(m_zipDescriptor.get(), s, static_cast<unsigned int>(n));
         SIGHT_THROW_EXCEPTION_IF(
             io::zip::exception::Read(
                 "Error occurred while reading archive '"
@@ -122,10 +124,11 @@ public:
                 + "'."
                 ),
             nRet < 0);
+
         return nRet;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     std::string getComment()
     {
@@ -143,7 +146,7 @@ public:
         std::string comment;
 
         // We must take into account the final \0
-        comment.resize(info.size_comment+1);
+        comment.resize(info.size_comment + 1);
 
         nRet = unzGetGlobalComment(m_zipDescriptor.get(), comment.data(), static_cast<uint16_t>(comment.size()));
 
@@ -167,7 +170,7 @@ private:
     core::crypto::secure_string m_key;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ReadZipArchive::ReadZipArchive(const std::filesystem::path& archive, const core::crypto::secure_string& key) :
     m_archive(archive),
@@ -175,14 +178,14 @@ ReadZipArchive::ReadZipArchive(const std::filesystem::path& archive, const core:
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPTR(std::istream) ReadZipArchive::getFile(const std::filesystem::path& path)
 {
     return std::make_shared< ::boost::iostreams::stream<ZipSource> >(m_archive, path, m_key);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ReadZipArchive::getComment()
 {
@@ -191,11 +194,11 @@ std::string ReadZipArchive::getComment()
     return zip->getComment();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::filesystem::path ReadZipArchive::getArchivePath() const
 {
     return m_archive;
 }
 
-}
+} // namespace sight::io

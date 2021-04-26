@@ -65,7 +65,7 @@ namespace adaptor
 class MODULE_VIZ_SCENE2D_CLASS_API SHistogram : public sight::viz::scene2d::IAdaptor
 {
 public:
-    SIGHT_DECLARE_SERVICE(SHistogram,  ::sight::viz::scene2d::IAdaptor)
+    SIGHT_DECLARE_SERVICE(SHistogram, ::sight::viz::scene2d::IAdaptor)
 
     MODULE_VIZ_SCENE2D_API SHistogram() noexcept;
     MODULE_VIZ_SCENE2D_API virtual ~SHistogram() noexcept;
@@ -76,7 +76,7 @@ protected:
     MODULE_VIZ_SCENE2D_API void updating() override;
     MODULE_VIZ_SCENE2D_API void stopping() override;
 
-    MODULE_VIZ_SCENE2D_API void processInteraction( sight::viz::scene2d::data::Event& _event ) override;
+    MODULE_VIZ_SCENE2D_API void processInteraction(sight::viz::scene2d::data::Event& _event) override;
 
     /**
      * @brief Returns proposals to connect service slots to associated object signals,
@@ -91,7 +91,7 @@ protected:
 
 private:
     /// Update the value of m_ordinateValueUID according to the value pointed by mouse cursor.
-    void updateCurrentPoint( sight::viz::scene2d::data::Event& _event, const data::Point::sptr& point );
+    void updateCurrentPoint(sight::viz::scene2d::data::Event& _event, const data::Point::sptr& point);
 
     /// Color used for graphic item's inner and border color
     QPen m_color{Qt::green};
@@ -108,6 +108,6 @@ private:
     QGraphicsItemGroup* m_layer{nullptr};
 };
 
-}   // namespace adaptor
+} // namespace adaptor
 
-}   // namespace sight::module::viz::scene2d
+} // namespace sight::module::viz::scene2d

@@ -38,21 +38,23 @@
 #include <filesystem>
 #include <functional>
 
-fwGuiRegisterMacro( ::sight::ui::qml::dialog::LocationDialog,
-                    ::sight::ui::base::dialog::ILocationDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(
+    ::sight::ui::qml::dialog::LocationDialog,
+    ::sight::ui::base::dialog::ILocationDialog::REGISTRY_KEY);
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 LocationDialog::LocationDialog(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::location::ILocation::sptr LocationDialog::show()
 {
@@ -77,8 +79,8 @@ core::location::ILocation::sptr LocationDialog::show()
     dialog->setProperty("nameFilters", filter);
 
     // check each option to set the property
-    if ( (m_style& ui::base::dialog::ILocationDialog::READ) ||
-         (m_style & ui::base::dialog::ILocationDialog::FILE_MUST_EXIST))
+    if((m_style & ui::base::dialog::ILocationDialog::READ)
+       || (m_style & ui::base::dialog::ILocationDialog::FILE_MUST_EXIST))
     {
         dialog->setProperty("selectExisting", true);
     }
@@ -87,14 +89,14 @@ core::location::ILocation::sptr LocationDialog::show()
         dialog->setProperty("selectExisting", false);
     }
 
-    if (m_type == ui::base::dialog::ILocationDialog::MULTI_FILES)
+    if(m_type == ui::base::dialog::ILocationDialog::MULTI_FILES)
     {
         SIGHT_ASSERT("MULTI_FILES type must have a READ style", m_style & ui::base::dialog::ILocationDialog::READ);
         dialog->setProperty("selectFolder", false);
         dialog->setProperty("selectMultiple", true);
         QStringList files;
     }
-    else if (m_type == ui::base::dialog::ILocationDialog::FOLDER)
+    else if(m_type == ui::base::dialog::ILocationDialog::FOLDER)
     {
         dialog->setProperty("selectExisting", true);
         dialog->setProperty("selectFolder", true);
@@ -103,6 +105,7 @@ core::location::ILocation::sptr LocationDialog::show()
     {
         dialog->setProperty("selectFolder", false);
     }
+
     QEventLoop loop;
     connect(dialog, SIGNAL(accepted()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
@@ -114,29 +117,31 @@ core::location::ILocation::sptr LocationDialog::show()
     return m_location;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool LocationDialog::eventFilter(QObject* watched, QEvent* event)
 {
-    return (event->type() != QEvent::Paint && event->type() != QEvent::MetaCall && !event->spontaneous());
+    return event->type() != QEvent::Paint && event->type() != QEvent::MetaCall && !event->spontaneous();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LocationDialog::resultDialog(const QVariant& msg)
 {
     // get the list of selected files or folder
     QList<QUrl> files = msg.value<QList<QUrl> >();
     m_wildcard = m_filterSelected.toStdString();
+
     if(!files.isEmpty() && !files.first().isEmpty())
     {
         // convert all selected location into boost filesystem and add it in m_location
         if(m_type == ui::base::dialog::ILocationDialog::MULTI_FILES)
         {
-            std::vector< std::filesystem::path > paths;
+            std::vector<std::filesystem::path> paths;
+
             for(const QUrl& filename : files)
             {
-                std::filesystem::path bpath( filename.toLocalFile().toStdString() );
+                std::filesystem::path bpath(filename.toLocalFile().toStdString());
                 paths.push_back(bpath);
             }
 
@@ -159,88 +164,96 @@ void LocationDialog::resultDialog(const QVariant& msg)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void LocationDialog::setType( ui::base::dialog::ILocationDialog::Types type )
+void LocationDialog::setType(ui::base::dialog::ILocationDialog::Types type)
 {
     m_type = type;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-ui::base::dialog::ILocationDialog&  LocationDialog::setOption( ui::base::dialog::ILocationDialog::Options option)
+ui::base::dialog::ILocationDialog& LocationDialog::setOption(ui::base::dialog::ILocationDialog::Options option)
 {
-    switch (option)
+    switch(option)
     {
         case ui::base::dialog::ILocationDialog::WRITE:
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style &
-                                                                          ~ui::base::dialog::ILocationDialog::READ);
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style |
-                                                                          ui::base::dialog::ILocationDialog::WRITE);
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          & ~ui::base::dialog::ILocationDialog::READ);
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          | ui::base::dialog::ILocationDialog::WRITE);
             break;
+
         case ui::base::dialog::ILocationDialog::READ:
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style &
-                                                                          ~ui::base::dialog::ILocationDialog::WRITE);
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style |
-                                                                          ui::base::dialog::ILocationDialog::READ);
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          & ~ui::base::dialog::ILocationDialog::WRITE);
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          | ui::base::dialog::ILocationDialog::READ);
             break;
+
         case ui::base::dialog::ILocationDialog::FILE_MUST_EXIST:
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style |
-                                                                          ui::base::dialog::ILocationDialog::
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          | ui::base::dialog::ILocationDialog::
                                                                           FILE_MUST_EXIST);
             break;
+
         default:
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style &
-                                                                          ~ui::base::dialog::ILocationDialog::READ);
-            m_style =
-                static_cast< ui::base::dialog::ILocationDialog::Options >(m_style |
-                                                                          ui::base::dialog::ILocationDialog::WRITE);
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          & ~ui::base::dialog::ILocationDialog::READ);
+            m_style
+                = static_cast<ui::base::dialog::ILocationDialog::Options>(m_style
+                                                                          | ui::base::dialog::ILocationDialog::WRITE);
             break;
     }
+
     return *this;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void LocationDialog::addFilter(const std::string& filterName, const std::string& wildcardList )
+void LocationDialog::addFilter(const std::string& filterName, const std::string& wildcardList)
 {
-    m_filters.push_back( std::make_pair( filterName, wildcardList ));
+    m_filters.push_back(std::make_pair(filterName, wildcardList));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const QStringList LocationDialog::fileFilters()
 {
     QStringList result;
-    for ( const auto& filter : m_filters)
+
+    for(const auto& filter : m_filters)
     {
         const std::string& filterName   = filter.first;
         const std::string& rawWildcards = filter.second;
         const QString& qFilterName      = QString::fromStdString(filterName);
         const QString& qRawWildcards    = QString::fromStdString(rawWildcards);
 
-        result += qFilterName +" (" +  qRawWildcards +")";
+        result += qFilterName + " (" + qRawWildcards + ")";
     }
+
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string LocationDialog::getCurrentSelection() const
 {
     std::string extension;
-    for (const auto& filter : m_filters)
+
+    for(const auto& filter : m_filters)
     {
         const std::string& filterName       = filter.first;
         const std::string& rawWildcards     = filter.second;
-        const std::string& availableFilters = filterName + " (" +  rawWildcards + ")";
-        if (!m_wildcard.compare(availableFilters))
+        const std::string& availableFilters = filterName + " (" + rawWildcards + ")";
+
+        if(!m_wildcard.compare(availableFilters))
         {
             extension = &rawWildcards[1];
             break;
@@ -250,7 +263,8 @@ std::string LocationDialog::getCurrentSelection() const
     return extension;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
-} //namespace sight::ui::qml
+
+} // namespace sight::ui::qml

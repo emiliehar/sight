@@ -52,7 +52,6 @@ namespace sight::module::ui::viz
 class MODULE_UI_VIZ_CLASS_API SAddPoint : public service::IController
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SAddPoint, service::IController)
 
     /**
@@ -74,7 +73,6 @@ public:
     MODULE_UI_VIZ_API virtual ~SAddPoint() noexcept;
 
 protected:
-
     MODULE_UI_VIZ_API void configuring() override;
 
     /// Does nothing
@@ -87,11 +85,10 @@ protected:
     MODULE_UI_VIZ_API void updating() override;
 
 private:
-
-    ///  Add a point in the point list
+    /// Add a point in the point list
     void addPoint(const data::Point::sptr);
 
-    ///  Remove a point from the point list
+    /// Remove a point from the point list
     void removePoint(const data::Point::csptr);
 
     /**
@@ -109,4 +106,5 @@ private:
      * @}
      */
 };
+
 } // uiVisuOgre

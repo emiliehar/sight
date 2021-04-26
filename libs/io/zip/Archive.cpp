@@ -31,7 +31,7 @@ namespace sight::io::zip
 static std::map<std::filesystem::path, Archive::wptr> s_archives_cache;
 static std::mutex s_archives_cache_mutex;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Archive::sptr Archive::cache_find(const std::filesystem::path& archivePath)
 {
@@ -45,6 +45,7 @@ Archive::sptr Archive::cache_find(const std::filesystem::path& archivePath)
 
     // Search into the cache
     auto found = s_archives_cache.find(normalized_path);
+
     if(found != s_archives_cache.end())
     {
         // Use the found instance
@@ -54,7 +55,7 @@ Archive::sptr Archive::cache_find(const std::filesystem::path& archivePath)
     return archive;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Archive::cache_store(const std::filesystem::path& archivePath, const Archive::sptr& archive)
 {
@@ -66,7 +67,7 @@ void Archive::cache_store(const std::filesystem::path& archivePath, const Archiv
     s_archives_cache[normalized_path] = archive;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Archive::cache_clean(const std::filesystem::path& archivePath)
 {
@@ -77,7 +78,7 @@ void Archive::cache_clean(const std::filesystem::path& archivePath)
     std::lock_guard<std::mutex> lock(s_archives_cache_mutex);
 
     // Clean all expired pointer
-    for(auto it = s_archives_cache.cbegin(); it != s_archives_cache.cend();)
+    for(auto it = s_archives_cache.cbegin() ; it != s_archives_cache.cend() ; )
     {
         if(it->second.expired())
         {
@@ -91,6 +92,7 @@ void Archive::cache_clean(const std::filesystem::path& archivePath)
 
     // Remove completely the archive if not used anymore
     auto found = s_archives_cache.find(normalized_path);
+
     if(found != s_archives_cache.end())
     {
         // If use count == 1, it means that the caller is the only left
@@ -101,7 +103,7 @@ void Archive::cache_clean(const std::filesystem::path& archivePath)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Archive::cache_contains(const std::filesystem::path& archivePath)
 {

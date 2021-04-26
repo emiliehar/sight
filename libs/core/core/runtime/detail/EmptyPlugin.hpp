@@ -55,7 +55,6 @@ public:
 
     // Overrides
     void stop() noexcept override;
-
 };
 
 } // namespace detail

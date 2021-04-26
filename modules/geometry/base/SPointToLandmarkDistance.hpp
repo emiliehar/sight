@@ -76,9 +76,7 @@ namespace sight::module::geometry::base
  */
 class MODULE_GEOMETRY_BASE_CLASS_API SPointToLandmarkDistance final : public service::IService
 {
-
 public:
-
     /// Generates default methods like New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SPointToLandmarkDistance, service::IService)
 
@@ -89,7 +87,6 @@ public:
     MODULE_GEOMETRY_BASE_API ~SPointToLandmarkDistance() noexcept override;
 
 protected:
-
     /// Does nothing.
     MODULE_GEOMETRY_BASE_API void starting() override;
 
@@ -103,17 +100,16 @@ protected:
     MODULE_GEOMETRY_BASE_API void configuring() override;
 
 private:
-
-    typedef core::com::Signal< void (float) > DistanceChangedSignalType;
+    typedef core::com::Signal<void (float)> DistanceChangedSignalType;
 
     /// SLOT: updates selected point.
-    void updateSelectedPoint ( std::string name, size_t index );
+    void updateSelectedPoint(std::string name, size_t index);
 
     /// SLOT: updates added point.
-    void updatePoint ( std::string name );
+    void updatePoint(std::string name);
 
     /// SLOT: updates removed point.
-    void removePoint ();
+    void removePoint();
 
     /// Selected landmark.
     ::glm::dvec3 m_currentLandmark;

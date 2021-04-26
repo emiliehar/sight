@@ -33,41 +33,43 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::zip::ut::ZipTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::zip::ut::ZipTest);
 
 namespace sight::io::zip
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ZipTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ZipTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ZipTest::commentTest()
 {
     const std::string writerComment = "Example of comment";
 
     const std::filesystem::path dirPath = core::tools::System::getTemporaryFolder() / "fwZipTest";
-    std::filesystem::create_directories( dirPath );
+    std::filesystem::create_directories(dirPath);
     const std::filesystem::path path        = dirPath / "jambon.zip";
     const std::filesystem::path sourceFile  = utestData::Data::dir() / "sight/image/jpg/makao01.jpg";
     const std::filesystem::path archiveFile = "makao.jpg";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + sourceFile.string() + "' does not exist",
-                           std::filesystem::exists(sourceFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + sourceFile.string() + "' does not exist",
+        std::filesystem::exists(sourceFile));
 
     SPTR(WriteZipArchive) writer = std::make_shared<WriteZipArchive>(path, writerComment);
     writer->putFile(sourceFile, archiveFile);
@@ -75,25 +77,26 @@ void ZipTest::commentTest()
     SPTR(ReadZipArchive) reader = std::make_shared<ReadZipArchive>(path);
     std::string readerComment = reader->getComment();
 
-    std::filesystem::remove_all( path );
+    std::filesystem::remove_all(path);
 
     CPPUNIT_ASSERT_EQUAL(writerComment, readerComment);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ZipTest::cryptTest()
 {
     const std::string writerComment = "Example of comment";
 
     const std::filesystem::path dirPath = core::tools::System::getTemporaryFolder() / "fwZipTest";
-    std::filesystem::create_directories( dirPath );
+    std::filesystem::create_directories(dirPath);
     const std::filesystem::path path        = dirPath / "jambon.zip";
     const std::filesystem::path sourceFile  = utestData::Data::dir() / "sight/image/jpg/makao01.jpg";
     const std::filesystem::path archiveFile = "makao.jpg";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + sourceFile.string() + "' does not exist",
-                           std::filesystem::exists(sourceFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + sourceFile.string() + "' does not exist",
+        std::filesystem::exists(sourceFile));
 
     // The password to use for encryption
     const core::crypto::secure_string password = "The little blue kitty is very sick...";
@@ -109,34 +112,35 @@ void ZipTest::cryptTest()
     CPPUNIT_ASSERT_EQUAL(writerComment, readerComment);
 
     // Compare the first 512 bytes of the actual file and the archived one
-    char sourceBuffer[512] {0};
+    char sourceBuffer[512]{0};
     std::ifstream fileStream(sourceFile, std::ifstream::binary);
     fileStream.read(sourceBuffer, sizeof(sourceBuffer));
 
-    char archiveBuffer[sizeof(sourceBuffer)] {0};
+    char archiveBuffer[sizeof(sourceBuffer)]{0};
     auto archiveStream = reader->getFile(archiveFile);
     archiveStream->read(archiveBuffer, sizeof(archiveBuffer));
 
-    for(size_t i = 0; i < sizeof(sourceBuffer); i++)
+    for(size_t i = 0 ; i < sizeof(sourceBuffer) ; i++)
     {
         CPPUNIT_ASSERT_EQUAL(sourceBuffer[i], archiveBuffer[i]);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ZipTest::badPasswordCryptTest()
 {
     const std::string writerComment = "Example of comment";
 
     const std::filesystem::path dirPath = core::tools::System::getTemporaryFolder() / "fwZipTest";
-    std::filesystem::create_directories( dirPath );
+    std::filesystem::create_directories(dirPath);
     const std::filesystem::path path        = dirPath / "jambon.zip";
     const std::filesystem::path sourceFile  = utestData::Data::dir() / "sight/image/jpg/makao01.jpg";
     const std::filesystem::path archiveFile = "makao.jpg";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + sourceFile.string() + "' does not exist",
-                           std::filesystem::exists(sourceFile));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + sourceFile.string() + "' does not exist",
+        std::filesystem::exists(sourceFile));
 
     // The password to use for encryption
     const core::crypto::secure_string writePassword = "The little blue kitty is very sick...";
@@ -153,8 +157,9 @@ void ZipTest::badPasswordCryptTest()
     CPPUNIT_ASSERT_EQUAL(writerComment, readerComment);
 
     // We should have an exception here
-    CPPUNIT_ASSERT_THROW( reader->getFile(archiveFile), core::Exception);
+    CPPUNIT_ASSERT_THROW(reader->getFile(archiveFile), core::Exception);
 }
 
 } // namespace ut
+
 } // namespace sight::io::zip

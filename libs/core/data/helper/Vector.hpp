@@ -28,6 +28,7 @@
 
 namespace sight::data
 {
+
 namespace helper
 {
 
@@ -37,11 +38,9 @@ namespace helper
  */
 class DATA_CLASS_API Vector
 {
-
 public:
-
     /// Constructor. Initialize parameters.
-    DATA_API Vector( data::Vector::wptr vector );
+    DATA_API Vector(data::Vector::wptr vector);
 
     /// Destrucotr. Do nothing.
     DATA_API ~Vector();
@@ -52,7 +51,7 @@ public:
      *
      * Prepare the signal to announce the modification.
      */
-    DATA_API void add( data::Object::sptr _newObject );
+    DATA_API void add(data::Object::sptr _newObject);
 
     /**
      * @brief Remove an object in the vector.
@@ -60,7 +59,7 @@ public:
      *
      * Prepare the signal to announce the modification.
      */
-    DATA_API void remove( data::Object::sptr _oldObject );
+    DATA_API void remove(data::Object::sptr _oldObject);
 
     /**
      * @brief Clear all objects in the vector.
@@ -73,11 +72,11 @@ public:
     DATA_API void notify();
 
 private:
-
     data::Vector::ContainerType m_addedObjects;
     data::Vector::ContainerType m_removedObjects;
     data::Vector::wptr m_vector;
 };
 
 } // namespace helper
+
 } // namespace sight::data

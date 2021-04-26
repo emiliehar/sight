@@ -52,7 +52,6 @@ static const std::uint8_t s_PROXY_GEOMETRY_RQ_GROUP = 101;
 class VIZ_SCENE3D_CLASS_API RayTracingVolumeRenderer : public IVolumeRenderer
 {
 public:
-
     /**
      * @brief Constructor.
      * @param parentId             ID of the service using this renderer
@@ -66,24 +65,26 @@ public:
      * @param colorBleeding        Color bleeding flag.
      * @param shadows              Soft shadows flag.
      */
-    VIZ_SCENE3D_API RayTracingVolumeRenderer(std::string parentId,
-                                             Layer::sptr layer,
-                                             Ogre::SceneNode* const parentNode,
-                                             ::Ogre::TexturePtr imageTexture,
-                                             const TransferFunction::sptr& gpuVolumeTF,
-                                             PreIntegrationTable& preintegrationTable,
-                                             bool ambientOcclusion      = false,
-                                             bool colorBleeding         = false,
-                                             bool shadows               = false,
-                                             double aoFactor            = 1.,
-                                             double colorBleedingFactor = 1.);
+    VIZ_SCENE3D_API RayTracingVolumeRenderer(
+        std::string parentId,
+        Layer::sptr layer,
+        Ogre::SceneNode* const parentNode,
+        ::Ogre::TexturePtr imageTexture,
+        const TransferFunction::sptr& gpuVolumeTF,
+        PreIntegrationTable& preintegrationTable,
+        bool ambientOcclusion      = false,
+        bool colorBleeding         = false,
+        bool shadows               = false,
+        double aoFactor            = 1.,
+        double colorBleedingFactor = 1.);
 
     /// Does nothing.
     VIZ_SCENE3D_API virtual ~RayTracingVolumeRenderer();
 
     /// Function called when a new image is being rendered.
-    VIZ_SCENE3D_API virtual void imageUpdate(const data::Image::sptr image,
-                                             const data::TransferFunction::sptr tf) override;
+    VIZ_SCENE3D_API virtual void imageUpdate(
+        const data::Image::sptr image,
+        const data::TransferFunction::sptr tf) override;
 
     /// Called when the transfer function is updated.
     VIZ_SCENE3D_API void updateVolumeTF() override;
@@ -135,10 +136,9 @@ public:
     viz::scene3d::Layer::sptr getLayer() const;
 
     /// Sets the texture holding the image to be displayed. Doesn't recompute the proxy geometry.
-    VIZ_SCENE3D_API void set3DTexture(const ::Ogre::TexturePtr& _texture );
+    VIZ_SCENE3D_API void set3DTexture(const ::Ogre::TexturePtr& _texture);
 
 protected:
-
     /// Updates the current compositor name according to VR effects flags.
     /// @return tuple containing a
     /// - Comma separated list of preprocessor defines to use in vertex shaders.
@@ -147,8 +147,9 @@ protected:
     VIZ_SCENE3D_API virtual std::tuple<std::string, std::string, size_t> computeRayTracingDefines() const;
 
     /// Sets all texture units needed by the material during the ray casting pass.
-    VIZ_SCENE3D_API virtual void setRayCastingPassTextureUnits(Ogre::Pass* const _rayCastingPass,
-                                                               const std::string& _fpPPDefines) const;
+    VIZ_SCENE3D_API virtual void setRayCastingPassTextureUnits(
+        Ogre::Pass* const _rayCastingPass,
+        const std::string& _fpPPDefines) const;
     /**
      * @brief Generates the material used to render the volume.
      * @param _sourceFile, fragment shader's file name.
@@ -169,10 +170,9 @@ protected:
     std::vector<std::string> m_fragmentShaderAttachements;
 
     /// Compositor used to compute volume ray entry/exit points.
-    RayEntryCompositor::uptr m_rayEntryCompositor {nullptr};
+    RayEntryCompositor::uptr m_rayEntryCompositor{nullptr};
 
 private:
-
     /// Creates the proxy geometry defining the entry points for rays.
     void initEntryPoints();
 
@@ -225,7 +225,7 @@ private:
     viz::scene3d::Layer::wptr m_layer;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Inline method(s)
 
 inline viz::scene3d::vr::IllumAmbientOcclusionSAT::sptr RayTracingVolumeRenderer::getIllumVolume()
@@ -233,14 +233,14 @@ inline viz::scene3d::vr::IllumAmbientOcclusionSAT::sptr RayTracingVolumeRenderer
     return m_ambientOcclusionSAT.lock();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline viz::scene3d::Layer::sptr RayTracingVolumeRenderer::getLayer() const
 {
     return m_layer.lock();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace vr
 

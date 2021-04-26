@@ -31,17 +31,22 @@
 
 namespace sight::core::reflection
 {
+
 namespace factory
 {
 
-CORE_API SPTR( ::camp::UserObject ) New( const core::reflection::registry::KeyType& classname,
-                                         core::tools::Object* object);
+CORE_API SPTR(::camp::UserObject) New(
+    const core::reflection::registry::KeyType& classname,
+    core::tools::Object* object);
 
-template<class CLASSNAME > SPTR( ::camp::UserObject )  New(core::tools::Object* object)
+template<class CLASSNAME>
+SPTR(::camp::UserObject)  New(core::tools::Object* object)
 {
-    SPTR(::camp::UserObject) obj = std::make_shared< ::camp::UserObject >(*(dynamic_cast<CLASSNAME*>( object )));
+    SPTR(::camp::UserObject) obj = std::make_shared< ::camp::UserObject>(*(dynamic_cast<CLASSNAME*>(object)));
+
     return obj;
 }
 
 } // namespace factory
+
 } // namespace sight::core::reflection

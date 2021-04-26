@@ -26,18 +26,17 @@
 
 namespace sight::core
 {
+
 namespace ut
 {
 
 class HisResClockTest : public CPPUNIT_NS::TestFixture
 {
-
-CPPUNIT_TEST_SUITE( HisResClockTest );
-CPPUNIT_TEST( getTimeTest );
+CPPUNIT_TEST_SUITE(HisResClockTest);
+CPPUNIT_TEST(getTimeTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     void setUp() override;
 
     void tearDown() override;
@@ -45,5 +44,6 @@ public:
     void getTimeTest();
 };
 
-} //namespace ut
-} //namespace sight::core
+} // namespace ut
+
+} // namespace sight::core

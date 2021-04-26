@@ -28,6 +28,7 @@
 
 namespace sight::geometry::glm
 {
+
 namespace ut
 {
 
@@ -44,47 +45,54 @@ namespace ut
 
 const static double s_EPSILON = 10e-9;
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::geometry::glm::ut::MeshFunctionsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::geometry::glm::ut::MeshFunctionsTest);
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::setUp()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::tearDown()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::compare(const ::glm::dvec3& _expected, const ::glm::dvec3& _actual)
 {
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Conversion world-barycentric-world error.", _expected[X], _actual[X],
-                                         s_EPSILON);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Conversion world-barycentric-world error.", _expected[Y], _actual[Y],
-                                         s_EPSILON);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Conversion world-barycentric-world error.", _expected[Z], _actual[Z],
-                                         s_EPSILON);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+        "Conversion world-barycentric-world error.",
+        _expected[X],
+        _actual[X],
+        s_EPSILON);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+        "Conversion world-barycentric-world error.",
+        _expected[Y],
+        _actual[Y],
+        s_EPSILON);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+        "Conversion world-barycentric-world error.",
+        _expected[Z],
+        _actual[Z],
+        s_EPSILON);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::computeBarycenterABC2D()
 {
     // With the same Z it correspond to a 2d case
 
     // Creating triangle points A, B, C.
-    const ::glm::dvec3 A {9., 6., 1.};
-    const ::glm::dvec3 B {9., 12., 1.};
-    const ::glm::dvec3 C {2., 9., 1.};
+    const ::glm::dvec3 A{9., 6., 1.};
+    const ::glm::dvec3 B{9., 12., 1.};
+    const ::glm::dvec3 C{2., 9., 1.};
 
     // Creating intersection Point P.
-    const ::glm::dvec3 P {7., 9., 1.};
+    const ::glm::dvec3 P{7., 9., 1.};
 
     const ::glm::dvec3 barycentric = geometry::glm::toBarycentricCoord(P, A, B, C);
 
@@ -96,11 +104,17 @@ void MeshFunctionsTest::computeBarycenterABC2D()
 
     // Test if 0 ≤ v ≤ 1, 0 ≤ w ≤ 1, and v + w ≤ 1
 
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ v ≤ 1", std::isgreaterequal(barycentric[V], 0.) &&  std::islessequal(barycentric[V],
-                                                                                                     1. ));
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", std::isgreaterequal( barycentric[W], 0.) && std::islessequal(barycentric[W],
-                                                                                                     1. ) );
-    CPPUNIT_ASSERT_MESSAGE("v + w ≤ 1", std::islessequal(barycentric[V] + barycentric[W],  1.) );
+    CPPUNIT_ASSERT_MESSAGE(
+        "0 ≤ v ≤ 1",
+        std::isgreaterequal(barycentric[V], 0.) && std::islessequal(
+            barycentric[V],
+            1.));
+    CPPUNIT_ASSERT_MESSAGE(
+        "0 ≤ w ≤ 1",
+        std::isgreaterequal(barycentric[W], 0.) && std::islessequal(
+            barycentric[W],
+            1.));
+    CPPUNIT_ASSERT_MESSAGE("v + w ≤ 1", std::islessequal(barycentric[V] + barycentric[W], 1.));
 
     // Convert back to world coordinates.
 
@@ -109,17 +123,17 @@ void MeshFunctionsTest::computeBarycenterABC2D()
     this->compare(P, P2);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::computeBarycenterABC3D()
 {
     // Second test in 3d.
-    const ::glm::dvec3 A {1., 0., 0.};
-    const ::glm::dvec3 B {0., 1., 0.};
-    const ::glm::dvec3 C {0., 0., 1.};
+    const ::glm::dvec3 A{1., 0., 0.};
+    const ::glm::dvec3 B{0., 1., 0.};
+    const ::glm::dvec3 C{0., 0., 1.};
 
     // Should be at the center of ABC
-    const ::glm::dvec3 P {1./3., 1./3., 1./3.};
+    const ::glm::dvec3 P{1. / 3., 1. / 3., 1. / 3.};
 
     const ::glm::dvec3 barycentric = geometry::glm::toBarycentricCoord(P, A, B, C);
 
@@ -131,11 +145,17 @@ void MeshFunctionsTest::computeBarycenterABC3D()
 
     // Test if 0 ≤ v ≤ 1, 0 ≤ w ≤ 1, and v + w ≤ 1
 
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ v ≤ 1", std::isgreaterequal(barycentric[V], 0.) &&  std::islessequal(barycentric[V],
-                                                                                                     1. ));
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", std::isgreaterequal( barycentric[W], 0.) && std::islessequal(barycentric[W],
-                                                                                                     1. ) );
-    CPPUNIT_ASSERT_MESSAGE("v + w ≤ 1", std::islessequal(barycentric[V] + barycentric[W],  1.) );
+    CPPUNIT_ASSERT_MESSAGE(
+        "0 ≤ v ≤ 1",
+        std::isgreaterequal(barycentric[V], 0.) && std::islessequal(
+            barycentric[V],
+            1.));
+    CPPUNIT_ASSERT_MESSAGE(
+        "0 ≤ w ≤ 1",
+        std::isgreaterequal(barycentric[W], 0.) && std::islessequal(
+            barycentric[W],
+            1.));
+    CPPUNIT_ASSERT_MESSAGE("v + w ≤ 1", std::islessequal(barycentric[V] + barycentric[W], 1.));
 
     // Convert back to world coordinates.
 
@@ -144,18 +164,17 @@ void MeshFunctionsTest::computeBarycenterABC3D()
     this->compare(P, P2);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::computeBarycenterABCRealCoords()
 {
-
     // Second test in 3d.
-    const ::glm::dvec3 A {-0.5, 0., 3.};
-    const ::glm::dvec3 B {0.5, -0.7071, 3.7071};
-    const ::glm::dvec3 C {-0.5, -0.7071, 3.7071};
+    const ::glm::dvec3 A{-0.5, 0., 3.};
+    const ::glm::dvec3 B{0.5, -0.7071, 3.7071};
+    const ::glm::dvec3 C{-0.5, -0.7071, 3.7071};
 
     // Should be at the center of ABC
-    const ::glm::dvec3 P {-0.39, -0.30, 3.30};
+    const ::glm::dvec3 P{-0.39, -0.30, 3.30};
 
     const ::glm::dvec3 barycentric = geometry::glm::toBarycentricCoord(P, A, B, C);
 
@@ -167,11 +186,17 @@ void MeshFunctionsTest::computeBarycenterABCRealCoords()
 
     // Test if 0 ≤ v ≤ 1, 0 ≤ w ≤ 1, and v + w ≤ 1
 
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ v ≤ 1", std::isgreaterequal(barycentric[V], 0.) &&  std::islessequal(barycentric[V],
-                                                                                                     1. ));
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", std::isgreaterequal( barycentric[W], 0.) && std::islessequal(barycentric[W],
-                                                                                                     1. ) );
-    CPPUNIT_ASSERT_MESSAGE("v + w ≤ 1", std::islessequal(barycentric[V] + barycentric[W],  1.) );
+    CPPUNIT_ASSERT_MESSAGE(
+        "0 ≤ v ≤ 1",
+        std::isgreaterequal(barycentric[V], 0.) && std::islessequal(
+            barycentric[V],
+            1.));
+    CPPUNIT_ASSERT_MESSAGE(
+        "0 ≤ w ≤ 1",
+        std::isgreaterequal(barycentric[W], 0.) && std::islessequal(
+            barycentric[W],
+            1.));
+    CPPUNIT_ASSERT_MESSAGE("v + w ≤ 1", std::islessequal(barycentric[V] + barycentric[W], 1.));
 
     // Convert back to world coordinates.
 
@@ -180,18 +205,18 @@ void MeshFunctionsTest::computeBarycenterABCRealCoords()
     this->compare(P, P2);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::computeBarycenterOutsideABC()
 {
     // Test with a point outside of the triangle.
 
     // Second test in 3d.
-    const ::glm::dvec3 A {0., 0., 0.};
-    const ::glm::dvec3 B {0., 1., 0.};
-    const ::glm::dvec3 C {1., 0., 1.};
+    const ::glm::dvec3 A{0., 0., 0.};
+    const ::glm::dvec3 B{0., 1., 0.};
+    const ::glm::dvec3 C{1., 0., 1.};
 
-    const ::glm::dvec3 P {10., 20., 30.};
+    const ::glm::dvec3 P{10., 20., 30.};
 
     const ::glm::dvec3 barycentric = geometry::glm::toBarycentricCoord(P, A, B, C);
 
@@ -202,37 +227,36 @@ void MeshFunctionsTest::computeBarycenterOutsideABC()
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("u + v + w = 1", 1., sum, s_EPSILON);
 
     CPPUNIT_ASSERT_MESSAGE("0 ≤ v ≤ 1", barycentric[V] > 1.); // v = 20
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", barycentric[W] > 1. ); //w = 20
-
+    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", barycentric[W] > 1.); // w = 20
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MeshFunctionsTest::computeBarycenterTetrahedron()
 {
     // First test in 3d.
-    const ::glm::dvec3 A {0., 0., 0.};
-    const ::glm::dvec3 B {1., 0., 0.};
-    const ::glm::dvec3 C {0., 1., 0.};
-    const ::glm::dvec3 D {0., 0., 1.};
+    const ::glm::dvec3 A{0., 0., 0.};
+    const ::glm::dvec3 B{1., 0., 0.};
+    const ::glm::dvec3 C{0., 1., 0.};
+    const ::glm::dvec3 D{0., 0., 1.};
 
     // Should be at the center of ABC
-    const ::glm::dvec3 P {0.25, 0.25, 0.25};
+    const ::glm::dvec3 P{0.25, 0.25, 0.25};
 
     const ::glm::dvec4 barycentric = geometry::glm::toBarycentricCoord(P, A, B, C, D);
 
     // Test if sum of barycentric coordinates are equal to 1.
 
-    const double sum = (barycentric[U] + barycentric[V] + barycentric[W]+ barycentric[H]);
+    const double sum = (barycentric[U] + barycentric[V] + barycentric[W] + barycentric[H]);
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("u + v + w + h = 1", 1., sum, s_EPSILON);
 
     // Test if 0 ≤ v ≤ 1, 0 ≤ w ≤ 1, and v + w ≤ 1
 
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ v ≤ 1", barycentric[V] >= 0. && barycentric[V] <= 1 );
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", barycentric[W] >= 0. && barycentric[W] <= 1 );
-    CPPUNIT_ASSERT_MESSAGE("0 ≤ h ≤ 1", barycentric[H] >= 0. && barycentric[H] <= 1 );
-    CPPUNIT_ASSERT_MESSAGE("v + w + h ≤ 1", (barycentric[V] + barycentric[W] + barycentric[H]) <= 1. );
+    CPPUNIT_ASSERT_MESSAGE("0 ≤ v ≤ 1", barycentric[V] >= 0. && barycentric[V] <= 1);
+    CPPUNIT_ASSERT_MESSAGE("0 ≤ w ≤ 1", barycentric[W] >= 0. && barycentric[W] <= 1);
+    CPPUNIT_ASSERT_MESSAGE("0 ≤ h ≤ 1", barycentric[H] >= 0. && barycentric[H] <= 1);
+    CPPUNIT_ASSERT_MESSAGE("v + w + h ≤ 1", (barycentric[V] + barycentric[W] + barycentric[H]) <= 1.);
 
     // Convert back to world coordinates.
 
@@ -241,27 +265,31 @@ void MeshFunctionsTest::computeBarycenterTetrahedron()
     this->compare(P, P2);
 
     CPPUNIT_ASSERT_MESSAGE(
-        "The two methods verifying if a point is inside a tetrahedron don't provide the same results", geometry::glm::isInsideTetrahedron(
-            P, A, B, C,
-            D) == geometry::glm::isInsideTetrahedron(barycentric) );
+        "The two methods verifying if a point is inside a tetrahedron don't provide the same results",
+        geometry::glm::isInsideTetrahedron(
+            P,
+            A,
+            B,
+            C,
+            D) == geometry::glm::isInsideTetrahedron(barycentric));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MeshFunctionsTest::computeBarycenterOutsideTetrahedron()
 {
     // Test with a point outside of the tetrahedron.
 
     // Second test in 3d.
-    const ::glm::dvec3 A {0., 0., 0.};
-    const ::glm::dvec3 B {1., 0., 0.};
-    const ::glm::dvec3 C {0., 1., 0.};
-    const ::glm::dvec3 D {0., 0., 1.};
+    const ::glm::dvec3 A{0., 0., 0.};
+    const ::glm::dvec3 B{1., 0., 0.};
+    const ::glm::dvec3 C{0., 1., 0.};
+    const ::glm::dvec3 D{0., 0., 1.};
 
-    const ::glm::dvec3 Pin {0.25, 0.25, 0.25};
-    const ::glm::dvec3 Pout {1., 2., 3.};
-    const ::glm::dvec3 Pedge {0.5, 0., 0.};
-    const ::glm::dvec3 Pvertex {0., 0., 0.};
+    const ::glm::dvec3 Pin{0.25, 0.25, 0.25};
+    const ::glm::dvec3 Pout{1., 2., 3.};
+    const ::glm::dvec3 Pedge{0.5, 0., 0.};
+    const ::glm::dvec3 Pvertex{0., 0., 0.};
 
     const bool isInsidePin     = geometry::glm::isInsideTetrahedron(Pin, A, B, C, D);
     const bool isInsidePout    = geometry::glm::isInsideTetrahedron(Pout, A, B, C, D);
@@ -274,6 +302,8 @@ void MeshFunctionsTest::computeBarycenterOutsideTetrahedron()
     CPPUNIT_ASSERT_MESSAGE("Pvertex should be inside though is compute outside", isInsidePvertex);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
 } // namespace ut
+
 } // namespace sight::geometry::glm

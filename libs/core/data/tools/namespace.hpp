@@ -27,4 +27,5 @@
 
 namespace sight::data::tools
 {
+
 } // namespace sight::data::tools

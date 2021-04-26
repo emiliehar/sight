@@ -24,6 +24,7 @@
 
 namespace sight::ui::base
 {
+
 /**
  * @brief       The namespace ui::base::builder contains the classes for GUI elements builder implementation with the Qt
  * library.
@@ -33,4 +34,5 @@ namespace builder
 {
 
 }
+
 }

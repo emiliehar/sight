@@ -39,32 +39,33 @@ namespace detail
 namespace profile
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Stopper::Stopper( const std::string& identifier ) :
-    m_identifier( identifier )
+Stopper::Stopper(const std::string& identifier) :
+    m_identifier(identifier)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Stopper::apply()
 {
     auto module = detail::Runtime::get().findEnabledModule(m_identifier);
-    SIGHT_FATAL_IF("Unable to stop module " + m_identifier + ". Not found.",
-                   module == nullptr);
+    SIGHT_FATAL_IF(
+        "Unable to stop module " + m_identifier + ". Not found.",
+        module == nullptr);
     try
     {
         SIGHT_INFO("Stopping module : " + m_identifier);
         module->stop();
     }
-    catch( const std::exception& e )
+    catch(const std::exception& e)
     {
         SIGHT_ERROR("Unable to stop module " + m_identifier + ". " + e.what());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace profile
 

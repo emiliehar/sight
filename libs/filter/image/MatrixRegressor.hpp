@@ -38,7 +38,6 @@ namespace sight::filter::image
 class FILTER_IMAGE_CLASS_API MatrixRegressor
 {
 public:
-
     typedef ::glm::dvec4 PointType;
 
     /**
@@ -69,11 +68,9 @@ public:
         unsigned int maxIter  = 10000);
 
 private:
+    std::vector< ::glm::dmat4> m_matList;
 
-    std::vector< ::glm::dmat4 > m_matList;
-
-    std::vector< PointType > m_pointList;
-
+    std::vector<PointType> m_pointList;
 };
 
 } // namespace sight::filter::image.

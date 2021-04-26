@@ -34,9 +34,11 @@
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief   SelectorDialog allowing the choice of an element among severals (_selections)
@@ -46,9 +48,9 @@ class UI_QML_CLASS_API SelectorDialog : public QObject,
 {
 Q_OBJECT
 Q_PROPERTY(QString message MEMBER m_message NOTIFY messageChanged)
-public:
 
-    SIGHT_DECLARE_CLASS(SelectorDialog, ui::base::dialog::ISelectorDialog, ui::base::factory::New< SelectorDialog >)
+public:
+    SIGHT_DECLARE_CLASS(SelectorDialog, ui::base::dialog::ISelectorDialog, ui::base::factory::New<SelectorDialog>)
 
     UI_QML_API SelectorDialog(ui::base::GuiBaseObject::Key key);
 
@@ -57,7 +59,7 @@ public:
     /**
      * @brief The string list that can be chosen by the selector.
      */
-    UI_QML_API void setSelections(std::vector< std::string > _selections) override;
+    UI_QML_API void setSelections(std::vector<std::string> _selections) override;
 
     /**
      * @brief Sets the selector title.
@@ -84,7 +86,7 @@ protected Q_SLOTS:
     void resultDialog(QVariant selection);
 
 private:
-    std::vector< std::string > m_selections;
+    std::vector<std::string> m_selections;
 
     /// Dialog box message
     QString m_message;
@@ -95,4 +97,5 @@ private:
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::qt

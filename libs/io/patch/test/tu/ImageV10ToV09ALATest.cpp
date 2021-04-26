@@ -44,28 +44,29 @@
 #include <array>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::semantic::ut::ImageV10ToV09ALATest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::semantic::ut::ImageV10ToV09ALATest);
 
 namespace sight::io::patch::semantic
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageV10ToV09ALATest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageV10ToV09ALATest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageV10ToV09ALATest::applyPatchTest()
 {
@@ -115,8 +116,8 @@ void ImageV10ToV09ALATest::applyPatchTest()
     io::atoms::patch::IPatch::NewVersionsType newVersions;
     newVersions[image] = patchedObj;
 
-    io::patch::semantic::V10::V09ALA::data::Image::sptr patcher =
-        io::patch::semantic::V10::V09ALA::data::Image::New();
+    io::patch::semantic::V10::V09ALA::data::Image::sptr patcher
+        = io::patch::semantic::V10::V09ALA::data::Image::New();
     CPPUNIT_ASSERT_NO_THROW(patcher->apply(image, patchedObj, newVersions));
 
     CPPUNIT_ASSERT(patchedObj->getAttribute("fields"));
@@ -133,7 +134,8 @@ void ImageV10ToV09ALATest::applyPatchTest()
     CPPUNIT_ASSERT_EQUAL(size_t(5), plSeq->size());
 
     size_t count = 0;
-    for (const auto& elt: plSeq->getValue())
+
+    for(const auto& elt : plSeq->getValue())
     {
         sight::atoms::Object::sptr point = sight::atoms::Object::dynamicCast(elt);
         CPPUNIT_ASSERT(point);
@@ -153,10 +155,12 @@ void ImageV10ToV09ALATest::applyPatchTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ImageV10ToV09ALATest::addPoint(sight::atoms::Map::sptr map, const std::array<double, 3>& pt,
-                                    const std::string& label)
+void ImageV10ToV09ALATest::addPoint(
+    sight::atoms::Map::sptr map,
+    const std::array<double, 3>& pt,
+    const std::string& label)
 {
     sight::atoms::Object::sptr atomGroup = sight::atoms::Object::New();
     atomGroup->setMetaInfo("ID_METAINFO", core::tools::UUID::generateUUID());
@@ -175,6 +179,8 @@ void ImageV10ToV09ALATest::addPoint(sight::atoms::Map::sptr map, const std::arra
     map->insert(label, atomGroup);
 }
 
-//------------------------------------------------------------------------------
-} //namespace ut
-} //namespace sight::io::patch::semantic
+// ------------------------------------------------------------------------------
+
+} // namespace ut
+
+} // namespace sight::io::patch::semantic

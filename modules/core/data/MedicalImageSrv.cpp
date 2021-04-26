@@ -35,27 +35,26 @@ namespace sight::module::data
 
 static const std::string s_IMAGE_INOUT = "image";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MedicalImageSrv::MedicalImageSrv() noexcept
 {
     this->registerObject(s_IMAGE_INOUT, AccessType::INOUT, true);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MedicalImageSrv::~MedicalImageSrv() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::convertImage()
 {
-    auto pImg = this->getInOut< sight::data::Image >(s_IMAGE_INOUT);
+    auto pImg = this->getInOut<sight::data::Image>(s_IMAGE_INOUT);
 
     if(sight::data::fieldHelper::MedicalImageHelpers::checkImageValidity(pImg))
     {
@@ -64,60 +63,60 @@ void MedicalImageSrv::convertImage()
         isModified |= sight::data::fieldHelper::MedicalImageHelpers::checkTransferFunctionPool(pImg);
         isModified |= sight::data::fieldHelper::MedicalImageHelpers::checkImageSliceIndex(pImg);
 
-        if (isModified)
+        if(isModified)
         {
-            auto sig = pImg->signal< sight::data::Object::ModifiedSignalType >( sight::data::Object::s_MODIFIED_SIG );
+            auto sig = pImg->signal<sight::data::Object::ModifiedSignalType>(sight::data::Object::s_MODIFIED_SIG);
             core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::starting()
 {
     this->convertImage();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::swapping()
 {
     this->convertImage();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::configuring()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::reconfiguring()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MedicalImageSrv::updating()
 {
     this->convertImage();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void MedicalImageSrv::info( std::ostream& )
+void MedicalImageSrv::info(std::ostream&)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap MedicalImageSrv::getAutoConnections() const
 {
@@ -128,6 +127,6 @@ service::IService::KeyConnectionsMap MedicalImageSrv::getAutoConnections() const
     return connections;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // sight::module::data

@@ -28,18 +28,19 @@
 
 #include <string>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::AcquisitionNumberSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::AcquisitionNumberSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string AcquisitionNumberSplitter::s_FILTER_NAME        = "Acquisition number splitter";
-const std::string AcquisitionNumberSplitter::s_FILTER_DESCRIPTION =
-    "Split instances according to acquisition number tag.";
+const std::string AcquisitionNumberSplitter::s_FILTER_NAME = "Acquisition number splitter";
+const std::string AcquisitionNumberSplitter::s_FILTER_DESCRIPTION
+    = "Split instances according to acquisition number tag.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 AcquisitionNumberSplitter::AcquisitionNumberSplitter(filter::dicom::IFilter::Key key) :
     TagValueSplitter(key)
@@ -47,34 +48,35 @@ AcquisitionNumberSplitter::AcquisitionNumberSplitter(filter::dicom::IFilter::Key
     this->setTag(DCM_AcquisitionNumber);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 AcquisitionNumberSplitter::~AcquisitionNumberSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string AcquisitionNumberSplitter::getName() const
 {
     return AcquisitionNumberSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string AcquisitionNumberSplitter::getDescription() const
 {
     return AcquisitionNumberSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool AcquisitionNumberSplitter::isConfigurationRequired() const
 {
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

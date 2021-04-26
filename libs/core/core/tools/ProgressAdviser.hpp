@@ -45,10 +45,9 @@ namespace sight::core::tools
 class CORE_CLASS_API ProgressAdviser : public ::boost::signals2::trackable
 {
 public:
-
     /// define a boost signal signature for the ProgessHandler
-    typedef ::boost::signals2::signal< void (float, std::string) >  ProgessSignal; // signal for fctor or function
-                                                                                   // returning void
+    typedef ::boost::signals2::signal<void (float, std::string)> ProgessSignal; // signal for fctor or function
+                                                                                // returning void
 
     /// define the ProgessHandler type
     typedef ProgessSignal::slot_type ProgessHandler; // signal for fctor or function returning void and
@@ -69,10 +68,8 @@ public:
     CORE_API void notifyProgress(float percent, const std::string& msg = "") const;
 
 protected:
-
     /// to notify progress simply use m_progressSignal( percent,msg ) to notify to Handler
     ProgessSignal m_progressSignal;
-
 };
 
 }

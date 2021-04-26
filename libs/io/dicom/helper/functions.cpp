@@ -31,19 +31,21 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string generatePatientId()
 {
     ::gdcm::UIDGenerator uid;
     const char* id = uid.Generate();
+
     return std::string(id);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string generateStudyInstanceUid()
 {
@@ -61,4 +63,5 @@ std::string generateStudyInstanceUid()
 }
 
 } // namespace helper
+
 } // namespace sight::io::dicom

@@ -33,14 +33,15 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::runtime::ut::RuntimeTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::runtime::ut::RuntimeTest);
 
 namespace sight::core::runtime
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 RuntimeTest::RuntimeTest()
 {
@@ -48,20 +49,20 @@ RuntimeTest::RuntimeTest()
     core::runtime::init();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RuntimeTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RuntimeTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RuntimeTest::testLibrary()
 {
@@ -75,23 +76,23 @@ void RuntimeTest::testLibrary()
     CPPUNIT_ASSERT_EQUAL(false, success);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RuntimeTest::testModule()
 {
     auto module = core::runtime::loadModule(std::string("::sight::module::utest"));
 
     CPPUNIT_ASSERT_MESSAGE("Module not found", module);
-    CPPUNIT_ASSERT_EQUAL(std::string("sight::module::utest"),  module->getIdentifier());
+    CPPUNIT_ASSERT_EQUAL(std::string("sight::module::utest"), module->getIdentifier());
     // No good parameter test for now, but at least test without any parameter
-    CPPUNIT_ASSERT_EQUAL(false,  module->hasParameter("test"));
-    CPPUNIT_ASSERT_EQUAL(std::string(),  module->getParameterValue("test"));
+    CPPUNIT_ASSERT_EQUAL(false, module->hasParameter("test"));
+    CPPUNIT_ASSERT_EQUAL(std::string(), module->getParameterValue("test"));
 
     auto runtime           = core::runtime::Runtime::getDefault();
     const auto libLocation = runtime->getWorkingPath() / MODULE_LIB_PREFIX;
-    CPPUNIT_ASSERT_EQUAL(libLocation,  module->getLibraryLocation());
+    CPPUNIT_ASSERT_EQUAL(libLocation, module->getLibraryLocation());
     const auto rcLocation = runtime->getWorkingPath() / MODULE_RC_PREFIX;
-    CPPUNIT_ASSERT_EQUAL(rcLocation / "module_utest",  module->getResourcesLocation());
+    CPPUNIT_ASSERT_EQUAL(rcLocation / "module_utest", module->getResourcesLocation());
 
     CPPUNIT_ASSERT_EQUAL(std::string("sight::module::utest::Plugin"), module->getClass());
     auto plugin = module->getPlugin();
@@ -104,7 +105,7 @@ void RuntimeTest::testModule()
     CPPUNIT_ASSERT_EQUAL(true, module->isStarted());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RuntimeTest::testOperations()
 {
@@ -150,7 +151,8 @@ void RuntimeTest::testOperations()
     CPPUNIT_ASSERT_EQUAL(std::filesystem::path(), path);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::core::runtime

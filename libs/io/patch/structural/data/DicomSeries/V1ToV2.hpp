@@ -28,17 +28,17 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace data
 {
+
 namespace DicomSeries
 {
 
 /// Structural patch to convert a data::DicomSeries from version '1' to version '2'.
 class IO_PATCH_CLASS_API V1ToV2 : public io::atoms::patch::IStructuralPatch
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(V1ToV2, patch::structural::data::DicomSeries::V1ToV2, new V1ToV2)
 
     /// Initialiaze members.
@@ -65,9 +65,10 @@ public:
         const sight::atoms::Object::sptr& _previous,
         const sight::atoms::Object::sptr& _current,
         io::atoms::patch::IPatch::NewVersionsType& _newVersions) override;
-
 };
 
 } // namespace DicomSeries
+
 } // namespace data
+
 } // namespace sight::io::patch::structural

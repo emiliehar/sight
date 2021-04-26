@@ -31,6 +31,7 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
@@ -39,7 +40,6 @@ namespace helper
  */
 class IO_DICOM_CLASS_API SOPClass
 {
-
 public:
     /**
      * @brief Returns SOP Class Name
@@ -60,18 +60,17 @@ public:
     IO_DICOM_API static bool isHazardousSOPClass(const std::string& SOPClassUID);
 
 private:
-
     /// Container holding SOP Class Names and associated Hazardousness
-    typedef std::pair< std::string, bool > SOPClassNameAndHazardousnessPairType;
+    typedef std::pair<std::string, bool> SOPClassNameAndHazardousnessPairType;
 
     /**
      * @brief Map holding associations between SOP Class UID and SOP Class Name/Hazardousness
      * @{ */
-    typedef std::map< std::string, SOPClassNameAndHazardousnessPairType > SOPClassContainerType;
+    typedef std::map<std::string, SOPClassNameAndHazardousnessPairType> SOPClassContainerType;
     static const SOPClassContainerType s_SOP_CLASS_LIST;
     /**  @} */
-
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

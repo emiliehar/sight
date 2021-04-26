@@ -38,11 +38,12 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace archiver
 {
 
-typedef SPTR (std::vector<char>)  BufferSPtr;
-typedef CSPTR (std::vector<char>) BufferCSPtr;
+typedef SPTR(std::vector<char>)  BufferSPtr;
+typedef CSPTR(std::vector<char>) BufferCSPtr;
 
 /**
  *
@@ -51,8 +52,7 @@ typedef CSPTR (std::vector<char>) BufferCSPtr;
 class IO_IGTL_CLASS_API MemoryReadArchive : public io::zip::IReadArchive
 {
 public:
-
-    typedef SPTR (MemoryReadArchive) sptr;
+    typedef SPTR(MemoryReadArchive) sptr;
 
     /// constructor
     IO_IGTL_API MemoryReadArchive(const char* buffer, const std::size_t size);
@@ -84,11 +84,10 @@ public:
      */
     IReadArchive::sptr clone() const override
     {
-        return SPTR(MemoryReadArchive) (new MemoryReadArchive(m_BUFFER, m_SIZE));
+        return SPTR(MemoryReadArchive)(new MemoryReadArchive(m_BUFFER, m_SIZE));
     }
 
 private:
-
     /**
      * @brief read file data from buffer
      *
@@ -97,7 +96,6 @@ private:
     void readEntry(BufferSPtr buffer);
 
 private:
-
     /// size of archive
     const std::size_t m_SIZE;
 
@@ -108,11 +106,12 @@ private:
     struct archive* m_archive;
 
     /// stream created when unarchive is done
-    std::map< std::string, SPTR(std::istream)> m_streams;
+    std::map<std::string, SPTR(std::istream)> m_streams;
 
     /// buffer read size in memory(huge because we have to read in memory, big buffer should be efficient)
     static const int s_BUFFER_READ_SIZE = 20000;
 };
 
 } // namespace archiver
+
 } // namespace sight::io::igtl::detail

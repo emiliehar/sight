@@ -31,12 +31,16 @@
 
 namespace sight::data
 {
+
 class Image;
+
 }
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::module::io::vtk
@@ -67,9 +71,7 @@ namespace sight::module::io::vtk
  */
 class MODULE_IO_VTK_CLASS_API SImageWriter : public sight::io::base::service::IWriter
 {
-
 public:
-
     /**
      * @brief Constructor. Do nothing.
      */
@@ -81,7 +83,7 @@ public:
 
     SIGHT_DECLARE_SERVICE(SImageWriter, sight::io::base::service::IWriter)
 
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignalType;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignalType;
 
     /**
      * @brief Configure the image path.
@@ -111,12 +113,12 @@ public:
      * This method is used to save an image using the file path.
      * Returns \b true if the image saving is a success and \b false if it fails
      */
-    MODULE_IO_VTK_API static bool saveImage( const std::filesystem::path& imgFile,
-                                             const CSPTR(data::Image)& image,
-                                             const SPTR(JobCreatedSignalType)& sigJobCreated);
+    MODULE_IO_VTK_API static bool saveImage(
+        const std::filesystem::path& imgFile,
+        const CSPTR(data::Image)& image,
+        const SPTR(JobCreatedSignalType)& sigJobCreated);
 
 protected:
-
     MODULE_IO_VTK_API sight::io::base::service::IOPathType getIOPathType() const override;
 
     /**
@@ -154,7 +156,7 @@ protected:
      * This method is used to give
      * informations about the service.
      */
-    MODULE_IO_VTK_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_VTK_API void info(std::ostream& _sstream) override;
 
 private:
     /**

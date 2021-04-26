@@ -33,6 +33,7 @@ namespace sight::data
  */
 namespace location
 {
+
 } // namespace location
 
 /**
@@ -40,6 +41,7 @@ namespace location
  */
 namespace mt
 {
+
 } // namespace mt
 
 /**
@@ -47,6 +49,7 @@ namespace mt
  */
 namespace registry
 {
+
 } // namespace registry
 
 /**
@@ -54,6 +57,7 @@ namespace registry
  */
 namespace factory
 {
+
 } // namespace factory
 
 } // namespace sight::data

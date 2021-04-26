@@ -30,6 +30,7 @@
 
 namespace ExTimeLine
 {
+
 /**
  * @brief   Service that produces messages and stores them into a timeline.
  *
@@ -54,14 +55,12 @@ namespace ExTimeLine
 class EXTIMELINE_CLASS_API SProducer : public sight::service::IService
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SProducer, sight::service::IService)
 
     EXTIMELINE_API SProducer() noexcept;
     EXTIMELINE_API virtual ~SProducer() noexcept;
 
 protected:
-
     /// Configure the service
     void configuring() final;
 
@@ -75,9 +74,8 @@ protected:
     void updating() final;
 
 private:
-
     /// Timer used to send messages periodically
-    SPTR( sight::core::thread::Timer ) m_timer;
+    SPTR(sight::core::thread::Timer) m_timer;
 
     /// Message to be sent
     std::string m_message;
@@ -95,4 +93,4 @@ private:
     unsigned int m_timelineSize;
 };
 
-}  // namespace ExTimeLine
+} // namespace ExTimeLine

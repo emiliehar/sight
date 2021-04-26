@@ -27,34 +27,34 @@
 namespace sight::core::runtime
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::shared_ptr<Module> Executable::getModule() const
 {
     return m_module;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const ConfigurationElement::sptr Executable::getInitializationData() const
 {
     return m_initializationData;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Executable::setModule( std::shared_ptr< Module > module )
+void Executable::setModule(std::shared_ptr<Module> module)
 {
     m_module = module;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Executable::setInitializationData( const ConfigurationElement::sptr element )
+void Executable::setInitializationData(const ConfigurationElement::sptr element)
 {
     m_initializationData = element;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::core::runtime

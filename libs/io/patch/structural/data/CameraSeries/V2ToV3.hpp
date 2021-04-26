@@ -28,17 +28,17 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace data
 {
+
 namespace CameraSeries
 {
 
 /// Structural patch to convert a data::CameraSeries from version '2' to version '3'.
 class IO_PATCH_CLASS_API V2ToV3 : public io::atoms::patch::IStructuralPatch
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(V2ToV3, patch::structural::data::CameraSeries::V2ToV3, new V2ToV3)
 
     /// Initialiaze members.
@@ -65,9 +65,10 @@ public:
         const sight::atoms::Object::sptr& _previous,
         const sight::atoms::Object::sptr& _current,
         io::atoms::patch::IPatch::NewVersionsType& _newVersions) override;
-
 };
 
 } // namespace CameraSeries
+
 } // namespace data
+
 } // namespace sight::io::patch::structural

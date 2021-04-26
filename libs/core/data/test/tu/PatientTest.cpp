@@ -23,14 +23,15 @@
 #include "PatientTest.hpp"
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::PatientTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::PatientTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatientTest::setUp()
 {
@@ -38,7 +39,7 @@ void PatientTest::setUp()
     m_patient = data::Patient::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatientTest::tearDown()
 {
@@ -46,7 +47,7 @@ void PatientTest::tearDown()
     m_patient.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatientTest::nameTest()
 {
@@ -56,7 +57,7 @@ void PatientTest::nameTest()
     CPPUNIT_ASSERT_EQUAL(name, m_patient->getName());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatientTest::idTest()
 {
@@ -66,7 +67,7 @@ void PatientTest::idTest()
     CPPUNIT_ASSERT_EQUAL(patientId, m_patient->getPatientId());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatientTest::birthdateTest()
 {
@@ -76,7 +77,7 @@ void PatientTest::birthdateTest()
     CPPUNIT_ASSERT_EQUAL(birthdate, m_patient->getBirthdate());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatientTest::sexTest()
 {
@@ -86,7 +87,8 @@ void PatientTest::sexTest()
     CPPUNIT_ASSERT_EQUAL(sex, m_patient->getSex());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

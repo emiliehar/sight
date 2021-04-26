@@ -27,28 +27,29 @@
 #include <geometry/data/Compare.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::geometry::data::ut::CompareTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::geometry::data::ut::CompareTest);
 
 namespace sight::geometry::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CompareTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CompareTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CompareTest::checkEquality()
 {
@@ -62,12 +63,12 @@ void CompareTest::checkEquality()
     CPPUNIT_ASSERT_EQUAL(false, isEqual);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CompareTest::checkContainerEquality()
 {
-    std::vector< double > vect1(20);
-    std::vector< double > vect2(20);
+    std::vector<double> vect1(20);
+    std::vector<double> vect2(20);
 
     core::tools::random::fillContainer(0.0001, 10., vect1);
     vect2 = vect1;
@@ -86,5 +87,6 @@ void CompareTest::checkContainerEquality()
     CPPUNIT_ASSERT_EQUAL(false, isEqual);
 }
 
-} //namespace ut
-} //namespace sight::geometry::data
+} // namespace ut
+
+} // namespace sight::geometry::data

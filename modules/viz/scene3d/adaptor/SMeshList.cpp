@@ -40,7 +40,7 @@ static const std::string s_CAPACITY_CONFIG      = "capacity";
 static const std::string s_DROPPING_CONFIG      = "drop";
 static const std::string s_TEXTURE_ALPHA_CONFIG = "textureAlpha";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SMeshList::SMeshList() noexcept
 {
@@ -48,13 +48,13 @@ SMeshList::SMeshList() noexcept
     newSlot(s_CLEAR_SLOT, &SMeshList::clear, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SMeshList::~SMeshList() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::configuring()
 {
@@ -70,19 +70,19 @@ void SMeshList::configuring()
     m_generateAlpha = config.get(s_TEXTURE_ALPHA_CONFIG, m_generateAlpha);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::starting()
 {
     this->initialize();
 
     // Get the inputs.
-    const auto mesh           = this->getWeakInOut< data::Mesh >(s_MESH_INOUT);
-    const auto transformInOut = this->getLockedInput< data::Matrix4 >(s_TRANSFORM_INPUT);
-    const auto imageInput     = this->getLockedInput< data::Image >(s_TEXTURE_INPUT);
+    const auto mesh           = this->getWeakInOut<data::Mesh>(s_MESH_INOUT);
+    const auto transformInOut = this->getLockedInput<data::Matrix4>(s_TRANSFORM_INPUT);
+    const auto imageInput     = this->getLockedInput<data::Image>(s_TEXTURE_INPUT);
 
     // initialise N meshes adaptor
-    for (size_t i = 0; i < m_capacity; ++i)
+    for(size_t i = 0 ; i < m_capacity ; ++i)
     {
         // Matrix and Image are copied because the input ones will change. Mesh is not copied because we want to use
         // the same mesh of all the adaptors
@@ -98,7 +98,7 @@ void SMeshList::starting()
 
         // Create the transform adaptor.
         const sight::viz::scene3d::IAdaptor::sptr transformAdaptor
-            = this->registerService< sight::viz::scene3d::IAdaptor >(
+            = this->registerService<sight::viz::scene3d::IAdaptor>(
                   "::sight::module::viz::scene3d::adaptor::STransform");
 
         transformAdaptor->setLayerID(m_layerID);
@@ -112,8 +112,8 @@ void SMeshList::starting()
         SIGHT_ASSERT("STransform is not started", transformAdaptor->isStarted());
 
         // Create the texture adaptor
-        const sight::viz::scene3d::IAdaptor::sptr textureAdaptor =
-            this->registerService< sight::viz::scene3d::IAdaptor >("::sight::module::viz::scene3d::adaptor::STexture");
+        const sight::viz::scene3d::IAdaptor::sptr textureAdaptor
+            = this->registerService<sight::viz::scene3d::IAdaptor>("::sight::module::viz::scene3d::adaptor::STexture");
 
         service::IService::ConfigType textureConfig = config;
         textureConfig.add("config.<xmlattr>.textureName", image->getID());
@@ -129,8 +129,8 @@ void SMeshList::starting()
         SIGHT_ASSERT("STexture is not started", textureAdaptor->isStarted());
 
         // Creates the mesh adaptor.
-        const sight::viz::scene3d::IAdaptor::sptr meshAdaptor =
-            this->registerService< sight::viz::scene3d::IAdaptor >("::sight::module::viz::scene3d::adaptor::SMesh");
+        const sight::viz::scene3d::IAdaptor::sptr meshAdaptor
+            = this->registerService<sight::viz::scene3d::IAdaptor>("::sight::module::viz::scene3d::adaptor::SMesh");
 
         service::IService::ConfigType meshConfig = config;
         meshConfig.add("config.<xmlattr>.textureName", image->getID());
@@ -146,47 +146,49 @@ void SMeshList::starting()
         SIGHT_ASSERT("SMesh is not started", meshAdaptor->isStarted());
 
         // Store data.
-        MeshInstance instance {transform, image, transformAdaptor, meshAdaptor, textureAdaptor};
+        MeshInstance instance{transform, image, transformAdaptor, meshAdaptor, textureAdaptor};
         m_meshes.push_back(instance);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SMeshList::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_TRANSFORM_INPUT, data::Matrix4::s_MODIFIED_SIG, s_ADD_SLOT);
+
     return connections;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::updating()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::stopping()
 {
-    for (const auto& instance: m_meshes)
+    for(const auto& instance : m_meshes)
     {
         this->unregisterService(instance.m_transform);
         this->unregisterService(instance.m_mesh);
         this->unregisterService(instance.m_texture);
     }
+
     m_meshes.clear();
     m_meshCount = 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::setVisible(bool _visible)
 {
-    for (const auto& instance: m_meshes)
+    for(const auto& instance : m_meshes)
     {
-        if (instance.m_isEnabled)
+        if(instance.m_isEnabled)
         {
             const sight::viz::scene3d::IAdaptor::sptr mesh = instance.m_mesh;
             mesh->updateVisibility(_visible);
@@ -194,11 +196,11 @@ void SMeshList::setVisible(bool _visible)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::add()
 {
-    if (m_dropCount % m_dropData == 0)
+    if(m_dropCount % m_dropData == 0)
     {
         // Reset the drop count.
         m_dropCount = 0;
@@ -206,7 +208,7 @@ void SMeshList::add()
         auto& instance = m_meshes.at(m_meshCount);
         ++m_meshCount;
 
-        if (m_meshCount == m_capacity)
+        if(m_meshCount == m_capacity)
         {
             m_meshCount = 0;
         }
@@ -217,17 +219,17 @@ void SMeshList::add()
         const sight::viz::scene3d::IAdaptor::sptr textureAdp = instance.m_texture;
         {
             // set current image
-            const auto image = textureAdp->getLockedInput< data::Image >("image");
+            const auto image = textureAdp->getLockedInput<data::Image>("image");
 
-            const auto textureInput = this->getLockedInput< data::Image >(s_TEXTURE_INPUT);
+            const auto textureInput = this->getLockedInput<data::Image>(s_TEXTURE_INPUT);
 
-            if (m_generateAlpha && textureInput->getType() == core::tools::Type::s_UINT8 &&
-                (textureInput->getPixelFormat() == data::Image::PixelFormat::GRAY_SCALE ||
-                 textureInput->getNumberOfComponents() == 1))
+            if(m_generateAlpha && textureInput->getType() == core::tools::Type::s_UINT8
+               && (textureInput->getPixelFormat() == data::Image::PixelFormat::GRAY_SCALE
+                   || textureInput->getNumberOfComponents() == 1))
             {
                 // transform the image into RGBA with a transparent texture
 
-                if (textureInput->getAllocatedSizeInBytes()*4 != instance.m_image->getAllocatedSizeInBytes())
+                if(textureInput->getAllocatedSizeInBytes() * 4 != instance.m_image->getAllocatedSizeInBytes())
                 {
                     instance.m_image->copyInformation(textureInput.get_shared());
                     instance.m_image->setPixelFormat(data::Image::PixelFormat::RGBA);
@@ -235,11 +237,11 @@ void SMeshList::add()
                     instance.m_image->resize();
                 }
 
-                auto inItr = textureInput->begin< std::uint8_t >();
-                auto inEnd = textureInput->end< std::uint8_t >();
-                auto itr   = instance.m_image->begin< data::iterator::RGBA >();
+                auto inItr = textureInput->begin<std::uint8_t>();
+                auto inEnd = textureInput->end<std::uint8_t>();
+                auto itr   = instance.m_image->begin<data::iterator::RGBA>();
 
-                for (; inItr != inEnd; ++inItr, ++itr)
+                for( ; inItr != inEnd ; ++inItr, ++itr)
                 {
                     itr->r = *inItr;
                     itr->g = *inItr;
@@ -247,13 +249,13 @@ void SMeshList::add()
                     itr->a = *inItr;
                 }
             }
-            else if (m_generateAlpha && textureInput->getType() == core::tools::Type::s_UINT8 &&
-                     (textureInput->getPixelFormat() == data::Image::PixelFormat::RGB ||
-                      textureInput->getNumberOfComponents() == 3))
+            else if(m_generateAlpha && textureInput->getType() == core::tools::Type::s_UINT8
+                    && (textureInput->getPixelFormat() == data::Image::PixelFormat::RGB
+                        || textureInput->getNumberOfComponents() == 3))
             {
                 // transform the image into RGBA with a transparent texture
 
-                if (textureInput->getAllocatedSizeInBytes()*4/3 != instance.m_image->getAllocatedSizeInBytes())
+                if(textureInput->getAllocatedSizeInBytes() * 4 / 3 != instance.m_image->getAllocatedSizeInBytes())
                 {
                     instance.m_image->copyInformation(textureInput.get_shared());
                     instance.m_image->setPixelFormat(data::Image::PixelFormat::RGBA);
@@ -261,17 +263,17 @@ void SMeshList::add()
                     instance.m_image->resize();
                 }
 
-                auto inItr = textureInput->begin< data::iterator::RGB >();
-                auto inEnd = textureInput->end< data::iterator::RGB >();
-                auto itr   = instance.m_image->begin< data::iterator::RGBA >();
+                auto inItr = textureInput->begin<data::iterator::RGB>();
+                auto inEnd = textureInput->end<data::iterator::RGB>();
+                auto itr   = instance.m_image->begin<data::iterator::RGBA>();
 
-                for (; inItr != inEnd; ++inItr, ++itr)
+                for( ; inItr != inEnd ; ++inItr, ++itr)
                 {
                     itr->r = inItr->r;
                     itr->g = inItr->g;
                     itr->b = inItr->b;
                     // luminance
-                    itr->a = static_cast< std::uint8_t>(0.2126*inItr->r + 0.7152*inItr->g + 0.0722*inItr->b);
+                    itr->a = static_cast<std::uint8_t>(0.2126 * inItr->r + 0.7152 * inItr->g + 0.0722 * inItr->b);
                 }
             }
             else
@@ -285,11 +287,10 @@ void SMeshList::add()
         const sight::viz::scene3d::IAdaptor::sptr transformAdp = instance.m_transform;
         {
             // set current matrix
-            const auto transform = transformAdp->getLockedInOut< data::Matrix4 >("transform");
+            const auto transform = transformAdp->getLockedInOut<data::Matrix4>("transform");
 
-            const auto transformInOut = this->getLockedInput< data::Matrix4 >(s_TRANSFORM_INPUT);
+            const auto transformInOut = this->getLockedInput<data::Matrix4>(s_TRANSFORM_INPUT);
             transform->deepCopy(transformInOut.get_shared());
-
         }
         transformAdp->update();
 
@@ -297,18 +298,21 @@ void SMeshList::add()
         const sight::viz::scene3d::IAdaptor::sptr meshAdp = instance.m_mesh;
         meshAdp->updateVisibility(m_isVisible);
     }
+
     ++m_dropCount;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshList::clear()
 {
     this->setVisible(false);
-    for (auto& instance: m_meshes)
+
+    for(auto& instance : m_meshes)
     {
         instance.m_isEnabled = false;
     }
+
     m_meshCount = 0;
 }
 

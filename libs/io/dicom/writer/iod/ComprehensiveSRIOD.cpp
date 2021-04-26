@@ -42,31 +42,34 @@
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
+
 namespace iod
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-ComprehensiveSRIOD::ComprehensiveSRIOD(const SPTR(io::dicom::container::DicomInstance)& instance,
-                                       const std::filesystem::path& destinationPath,
-                                       bool use3DSR,
-                                       const core::log::Logger::sptr& logger,
-                                       ProgressCallback progress,
-                                       CancelRequestedCallback cancel) :
+ComprehensiveSRIOD::ComprehensiveSRIOD(
+    const SPTR(io::dicom::container::DicomInstance)& instance,
+    const std::filesystem::path& destinationPath,
+    bool use3DSR,
+    const core::log::Logger::sptr& logger,
+    ProgressCallback progress,
+    CancelRequestedCallback cancel) :
     io::dicom::writer::iod::InformationObjectDefinition(instance, destinationPath, logger, progress, cancel),
     m_use3DSR(use3DSR)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ComprehensiveSRIOD::~ComprehensiveSRIOD()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ComprehensiveSRIOD::write(const data::Series::csptr& series)
 {
@@ -78,7 +81,7 @@ void ComprehensiveSRIOD::write(const data::Series::csptr& series)
     data::Image::sptr image = imageSeries->getImage();
 
     // Create writer
-    SPTR(::gdcm::Writer) writer = std::make_shared< ::gdcm::Writer >();
+    SPTR(::gdcm::Writer) writer = std::make_shared< ::gdcm::Writer>();
 
     // Create Information Entity helpers
     io::dicom::writer::ie::Patient patientIE(writer, m_instance, series->getPatient());
@@ -115,7 +118,10 @@ void ComprehensiveSRIOD::write(const data::Series::csptr& series)
     io::dicom::helper::FileWriter::write(m_destinationPath, writer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+
 } // namespace iod
+
 } // namespace writer
+
 } // namespace sight::io::dicom

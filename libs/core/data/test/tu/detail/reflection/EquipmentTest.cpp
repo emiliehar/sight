@@ -27,31 +27,34 @@
 #include <data/Equipment.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::detail::reflection::ut::EquipmentTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::detail::reflection::ut::EquipmentTest);
 
 namespace sight::data
 {
+
 namespace detail
 {
+
 namespace reflection
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EquipmentTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EquipmentTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EquipmentTest::propertiesTest()
 {
@@ -63,12 +66,14 @@ void EquipmentTest::propertiesTest()
 
     ::DataCampHelper::visitProperties(obj->getClassname(), dataProperties);
     ::DataCampHelper::compareSimplePropertyValue(obj, "@institution_name", institution_name);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace reflection
-} //namespace detail
-} //namespace sight::data
+} // namespace ut
+
+} // namespace reflection
+
+} // namespace detail
+
+} // namespace sight::data

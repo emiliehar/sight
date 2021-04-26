@@ -40,7 +40,6 @@ class IO_ZIP_CLASS_API ArchiveReader : public Archive
 {
 public:
     SIGHT_DECLARE_CLASS(ArchiveReader, Archive)
-
     /// Delete copy constructors and assignment operators, as we don't want to allow resources duplication
     ArchiveReader(const ArchiveReader&)            = delete;
     ArchiveReader(ArchiveReader&&)                 = delete;
@@ -59,7 +58,6 @@ public:
         const core::crypto::secure_string& password = "") = 0;
 
 protected:
-
     /// Constructor
     IO_ZIP_API ArchiveReader() = default;
 

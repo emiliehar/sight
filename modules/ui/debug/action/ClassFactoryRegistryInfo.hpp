@@ -32,17 +32,17 @@
 
 namespace sight::module::ui::debug
 {
+
 namespace action
 {
+
 /**
  * @brief   Implements an action to show services registered in factory
  */
 class MODULE_UI_DEBUG_CLASS_API ClassFactoryRegistryInfo : public ::sight::ui::base::IAction
 {
-
 public:
-
-    SIGHT_DECLARE_SERVICE(ClassFactoryRegistryInfo, sight::ui::base::IAction )
+    SIGHT_DECLARE_SERVICE(ClassFactoryRegistryInfo, sight::ui::base::IAction)
 
     /// Does nothing
     MODULE_UI_DEBUG_API ClassFactoryRegistryInfo() noexcept;
@@ -51,7 +51,6 @@ public:
     MODULE_UI_DEBUG_API virtual ~ClassFactoryRegistryInfo() noexcept;
 
 protected:
-
     /// Calls classic IAction methods to configure
     void configuring() override;
 
@@ -65,14 +64,13 @@ protected:
     void stopping() override;
 
 private:
-
     /// Dialog shown on update method
     QDialog* m_dialog;
 
     /// Widget used to show association ( service impl , data impl )
     QTreeWidget* m_tree;
-
 };
 
 } // namespace action
+
 } // namespace sight::module::ui::debug

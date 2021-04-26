@@ -29,16 +29,19 @@ namespace sight::io::dimse
 /// data contains classes to manage PACS connections.
 namespace data
 {
+
 } // namespace data
 
 /// helper contains helper classes used to handle DCMTK objects.
 namespace helper
 {
+
 } // namespace helper
 
 /// exceptions contains PACS exceptions.
 namespace exceptions
 {
+
 } // namespace exceptions
 
 } // namespace sight::io::dimse

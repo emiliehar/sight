@@ -36,7 +36,6 @@ namespace sight::filter::image
 class FILTER_IMAGE_CLASS_API SpheroidExtraction
 {
 public:
-
     /**
      * @brief Extracts spheres centers in an image with a given radius and above a given intensity value.
      * @param[in] _image image in which to search for spheres
@@ -47,12 +46,13 @@ public:
      * @param[in] _elongationMax maximum elongation to recognize a sphere, perfect spheres have an elongation of one.
      * @return detected spheres' center
      */
-    FILTER_IMAGE_API static data::PointList::sptr extract(const data::Image::csptr& _image,
-                                                          const double _threshold,
-                                                          const double _radiusMin, const double _radiusMax,
-                                                          const double _elongationMin,
-                                                          const double _elongationMax);
-
+    FILTER_IMAGE_API static data::PointList::sptr extract(
+        const data::Image::csptr& _image,
+        const double _threshold,
+        const double _radiusMin,
+        const double _radiusMax,
+        const double _elongationMin,
+        const double _elongationMax);
 };
 
 } // namespace sight::filter::image.

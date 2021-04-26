@@ -30,6 +30,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -37,18 +38,20 @@ namespace detail::data
 SeriesDeserializer::sptr SeriesDeserializer::shared()
 {
     struct make_shared_enabler final : public SeriesDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SeriesDeserializer::uptr SeriesDeserializer::unique()
 {
     struct make_unique_enabler final : public SeriesDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr SeriesDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -58,8 +61,8 @@ sight::data::Object::sptr SeriesDeserializer::deserialize(
     const core::crypto::secure_string& password)
 {
     // Create or reuse the object
-    const auto& series =
-        object ? sight::data::Series::dynamicCast(object) : sight::data::Series::New();
+    const auto& series
+        = object ? sight::data::Series::dynamicCast(object) : sight::data::Series::New();
 
     SIGHT_ASSERT(
         "Object '" << series->getClassname() << "' is not a '" << sight::data::Series::classname() << "'",
@@ -92,17 +95,19 @@ sight::data::Object::sptr SeriesDeserializer::deserialize(
 
     // Iterate on performingPhysiciansName
     std::vector<std::string> names;
+
     for(const auto& nameTree : tree.get_child("PerformingPhysiciansNames"))
     {
         const auto& name = core::crypto::from_base64(nameTree.second.get_value<std::string>());
         names.push_back(name);
     }
+
     series->setPerformingPhysiciansName(names);
 
     return series;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr SeriesDeserializer::create()
 {
@@ -111,4 +116,5 @@ sight::data::Object::sptr SeriesDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

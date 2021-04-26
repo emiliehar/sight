@@ -37,11 +37,15 @@
 
 namespace sight::data
 {
+
 class Material;
+
 }
 namespace sight::data
 {
+
 class Mesh;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
@@ -110,9 +114,7 @@ class MODULE_VIZ_SCENE3D_CLASS_API SMesh final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SMesh, ::sight::viz::scene3d::IAdaptor)
 
@@ -193,7 +195,6 @@ public:
     MODULE_VIZ_SCENE3D_API void setVisible(bool _visible) override;
 
 protected:
-
     /// Configures the adaptor.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -219,7 +220,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void updating() override;
 
 private:
-
     /// Updates mesh vertices.
     void modifyVertices();
 
@@ -240,8 +240,9 @@ private:
      * @param _materialSuffix used for the material name.
      * @param _mesh used to create an unique material name.
      */
-    module::viz::scene3d::adaptor::SMaterial::sptr createMaterialService(const data::Mesh::sptr& _mesh,
-                                                                         const std::string& _materialSuffix = "");
+    module::viz::scene3d::adaptor::SMaterial::sptr createMaterialService(
+        const data::Mesh::sptr& _mesh,
+        const std::string& _materialSuffix = "");
 
     /**
      * @brief Associates a new SMaterial to the managed SMesh.
@@ -261,129 +262,131 @@ private:
     void attachNode(::Ogre::MovableObject* _node);
 
     /// Defines whether the camera must be auto reset when a mesh is updated or not.
-    bool m_autoResetCamera { true };
+    bool m_autoResetCamera{true};
 
     /// Contains the node in the scene graph whwre the mesh is attached.
-    ::Ogre::Entity* m_entity { nullptr };
+    ::Ogre::Entity* m_entity{nullptr};
 
     /// Contains the Ogre material adaptor.
-    module::viz::scene3d::adaptor::SMaterial::sptr m_materialAdaptor { nullptr };
+    module::viz::scene3d::adaptor::SMaterial::sptr m_materialAdaptor{nullptr};
 
     /// Defines the attached material name (when configured by XML).
     std::string m_materialName;
 
     /// Contains the material data.
-    data::Material::sptr m_material { nullptr };
+    data::Material::sptr m_material{nullptr};
 
     /// Defines the attached material's name.
-    std::string m_materialTemplateName { sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME };
+    std::string m_materialTemplateName{sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
 
     /// Defines the attached texture adaptor name.
     std::string m_textureName;
 
     /// Defines if the mesh adaptor is managed by a reconstruction adaptor.
-    bool m_isReconstructionManaged { false };
+    bool m_isReconstructionManaged{false};
 
     /// Defines if the mesh adaptor has to create a new material adaptor or simply use the one that is XML configured.
-    bool m_useNewMaterialAdaptor { false };
+    bool m_useNewMaterialAdaptor{false};
 
     /// Defines the configured shading mode.
     std::string m_shadingMode;
 
     /// Defines if the mesh changes dynamically, defined in m_configuration.
-    bool m_isDynamic { false };
+    bool m_isDynamic{false};
 
     /// Defines if the vertices change dynamically, defined in m_configuration.
-    bool m_isDynamicVertices { false };
+    bool m_isDynamicVertices{false};
 
     /// Ogre mesh.
-    sight::viz::scene3d::Mesh::sptr m_meshGeometry { nullptr };
+    sight::viz::scene3d::Mesh::sptr m_meshGeometry{nullptr};
 
     /// Stores material adaptors attached to the r2vb objects.
-    std::map< data::Mesh::CellTypes, module::viz::scene3d::adaptor::SMaterial::sptr> m_r2vbMaterialAdaptor;
+    std::map<data::Mesh::CellTypes, module::viz::scene3d::adaptor::SMaterial::sptr> m_r2vbMaterialAdaptor;
 
     /// Defines the mask used for picking request.
-    std::uint32_t m_queryFlags {::Ogre::SceneManager::ENTITY_TYPE_MASK};
+    std::uint32_t m_queryFlags{::Ogre::SceneManager::ENTITY_TYPE_MASK};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline data::Material::sptr SMesh::getMaterial() const
 {
     return m_material;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMesh::setMaterial(data::Material::sptr _material)
 {
     m_material = _material;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMesh::setMaterialTemplateName(const std::string& _materialName)
 {
     m_materialTemplateName = _materialName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMesh::setAutoResetCamera(bool _autoResetCamera)
 {
     m_autoResetCamera = _autoResetCamera;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::Entity* SMesh::getEntity() const
 {
     return m_entity;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool SMesh::getVisibility() const
 {
     return m_entity ? m_entity->getVisible() : m_isVisible;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMesh::setDynamic(bool _isDynamic)
 {
     m_isDynamic = _isDynamic;
+
     if(m_meshGeometry)
     {
         m_meshGeometry->setDynamic(_isDynamic);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMesh::setDynamicVertices(bool _isDynamic)
 {
     m_isDynamicVertices = _isDynamic;
+
     if(m_meshGeometry)
     {
         m_meshGeometry->setDynamicVertices(_isDynamic);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMesh::setQueryFlags(uint32_t _queryFlags)
 {
     m_queryFlags = _queryFlags;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void SMesh::setIsReconstructionManaged(bool _isReconstructionManaged)
 {
     m_isReconstructionManaged = _isReconstructionManaged;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

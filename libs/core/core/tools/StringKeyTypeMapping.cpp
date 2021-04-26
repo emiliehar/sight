@@ -36,21 +36,24 @@ bool isMapping<unsigned char>(const std::string& key)
 {
     return key == "unsigned char";
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<unsigned short>(const std::string& key)
 {
     return key == "unsigned short";
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<unsigned int>(const std::string& key)
 {
     return key == "unsigned int";
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<unsigned long>(const std::string& key)
@@ -64,14 +67,16 @@ bool isMapping<signed char>(const std::string& key)
 {
     return key == "signed char";
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<signed short>(const std::string& key)
 {
     return key == "signed short";
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<signed int>(const std::string& key)
@@ -79,7 +84,7 @@ bool isMapping<signed int>(const std::string& key)
     return key == "signed int";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<signed long>(const std::string& key)
@@ -93,7 +98,8 @@ bool isMapping<float>(const std::string& key)
 {
     return key == "float";
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 template<>
 bool isMapping<double>(const std::string& key)

@@ -45,7 +45,7 @@ public:
     override;
 
 protected:
-    CORE_API void setModule( std::shared_ptr<Module> module) noexcept override;
+    CORE_API void setModule(std::shared_ptr<Module> module) noexcept override;
 
 private:
     /**

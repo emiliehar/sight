@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -35,7 +36,6 @@ class ActivitySeriesDeserializer : public IDataDeserializer
 {
 public:
     SIGHT_DECLARE_CLASS(ActivitySeriesDeserializer, IDataDeserializer)
-
     /// Delete default copy constructors and assignment operators
     ActivitySeriesDeserializer(const ActivitySeriesDeserializer&)            = delete;
     ActivitySeriesDeserializer(ActivitySeriesDeserializer&&)                 = delete;
@@ -62,10 +62,10 @@ public:
     sight::data::Object::sptr create() override;
 
 protected:
-
     /// Default constructor
     ActivitySeriesDeserializer() = default;
 };
 
 } // namespace detail::data
+
 } // namespace sight::io::session

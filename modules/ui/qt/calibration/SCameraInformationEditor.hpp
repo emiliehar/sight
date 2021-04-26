@@ -37,6 +37,7 @@
 
 namespace sight::module::ui::qt::calibration
 {
+
 /**
  * @brief   SCameraInformationEditor service is used to display the intrinsic calibration of a camera.
  *
@@ -103,7 +104,6 @@ public:
     MODULE_UI_QT_API void swapping() override;
 
 protected:
-
     service::IService::KeyConnectionsMap getAutoConnections() const override;
 
     /**
@@ -185,6 +185,6 @@ protected:
      * @brief Camera skew.
      */
     QLabel* m_skew;
-
 };
+
 } // namespace uiCameraSelectorQt

@@ -38,7 +38,6 @@ namespace sight::core
 class CORE_CLASS_API Demangler
 {
 public:
-
     /**
      * @name Constructor/Destructor
      * @{ */
@@ -62,7 +61,8 @@ public:
      *
      * @param s object which type has to be demangled
      */
-    template<typename T> Demangler(T& s) :
+    template<typename T>
+    Demangler(T& s) :
         m_name(typeid(s).name())
     {
     }
@@ -106,7 +106,7 @@ protected:
  * @brief Type demangler.
  * Use Demangler class to get a demangled string for the type T.
  */
-template <class T>
+template<class T>
 class TypeDemangler : public Demangler
 {
 public:
@@ -118,7 +118,7 @@ public:
      * @brief Constructor
      * @tparam T Type to demangle
      */
-    TypeDemangler()  :
+    TypeDemangler() :
         Demangler(typeid(T))
     {
     }
@@ -134,18 +134,20 @@ public:
  * @tparam T Type to demangle
  *
  * @{ */
-template <class T>
+template<class T>
 inline std::string getLeafClassname()
 {
     return TypeDemangler<T>().getLeafClassname();
 }
-//------------------------------------------------------------------------------
 
-template <class T>
+// ------------------------------------------------------------------------------
+
+template<class T>
 inline std::string getClassname()
 {
     return TypeDemangler<T>().getClassname();
 }
+
 /**  @} */
 
 } // namespace sight::core

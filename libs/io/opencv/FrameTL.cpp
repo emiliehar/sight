@@ -29,10 +29,13 @@
 namespace sight::io::opencv
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-static void toCv(const data::FrameTL::csptr& _timeline, const data::FrameTL::BufferType::ElementType* _buffer,
-                 cv::Mat& _cvImage, bool _copy)
+static void toCv(
+    const data::FrameTL::csptr& _timeline,
+    const data::FrameTL::BufferType::ElementType* _buffer,
+    cv::Mat& _cvImage,
+    bool _copy)
 {
     const auto imageType = _timeline->getType();
     const auto imageComp = _timeline->getNumberOfComponents();
@@ -41,11 +44,12 @@ static void toCv(const data::FrameTL::csptr& _timeline, const data::FrameTL::Buf
 
     ::cv::Size cvSize(static_cast<int>(_timeline->getWidth()), static_cast<int>(_timeline->getHeight()));
 
-    auto buffer = static_cast<void*>(const_cast< data::FrameTL::BufferType::ElementType*>(_buffer));
+    auto buffer = static_cast<void*>(const_cast<data::FrameTL::BufferType::ElementType*>(_buffer));
+
     if(_copy)
     {
         ::cv::Mat mat = ::cv::Mat(cvSize, cvType, buffer);
-        _cvImage      = mat.clone();
+        _cvImage = mat.clone();
     }
     else
     {
@@ -53,30 +57,34 @@ static void toCv(const data::FrameTL::csptr& _timeline, const data::FrameTL::Buf
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void FrameTL::moveToCv(const data::FrameTL::csptr& _timeline,
-                       data::FrameTL::BufferType::ElementType* _buffer,
-                       ::cv::Mat& _cvImage)
+void FrameTL::moveToCv(
+    const data::FrameTL::csptr& _timeline,
+    data::FrameTL::BufferType::ElementType* _buffer,
+    ::cv::Mat& _cvImage)
 {
     toCv(_timeline, _buffer, _cvImage, false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-const cv::Mat FrameTL::moveToCv(const data::FrameTL::csptr& _timeline,
-                                const data::FrameTL::BufferType::ElementType* _buffer)
+const cv::Mat FrameTL::moveToCv(
+    const data::FrameTL::csptr& _timeline,
+    const data::FrameTL::BufferType::ElementType* _buffer)
 {
     ::cv::Mat mat;
     toCv(_timeline, _buffer, mat, false);
+
     return mat;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void FrameTL::copyFromCv(const data::FrameTL::csptr& _timeline,
-                         data::FrameTL::BufferType::ElementType* _buffer,
-                         const ::cv::Mat& _cvImage)
+void FrameTL::copyFromCv(
+    const data::FrameTL::csptr& _timeline,
+    data::FrameTL::BufferType::ElementType* _buffer,
+    const ::cv::Mat& _cvImage)
 {
     const auto prevImageType = _timeline->getType();
     const auto prevImageComp = _timeline->getNumberOfComponents();
@@ -87,11 +95,13 @@ void FrameTL::copyFromCv(const data::FrameTL::csptr& _timeline,
     SIGHT_ASSERT("Number of components should be between 1 and 4", imageComp >= 1 && imageComp <= 4);
 
     std::vector<size_t> cvImageSize;
-    for(int i = _cvImage.dims - 1; i >= 0; --i)
+
+    for(int i = _cvImage.dims - 1 ; i >= 0 ; --i)
     {
         cvImageSize.push_back(static_cast<size_t>(_cvImage.size[i]));
     }
-    const std::vector<size_t> imageSize = {{ _timeline->getWidth(), _timeline->getHeight() }};
+
+    const std::vector<size_t> imageSize = {{_timeline->getWidth(), _timeline->getHeight()}};
 
     if(prevImageComp != imageComp || prevImageType != imageType || cvImageSize != imageSize)
     {
@@ -99,18 +109,19 @@ void FrameTL::copyFromCv(const data::FrameTL::csptr& _timeline,
     }
 
     const size_t size = _timeline->getWidth() * _timeline->getHeight() * imageComp * imageType.sizeOf();
-    std::copy(_cvImage.data, _cvImage.data+size, _buffer);
+    std::copy(_cvImage.data, _cvImage.data + size, _buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void FrameTL::copyToCv(const data::FrameTL::csptr& _timeline,
-                       const data::FrameTL::BufferType::ElementType* _buffer,
-                       ::cv::Mat& _cvImage)
+void FrameTL::copyToCv(
+    const data::FrameTL::csptr& _timeline,
+    const data::FrameTL::BufferType::ElementType* _buffer,
+    ::cv::Mat& _cvImage)
 {
     toCv(_timeline, _buffer, _cvImage, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}//namespace sight::io::opencv
+} // namespace sight::io::opencv

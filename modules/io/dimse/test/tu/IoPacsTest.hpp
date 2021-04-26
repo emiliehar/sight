@@ -26,6 +26,7 @@
 
 namespace sight::module::io::dimse
 {
+
 namespace ut
 {
 
@@ -34,8 +35,8 @@ namespace ut
  */
 class IoPacsTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( IoPacsTest );
-CPPUNIT_TEST( pacsConfigurationInitializer );
+CPPUNIT_TEST_SUITE(IoPacsTest);
+CPPUNIT_TEST(pacsConfigurationInitializer);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -46,5 +47,6 @@ public:
     void pacsConfigurationInitializer();
 };
 
-} //namespace ut
-} //namespace sight::module::io::dimse
+} // namespace ut
+
+} // namespace sight::module::io::dimse

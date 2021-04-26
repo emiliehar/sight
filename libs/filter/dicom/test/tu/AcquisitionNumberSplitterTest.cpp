@@ -33,28 +33,29 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::filter::dicom::ut::AcquisitionNumberSplitterTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::filter::dicom::ut::AcquisitionNumberSplitterTest);
 
 namespace sight::filter::dicom
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AcquisitionNumberSplitterTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AcquisitionNumberSplitterTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void AcquisitionNumberSplitterTest::simpleApplication()
 {
@@ -63,8 +64,9 @@ void AcquisitionNumberSplitterTest::simpleApplication()
     const std::string filename       = "08-CT-PACS";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     // Read DicomSeries
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
@@ -76,7 +78,7 @@ void AcquisitionNumberSplitterTest::simpleApplication()
     // Retrieve DicomSeries
     data::DicomSeries::sptr dicomSeries = data::DicomSeries::dynamicCast((*seriesDB)[0]);
     CPPUNIT_ASSERT(dicomSeries);
-    std::vector< data::DicomSeries::sptr > dicomSeriesContainer;
+    std::vector<data::DicomSeries::sptr> dicomSeriesContainer;
     dicomSeriesContainer.push_back(dicomSeries);
 
     // Apply filter
@@ -91,10 +93,10 @@ void AcquisitionNumberSplitterTest::simpleApplication()
     // Check number of instances in series
     CPPUNIT_ASSERT_EQUAL(size_t(233), dicomSeriesA->getDicomContainer().size());
     CPPUNIT_ASSERT_EQUAL(size_t(275), dicomSeriesB->getDicomContainer().size());
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::filter::dicom

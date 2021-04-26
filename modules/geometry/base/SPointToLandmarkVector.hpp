@@ -73,9 +73,7 @@ namespace sight::module::geometry::base
  */
 class MODULE_GEOMETRY_BASE_CLASS_API SPointToLandmarkVector final : public service::IService
 {
-
 public:
-
     /// Generates default methods like New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SPointToLandmarkVector, service::IService)
 
@@ -86,7 +84,6 @@ public:
     MODULE_GEOMETRY_BASE_API ~SPointToLandmarkVector() noexcept override;
 
 protected:
-
     /// Gets parameters from composite.
     MODULE_GEOMETRY_BASE_API void starting() override;
 
@@ -108,10 +105,9 @@ protected:
     MODULE_GEOMETRY_BASE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
-    typedef core::com::Signal< void (float) > LengthChangedSignalType;
-    typedef core::com::Signal< void (std::string) > LengthStrChangedSignalType;
-    typedef core::com::Signal< void (std::string) > SameSliceSignalType;
+    typedef core::com::Signal<void (float)> LengthChangedSignalType;
+    typedef core::com::Signal<void (std::string)> LengthStrChangedSignalType;
+    typedef core::com::Signal<void (std::string)> SameSliceSignalType;
 
     /// landmarks group's label for the origin of the vector.
     std::string m_originLabel{""};
@@ -131,4 +127,5 @@ private:
     /// Label to prefix the message sent in the sameSlice signal.
     std::string m_sameSliceLabel{"Same axial slice"};
 };
+
 } // namespace sight::module::geometry::base

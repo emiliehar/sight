@@ -24,6 +24,7 @@
 
 namespace sight::ui::qt
 {
+
 /**
  * @brief       The namespace sight::ui::qt::container contains the classes used for container implementation with Qt
  * Library.
@@ -32,4 +33,5 @@ namespace container
 {
 
 }
+
 }

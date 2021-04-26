@@ -42,20 +42,17 @@ namespace sight::viz::scene3d
 
 class ResizeListener : public ::Ogre::Viewport::Listener
 {
-
 public:
     ResizeListener(Text& _text) :
         m_text(_text)
     {
-
     }
 
     virtual ~ResizeListener()
     {
-
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual void viewportDimensionsChanged(::Ogre::Viewport*)
     {
@@ -63,17 +60,22 @@ public:
     }
 
 private:
-
     Text& m_text;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Text* Text::New(const std::string& _id, ::Ogre::SceneManager* _sm, ::Ogre::OverlayContainer* _parent,
-                const std::string& _fontSource, size_t _fontSize, float _fontResolution, ::Ogre::Camera* _cam)
+Text* Text::New(
+    const std::string& _id,
+    ::Ogre::SceneManager* _sm,
+    ::Ogre::OverlayContainer* _parent,
+    const std::string& _fontSource,
+    size_t _fontSize,
+    float _fontResolution,
+    ::Ogre::Camera* _cam)
 {
     const auto& factoryName = viz::scene3d::factory::Text::FACTORY_TYPE_NAME;
-    Text* instance          = static_cast< viz::scene3d::Text* >(_sm->createMovableObject(_id, factoryName));
+    Text* instance          = static_cast<viz::scene3d::Text*>(_sm->createMovableObject(_id, factoryName));
 
     instance->m_parentContainer = _parent;
     instance->m_camera          = _cam;
@@ -94,13 +96,17 @@ Text* Text::New(const std::string& _id, ::Ogre::SceneManager* _sm, ::Ogre::Overl
     return instance;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Text* Text::New(const std::string& _id, ::Ogre::SceneManager* _sm, ::Ogre::OverlayContainer* _parent,
-                ::Ogre::FontPtr _font, ::Ogre::Camera* _cam)
+Text* Text::New(
+    const std::string& _id,
+    ::Ogre::SceneManager* _sm,
+    ::Ogre::OverlayContainer* _parent,
+    ::Ogre::FontPtr _font,
+    ::Ogre::Camera* _cam)
 {
     const auto& factoryName = viz::scene3d::factory::Text::FACTORY_TYPE_NAME;
-    Text* instance          = static_cast< viz::scene3d::Text* >(_sm->createMovableObject(_id, factoryName));
+    Text* instance          = static_cast<viz::scene3d::Text*>(_sm->createMovableObject(_id, factoryName));
 
     instance->m_parentContainer = _parent;
     instance->m_camera          = _cam;
@@ -114,17 +120,17 @@ Text* Text::New(const std::string& _id, ::Ogre::SceneManager* _sm, ::Ogre::Overl
     return instance;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Text::Text(const std::string& _id) :
     ::Ogre::MovableObject(_id)
 {
     auto& overlayManager = ::Ogre::OverlayManager::getSingleton();
-    m_overlayText = dynamic_cast< ::Ogre::TextAreaOverlayElement* >(
+    m_overlayText = dynamic_cast< ::Ogre::TextAreaOverlayElement*>(
         overlayManager.createOverlayElement("TextArea", _id + "TextArea"));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Text::~Text()
 {
@@ -141,14 +147,14 @@ Text::~Text()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setText(const std::string& _text)
 {
     m_overlayText->setCaption(_text);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setPosition(float _x, float _y)
 {
@@ -157,13 +163,13 @@ void Text::setPosition(float _x, float _y)
     // Ogre doesn't handle vertical alignment for text elements so we have to do it ourselves ..
     const float textHeight = this->getTextHeight();
     const auto vAlign      = m_overlayText->getVerticalAlignment();
-    const float alignedY   = vAlign == ::Ogre::GVA_BOTTOM ? _y - textHeight :
-                             vAlign == ::Ogre::GVA_CENTER ? _y - textHeight * 0.5f : _y;
+    const float alignedY   = vAlign == ::Ogre::GVA_BOTTOM ? _y - textHeight
+                                                          : vAlign == ::Ogre::GVA_CENTER ? _y - textHeight * 0.5f : _y;
 
     m_overlayText->setPosition(_x, alignedY);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 float Text::getTextHeight() const
 {
@@ -181,7 +187,7 @@ float Text::getTextHeight() const
     return static_cast<float>(nbLineEnds) * m_overlayText->getCharHeight();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setDotsPerInch(float _dpi)
 {
@@ -195,23 +201,25 @@ void Text::setDotsPerInch(float _dpi)
     this->resize();
 
     std::uint32_t fontRes = static_cast<std::uint32_t>(_dpi);
+
     if(m_font->getTrueTypeResolution() != fontRes)
     {
-        auto newFont = helper::Font::getFont(m_font->getSource(),
-                                             static_cast<size_t>(std::round(fontSize)),
-                                             fontRes);
+        auto newFont = helper::Font::getFont(
+            m_font->getSource(),
+            static_cast<size_t>(std::round(fontSize)),
+            fontRes);
         this->setFont(newFont);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setCharHeight(float _height)
 {
     m_overlayText->setCharHeight(_height);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setTextColor(const Ogre::ColourValue& _color)
 {
@@ -230,7 +238,7 @@ void Text::setTextColor(const Ogre::ColourValue& _color)
     passParams->setNamedConstant("u_textColor", m_textColor);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setVisible(bool _visible)
 {
@@ -242,40 +250,42 @@ void Text::setVisible(bool _visible)
     {
         m_overlayText->hide();
     }
+
     this->::Ogre::MovableObject::setVisible(_visible);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Text::setTextAlignment(const ::Ogre::TextAreaOverlayElement::Alignment _hAlignement,
-                            const ::Ogre::GuiVerticalAlignment _vAlignement)
+void Text::setTextAlignment(
+    const ::Ogre::TextAreaOverlayElement::Alignment _hAlignement,
+    const ::Ogre::GuiVerticalAlignment _vAlignement)
 {
     m_overlayText->setVerticalAlignment(_vAlignement);
     m_overlayText->setAlignment(_hAlignement);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Ogre::String& Text::getMovableType() const
 {
     return factory::Text::FACTORY_TYPE_NAME;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Ogre::AxisAlignedBox& Text::getBoundingBox() const
 {
     return m_bb;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Ogre::Real Text::getBoundingRadius() const
 {
     return 0.f;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::_updateRenderQueue(Ogre::RenderQueue*)
 {
@@ -288,7 +298,7 @@ void Text::_updateRenderQueue(Ogre::RenderQueue*)
         const auto viewProjMx = m_camera->getProjectionMatrixWithRSDepth() * m_camera->getViewMatrix();
         const auto projPos    = viewProjMx * pos;
 
-        const ::Ogre::Vector2 screenPos(0.5f + projPos.x/2.f, 0.5f - projPos.y/2.f);
+        const ::Ogre::Vector2 screenPos(0.5f + projPos.x / 2.f, 0.5f - projPos.y / 2.f);
         this->setPosition(screenPos.x, screenPos.y);
 
         // Clipping test.
@@ -303,13 +313,13 @@ void Text::_updateRenderQueue(Ogre::RenderQueue*)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::visitRenderables(Ogre::Renderable::Visitor*, bool)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::setFont(::Ogre::FontPtr _font)
 {
@@ -319,9 +329,10 @@ void Text::setFont(::Ogre::FontPtr _font)
     // Clone the font material, thereby allowing each text object to have its own color.
     const ::Ogre::MaterialPtr& fontMtl = viz::scene3d::helper::Font::getFontMtl(_font->getName());
 
-    const auto ttfRes       = m_font->getTrueTypeResolution();
-    const auto& textMtlName = this->getName() + "_TextMaterial_dpi" + std::to_string(ttfRes);
+    const auto ttfRes           = m_font->getTrueTypeResolution();
+    const auto& textMtlName     = this->getName() + "_TextMaterial_dpi" + std::to_string(ttfRes);
     ::Ogre::MaterialPtr textMtl = ::Ogre::MaterialManager::getSingleton().getByName(textMtlName, RESOURCE_GROUP);
+
     if(!textMtl)
     {
         textMtl = fontMtl->clone(textMtlName);
@@ -331,7 +342,7 @@ void Text::setFont(::Ogre::FontPtr _font)
     this->setTextColor(m_textColor);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Text::resize()
 {

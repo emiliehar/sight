@@ -31,6 +31,7 @@
 
 namespace sight::atoms::conversion
 {
+
 namespace mapper
 {
 
@@ -41,10 +42,12 @@ namespace registry
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(atoms::conversion::mapper::Base)(), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(atoms::conversion::mapper::Base)(), KeyType> Type;
 
 ATOMS_API SPTR(Type) get();
 
 } // namespace mapper
+
 } // namespace registry
+
 } // namespace sight::atoms::conversion

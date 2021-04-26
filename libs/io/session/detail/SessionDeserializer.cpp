@@ -53,23 +53,24 @@
 
 namespace sight::io::session
 {
+
 namespace detail
 {
 
 // Serializer registry
 // No concurrency protection as the map is statically initialized
-static const std::unordered_map< std::string, std::function<data::IDataDeserializer::uptr(void)> > s_deserializers = {
-    {sight::data::Boolean::classname(), & data::GenericDeserializer<sight::data::Boolean>::unique},
-    {sight::data::Integer::classname(), & data::GenericDeserializer<sight::data::Integer>::unique},
-    {sight::data::Float::classname(), & data::GenericDeserializer<sight::data::Float>::unique},
-    {sight::data::String::classname(), & data::StringDeserializer::unique},
-    {sight::data::Composite::classname(), & data::CompositeDeserializer::unique},
-    {sight::data::Mesh::classname(), & data::MeshDeserializer::unique},
-    {sight::data::Equipment::classname(), & data::EquipmentDeserializer::unique},
-    {sight::data::Patient::classname(), & data::PatientDeserializer::unique},
-    {sight::data::Study::classname(), & data::StudyDeserializer::unique},
-    {sight::data::Series::classname(), & data::SeriesDeserializer::unique},
-    {sight::data::ActivitySeries::classname(), & data::ActivitySeriesDeserializer::unique}
+static const std::unordered_map<std::string, std::function<data::IDataDeserializer::uptr(void)> > s_deserializers = {
+    {sight::data::Boolean::classname(), &data::GenericDeserializer<sight::data::Boolean>::unique},
+    {sight::data::Integer::classname(), &data::GenericDeserializer<sight::data::Integer>::unique},
+    {sight::data::Float::classname(), &data::GenericDeserializer<sight::data::Float>::unique},
+    {sight::data::String::classname(), &data::StringDeserializer::unique},
+    {sight::data::Composite::classname(), &data::CompositeDeserializer::unique},
+    {sight::data::Mesh::classname(), &data::MeshDeserializer::unique},
+    {sight::data::Equipment::classname(), &data::EquipmentDeserializer::unique},
+    {sight::data::Patient::classname(), &data::PatientDeserializer::unique},
+    {sight::data::Study::classname(), &data::StudyDeserializer::unique},
+    {sight::data::Series::classname(), &data::SeriesDeserializer::unique},
+    {sight::data::ActivitySeries::classname(), &data::ActivitySeriesDeserializer::unique}
 };
 
 // Return a writer from a data object class name
@@ -92,7 +93,6 @@ class SessionDeserializerImpl final : public SessionDeserializer
 {
 public:
     SIGHT_DECLARE_CLASS(SessionDeserializerImpl, SessionDeserializer)
-
     /// Delete default copy constructors and assignment operators
     SessionDeserializerImpl(const SessionDeserializerImpl&)            = delete;
     SessionDeserializerImpl(SessionDeserializerImpl&&)                 = delete;
@@ -105,7 +105,7 @@ public:
     /// Default destructor
     ~SessionDeserializerImpl() override = default;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     sight::data::Object::sptr deserialize(
         const std::filesystem::path& archive_path,
@@ -133,7 +133,6 @@ public:
     }
 
 private:
-
     /// Deserializes recursively an initialized archive to a data::Object using an opened property tree
     /// @param cache object cache
     /// @param archive initialized archive
@@ -186,6 +185,7 @@ private:
             std::map<std::string, sight::data::Object::sptr> children;
 
             const auto& children_it = object_tree.find("children");
+
             if(children_it != object_tree.not_found())
             {
                 for(const auto& child_it : children_it->second)
@@ -212,6 +212,7 @@ private:
             sight::data::Object::FieldMapType fields;
 
             const auto& fields_it = object_tree.find("fields");
+
             if(fields_it != object_tree.not_found())
             {
                 for(const auto& field_it : fields_it->second)
@@ -232,14 +233,14 @@ private:
     }
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SessionDeserializer::sptr SessionDeserializer::shared()
 {
     return std::make_shared<SessionDeserializerImpl>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SessionDeserializer::uptr SessionDeserializer::unique()
 {
@@ -247,4 +248,5 @@ SessionDeserializer::uptr SessionDeserializer::unique()
 }
 
 } // namespace detail
+
 } // namespace sight::io::session

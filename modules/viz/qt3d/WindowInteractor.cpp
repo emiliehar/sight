@@ -32,47 +32,48 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-fwRenderQt3DRegisterMacro( ::sight::module::viz::qt3d::WindowInteractor,
-                           ::sight::viz::qt3d::IWindowInteractor::REGISTRY_KEY );
+fwRenderQt3DRegisterMacro(
+    ::sight::module::viz::qt3d::WindowInteractor,
+    ::sight::viz::qt3d::IWindowInteractor::REGISTRY_KEY);
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 namespace sight::module::viz::qt3d
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 WindowInteractor::WindowInteractor(sight::viz::qt3d::IWindowInteractor::Key)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 WindowInteractor::~WindowInteractor()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::createContainer(ui::base::container::fwContainer::sptr _parent)
 {
     SIGHT_ASSERT("Invalid parent.", _parent);
-    m_parentContainer = ui::qt::container::QtContainer::dynamicCast( _parent );
+    m_parentContainer = ui::qt::container::QtContainer::dynamicCast(_parent);
 
     auto view3D = new Qt3DExtras::Qt3DWindow();
     this->set3DView(view3D);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::set3DView(Qt3DExtras::Qt3DWindow* _3dView)
 {
     m_parentContainer->clean();
 
     m_windowContainer = QWidget::createWindowContainer(_3dView);
-    QPointer< QVBoxLayout > layout = new QVBoxLayout;
+    QPointer<QVBoxLayout> layout = new QVBoxLayout;
     layout->addWidget(m_windowContainer);
     layout->setContentsMargins(0, 0, 0, 0);
     m_parentContainer->setLayout(layout);

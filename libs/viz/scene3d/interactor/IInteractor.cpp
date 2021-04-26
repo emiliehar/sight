@@ -33,6 +33,7 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace interactor
 {
 
@@ -56,53 +57,52 @@ void IInteractor::setSceneLength(float)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::mouseMoveEvent(MouseButton, Modifier, int, int, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::wheelEvent(Modifier, int, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::buttonReleaseEvent(MouseButton, Modifier, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::buttonPressEvent(MouseButton, Modifier, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::buttonDoublePressEvent(MouseButton, Modifier, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::keyPressEvent(int, Modifier, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::keyReleaseEvent(int, Modifier, int, int)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IInteractor::resizeEvent(int, int)
 {
-
 }
 
 // ----------------------------------------------------------------------------
@@ -117,9 +117,11 @@ bool IInteractor::isInLayer(int _mouseX, int _mouseY, Layer::sptr _layer, bool _
     {
         auto* const renderWindow       = layerVp->getTarget();
         const unsigned short numLayers = renderWindow->getNumViewports();
-        for(unsigned short i = 0; i < numLayers && isInLayer; ++i)
+
+        for(unsigned short i = 0 ; i < numLayers && isInLayer ; ++i)
         {
             const auto* const vp = renderWindow->getViewport(i);
+
             if(vp->getZOrder() > layerVp->getZOrder())
             {
                 isInLayer = !isInViewport(_mouseX, _mouseY, vp);
@@ -143,4 +145,5 @@ bool IInteractor::isInViewport(int _mouseX, int _mouseY, const ::Ogre::Viewport*
 }
 
 } // namespace interactor
+
 } // namespace sight::viz::scene3d

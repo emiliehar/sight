@@ -33,6 +33,7 @@
 
 namespace sight::core::location
 {
+
 /// Class to define a location that holds one or more file path.
 class CORE_CLASS_API MultipleFiles : public ILocation
 {
@@ -55,7 +56,6 @@ public:
     inline void addFile(const std::filesystem::path& filePaths);
 
 protected:
-
     /// Constructor
     CORE_API MultipleFiles() = default;
 
@@ -63,7 +63,6 @@ protected:
     CORE_API virtual ~MultipleFiles() = default;
 
 private:
-
     /// The filesystem::path vector
     std::vector<std::filesystem::path> m_files;
 };
@@ -72,6 +71,7 @@ private:
 inline MultipleFiles::sptr MultipleFiles::New()
 {
     struct MakeSharedEnabler : public MultipleFiles {};
+
     return std::make_shared<MakeSharedEnabler>();
 }
 
@@ -86,24 +86,25 @@ inline std::string MultipleFiles::toString() const
 
     std::stringstream stringstream;
     std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<std::string>(stringstream, delim));
+
     return stringstream.str();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void MultipleFiles::setFiles(const std::vector<std::filesystem::path>& filePaths)
 {
     m_files = filePaths;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::vector<std::filesystem::path> MultipleFiles::getFiles() const
 {
     return m_files;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void MultipleFiles::addFile(const std::filesystem::path& filePaths)
 {

@@ -24,44 +24,46 @@
 
 #include "atoms/registry/macros.hpp"
 
-fwAtomsRegisterMacro( sight::atoms::Boolean );
+fwAtomsRegisterMacro(sight::atoms::Boolean);
 
 namespace sight::atoms
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Boolean::sptr Boolean::New(std::string value)
 {
     Boolean::sptr valueSptr = Boolean::New();
     valueSptr->m_value = (value.compare("true") == 0);
+
     return valueSptr;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Boolean::sptr Boolean::New(bool value)
 {
     Boolean::sptr valueSptr = Boolean::New();
     valueSptr->m_value = value;
+
     return valueSptr;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string Boolean::getString() const
 {
     return m_value ? "true" : "false";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Boolean::setString(const std::string& value)
 {
     m_value = (!value.compare("true"));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Base::sptr Boolean::clone() const
 {

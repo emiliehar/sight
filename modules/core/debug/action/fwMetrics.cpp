@@ -35,23 +35,23 @@
 
 namespace sight::module::debug
 {
+
 namespace action
 {
 
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-
-fwMetrics::fwMetrics( ) noexcept
+fwMetrics::fwMetrics() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 fwMetrics::~fwMetrics() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void fwMetrics::updating()
 {
@@ -69,34 +69,35 @@ void fwMetrics::updating()
 
     sight::ui::base::dialog::MessageDialog messageBox;
     messageBox.setTitle("FactoryRegistry Information");
-    messageBox.setMessage( stream.str() );
+    messageBox.setMessage(stream.str());
     messageBox.setIcon(ui::base::dialog::IMessageDialog::INFO);
     messageBox.addButton(ui::base::dialog::IMessageDialog::OK);
     messageBox.show();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void fwMetrics::configuring()
 {
     this->sight::ui::base::IAction::initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void fwMetrics::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void fwMetrics::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace action
+
 } // namespace sight::module::debug

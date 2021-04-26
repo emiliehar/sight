@@ -32,7 +32,7 @@ namespace sight::core::com
 namespace exception
 {
 
-BadCall::BadCall ( const std::string& err ) :
+BadCall::BadCall(const std::string& err) :
     core::Exception(err)
 {
 }

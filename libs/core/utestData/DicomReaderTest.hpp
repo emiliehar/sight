@@ -31,9 +31,7 @@ namespace sight::utestData
 
 class UTESTDATA_CLASS_API DicomReaderTest
 {
-
 public:
-
     /**
      * @brief Method used to verify if a specific dicom file (stored on the
      * test database) is well read
@@ -41,12 +39,12 @@ public:
      * This file is located here on test database : "sight/Patient/Dicom/JMSGenou",
      * its represents a CT image of a knee ( 400 slices ).
      */
-    UTESTDATA_API static bool checkSeriesJMSGenou( const SPTR(data::ImageSeries)& series );
+    UTESTDATA_API static bool checkSeriesJMSGenou(const SPTR(data::ImageSeries)& series);
 
     /**
      * @brief This method is the same as checkSeriesJMSGenou but it checks trimmed strings instead of even sized strings
      */
-    UTESTDATA_API static bool checkSeriesJMSGenouTrimmed( const SPTR(data::ImageSeries)& series );
+    UTESTDATA_API static bool checkSeriesJMSGenouTrimmed(const SPTR(data::ImageSeries)& series);
 };
 
 } // namespace sight::utestData

@@ -28,14 +28,15 @@
 
 namespace sight::core
 {
+
 namespace ut
 {
 
 class SpyLogTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SpyLogTest );
-CPPUNIT_TEST( logMessageTest );
-CPPUNIT_TEST( threadSafetyTest );
+CPPUNIT_TEST_SUITE(SpyLogTest);
+CPPUNIT_TEST(logMessageTest);
+CPPUNIT_TEST(threadSafetyTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -47,12 +48,12 @@ public:
     void threadSafetyTest();
 
 private:
-
     std::vector<std::string> logToVector(const std::stringstream& logsStream);
     void checkLog(const std::vector<std::string>& logMessagesRef, const std::vector<std::string>& logMessages);
 
     std::stringstream m_ostream;
 };
 
-} //namespace ut
-} //namespace sight::core
+} // namespace ut
+
+} // namespace sight::core

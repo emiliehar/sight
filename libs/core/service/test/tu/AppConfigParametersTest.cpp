@@ -32,14 +32,15 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::service::ut::AppConfigParametersTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::service::ut::AppConfigParametersTest);
 
 namespace sight::service
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AppConfigParametersTest::setUp()
 {
@@ -61,13 +62,13 @@ void AppConfigParametersTest::setUp()
     appConfigParam->parseBundleInformation();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AppConfigParametersTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AppConfigParametersTest::appConfigParametersTest()
 {
@@ -83,18 +84,19 @@ void AppConfigParametersTest::appConfigParametersTest()
     CPPUNIT_ASSERT_EQUAL(std::string("value3"), parameters2["param3"]);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AppConfigParametersTest::concurentAccessToAppConfigParametersTest()
 {
     const auto fn = std::bind(&AppConfigParametersTest::appConfigParametersTest, this);
-    std::vector< std::future<void> > futures;
-    for (unsigned int i = 0; i < 20; ++i)
+    std::vector<std::future<void> > futures;
+
+    for(unsigned int i = 0 ; i < 20 ; ++i)
     {
-        futures.push_back( std::async(std::launch::async, fn) );
+        futures.push_back(std::async(std::launch::async, fn));
     }
 
-    for (auto& future : futures)
+    for(auto& future : futures)
     {
         const auto status = future.wait_for(std::chrono::seconds(1));
         CPPUNIT_ASSERT(status == std::future_status::ready);
@@ -102,7 +104,8 @@ void AppConfigParametersTest::concurentAccessToAppConfigParametersTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

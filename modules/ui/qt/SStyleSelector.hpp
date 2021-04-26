@@ -32,6 +32,7 @@
 
 namespace sight::module::ui::qt
 {
+
 /**
  * @brief Selector of theme/style.
  * Theme should be stored in the rc/ folder of this module.
@@ -70,7 +71,6 @@ namespace sight::module::ui::qt
 class MODULE_UI_QT_CLASS_API SStyleSelector : public service::IController
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SStyleSelector, sight::service::IController)
 
     /// Constructor, initializes slots.
@@ -80,7 +80,6 @@ public:
     MODULE_UI_QT_API ~SStyleSelector() noexcept override;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */
@@ -104,16 +103,14 @@ protected:
     MODULE_UI_QT_API void updating() override;
 
 private:
-
     /// Applies the style _stylename.
     void changeStyle(const std::string& _styleName);
 
-    ///Slot: check preference key THEME, and update theme accordly.
+    /// Slot: check preference key THEME, and update theme accordly.
     void updateFromPrefs();
 
     /// Map to stores theme names and their path.
-    std::map< std::string, std::filesystem::path > m_styleMap;
-
+    std::map<std::string, std::filesystem::path> m_styleMap;
 };
 
-} //namespace sight::module::ui::qt
+} // namespace sight::module::ui::qt

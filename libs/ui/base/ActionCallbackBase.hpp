@@ -35,9 +35,7 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API ActionCallbackBase : public ui::base::IMenuItemCallback
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(ActionCallbackBase, ui::base::IMenuItemCallback)
 
     typedef std::string RegistryKeyType;
@@ -60,7 +58,6 @@ public:
     UI_BASE_API static const RegistryKeyType REGISTRY_KEY;
 
 protected:
-
     /**
      * @brief   Constructor.
      */
@@ -73,7 +70,6 @@ protected:
 
 private:
     std::string m_sid;
-
 };
 
 } // namespace sight::ui::base

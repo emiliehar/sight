@@ -29,6 +29,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace composite
 {
 
@@ -38,8 +39,10 @@ namespace composite
 class FILTER_DICOM_CLASS_API CTImageStorageDefaultComposite : public IComposite
 {
 public:
-    SIGHT_DECLARE_CLASS(CTImageStorageDefaultComposite, IComposite,
-                        filter::dicom::factory::New< CTImageStorageDefaultComposite >);
+    SIGHT_DECLARE_CLASS(
+        CTImageStorageDefaultComposite,
+        IComposite,
+        filter::dicom::factory::New<CTImageStorageDefaultComposite>);
 
     /// Constructor
     FILTER_DICOM_API CTImageStorageDefaultComposite(filter::dicom::IFilter::Key key);
@@ -54,7 +57,6 @@ public:
     FILTER_DICOM_API std::string getDescription() const override;
 
 protected:
-
     /// Filter name
     static const std::string s_FILTER_NAME;
 
@@ -63,4 +65,5 @@ protected:
 };
 
 } // namespace composite
+
 } // namespace sight::filter::dicom

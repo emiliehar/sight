@@ -34,13 +34,14 @@
 
 namespace sight::module::ui::qt::calibration
 {
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 SUpdateIntrinsicDialog::SUpdateIntrinsicDialog() :
     QDialog(),
     m_ratio(0.)
 {
-    //Design of the QDialog
+    // Design of the QDialog
     QHBoxLayout* validateButtonLayout;
     QHBoxLayout* computeButtonLayout;
     QHBoxLayout* resolutionLayout;
@@ -120,15 +121,15 @@ SUpdateIntrinsicDialog::SUpdateIntrinsicDialog() :
     QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SUpdateIntrinsicDialog::~SUpdateIntrinsicDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void SUpdateIntrinsicDialog::setParameters(std::array< double, 12 >& parameters)
+void SUpdateIntrinsicDialog::setParameters(std::array<double, 12>& parameters)
 {
     m_calibration       = parameters;
     m_originCalibration = parameters;
@@ -138,7 +139,7 @@ void SUpdateIntrinsicDialog::setParameters(std::array< double, 12 >& parameters)
     this->updateInfos();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SUpdateIntrinsicDialog::onValidate()
 {
@@ -147,49 +148,52 @@ void SUpdateIntrinsicDialog::onValidate()
     this->close();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SUpdateIntrinsicDialog::onPushCompute()
 {
-
     double height = m_height->text().toDouble();
     double width  = m_width->text().toDouble();
 
     double ratio = width / height;
 
-    //new resolution don't respect the original ratio
+    // new resolution don't respect the original ratio
     if(std::abs(m_ratio - ratio) > 0.0001)
     {
         sight::ui::base::dialog::MessageDialog::sptr warningMess = sight::ui::base::dialog::MessageDialog::New();
-        warningMess->show("Warning", "The new resolution don't respect the original resolution ratio !"
-                          , sight::ui::base::dialog::IMessageDialog::WARNING);
+        warningMess->show(
+            "Warning",
+            "The new resolution don't respect the original resolution ratio !"
+            ,
+            sight::ui::base::dialog::IMessageDialog::WARNING);
+
         return;
     }
 
-    //alpha : original resolution / new resolution (!! Ratio should be kept (16/9, 4/3 ...) !!!)
+    // alpha : original resolution / new resolution (!! Ratio should be kept (16/9, 4/3 ...) !!!)
 
-    double alpha = m_originCalibration[1]/ height;
+    double alpha = m_originCalibration[1] / height;
 
     double fx_new, fy_new, cx_new, cy_new, k1_new, k2_new, p1_new, p2_new;
 
-    //    fx_new = fx_old / alpha
-    //    fy_new = fy_old / alpha
-    //    cx_new = cx_old / alpha
-    //    cy_new = cy_old / alpha
+    // fx_new = fx_old / alpha
+    // fy_new = fy_old / alpha
+    // cx_new = cx_old / alpha
+    // cy_new = cy_old / alpha
 
     fx_new = m_calibration[2] / alpha;
     fy_new = m_calibration[3] / alpha;
     cx_new = m_calibration[4] / alpha;
     cy_new = m_calibration[5] / alpha;
 
-    //    k1_new = k1_old*alpha^2
-    //    k2_new = k2_old*alpha^4
-    //    t1_new = t1_old*alpha^2
-    //    t2_new = t2_old*alpha^2
-    k1_new = m_calibration[6]*(alpha*alpha);
-    k2_new = m_calibration[7]*(alpha*alpha*alpha*alpha);
-    p1_new = m_calibration[8]*(alpha*alpha);
-    p2_new = m_calibration[9]*(alpha*alpha);
+    // k1_new = k1_old*alpha^2
+    // k2_new = k2_old*alpha^4
+    // t1_new = t1_old*alpha^2
+    // t2_new = t2_old*alpha^2
+    k1_new = m_calibration[6] * (alpha * alpha);
+    k2_new = m_calibration[7] * (alpha * alpha * alpha * alpha);
+    p1_new = m_calibration[8] * (alpha * alpha);
+    p2_new = m_calibration[9] * (alpha * alpha);
 
     m_calibration[0] = width;
     m_calibration[1] = height;
@@ -205,11 +209,11 @@ void SUpdateIntrinsicDialog::onPushCompute()
     this->updateInfos();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SUpdateIntrinsicDialog::onPushReset()
 {
-    for(unsigned int i = 0; i < m_originCalibration.size(); ++i)
+    for(unsigned int i = 0 ; i < m_originCalibration.size() ; ++i)
     {
         m_calibration[i] = m_originCalibration[i];
     }
@@ -217,79 +221,79 @@ void SUpdateIntrinsicDialog::onPushReset()
     this->updateInfos();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SUpdateIntrinsicDialog::updateInfos()
 {
     std::stringstream out;
 
-    out<<m_calibration[0];
+    out << m_calibration[0];
     m_width->setText(out.str().c_str());
     out.str("");
 
-    out<<m_calibration[1];
+    out << m_calibration[1];
     m_height->setText(out.str().c_str());
     out.str("");
 
-    //CX
+    // CX
     out << "Cx: <font color='#0066CC'>" << m_calibration[4] << "</font>";
     m_cx->setText(out.str().c_str());
 
     out.str("");
 
-    //CY
+    // CY
     out << "Cy: <font color='#0066CC'>" << m_calibration[5] << "</font>";
     m_cy->setText(out.str().c_str());
 
     out.str("");
 
-    //FX
+    // FX
     out << "Fx: <font color='#0066CC'>" << m_calibration[2] << "</font>";
     m_fx->setText(out.str().c_str());
 
     out.str("");
 
-    //FY
+    // FY
     out << "Fy: <font color='#0066CC'>" << m_calibration[3] << "</font>";
     m_fy->setText(out.str().c_str());
 
     out.str("");
 
-    //K1
+    // K1
     out << "K1: <font color='#0066CC'>" << m_calibration[6] << "</font>";
     m_k1->setText(out.str().c_str());
 
     out.str("");
 
-    //K2
+    // K2
     out << "K2: <font color='#0066CC'>" << m_calibration[7] << "</font>";
     m_k2->setText(out.str().c_str());
 
     out.str("");
 
-    //P1
+    // P1
     out << "P1: <font color='#0066CC'>" << m_calibration[8] << "</font>";
     m_p1->setText(out.str().c_str());
 
     out.str("");
 
-    //P2
+    // P2
     out << "P2: <font color='#0066CC'>" << m_calibration[9] << "</font>";
     m_p2->setText(out.str().c_str());
 
     out.str("");
 
-    //K3
+    // K3
     out << "K3: <font color='#0066CC'>" << m_calibration[10] << "</font>";
     m_k3->setText(out.str().c_str());
 
     out.str("");
 
-    //SKEW
+    // SKEW
     out << "Skew: <font color='#0066CC'>" << m_calibration[11] << "</font>";
     m_skew->setText(out.str().c_str());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace sight::module::ui::qt::calibration
+} // namespace sight::module::ui::qt::calibration

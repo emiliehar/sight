@@ -30,8 +30,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace container
 {
+
 namespace sr
 {
 
@@ -41,7 +43,6 @@ namespace sr
 class IO_DICOM_CLASS_API DicomSRContainerNode : public io::dicom::container::sr::DicomSRNode
 {
 public:
-
     /// Constructor
     IO_DICOM_API DicomSRContainerNode(const DicomCodedAttribute& codedAttribute, const std::string& relationship = "");
 
@@ -53,9 +54,10 @@ public:
      * @param[in] dataset Destination dataset
      */
     IO_DICOM_API virtual void write(::gdcm::DataSet& dataset) const;
-
 };
 
-} //namespace sr
-} //namespace container
-} //namespace sight::io::dicom
+} // namespace sr
+
+} // namespace container
+
+} // namespace sight::io::dicom

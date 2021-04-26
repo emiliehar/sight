@@ -32,96 +32,104 @@ namespace policy
 
 fwMemoryPolicyRegisterMacro(core::memory::policy::NeverDump);
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::allocationRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer,
-                                   BufferInfo::SizeType size )
+void NeverDump::allocationRequest(
+    BufferInfo& info,
+    core::memory::BufferManager::ConstBufferPtrType buffer,
+    BufferInfo::SizeType size)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
     SIGHT_NOT_USED(size);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::setRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer,
-                            BufferInfo::SizeType size )
+void NeverDump::setRequest(
+    BufferInfo& info,
+    core::memory::BufferManager::ConstBufferPtrType buffer,
+    BufferInfo::SizeType size)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
     SIGHT_NOT_USED(size);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::reallocateRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer,
-                                   BufferInfo::SizeType newSize )
+void NeverDump::reallocateRequest(
+    BufferInfo& info,
+    core::memory::BufferManager::ConstBufferPtrType buffer,
+    BufferInfo::SizeType newSize)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
     SIGHT_NOT_USED(newSize);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::destroyRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void NeverDump::destroyRequest(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::lockRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void NeverDump::lockRequest(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::unlockRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void NeverDump::unlockRequest(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::dumpSuccess( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void NeverDump::dumpSuccess(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void NeverDump::restoreSuccess( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void NeverDump::restoreSuccess(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void NeverDump::refresh()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string NeverDump::getParam(const std::string& name, bool* ok) const
 {
     SIGHT_NOT_USED(name);
-    if (ok)
+
+    if(ok)
     {
         *ok = false;
     }
+
     return "";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace policy
 
-} //namespace sight::core::memory
+} // namespace sight::core::memory

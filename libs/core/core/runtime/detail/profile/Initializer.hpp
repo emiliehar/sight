@@ -42,15 +42,13 @@ namespace profile
  */
 class Initializer : public boost::noncopyable
 {
-
 public:
-
     /**
      * @brief       Constructor
      *
      * @param[in]   identifier  a string containing a module identifier
      */
-    Initializer( const std::string& identifier );
+    Initializer(const std::string& identifier);
 
     /**
      * @brief   Applies the initializer on the module.
@@ -60,8 +58,7 @@ public:
     void apply();
 
 protected:
-
-    const std::string m_identifier;     ///< the module identifier
+    const std::string m_identifier; ///< the module identifier
 };
 
 } // namespace profile

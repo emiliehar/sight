@@ -30,7 +30,9 @@
 
 namespace sight::data
 {
+
 class Material;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
@@ -78,9 +80,7 @@ class MODULE_VIZ_SCENE3D_CLASS_API SModelSeries final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SModelSeries, ::sight::viz::scene3d::IAdaptor)
 
@@ -91,7 +91,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SModelSeries() noexcept override;
 
 protected:
-
     /// Configures the adaptor.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -124,32 +123,31 @@ protected:
     MODULE_VIZ_SCENE3D_API void setVisible(bool _visible) override;
 
 private:
-
     /// SLOT: updates all reconstructions visibility from the input data field.
     void showReconstructionsOnFieldChanged();
 
     /// Defines if the camera must be reset automatically
-    bool m_autoResetCamera { true };
+    bool m_autoResetCamera{true};
 
     /// Defines the texture name.
-    std::string m_textureAdaptorUID { "" };
+    std::string m_textureAdaptorUID{""};
 
     /// Defines the material name.
-    std::string m_materialTemplateName {sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
+    std::string m_materialTemplateName{sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
 
     /// Defines if the model series is dynamic.
-    bool m_isDynamic {false};
+    bool m_isDynamic{false};
 
     /// Defines if the model series' vertices are dynamic.
-    bool m_isDynamicVertices {false};
+    bool m_isDynamicVertices{false};
 
     /// Defines the mask used for picking request.
-    std::uint32_t m_queryFlags {::Ogre::SceneManager::ENTITY_TYPE_MASK};
+    std::uint32_t m_queryFlags{::Ogre::SceneManager::ENTITY_TYPE_MASK};
 
     /// Defines if the visibility tag is present in the configuration.
     bool m_isVisibleTag{false};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

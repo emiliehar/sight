@@ -34,15 +34,15 @@
 namespace sight::io::itk
 {
 
-class ImageReader : public base::reader::GenericObjectReader< data::Image >,
+class ImageReader : public base::reader::GenericObjectReader<data::Image>,
                     public core::location::SingleFile,
                     public core::tools::ProgressAdviser
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(ImageReader, io::base::reader::GenericObjectReader< data::Image>,
-                        io::base::reader::factory::New< ImageReader >);
+    SIGHT_DECLARE_CLASS(
+        ImageReader,
+        io::base::reader::GenericObjectReader<data::Image>,
+        io::base::reader::factory::New<ImageReader>);
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
     IO_ITK_API ImageReader(io::base::reader::IObjectReader::Key key);

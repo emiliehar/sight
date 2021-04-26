@@ -36,6 +36,7 @@
 
 namespace sight::ui::base
 {
+
 namespace layoutManager
 {
 
@@ -44,9 +45,7 @@ namespace layoutManager
  */
 class UI_BASE_CLASS_API IFrameLayoutManager : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IFrameLayoutManager, ui::base::GuiBaseObject)
 
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
@@ -70,16 +69,15 @@ public:
 
     typedef enum
     {
-        UNKNOWN,     ///< the unknown state
-        ICONIZED,    ///< the minimized state
-        MAXIMIZED,   ///< the maximied state
-        FULL_SCREEN  ///< the full screen state
+        UNKNOWN, ///< the unknown state
+        ICONIZED, ///< the minimized state
+        MAXIMIZED, ///< the maximied state
+        FULL_SCREEN ///< the full screen state
     } FrameState;
 
     class FrameInfo
     {
     public:
-
         FrameInfo() :
             m_name(""),
             m_minSize(std::make_pair(-1, -1)),
@@ -96,13 +94,13 @@ public:
         /// Frame icon.
         std::filesystem::path m_iconPath;
         /// Frame minimum size (min width and min height)
-        std::pair< int, int >            m_minSize;
+        std::pair<int, int> m_minSize;
         /// Frame style
         Style m_style;
         /// Frame size
-        std::pair< int, int >            m_size;
+        std::pair<int, int> m_size;
         /// Frame position
-        std::pair< int, int >            m_position;
+        std::pair<int, int> m_position;
         /// Frame state (maximize, minized, full screen)
         FrameState m_state;
         /// Frame visibility
@@ -118,7 +116,7 @@ public:
     /**
      * @brief Configure the layout before creation.
      */
-    UI_BASE_API virtual void initialize( ConfigurationType configuration);
+    UI_BASE_API virtual void initialize(ConfigurationType configuration);
 
     UI_BASE_API static const RegistryKeyType REGISTRY_KEY;
 
@@ -144,11 +142,10 @@ public:
         return m_container;
     }
 
-    typedef std::function< void () > CloseCallback;
+    typedef std::function<void ()> CloseCallback;
     UI_BASE_API virtual void setCloseCallback(CloseCallback fct);
 
 protected:
-
     /**
      * @brief Configuration definition.
      * @{ */
@@ -157,19 +154,20 @@ protected:
         return m_frameInfo;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     FrameInfo& getFrameInfo()
     {
         return m_frameInfo;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setFrameInfo(const FrameInfo& frameInfo)
     {
         m_frameInfo = frameInfo;
     }
+
     /**  @} */
 
     ui::base::container::fwContainer::sptr m_frame;
@@ -183,13 +181,12 @@ protected:
     UI_BASE_API data::Composite::sptr getPreferenceUI();
 
 private:
-
     void defaultCloseCallback();
 
     /// Save frame configuration definition
     FrameInfo m_frameInfo;
-
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::base

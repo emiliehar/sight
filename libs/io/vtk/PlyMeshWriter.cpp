@@ -35,24 +35,25 @@
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
 
-SIGHT_REGISTER_IO_WRITER( ::sight::io::vtk::PlyMeshWriter );
+SIGHT_REGISTER_IO_WRITER(::sight::io::vtk::PlyMeshWriter);
 
 namespace sight::io::vtk
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 PlyMeshWriter::PlyMeshWriter(io::base::writer::IObjectWriter::Key) :
     m_job(core::jobs::Observer::New("PLY Mesh writer"))
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PlyMeshWriter::~PlyMeshWriter()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlyMeshWriter::write()
 {
@@ -62,14 +63,14 @@ void PlyMeshWriter::write()
 
     [[maybe_unused]] const auto objectLock = m_object.lock();
 
-    SIGHT_ASSERT("Object Lock null.", objectLock );
+    SIGHT_ASSERT("Object Lock null.", objectLock);
 
     const data::Mesh::csptr pMesh = getConcreteObject();
 
-    vtkSmartPointer< vtkPLYWriter > writer = vtkSmartPointer< vtkPLYWriter >::New();
-    vtkSmartPointer< vtkPolyData > vtkMesh = vtkSmartPointer< vtkPolyData >::New();
-    io::vtk::helper::Mesh::toVTKMesh( pMesh, vtkMesh);
-    writer->SetInputData( vtkMesh );
+    vtkSmartPointer<vtkPLYWriter> writer = vtkSmartPointer<vtkPLYWriter>::New();
+    vtkSmartPointer<vtkPolyData> vtkMesh = vtkSmartPointer<vtkPolyData>::New();
+    io::vtk::helper::Mesh::toVTKMesh(pMesh, vtkMesh);
+    writer->SetInputData(vtkMesh);
     writer->SetFileName(this->getFile().string().c_str());
     writer->SetFileTypeToBinary();
 
@@ -77,35 +78,34 @@ void PlyMeshWriter::write()
 
     progressCallback = vtkSmartPointer<vtkLambdaCommand>::New();
     progressCallback->SetCallback(
-        [&](vtkObject* caller, long unsigned int, void* )
+        [&](vtkObject* caller, long unsigned int, void*)
         {
             const auto filter = static_cast<vtkPLYWriter*>(caller);
             m_job->doneWork(static_cast<std::uint64_t>(filter->GetProgress() * 100.));
-        }
-        );
+        });
     writer->AddObserver(vtkCommand::ProgressEvent, progressCallback);
 
-    m_job->addSimpleCancelHook([&] { writer->AbortExecuteOn(); });
+    m_job->addSimpleCancelHook([&]{writer->AbortExecuteOn();});
 
     writer->Update();
 
     m_job->finish();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string PlyMeshWriter::extension()
 {
     return ".ply";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::jobs::IJob::sptr PlyMeshWriter::getJob() const
 {
     return m_job;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::io::vtk

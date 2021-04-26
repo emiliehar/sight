@@ -42,7 +42,6 @@ struct NAVIGATION_OPENVSLAM_CLASS_API OrbParams
     unsigned int iniFastThr = 20;
     ///
     unsigned int minFastThr = 7;
-
 };
 
 /**
@@ -75,4 +74,4 @@ struct NAVIGATION_OPENVSLAM_CLASS_API TrackingParams
     double depthmapFactor = 1.0;
 };
 
-} //namespace sight::navigation::openvslam
+} // namespace sight::navigation::openvslam

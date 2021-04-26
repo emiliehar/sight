@@ -31,32 +31,33 @@
 #include <vector>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::EdgeTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::EdgeTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EdgeTest::setUp()
 {
     // Set up context before running a test.
-
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void EdgeTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void EdgeTest::methode1()
 {
-    //-----------test values
+    // -----------test values
     const std::string STR1 = "foo";
     const std::string STR2 = "bar";
     const std::string STR3 = data::Edge::NATURE_FLOW;
@@ -70,5 +71,6 @@ void EdgeTest::methode1()
     CPPUNIT_ASSERT_EQUAL(edge->getNature(), STR3);
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

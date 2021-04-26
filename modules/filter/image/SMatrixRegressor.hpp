@@ -59,7 +59,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SMatrixRegressor : public service::IOperator
 {
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SMatrixRegressor, service::IOperator)
 
@@ -70,7 +69,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SMatrixRegressor() override;
 
 protected:
-
     /// Does nothing.
     MODULE_FILTER_IMAGE_API void configuring() override;
 
@@ -95,7 +93,6 @@ protected:
      * Connect data::PointList::s_MODIFIED_SIG of s_POINT_LIST_IN to s_UPDATE_SLOT
      */
     MODULE_FILTER_IMAGE_API KeyConnectionsMap getAutoConnections() const override;
-
 };
 
 } // namespace sight::module::filter::image.

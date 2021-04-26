@@ -36,8 +36,7 @@ namespace ut
 class MatrixTest : public CPPUNIT_NS::TestFixture
 {
 public:
-
-    CPPUNIT_TEST_SUITE( MatrixTest );
+    CPPUNIT_TEST_SUITE(MatrixTest);
     CPPUNIT_TEST(copyFromCvFloat);
     CPPUNIT_TEST(copyToCvFloat);
     CPPUNIT_TEST(copyFromCvDouble);
@@ -53,19 +52,18 @@ public:
     void setUp();
     void tearDown();
 
-    ///Tests the copy from/to ::cv::Matx44f (float)
+    /// Tests the copy from/to ::cv::Matx44f (float)
     void copyFromCvFloat();
     void copyToCvFloat();
-    ///Tests the copy from/to ::cv::Matx44d (double)
+    /// Tests the copy from/to ::cv::Matx44d (double)
     void copyFromCvDouble();
     void copyToCvDouble();
-    ///Tests the copy from/to ::cv::Mat
+    /// Tests the copy from/to ::cv::Mat
     void copyFromCvMat();
     void copyToCvMat();
-    ///Tests the copy from/to ::cv::Mat rvec tvec
+    /// Tests the copy from/to ::cv::Mat rvec tvec
     void copyFromRvecTvec();
     void copyToRvecTvec();
-
 };
 
 }

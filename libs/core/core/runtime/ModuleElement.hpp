@@ -28,7 +28,9 @@
 
 namespace sight::core::runtime
 {
+
 class Module;
+
 }
 
 namespace sight::core::runtime
@@ -72,7 +74,6 @@ public:
     CORE_API void setEnable(const bool enable);
 
 protected:
-
     /**
      * @brief   Constructor
      *
@@ -90,13 +91,11 @@ protected:
      * @post        The module isn't null.
      * @param[in]   module  a shared pointer to the managing module
      */
-    CORE_API ModuleElement( std::shared_ptr< Module > module );
+    CORE_API ModuleElement(std::shared_ptr<Module> module);
 
 private:
-
-    std::weak_ptr< Module > m_module;    ///< Weak pointer to the module managing the element
-    bool m_enable;                              ///< to know if module element is enabled
-
+    std::weak_ptr<Module> m_module; ///< Weak pointer to the module managing the element
+    bool m_enable; ///< to know if module element is enabled
 };
 
 } // namespace sight::core::runtime

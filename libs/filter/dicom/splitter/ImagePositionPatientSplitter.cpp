@@ -34,49 +34,51 @@
 #include <dcmtk/dcmimgle/dcmimage.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::ImagePositionPatientSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::ImagePositionPatientSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string ImagePositionPatientSplitter::s_FILTER_NAME        = "Image position patient splitter";
-const std::string ImagePositionPatientSplitter::s_FILTER_DESCRIPTION =
-    "Split instances by finding gaps in image position continuity. This filter assume that "
-    "the instances are <b>already sorted</b> and only gaps between volumes remain.";
+const std::string ImagePositionPatientSplitter::s_FILTER_NAME = "Image position patient splitter";
+const std::string ImagePositionPatientSplitter::s_FILTER_DESCRIPTION
+    = "Split instances by finding gaps in image position continuity. This filter assume that "
+      "the instances are <b>already sorted</b> and only gaps between volumes remain.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImagePositionPatientSplitter::ImagePositionPatientSplitter(filter::dicom::IFilter::Key key) :
     ISplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImagePositionPatientSplitter::~ImagePositionPatientSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImagePositionPatientSplitter::getName() const
 {
     return ImagePositionPatientSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImagePositionPatientSplitter::getDescription() const
 {
     return ImagePositionPatientSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImagePositionPatientSplitter::DicomSeriesContainerType ImagePositionPatientSplitter::apply(
-    const data::DicomSeries::sptr& series, const core::log::Logger::sptr& logger)
+    const data::DicomSeries::sptr& series,
+    const core::log::Logger::sptr& logger)
 const
 {
     DicomSeriesContainerType result;
@@ -89,12 +91,13 @@ const
     double spacingBetweenSlices = 0.;
     const double epsilon        = 1e-2; // Value used to find a gap
     data::DicomSeries::sptr currentSeries;
-    for(const auto& item :  series->getDicomContainer())
+
+    for(const auto& item : series->getDicomContainer())
     {
         const core::memory::BufferObject::sptr bufferObj = item.second;
         const size_t buffSize                            = bufferObj->getSize();
         core::memory::BufferObject::Lock lock(bufferObj);
-        char* buffer = static_cast< char* >( lock.getBuffer() );
+        char* buffer = static_cast<char*>(lock.getBuffer());
 
         DcmInputBufferStream is;
         is.setBuffer(buffer, offile_off_t(buffSize));
@@ -102,10 +105,12 @@ const
 
         DcmFileFormat fileFormat;
         fileFormat.transferInit();
-        if (!fileFormat.read(is).good())
+
+        if(!fileFormat.read(is).good())
         {
-            SIGHT_THROW("Unable to read Dicom file '"<< bufferObj->getStreamInfo().fsFile.string() <<"' "<<
-                        "(slice: '" << item.first << "')");
+            SIGHT_THROW(
+                "Unable to read Dicom file '" << bufferObj->getStreamInfo().fsFile.string() << "' "
+                                              << "(slice: '" << item.first << "')");
         }
 
         fileFormat.loadAllDataIntoMemory();
@@ -115,47 +120,51 @@ const
 
         if(!dataset->tagExists(DCM_ImagePositionPatient) || !dataset->tagExists(DCM_ImageOrientationPatient))
         {
-            const std::string msg =
-                "Unable to split the series using ImagePositionPatient and ImageOrientationPatient. "
-                "Tag(s) missing.";
+            const std::string msg
+                = "Unable to split the series using ImagePositionPatient and ImageOrientationPatient. "
+                  "Tag(s) missing.";
             throw filter::dicom::exceptions::FilterFailure(msg);
         }
 
         fwVec3d imagePosition;
-        for(unsigned int i = 0; i < 3; ++i)
+
+        for(unsigned int i = 0 ; i < 3 ; ++i)
         {
             dataset->findAndGetFloat64(DCM_ImagePositionPatient, imagePosition[i], i);
         }
 
         fwVec3d imageOrientationU;
         fwVec3d imageOrientationV;
-        for(unsigned int i = 0; i < 3; ++i)
+
+        for(unsigned int i = 0 ; i < 3 ; ++i)
         {
             dataset->findAndGetFloat64(DCM_ImageOrientationPatient, imageOrientationU[i], i);
-            dataset->findAndGetFloat64(DCM_ImageOrientationPatient, imageOrientationV[i], i+3);
+            dataset->findAndGetFloat64(DCM_ImageOrientationPatient, imageOrientationV[i], i + 3);
         }
 
-        //Compute Z direction (cross product)
+        // Compute Z direction (cross product)
         const fwVec3d zVector = geometry::data::cross(imageOrientationU, imageOrientationV);
 
-        //Compute dot product to get the index
+        // Compute dot product to get the index
         const double index = geometry::data::dot(imagePosition, zVector);
 
-        //Compute spacing
+        // Compute spacing
         const double spacing = index - previousIndex;
+
         if(currentSeries && fabs(spacingBetweenSlices) < epsilon)
         {
             spacingBetweenSlices = spacing;
         }
 
         // First frame or volume detected: We create a new Series
-        if(!currentSeries || (fabs(spacing - spacingBetweenSlices) > epsilon) )
+        if(!currentSeries || (fabs(spacing - spacingBetweenSlices) > epsilon))
         {
             if(currentSeries)
             {
                 result.push_back(currentSeries);
                 currentSeries->setNumberOfInstances(currentSeries->getDicomContainer().size());
             }
+
             instanceNumber = 0;
             currentSeries  = data::DicomSeries::New();
             currentSeries->shallowCopy(series);
@@ -179,4 +188,5 @@ const
 }
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

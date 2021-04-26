@@ -52,40 +52,40 @@
 namespace sight::module::io::itk
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SInrSeriesDBReader::SInrSeriesDBReader() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SInrSeriesDBReader::~SInrSeriesDBReader() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SInrSeriesDBReader::getIOPathType() const
 {
     return sight::io::base::service::FILES;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SInrSeriesDBReader::configuring()
 {
     sight::io::base::service::IReader::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SInrSeriesDBReader::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SInrSeriesDBReader::openLocationDialog()
 {
@@ -100,14 +100,17 @@ void SInrSeriesDBReader::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
     auto result = core::location::MultipleFiles::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         const std::vector<std::filesystem::path> paths = result->getFiles();
+
         if(!paths.empty())
         {
             defaultDirectory->setFolder(paths[0].parent_path());
             dialogFile.saveDefaultLocation(defaultDirectory);
         }
+
         this->setFiles(paths);
     }
     else
@@ -116,9 +119,9 @@ void SInrSeriesDBReader::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-bool SInrSeriesDBReader::createImage( const std::filesystem::path inrFile, data::Image::sptr image )
+bool SInrSeriesDBReader::createImage(const std::filesystem::path inrFile, data::Image::sptr image)
 {
     auto myLoader = sight::io::itk::ImageReader::New();
     bool ok       = true;
@@ -129,37 +132,39 @@ bool SInrSeriesDBReader::createImage( const std::filesystem::path inrFile, data:
     try
     {
         sight::ui::base::dialog::ProgressDialog progressMeterGUI("Loading Image ");
-        myLoader->addHandler( progressMeterGUI );
+        myLoader->addHandler(progressMeterGUI);
         myLoader->read();
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         std::stringstream ss;
         ss << "Warning during loading : " << e.what();
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     ss.str(),
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
         ok = false;
     }
-    catch( ... )
+    catch(...)
     {
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     "Warning during loading",
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            "Warning during loading",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
         ok = false;
     }
+
     return ok;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SInrSeriesDBReader::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(sight::io::base::service::s_DATA_KEY);
+        data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The inout key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", seriesDB);
 
         data::SeriesDB::sptr localSeriesDB = data::SeriesDB::New();
@@ -169,16 +174,18 @@ void SInrSeriesDBReader::updating()
 
         const std::string instanceUID = core::tools::UUID::generateUUID();
 
-        for(const std::filesystem::path& path :  this->getFiles())
+        for(const std::filesystem::path& path : this->getFiles())
         {
             data::ImageSeries::sptr imgSeries = data::ImageSeries::New();
             this->initSeries(imgSeries, instanceUID);
 
             data::Image::sptr image = data::Image::New();
-            if(!this->createImage( path, image ))
+
+            if(!this->createImage(path, image))
             {
                 m_readFailed = true;
             }
+
             imgSeries->setImage(image);
 
             localSeriesDB->getContainer().push_back(imgSeries);
@@ -198,14 +205,14 @@ void SInrSeriesDBReader::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SInrSeriesDBReader::initSeries(data::Series::sptr series, const std::string& instanceUID)
 {
     series->setModality("OT");
     ::boost::posix_time::ptime now = ::boost::posix_time::second_clock::local_time();
-    const std::string date = core::tools::getDate(now);
-    const std::string time = core::tools::getTime(now);
+    const std::string date         = core::tools::getDate(now);
+    const std::string time         = core::tools::getTime(now);
     series->setDate(date);
     series->setTime(time);
 
@@ -214,6 +221,6 @@ void SInrSeriesDBReader::initSeries(data::Series::sptr series, const std::string
     series->getStudy()->setTime(time);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::itk

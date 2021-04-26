@@ -45,6 +45,7 @@ typedef SSIZE_T ssize_t;
 
 namespace sight::io::igtl::detail
 {
+
 namespace archiver
 {
 
@@ -91,7 +92,6 @@ protected:
 
     /// buffer write size is large because it is in memory
     static const size_t s_WRITE_BUFFER_SIZE = 20000;
-
 };
 
 /**
@@ -101,11 +101,10 @@ protected:
 class IO_IGTL_CLASS_API MemoryWriteArchive : public io::zip::IWriteArchive
 {
 public:
-
-    typedef SPTR (MemoryWriteArchive) sptr;
+    typedef SPTR(MemoryWriteArchive) sptr;
 
     /// Constructor
-    IO_IGTL_API MemoryWriteArchive(std::vector< char >& buffer);
+    IO_IGTL_API MemoryWriteArchive(std::vector<char>& buffer);
 
     /// Destructor
     IO_IGTL_API ~MemoryWriteArchive();
@@ -125,8 +124,9 @@ public:
      * @param[in] path file in archive
      * @throw io::zip::exception::Write when file cannot be opened
      */
-    IO_IGTL_API void putFile(const std::filesystem::path& sourceFile,
-                             const std::filesystem::path& path) override;
+    IO_IGTL_API void putFile(
+        const std::filesystem::path& sourceFile,
+        const std::filesystem::path& path) override;
 
     /**
      * @brief Create folder in archive
@@ -152,7 +152,7 @@ public:
      * @param[in] archive archive instance
      * @param[in] client_data contain a pointer std::vector internally
      */
-    static int  open(struct archive* archive, void* client_data);
+    static int open(struct archive* archive, void* client_data);
 
     /**
      * @brief write callback for archive instance
@@ -172,11 +172,10 @@ public:
      * @param[in] archive archive instance
      * @param[in] client_data callback user parameter
      */
-    static int  close(struct archive* archive, void* client_data);
+    static int close(struct archive* archive, void* client_data);
 
 protected:
-
-    typedef SPTR (::boost::iostreams::stream<MemoryArchiveSink>) StreamSPtr;
+    typedef SPTR(::boost::iostreams::stream<MemoryArchiveSink>) StreamSPtr;
 
     /// archive path
     std::filesystem::path m_archivePath;
@@ -185,11 +184,12 @@ protected:
     struct archive* m_archive;
 
     /// buffer where is stored archive data
-    std::vector< char >& m_buffer;
+    std::vector<char>& m_buffer;
 
     /// vector of stream memory archive files
     std::vector<StreamSPtr> m_sinks;
 };
 
 } // namespace archiver
+
 } // namespace sight::io::igtl::detail

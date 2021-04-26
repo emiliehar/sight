@@ -62,11 +62,9 @@ class MODULE_UI_VIZ_CLASS_API SLightSelector final :
     public QObject,
     public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SLightSelector, sight::ui::base::IEditor)
 
@@ -77,7 +75,6 @@ public:
     MODULE_UI_VIZ_API virtual ~SLightSelector() noexcept;
 
 protected:
-
     /// Configures the service.
     MODULE_UI_VIZ_API void configuring() override;
 
@@ -91,7 +88,6 @@ protected:
     MODULE_UI_VIZ_API void stopping() override;
 
 private Q_SLOTS:
-
     /// SLOT: called when a layer is selected.
     /// Sets the current layer and initializes the light adaptors list.
     void onSelectedLayerItem(int _index);
@@ -125,7 +121,6 @@ private Q_SLOTS:
     void onUnCheckAllCheckBox();
 
 private:
-
     typedef core::com::Signal<void (sight::viz::scene3d::ILight::sptr)> LightSelectedSignalType;
 
     /// Checks or unchecks all item in m_lightsList.
@@ -145,7 +140,7 @@ private:
     /// Finds the light adaptor with the specified name.
     sight::viz::scene3d::ILight::sptr retrieveLightAdaptor(const std::string& _name) const;
 
-    QPointer<QComboBox>   m_layersBox;
+    QPointer<QComboBox> m_layersBox;
 
     QPointer<QListWidget> m_lightsList;
 
@@ -159,11 +154,11 @@ private:
 
     QPointer<QPushButton> m_ambientColorBtn;
 
-    std::vector< sight::viz::scene3d::Layer::wptr > m_layers;
+    std::vector<sight::viz::scene3d::Layer::wptr> m_layers;
     sight::viz::scene3d::Layer::wptr m_currentLayer;
 
     /// Stores all light adaptors (existing in the configuration and those created by this editor).
-    std::vector< sight::viz::scene3d::ILight::sptr > m_lightAdaptors;
+    std::vector<sight::viz::scene3d::ILight::sptr> m_lightAdaptors;
 
     /// Stores a light adaptor and it's data to keep a reference on them.
     struct Light
@@ -174,41 +169,35 @@ private:
     };
 
     /// Stores adaptors managed by this editor.
-    std::vector< Light > m_managedLightAdaptors;
+    std::vector<Light> m_managedLightAdaptors;
 
     /// Defines the current selected light.
     sight::viz::scene3d::ILight::sptr m_currentLight;
 
     /// Handles connections with the layer.
     core::com::helper::SigSlotConnection m_connections;
-
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 class NewLightDialog final : public QDialog
 {
-
 Q_OBJECT
 
 public:
-
     NewLightDialog(QWidget* parent = 0);
 
     ~NewLightDialog();
 
 private Q_SLOTS:
-
     void onOkBtn(bool _checked);
 
 private:
-
     QPointer<QLabel> m_lightNameLbl;
 
     QPointer<QLineEdit> m_lightNameEdit;
 
     QPointer<QPushButton> m_okBtn;
-
 };
 
 } // namespace sight::module::ui::viz.

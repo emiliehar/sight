@@ -33,6 +33,7 @@
 
 namespace sight::module::data
 {
+
 /**
  * @brief This service get objects from a source object and expose them as new objects.
  *
@@ -66,7 +67,6 @@ namespace sight::module::data
 class MODULE_DATA_CLASS_API SExtractObj : public module::data::ICamp
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SExtractObj, ::sight::module::data::ICamp)
 
     typedef std::map<std::string, std::string> ExtractMapType;
@@ -78,7 +78,6 @@ public:
     MODULE_DATA_API ~SExtractObj();
 
 protected:
-
     /// Does nothing
     MODULE_DATA_API void starting() override;
 
@@ -92,7 +91,6 @@ protected:
     MODULE_DATA_API void updating() override;
 
 private:
-
     /// Map to associate \<from, to\> for object extraction
     ExtractMapType m_extract;
 

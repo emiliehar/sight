@@ -51,42 +51,44 @@ ImageTransparency::ImageTransparency() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ImageTransparency::~ImageTransparency() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::starting()
 {
     this->sight::ui::base::IGuiContainer::create();
 
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(
-        this->getContainer() );
+        this->getContainer());
 
     QHBoxLayout* hLayout = new QHBoxLayout();
 
-    QLabel* staticText = new QLabel( QObject::tr("Transparency: "));
-    hLayout->addWidget( staticText, 0, Qt::AlignVCenter );
+    QLabel* staticText = new QLabel(QObject::tr("Transparency: "));
+    hLayout->addWidget(staticText, 0, Qt::AlignVCenter);
 
-    m_valueSlider = new QSlider( Qt::Horizontal );
-    hLayout->addWidget( m_valueSlider, 1, Qt::AlignVCenter );
+    m_valueSlider = new QSlider(Qt::Horizontal);
+    hLayout->addWidget(m_valueSlider, 1, Qt::AlignVCenter);
     m_valueSlider->setRange(0, 100);
     m_valueSlider->setMinimumWidth(100);
 
-    m_valueCheckBox = new QCheckBox( QObject::tr("visible"));
+    m_valueCheckBox = new QCheckBox(QObject::tr("visible"));
     m_action        = new QAction(m_valueCheckBox);
     m_action->setCheckable(true);
-    if (!m_shortcut.empty())
+
+    if(!m_shortcut.empty())
     {
         m_action->setShortcut(QKeySequence(QString::fromStdString(m_shortcut)));
     }
-    m_valueCheckBox->addAction(m_action);
-    hLayout->addWidget( m_valueCheckBox, 0, Qt::AlignVCenter );
 
-    qtContainer->setLayout( hLayout );
+    m_valueCheckBox->addAction(m_action);
+    hLayout->addWidget(m_valueCheckBox, 0, Qt::AlignVCenter);
+
+    qtContainer->setLayout(hLayout);
 
     QObject::connect(m_valueSlider, SIGNAL(valueChanged(int)), this, SLOT(onModifyTransparency(int)));
     QObject::connect(m_valueCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onModifyVisibility(int)));
@@ -95,7 +97,7 @@ void ImageTransparency::starting()
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::stopping()
 {
@@ -106,14 +108,15 @@ void ImageTransparency::stopping()
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::configuring()
 {
     this->sight::ui::base::IGuiContainer::initialize();
 
-    //<shortcut value="X"/>
-    std::vector < ConfigurationType > vectCfg = m_configuration->find("shortcut");
+    // <shortcut value="X"/>
+    std::vector<ConfigurationType> vectCfg = m_configuration->find("shortcut");
+
     if(!vectCfg.empty())
     {
         ConfigurationType config = vectCfg.at(0);
@@ -122,74 +125,77 @@ void ImageTransparency::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::updating()
 {
-    data::Image::sptr img = this->getInOut< data::Image >(s_IMAGE_INOUT);
+    data::Image::sptr img = this->getInOut<data::Image>(s_IMAGE_INOUT);
     SIGHT_ASSERT("The inout key '" + s_IMAGE_INOUT + "' is not defined.", img);
 
-    bool imageIsValid = data::fieldHelper::MedicalImageHelpers::checkImageValidity( img );
+    bool imageIsValid = data::fieldHelper::MedicalImageHelpers::checkImageValidity(img);
     m_valueSlider->setEnabled(imageIsValid);
     m_valueCheckBox->setEnabled(imageIsValid);
-    if (imageIsValid)
+
+    if(imageIsValid)
     {
         QObject::disconnect(m_valueSlider, SIGNAL(valueChanged(int)), this, SLOT(onModifyTransparency(int)));
         QObject::disconnect(m_valueCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onModifyVisibility(int)));
         QObject::disconnect(m_action, SIGNAL(triggered(bool)), this, SLOT(onModifyVisibility(bool)));
 
-        if(img->getField( "TRANSPARENCY" ) )
+        if(img->getField("TRANSPARENCY"))
         {
-            data::Integer::sptr transparency = img->getField< data::Integer >( "TRANSPARENCY" );
-            m_valueSlider->setValue( static_cast<int>(*transparency) );
+            data::Integer::sptr transparency = img->getField<data::Integer>("TRANSPARENCY");
+            m_valueSlider->setValue(static_cast<int>(*transparency));
         }
         else
         {
-            img->setField( "TRANSPARENCY", data::Integer::New(0) );
-            m_valueSlider->setValue( 0 );
+            img->setField("TRANSPARENCY", data::Integer::New(0));
+            m_valueSlider->setValue(0);
         }
-        if(img->getField( "VISIBILITY" ) )
+
+        if(img->getField("VISIBILITY"))
         {
-            data::Boolean::sptr visible = img->getField< data::Boolean >( "VISIBILITY" );
-            m_valueCheckBox->setChecked( *visible );
+            data::Boolean::sptr visible = img->getField<data::Boolean>("VISIBILITY");
+            m_valueCheckBox->setChecked(*visible);
             m_action->setChecked(*visible);
         }
         else
         {
-            img->setField( "VISIBILITY", data::Boolean::New(true) );
-            m_valueCheckBox->setChecked( true );
+            img->setField("VISIBILITY", data::Boolean::New(true));
+            m_valueCheckBox->setChecked(true);
             m_action->setChecked(true);
         }
+
         QObject::connect(m_valueSlider, SIGNAL(valueChanged(int)), this, SLOT(onModifyTransparency(int)));
         QObject::connect(m_valueCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onModifyVisibility(int)));
         QObject::connect(m_action, SIGNAL(triggered(bool)), this, SLOT(onModifyVisibility(bool)));
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::swapping()
 {
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ImageTransparency::info( std::ostream& _sstream )
+void ImageTransparency::info(std::ostream& _sstream)
 {
     _sstream << "Image Features Editor";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::onModifyTransparency(int value)
 {
-    data::Image::sptr img = this->getInOut< data::Image >(s_IMAGE_INOUT);
+    data::Image::sptr img = this->getInOut<data::Image>(s_IMAGE_INOUT);
     SIGHT_ASSERT("The inout key '" + s_IMAGE_INOUT + "' is not defined.", img);
 
-    img->setField( "TRANSPARENCY",  data::Integer::New(value) );
+    img->setField("TRANSPARENCY", data::Integer::New(value));
 
-    auto sig = img->signal< data::Image::TransparencyModifiedSignalType >(
+    auto sig = img->signal<data::Image::TransparencyModifiedSignalType>(
         data::Image::s_TRANSPARENCY_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
@@ -197,7 +203,7 @@ void ImageTransparency::onModifyTransparency(int value)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::onModifyVisibility(bool value)
 {
@@ -205,7 +211,7 @@ void ImageTransparency::onModifyVisibility(bool value)
     this->notifyVisibility(value);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::onModifyVisibility(int value)
 {
@@ -214,23 +220,23 @@ void ImageTransparency::onModifyVisibility(int value)
     this->notifyVisibility(value == Qt::Checked);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageTransparency::notifyVisibility(bool isVisible)
 {
-    data::Image::sptr img = this->getInOut< data::Image >(s_IMAGE_INOUT);
+    data::Image::sptr img = this->getInOut<data::Image>(s_IMAGE_INOUT);
     SIGHT_ASSERT("The inout key '" + s_IMAGE_INOUT + "' is not defined.", img);
 
-    img->setField( "VISIBILITY",  data::Boolean::New(isVisible) );
+    img->setField("VISIBILITY", data::Boolean::New(isVisible));
 
-    auto sig = img->signal< data::Image::VisibilityModifiedSignalType >(data::Image::s_VISIBILITY_MODIFIED_SIG);
+    auto sig = img->signal<data::Image::VisibilityModifiedSignalType>(data::Image::s_VISIBILITY_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit(isVisible);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap ImageTransparency::getAutoConnections() const
 {
@@ -244,6 +250,6 @@ service::IService::KeyConnectionsMap ImageTransparency::getAutoConnections() con
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}
+} // namespace sight::module

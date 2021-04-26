@@ -32,76 +32,82 @@
 
 namespace sight::module::debug
 {
+
 namespace action
 {
 
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-
-SDumpAll::SDumpAll( ) noexcept
+SDumpAll::SDumpAll() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SDumpAll::~SDumpAll() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SDumpAll::updating( )
+void SDumpAll::updating()
 {
     size_t nbBuffDumped = 0;
     core::memory::BufferManager::BufferInfoMapType buffInfoMap;
     core::memory::BufferManager::sptr buffManager = core::memory::BufferManager::getDefault();
+
     if(buffManager)
     {
         buffInfoMap = buffManager->getBufferInfos().get();
     }
-    for(core::memory::BufferManager::BufferInfoMapType::value_type elt :  buffInfoMap)
+
+    for(core::memory::BufferManager::BufferInfoMapType::value_type elt : buffInfoMap)
     {
         core::memory::BufferInfo dumpBuffInfo = elt.second;
         bool loaded                           = dumpBuffInfo.loaded;
         bool isLock                           = dumpBuffInfo.lockCount() > 0;
+
         if(loaded && !isLock)
         {
             bool dumped = buffManager->dumpBuffer(elt.first).get();
+
             if(dumped)
             {
                 ++nbBuffDumped;
             }
         }
     }
+
     std::stringstream stream;
-    stream << nbBuffDumped << " buffer dumped (" << nbBuffDumped <<"/"<<buffInfoMap.size()<<").";
+    stream << nbBuffDumped << " buffer dumped (" << nbBuffDumped << "/" << buffInfoMap.size() << ").";
     sight::ui::base::dialog::MessageDialog::show(
         "Dump all",
         stream.str(),
         sight::ui::base::dialog::IMessageDialog::INFO);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDumpAll::configuring()
 {
     this->sight::ui::base::IAction::initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDumpAll::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 void SDumpAll::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace action
+
 } // namespace sight::module::debug

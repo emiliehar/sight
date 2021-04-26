@@ -32,7 +32,7 @@ namespace registry
 
 static AdaptorRegistryType s_REGISTRY;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 AdaptorRegistryType& getAdaptorRegistry()
 {

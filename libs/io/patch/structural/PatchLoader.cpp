@@ -25,10 +25,10 @@
 namespace sight::io::patch::structural
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PatchLoader::loadPatches()
 {
 }
 
-} //namespace sight::io::patch::structural
+} // namespace sight::io::patch::structural

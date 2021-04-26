@@ -24,8 +24,10 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 const IMessageDialog::FactoryRegistryKeyType IMessageDialog::REGISTRY_KEY = "::ui::base::dialog::MessageDialog";
 
 IMessageDialog::IMessageDialog()
@@ -36,5 +38,6 @@ IMessageDialog::~IMessageDialog()
 {
 }
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

@@ -28,26 +28,26 @@
 
 namespace sight::geometry::glm
 {
+
 namespace ut
 {
 
 class MeshFunctionsTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( MeshFunctionsTest );
-    CPPUNIT_TEST( computeBarycenterABC2D);
-    CPPUNIT_TEST( computeBarycenterABC3D);
-    CPPUNIT_TEST( computeBarycenterOutsideABC);
-    CPPUNIT_TEST( computeBarycenterABCRealCoords);
-    CPPUNIT_TEST( computeBarycenterTetrahedron);
-    CPPUNIT_TEST( computeBarycenterOutsideTetrahedron);
+    CPPUNIT_TEST_SUITE(MeshFunctionsTest);
+    CPPUNIT_TEST(computeBarycenterABC2D);
+    CPPUNIT_TEST(computeBarycenterABC3D);
+    CPPUNIT_TEST(computeBarycenterOutsideABC);
+    CPPUNIT_TEST(computeBarycenterABCRealCoords);
+    CPPUNIT_TEST(computeBarycenterTetrahedron);
+    CPPUNIT_TEST(computeBarycenterOutsideTetrahedron);
     CPPUNIT_TEST_SUITE_END();
 
     /// Compare value of 2 ::glm::dvec3.
     void compare(const ::glm::dvec3& _expected, const ::glm::dvec3& _actual);
 
 public:
-
     void setUp();
     void tearDown();
 
@@ -64,8 +64,8 @@ public:
     void computeBarycenterTetrahedron();
     /// Computes barycentric coordinates on a point outside a ABCD Tetrahedron.
     void computeBarycenterOutsideTetrahedron();
-
 };
 
 } // namespace ut
+
 } // namespace sight::geometry::glm

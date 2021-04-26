@@ -36,6 +36,7 @@
 
 namespace sight::module::ui::base
 {
+
 /**
  * @brief   This action starts/stops a template configuration.
  *
@@ -72,9 +73,7 @@ namespace sight::module::ui::base
  */
 class MODULE_UI_BASE_CLASS_API SConfigLauncher : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SConfigLauncher, ::sight::ui::base::IAction)
 
     /// Constructor. Do nothing.
@@ -90,18 +89,17 @@ public:
     MODULE_UI_BASE_API static const core::com::Signals::SignalKeyType s_LAUNCHED_SIG;
 
 protected:
-
     /**
      * @name Defines signal triggered when config is started
      * @{ */
-    typedef core::com::Signal< void () > LaunchedSignalType;
+    typedef core::com::Signal<void ()> LaunchedSignalType;
     LaunchedSignalType::sptr m_sigLaunched;
     /**  @} */
 
-    ///This method launches the IAction::starting method.
+    /// This method launches the IAction::starting method.
     void starting() override;
 
-    ///This method launches the IAction::stopping method.
+    /// This method launches the IAction::stopping method.
     void stopping() override;
 
     /**

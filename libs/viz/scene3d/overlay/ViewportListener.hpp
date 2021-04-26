@@ -32,13 +32,13 @@
 
 namespace sight::viz::scene3d::overlay
 {
+
 /**
  * @brief Listens to render events triggered for a given viewport and activates the overlays enabled for that viewport.
  */
 class ViewportListener final : public ::Ogre::RenderTargetListener
 {
 public:
-
     /// Maps each viewport to the overlays enabled on it.
     using ViewportOverlaysMapType = std::map< ::Ogre::Viewport*, std::reference_wrapper<const Layer::OverlaySetType> >;
 
@@ -49,7 +49,6 @@ public:
     VIZ_SCENE3D_API ~ViewportListener() final;
 
 private:
-
     /// Called right before rendering in the viewport. Activates the overlays enabled for this viewport.
     virtual void preViewportUpdate(const ::Ogre::RenderTargetViewportEvent& evt) final;
 

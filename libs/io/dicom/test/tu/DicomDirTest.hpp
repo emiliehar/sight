@@ -28,25 +28,25 @@
 
 namespace sight::io::dicom
 {
+
 namespace ut
 {
 
 class DicomDirTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( DicomDirTest );
-CPPUNIT_TEST( readDicomDir );
+CPPUNIT_TEST_SUITE(DicomDirTest);
+CPPUNIT_TEST(readDicomDir);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     // Interface
     void setUp();
     void tearDown();
 
     // Test functions
     void readDicomDir();
-
 };
 
 } // namespace ut
+
 } // namespace sight::io::dicom

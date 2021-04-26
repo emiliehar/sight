@@ -30,13 +30,13 @@
 
 namespace sight::module::data
 {
+
 /**
  * @brief This interface defines service API. It can be considered as a default type for services using fwCamp.
  */
 class MODULE_DATA_CLASS_API ICamp : public service::IService
 {
 public:
-
     SIGHT_DECLARE_SERVICE(ICamp, service::IService)
 
     /// Constructor
@@ -44,7 +44,6 @@ public:
 
     /// Destructor
     MODULE_DATA_API ~ICamp();
-
 };
 
-}// namespace sight::module::data
+} // namespace sight::module::data

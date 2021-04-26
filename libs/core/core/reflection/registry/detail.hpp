@@ -32,23 +32,29 @@
 
 namespace camp
 {
+
 class UserObject;
+
 }
 namespace fwTools
 {
+
 class Object;
+
 }
 
 namespace sight::core::reflection
 {
+
 namespace registry
 {
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(::camp::UserObject)(core::tools::Object*), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(::camp::UserObject)(core::tools::Object*), KeyType> Type;
 
 CORE_API SPTR(Type) get();
 
 } // namespace registry
+
 } // namespace sight::core::reflection

@@ -24,12 +24,12 @@
 
 #include "atoms/registry/macros.hpp"
 
-fwAtomsRegisterMacro( sight::atoms::Blob );
+fwAtomsRegisterMacro(sight::atoms::Blob);
 
 namespace sight::atoms
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Blob::sptr Blob::New(core::memory::BufferObject::sptr buffer)
 {
@@ -39,49 +39,52 @@ Blob::sptr Blob::New(core::memory::BufferObject::sptr buffer)
     return blob;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Blob::sptr Blob::New(void* buffer, unsigned int size)
 {
     core::memory::BufferObject::sptr bufferObject = core::memory::BufferObject::New();
     bufferObject->setBuffer(buffer, size);
     Blob::sptr blob = Blob::New(bufferObject);
+
     return blob;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::memory::BufferObject::sptr Blob::getBufferObject() const
 {
     return m_bufferObject;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Blob::setBufferObject(const core::memory::BufferObject::sptr& bo)
 {
     m_bufferObject = bo;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Base::sptr Blob::clone() const
 {
     core::memory::BufferObject::sptr bufferObjectDest = core::memory::BufferObject::New();
     Blob::sptr cloneBlob                              = Blob::New(bufferObjectDest);
+
     if(m_bufferObject)
     {
         bufferObjectDest->allocate(m_bufferObject->getSize());
 
         core::memory::BufferObject::Lock lockerSource(m_bufferObject);
-        char* buffSrc = static_cast< char* >( lockerSource.getBuffer() );
+        char* buffSrc = static_cast<char*>(lockerSource.getBuffer());
 
         core::memory::BufferObject::Lock lockerDest(bufferObjectDest);
-        char* buffDest = static_cast< char* >( lockerDest.getBuffer() );
+        char* buffDest = static_cast<char*>(lockerDest.getBuffer());
 
-        std::copy(buffSrc, buffSrc + m_bufferObject->getSize(), buffDest );
+        std::copy(buffSrc, buffSrc + m_bufferObject->getSize(), buffDest);
     }
+
     return cloneBlob;
 }
 
-}
+} // namespace sight::atoms

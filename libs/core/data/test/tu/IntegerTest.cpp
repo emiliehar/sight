@@ -27,48 +27,50 @@
 #include <limits>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::IntegerTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::IntegerTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IntegerTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IntegerTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IntegerTest::methode1()
 {
     const std::int64_t VALUES[] = {
-        std::numeric_limits< std::int64_t >::min(),
+        std::numeric_limits<std::int64_t>::min(),
         -1654, 0, 123456,
-        std::numeric_limits< std::int64_t >::max()
+        std::numeric_limits<std::int64_t>::max()
     };
 
-    for ( std::int64_t VALUE : VALUES )
+    for(std::int64_t VALUE : VALUES)
     {
         data::Integer::sptr i0 = data::Integer::New();
         i0->value() = VALUE;
-        data::Integer::sptr i1 = data::Integer::New( VALUE );
+        data::Integer::sptr i1 = data::Integer::New(VALUE);
 
-        CPPUNIT_ASSERT_EQUAL( VALUE, i0->value() );
-        CPPUNIT_ASSERT_EQUAL( VALUE, i1->value() );
-        CPPUNIT_ASSERT_EQUAL( VALUE, data::Integer::New( VALUE )->value() );
+        CPPUNIT_ASSERT_EQUAL(VALUE, i0->value());
+        CPPUNIT_ASSERT_EQUAL(VALUE, i1->value());
+        CPPUNIT_ASSERT_EQUAL(VALUE, data::Integer::New(VALUE)->value());
     }
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

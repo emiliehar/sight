@@ -34,7 +34,7 @@ const core::com::Signals::SignalKeyType INetworkSender::s_DISCONNECTED_SIGNAL = 
 
 static const service::IService::KeyType s_OBJECTS_INOUT = "objects";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 INetworkSender::INetworkSender()
 {
@@ -42,25 +42,26 @@ INetworkSender::INetworkSender()
     m_sigDisconnected = newSignal<DisconnectSignalType>(s_DISCONNECTED_SIGNAL);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 INetworkSender::~INetworkSender()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void INetworkSender::updating()
 {
     if(this->isStarted())
     {
         const size_t numObjects = this->getKeyGroupSize(s_OBJECTS_INOUT);
-        // Grab the objects to send.
-        for(size_t i = 0; i < numObjects; ++i)
-        {
-            data::Object::csptr object = this->getInput< data::Object >(s_OBJECTS_INOUT, i);
 
-            if (object)
+        // Grab the objects to send.
+        for(size_t i = 0 ; i < numObjects ; ++i)
+        {
+            data::Object::csptr object = this->getInput<data::Object>(s_OBJECTS_INOUT, i);
+
+            if(object)
             {
                 this->sendObject(object, i);
             }
@@ -68,12 +69,13 @@ void INetworkSender::updating()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap INetworkSender::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_OBJECTS_INOUT, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 

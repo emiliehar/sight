@@ -27,6 +27,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
@@ -36,7 +37,7 @@ namespace splitter
 class FILTER_DICOM_CLASS_API TemporalPositionSplitter : public filter::dicom::splitter::TagValueSplitter
 {
 public:
-    SIGHT_DECLARE_CLASS(TemporalPositionSplitter, ISplitter, filter::dicom::factory::New< TemporalPositionSplitter >)
+    SIGHT_DECLARE_CLASS(TemporalPositionSplitter, ISplitter, filter::dicom::factory::New<TemporalPositionSplitter>)
 
     /// Constructor
     FILTER_DICOM_API TemporalPositionSplitter(filter::dicom::IFilter::Key key);
@@ -59,8 +60,8 @@ protected:
 
     /// Filter description
     static const std::string s_FILTER_DESCRIPTION;
-
 };
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

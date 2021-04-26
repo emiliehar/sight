@@ -32,46 +32,49 @@
 
 #include <ui/base/registry/macros.hpp>
 
-fwGuiRegisterMacro( ::sight::ui::qt::dialog::PulseProgressDialog,
-                    ::sight::ui::base::dialog::IPulseProgressDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(
+    ::sight::ui::qt::dialog::PulseProgressDialog,
+    ::sight::ui::base::dialog::IPulseProgressDialog::REGISTRY_KEY);
 
 namespace sight::ui::qt
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 PulseProgressDialog::PulseProgressDialog(ui::base::GuiBaseObject::Key key)
 {
     m_pdialog = new QProgressDialog(qApp->activeWindow());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PulseProgressDialog::~PulseProgressDialog()
 {
-    if (m_pdialog)
+    if(m_pdialog)
     {
         m_pdialog->hide();
         delete m_pdialog;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PulseProgressDialog::setTitle(const std::string& title)
 {
     m_pdialog->setWindowTitle(QString::fromStdString(title));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PulseProgressDialog::setMessage(const std::string& msg)
 {
     m_pdialog->setLabelText(QString::fromStdString(msg));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PulseProgressDialog::show()
 {
@@ -88,7 +91,8 @@ void PulseProgressDialog::show()
     m_pdialog->exec();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qt

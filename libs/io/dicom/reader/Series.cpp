@@ -43,18 +43,18 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Series::Series() :
     m_enableBufferRotation(true)
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Series::~Series()
 {
@@ -68,8 +68,8 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
     SIGHT_ASSERT("Logger should not be null.", m_logger);
 
     // Create instance
-    SPTR(io::dicom::container::DicomInstance) instance =
-        std::make_shared< io::dicom::container::DicomInstance >(dicomSeries);
+    SPTR(io::dicom::container::DicomInstance) instance
+        = std::make_shared<io::dicom::container::DicomInstance>(dicomSeries);
 
     // Create result
     data::Series::sptr result;
@@ -81,8 +81,8 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
         const std::string sopClassUID                                    = *sopClassUIDContainer.begin();
 
         // If the DicomSeries contains an image (ImageSeries)
-        if (::gdcm::MediaStorage::IsImage(::gdcm::MediaStorage::GetMSType(sopClassUID.c_str())) &&
-            ::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) != ::gdcm::MediaStorage::SpacialFiducialsStorage)
+        if(::gdcm::MediaStorage::IsImage(::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()))
+           && ::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) != ::gdcm::MediaStorage::SpacialFiducialsStorage)
         {
             // Read the image
             data::ImageSeries::sptr imageSeries = data::dicom::Series::convertToImageSeries(dicomSeries);
@@ -99,7 +99,7 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
             {
                 iod.read(imageSeries);
             }
-            catch (const io::dicom::exception::Failed& e)
+            catch(const io::dicom::exception::Failed& e)
             {
                 // NOTE : if there is no image, reading is stopped.
                 m_logger->critical(e.what());
@@ -109,10 +109,9 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
             // Set result
             result = imageSeries;
         }
-
         // Get the RT file names (ModelSeries)
-        else if (::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) ==
-                 ::gdcm::MediaStorage::SurfaceSegmentationStorage)
+        else if(::gdcm::MediaStorage::GetMSType(sopClassUID.c_str())
+                == ::gdcm::MediaStorage::SurfaceSegmentationStorage)
         {
             data::ModelSeries::sptr modelSeries = data::dicom::Series::convertToModelSeries(dicomSeries);
             modelSeries->setDicomReference(dicomSeries);
@@ -124,7 +123,7 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
             {
                 iod.read(modelSeries);
             }
-            catch (const io::dicom::exception::Failed& e)
+            catch(const io::dicom::exception::Failed& e)
             {
                 // NOTE : if there is no image, reading is stopped.
                 m_logger->critical(e.what());
@@ -135,16 +134,16 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
             result = modelSeries;
         }
         // If the DicomSeries contains a Spatial Fiducials
-        else if (::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) == ::gdcm::MediaStorage::SpacialFiducialsStorage)
+        else if(::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) == ::gdcm::MediaStorage::SpacialFiducialsStorage)
         {
             // Retrieve referenced image instance
-            SPTR(io::dicom::container::DicomInstance) imageInstance =
-                this->getSpatialFiducialsReferencedSeriesInstance(dicomSeries);
+            SPTR(io::dicom::container::DicomInstance) imageInstance
+                = this->getSpatialFiducialsReferencedSeriesInstance(dicomSeries);
 
             if(imageInstance)
             {
-                data::ImageSeries::sptr imageSeries =
-                    data::ImageSeries::dynamicCast(m_seriesContainerMap[imageInstance]);
+                data::ImageSeries::sptr imageSeries
+                    = data::ImageSeries::dynamicCast(m_seriesContainerMap[imageInstance]);
 
                 imageSeries->setDicomReference(dicomSeries);
 
@@ -156,31 +155,33 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
                 {
                     iod.read(imageSeries);
                 }
-                catch (const io::dicom::exception::Failed& e)
+                catch(const io::dicom::exception::Failed& e)
                 {
-                    //NOTE: no throw for reading error for SR and RT doc
+                    // NOTE: no throw for reading error for SR and RT doc
                     m_logger->critical("Spatial Fiducials reading failed: " + std::string(e.what()));
                 }
             }
             else
             {
-                m_logger->critical("The spatial fiducials series \"" + dicomSeries->getInstanceUID() +
-                                   "\" could not be read as it refers to an unknown series UID.");
+                m_logger->critical(
+                    "The spatial fiducials series \"" + dicomSeries->getInstanceUID()
+                    + "\" could not be read as it refers to an unknown series UID.");
             }
         }
         // If the DicomSeries contains a SR
-        else if (::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) == ::gdcm::MediaStorage::EnhancedSR ||
-                 ::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) == ::gdcm::MediaStorage::ComprehensiveSR ||
-                 sopClassUID == "1.2.840.10008.5.1.4.1.1.88.34") // FIXME Replace hard coded string by
-                                                                 // "::gdcm::MediaStorage::GetMSType(sopClassUID.c_str())
-                                                                 // == ::gdcm::MediaStorage::Comprehensive3DSR"
+        else if(::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) == ::gdcm::MediaStorage::EnhancedSR
+                || ::gdcm::MediaStorage::GetMSType(sopClassUID.c_str()) == ::gdcm::MediaStorage::ComprehensiveSR
+                || sopClassUID == "1.2.840.10008.5.1.4.1.1.88.34") // FIXME Replace hard coded string by
+                                                                   // "::gdcm::MediaStorage::GetMSType(sopClassUID.c_str())
+                                                                   // == ::gdcm::MediaStorage::Comprehensive3DSR"
         {
             // Retrieve referenced image instance
-            SPTR(io::dicom::container::DicomInstance) referencedInstance =
-                this->getStructuredReportReferencedSeriesInstance(dicomSeries);
+            SPTR(io::dicom::container::DicomInstance) referencedInstance
+                = this->getStructuredReportReferencedSeriesInstance(dicomSeries);
 
             data::ImageSeries::sptr imageSeries;
             const auto& iter = m_seriesContainerMap.find(referencedInstance);
+
             if(iter != m_seriesContainerMap.end())
             {
                 imageSeries = data::ImageSeries::dynamicCast(iter->second);
@@ -198,24 +199,23 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
                 {
                     iod.read(imageSeries);
                 }
-                catch (const io::dicom::exception::Failed& e)
+                catch(const io::dicom::exception::Failed& e)
                 {
-                    //NOTE: no throw for reading error for SR and RT doc
+                    // NOTE: no throw for reading error for SR and RT doc
                     m_logger->critical("Structured Report reading failed: " + std::string(e.what()));
                 }
             }
             else
             {
-                m_logger->critical("The structured report series \"" + dicomSeries->getInstanceUID() +
-                                   "\" could not be read as it refers to an unknown series UID.");
+                m_logger->critical(
+                    "The structured report series \"" + dicomSeries->getInstanceUID()
+                    + "\" could not be read as it refers to an unknown series UID.");
             }
-
         }
         else
         {
-            m_logger->critical("DICOM SOP Class UID \"" + sopClassUID +"\" is not supported by the selected reader.");
+            m_logger->critical("DICOM SOP Class UID \"" + sopClassUID + "\" is not supported by the selected reader.");
         }
-
     }
 
     // Store series in instance map
@@ -223,10 +223,11 @@ data::Series::sptr Series::read(const data::DicomSeries::csptr& dicomSeries)
     {
         m_seriesContainerMap[instance] = result;
     }
+
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(io::dicom::container::DicomInstance) Series::getSpatialFiducialsReferencedSeriesInstance(
     const data::DicomSeries::csptr& dicomSeries)
@@ -237,8 +238,8 @@ SPTR(io::dicom::container::DicomInstance) Series::getSpatialFiducialsReferencedS
     data::DicomSeries::DicomContainerType dicomContainer = dicomSeries->getDicomContainer();
 
     // Create Reader
-    std::shared_ptr< ::gdcm::Reader > reader =
-        std::shared_ptr< ::gdcm::Reader >( new ::gdcm::Reader );
+    std::shared_ptr< ::gdcm::Reader> reader
+        = std::shared_ptr< ::gdcm::Reader>(new ::gdcm::Reader);
     const core::memory::BufferObject::sptr bufferObj         = dicomContainer.begin()->second;
     const core::memory::BufferManager::StreamInfo streamInfo = bufferObj->getStreamInfo();
     SPTR(std::istream) is = streamInfo.stream;
@@ -255,17 +256,17 @@ SPTR(io::dicom::container::DicomInstance) Series::getSpatialFiducialsReferencedS
         if(datasetRoot.FindDataElement(::gdcm::Tag(0x0008, 0x1115)))
         {
             // Get the content sequence
-            ::gdcm::SmartPointer< ::gdcm::SequenceOfItems > sequence =
-                datasetRoot.GetDataElement(::gdcm::Tag(0x0008, 0x1115)).GetValueAsSQ();
+            ::gdcm::SmartPointer< ::gdcm::SequenceOfItems> sequence
+                = datasetRoot.GetDataElement(::gdcm::Tag(0x0008, 0x1115)).GetValueAsSQ();
 
             if(sequence->GetNumberOfItems() > 0)
             {
-                ::gdcm::Item referencedSeriesItem = sequence->GetItem(1);
+                ::gdcm::Item referencedSeriesItem                  = sequence->GetItem(1);
                 const ::gdcm::DataSet& referencedSeriesItemDataset = referencedSeriesItem.GetNestedDataSet();
 
                 // Series Instance UID - Type 1
-                seriesInstanceUID =
-                    io::dicom::helper::DicomDataReader::getTagValue< 0x0020, 0x000E >(referencedSeriesItemDataset);
+                seriesInstanceUID
+                    = io::dicom::helper::DicomDataReader::getTagValue<0x0020, 0x000E>(referencedSeriesItemDataset);
             }
         }
     }
@@ -285,20 +286,19 @@ SPTR(io::dicom::container::DicomInstance) Series::getSpatialFiducialsReferencedS
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(io::dicom::container::DicomInstance) Series::getStructuredReportReferencedSeriesInstance(
     const data::DicomSeries::csptr& dicomSeries)
 {
-
     SPTR(io::dicom::container::DicomInstance) result;
 
     // Dicom container
     data::DicomSeries::DicomContainerType dicomContainer = dicomSeries->getDicomContainer();
 
     // Create Reader
-    std::shared_ptr< ::gdcm::Reader > reader =
-        std::shared_ptr< ::gdcm::Reader >( new ::gdcm::Reader );
+    std::shared_ptr< ::gdcm::Reader> reader
+        = std::shared_ptr< ::gdcm::Reader>(new ::gdcm::Reader);
     const core::memory::BufferObject::sptr bufferObj         = dicomContainer.begin()->second;
     const core::memory::BufferManager::StreamInfo streamInfo = bufferObj->getStreamInfo();
     SPTR(std::istream) is = streamInfo.stream;
@@ -316,29 +316,28 @@ SPTR(io::dicom::container::DicomInstance) Series::getStructuredReportReferencedS
         if(datasetRoot.FindDataElement(::gdcm::Tag(0x0040, 0xa385)))
         {
             // Get the content sequence
-            ::gdcm::SmartPointer< ::gdcm::SequenceOfItems > sequence =
-                datasetRoot.GetDataElement(::gdcm::Tag(0x0040, 0xa385)).GetValueAsSQ();
+            ::gdcm::SmartPointer< ::gdcm::SequenceOfItems> sequence
+                = datasetRoot.GetDataElement(::gdcm::Tag(0x0040, 0xa385)).GetValueAsSQ();
 
             if(sequence->GetNumberOfItems() > 0)
             {
-                ::gdcm::Item studyItem = sequence->GetItem(1);
+                ::gdcm::Item studyItem                  = sequence->GetItem(1);
                 const ::gdcm::DataSet& studyItemDataset = studyItem.GetNestedDataSet();
 
                 if(studyItemDataset.FindDataElement(::gdcm::Tag(0x0008, 0x1115)))
                 {
                     // Get the series sequence
-                    ::gdcm::SmartPointer< ::gdcm::SequenceOfItems > seriesSequence =
-                        studyItemDataset.GetDataElement(::gdcm::Tag(0x0008, 0x1115)).GetValueAsSQ();
+                    ::gdcm::SmartPointer< ::gdcm::SequenceOfItems> seriesSequence
+                        = studyItemDataset.GetDataElement(::gdcm::Tag(0x0008, 0x1115)).GetValueAsSQ();
 
                     if(seriesSequence->GetNumberOfItems() > 0)
                     {
-                        ::gdcm::Item seriesItem = seriesSequence->GetItem(1);
+                        ::gdcm::Item seriesItem                  = seriesSequence->GetItem(1);
                         const ::gdcm::DataSet& seriesItemDataset = seriesItem.GetNestedDataSet();
-                        seriesInstanceUID = io::dicom::helper::DicomDataReader::getTagValue< 0x0020, 0x000E >(
+                        seriesInstanceUID = io::dicom::helper::DicomDataReader::getTagValue<0x0020, 0x000E>(
                             seriesItemDataset);
                     }
                 }
-
             }
         }
     }
@@ -357,7 +356,8 @@ SPTR(io::dicom::container::DicomInstance) Series::getStructuredReportReferencedS
 
     return result;
 }
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}  // namespace reader
-}  // namespace sight::io::dicom
+} // namespace reader
+
+} // namespace sight::io::dicom

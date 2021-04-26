@@ -24,6 +24,7 @@
 
 namespace sight::io::atoms::patch
 {
+
 namespace conditions
 {
 
@@ -53,6 +54,6 @@ bool Abstract::test(sight::atoms::Base::sptr value)
     return true;
 }
 
-} //conditions
+} // conditions
 
-} //fwAtomsPatch
+} // fwAtomsPatch

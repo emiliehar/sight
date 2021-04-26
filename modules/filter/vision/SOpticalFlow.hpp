@@ -80,7 +80,6 @@ public:
     MODULE_FILTER_VISION_CLASS_API service::IService::KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// Does nothing.
     MODULE_FILTER_VISION_CLASS_API void configuring() override;
 
@@ -117,4 +116,4 @@ private:
     core::HiResClock::HiResClockType m_lastTimestamp;
 };
 
-} //namespace sight::module::filter::vision
+} // namespace sight::module::filter::vision

@@ -35,18 +35,18 @@
 
 namespace sight::io::http
 {
+
 namespace ut
 {
 
 class ClientQtTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ClientQtTest );
-CPPUNIT_TEST( get );
-CPPUNIT_TEST( post );
+CPPUNIT_TEST_SUITE(ClientQtTest);
+CPPUNIT_TEST(get);
+CPPUNIT_TEST(post);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     // Interface
     // Set up the application and the threads
     void setUp();
@@ -71,4 +71,5 @@ private:
 };
 
 } // namespace ut
+
 } // namespace sight::io::http

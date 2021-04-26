@@ -49,6 +49,7 @@
 
 namespace sight::module::geometry
 {
+
 namespace generator
 {
 
@@ -84,6 +85,7 @@ void SNeedle::configuring()
 
     // Full optional needle configuration
     const auto needleConfigTree = configTree.get_child_optional("needle");
+
     if(needleConfigTree.is_initialized())
     {
         m_needleMode = true;
@@ -91,29 +93,34 @@ void SNeedle::configuring()
         const auto needleConfig = configTree.get_child("needle.<xmlattr>");
 
         const std::string needleColor = needleConfig.get<std::string>("color", "");
+
         if(!needleColor.empty())
         {
-            SIGHT_ASSERT( "Color string should start with '#' and followed by 6 ou 8 "
-                          "hexadecimal digits. Given color : " << needleColor,
-                          needleColor [0] == '#'
-                          && ( needleColor.length() == 7 || needleColor.length() == 9)
-                          );
+            SIGHT_ASSERT(
+                "Color string should start with '#' and followed by 6 ou 8 "
+                "hexadecimal digits. Given color : " << needleColor,
+                    needleColor[0] == '#'
+                    && (needleColor.length() == 7 || needleColor.length() == 9)
+                );
             data::tools::Color::hexaStringToRGBA(needleColor, m_needleColor);
         }
 
         const auto minorStepsConfigTree = (*needleConfigTree).get_child_optional("minorSteps");
+
         if(minorStepsConfigTree.is_initialized())
         {
             const auto minorStepsConfig = (*needleConfigTree).get_child("minorSteps.<xmlattr>");
 
             const std::string minorStepsColor = minorStepsConfig.get<std::string>("color", "");
+
             if(!minorStepsColor.empty())
             {
-                SIGHT_ASSERT( "Color string should start with '#' and followed by 6 ou 8 "
-                              "hexadecimal digits. Given color : " << minorStepsColor,
-                              minorStepsColor [0] == '#'
-                              && ( minorStepsColor.length() == 7 || minorStepsColor.length() == 9)
-                              );
+                SIGHT_ASSERT(
+                    "Color string should start with '#' and followed by 6 ou 8 "
+                    "hexadecimal digits. Given color : " << minorStepsColor,
+                        minorStepsColor[0] == '#'
+                        && (minorStepsColor.length() == 7 || minorStepsColor.length() == 9)
+                    );
                 data::tools::Color::hexaStringToRGBA(minorStepsColor, m_needleMinorStepsColor);
             }
 
@@ -121,18 +128,21 @@ void SNeedle::configuring()
         }
 
         const auto majorStepsConfigTree = (*needleConfigTree).get_child_optional("majorSteps");
+
         if(majorStepsConfigTree.is_initialized())
         {
             const auto majorStepsConfig = (*needleConfigTree).get_child("majorSteps.<xmlattr>");
 
             const std::string majorStepsColor = majorStepsConfig.get<std::string>("color", "");
+
             if(!majorStepsColor.empty())
             {
-                SIGHT_ASSERT( "Color string should start with '#' and followed by 6 ou 8 "
-                              "hexadecimal digits. Given color : " << majorStepsColor,
-                              majorStepsColor [0] == '#'
-                              && ( majorStepsColor.length() == 7 || majorStepsColor.length() == 9)
-                              );
+                SIGHT_ASSERT(
+                    "Color string should start with '#' and followed by 6 ou 8 "
+                    "hexadecimal digits. Given color : " << majorStepsColor,
+                        majorStepsColor[0] == '#'
+                        && (majorStepsColor.length() == 7 || majorStepsColor.length() == 9)
+                    );
                 data::tools::Color::hexaStringToRGBA(majorStepsColor, m_needleMajorStepsColor);
             }
 
@@ -165,21 +175,21 @@ void SNeedle::updating()
     }
     else // Default cylinder construction
     {
-        double center                               = (m_offsetToOrigin ? m_height/2.0 : 0.0);
+        double center                               = (m_offsetToOrigin ? m_height / 2.0 : 0.0);
         vtkSmartPointer<vtkCylinderSource> cylinder = constructSourceObject<vtkCylinderSource>(m_height, center);
 
-        vtkSmartPointer<vtkTriangleFilter> triangleFilter = vtkSmartPointer< vtkTriangleFilter >::New();
+        vtkSmartPointer<vtkTriangleFilter> triangleFilter = vtkSmartPointer<vtkTriangleFilter>::New();
         triangleFilter->SetInputConnection(cylinder->GetOutputPort());
         triangleFilter->Update();
 
         vtkMesh = triangleFilter->GetOutput();
     }
 
-    auto mesh = this->getInOut< sight::data::Mesh >("mesh");
+    auto mesh = this->getInOut<sight::data::Mesh>("mesh");
     io::vtk::helper::Mesh::fromVTKMesh(vtkMesh, mesh);
 
     data::Object::ModifiedSignalType::sptr sig;
-    sig = mesh->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+    sig = mesh->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
@@ -188,34 +198,36 @@ void SNeedle::updating()
 vtkSmartPointer<vtkPolyData> SNeedle::constructNeedle()
 {
     // Number of cylinder regarding their needed length
-    const double nbOfCylinders = m_height/m_needleMinorStepsLength;
+    const double nbOfCylinders = m_height / m_needleMinorStepsLength;
     // Entire part
     const int nbOfEntireParts = floor(nbOfCylinders);
     // Decimal part
     const double restOfCylinder = m_needleMinorStepsLength * (nbOfCylinders - nbOfEntireParts);
 
     // Appender object to append cylinders, torus and cone to generate a needle
-    vtkSmartPointer<vtkAppendPolyData> appender = vtkSmartPointer< vtkAppendPolyData >::New();
+    vtkSmartPointer<vtkAppendPolyData> appender = vtkSmartPointer<vtkAppendPolyData>::New();
 
     double center;
+
     // Sweep the needle along its axis without the tip cylinder that will be replaced by a cone
-    for(int cylinderIndex = (nbOfEntireParts-2); cylinderIndex >= 0; --cylinderIndex)
+    for(int cylinderIndex = (nbOfEntireParts - 2) ; cylinderIndex >= 0 ; --cylinderIndex)
     {
-        center = (m_needleMinorStepsLength/2.0) + (m_needleMinorStepsLength * cylinderIndex);
+        center = (m_needleMinorStepsLength / 2.0) + (m_needleMinorStepsLength * cylinderIndex);
 
         // Put a torus every "m_needleMajorSteps" minor steps (for example every 5 minor steps by default) and not on
         // the end of the needle
-        if(((nbOfEntireParts - cylinderIndex ) % m_needleMajorSteps) == 0 && cylinderIndex != 0)
+        if(((nbOfEntireParts - cylinderIndex) % m_needleMajorSteps) == 0 && cylinderIndex != 0)
         {
             // Move the center from half the minor step length to get the torus on the edge of two cylinders
-            const double torusCenter              = center - m_needleMinorStepsLength/2.0;
+            const double torusCenter              = center - m_needleMinorStepsLength / 2.0;
             vtkSmartPointer<vtkPolyData> polyData = generateTorus(torusCenter, m_needleMajorStepsColor);
 
             appender->AddInputData(polyData);
         }
 
-        vtkSmartPointer<vtkCylinderSource> cylinder = constructSourceObject<vtkCylinderSource>(m_needleMinorStepsLength,
-                                                                                               center);
+        vtkSmartPointer<vtkCylinderSource> cylinder = constructSourceObject<vtkCylinderSource>(
+            m_needleMinorStepsLength,
+            center);
 
         vtkSmartPointer<vtkPolyData> polyData;
 
@@ -235,7 +247,7 @@ vtkSmartPointer<vtkPolyData> SNeedle::constructNeedle()
     // Compute the rest of the needle to get the cone length
     const double height = m_needleMinorStepsLength + restOfCylinder;
     // Compute the new center of this cone
-    center = (m_needleMinorStepsLength * (nbOfEntireParts-1)) + (restOfCylinder/2.0) + (m_needleMinorStepsLength/2.0);
+    center = (m_needleMinorStepsLength * (nbOfEntireParts - 1)) + (restOfCylinder / 2.0) + (m_needleMinorStepsLength / 2.0);
 
     vtkSmartPointer<vtkConeSource> cone = constructSourceObject<vtkConeSource>(height, center);
     // Put the cone in the right direction and remove its bottom cap (avoiding ugly effects because of wrong normal
@@ -252,10 +264,10 @@ vtkSmartPointer<vtkPolyData> SNeedle::constructNeedle()
     if(!m_offsetToOrigin)
     {
         vtkSmartPointer<vtkTransform> transform = vtkSmartPointer<vtkTransform>::New();
-        transform->Translate(0.0, -m_height/2.0, 0.0);
+        transform->Translate(0.0, -m_height / 2.0, 0.0);
 
-        vtkSmartPointer<vtkTransformPolyDataFilter> transformFilter =
-            vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+        vtkSmartPointer<vtkTransformPolyDataFilter> transformFilter
+            = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
         transformFilter->SetInputConnection(appender->GetOutputPort());
         transformFilter->SetTransform(transform);
         transformFilter->Update();
@@ -268,7 +280,8 @@ vtkSmartPointer<vtkPolyData> SNeedle::constructNeedle()
 
 // ------------------------------------------------------------------------------
 
-template<class T> vtkSmartPointer<T> SNeedle::constructSourceObject(double _height, double _center)
+template<class T>
+vtkSmartPointer<T> SNeedle::constructSourceObject(double _height, double _center)
 {
     vtkSmartPointer<T> source = vtkSmartPointer<T>::New();
     source->SetRadius(m_radius);
@@ -281,24 +294,26 @@ template<class T> vtkSmartPointer<T> SNeedle::constructSourceObject(double _heig
 
 // ------------------------------------------------------------------------------
 
-vtkSmartPointer<vtkPolyData> SNeedle::filterAndColorSourceObject(vtkAlgorithmOutput* _sourceAlgorithm,
-                                                                 const unsigned char _rgba[4])
+vtkSmartPointer<vtkPolyData> SNeedle::filterAndColorSourceObject(
+    vtkAlgorithmOutput* _sourceAlgorithm,
+    const unsigned char _rgba[4])
 {
     // vtkXxxSource give us a polyData with a POLYGON cell type
     // Thus we use a vtkTriangleFilter
-    vtkSmartPointer<vtkTriangleFilter> triangleFilter = vtkSmartPointer< vtkTriangleFilter >::New();
+    vtkSmartPointer<vtkTriangleFilter> triangleFilter = vtkSmartPointer<vtkTriangleFilter>::New();
     triangleFilter->SetInputConnection(_sourceAlgorithm);
     triangleFilter->Update();
 
     vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
     polyData->ShallowCopy(triangleFilter->GetOutput());
 
-    vtkSmartPointer<vtkUnsignedCharArray> colors = vtkSmartPointer< vtkUnsignedCharArray >::New();
+    vtkSmartPointer<vtkUnsignedCharArray> colors = vtkSmartPointer<vtkUnsignedCharArray>::New();
     colors->SetName("Colors");
     colors->SetNumberOfComponents(4);
     colors->SetNumberOfTuples(polyData->GetNumberOfCells());
     colors->FillComponent(0, 0.);
-    for(std::uint8_t i = 0; i < 4; ++i)
+
+    for(std::uint8_t i = 0 ; i < 4 ; ++i)
     {
         colors->FillComponent(i, _rgba[i]);
     }
@@ -315,10 +330,10 @@ vtkSmartPointer<vtkPolyData> SNeedle::generateTorus(double _center, const unsign
     vtkSmartPointer<vtkParametricTorus> torus = vtkSmartPointer<vtkParametricTorus>::New();
 
     torus->SetRingRadius(m_radius);
-    torus->SetCrossSectionRadius(m_radius/4);
+    torus->SetCrossSectionRadius(m_radius / 4);
 
-    vtkSmartPointer<vtkParametricFunctionSource> parametricFunctionSource =
-        vtkSmartPointer<vtkParametricFunctionSource>::New();
+    vtkSmartPointer<vtkParametricFunctionSource> parametricFunctionSource
+        = vtkSmartPointer<vtkParametricFunctionSource>::New();
     parametricFunctionSource->SetParametricFunction(torus);
 
     vtkSmartPointer<vtkTransform> transform = vtkSmartPointer<vtkTransform>::New();
@@ -346,4 +361,5 @@ void SNeedle::updateHeight(double height)
 // ------------------------------------------------------------------------------
 
 } // namespace generator
+
 } // namespace sight::module::geometry

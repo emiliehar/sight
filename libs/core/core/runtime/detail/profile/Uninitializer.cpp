@@ -36,31 +36,32 @@ namespace detail
 namespace profile
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Uninitializer::Uninitializer( const std::string& identifier ) :
-    m_identifier( identifier )
+Uninitializer::Uninitializer(const std::string& identifier) :
+    m_identifier(identifier)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Uninitializer::apply()
 {
     auto module = detail::Runtime::get().findEnabledModule(m_identifier);
-    SIGHT_FATAL_IF("Unable to start module " + m_identifier + ": not found.",
-                   module == nullptr);
+    SIGHT_FATAL_IF(
+        "Unable to start module " + m_identifier + ": not found.",
+        module == nullptr);
     try
     {
         module->uninitialize();
     }
-    catch( const std::exception& e )
+    catch(const std::exception& e)
     {
         SIGHT_FATAL("Unable to uninitialize module " + m_identifier + " : " + e.what());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace profile
 

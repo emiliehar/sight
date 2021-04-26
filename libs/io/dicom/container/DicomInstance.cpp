@@ -37,10 +37,11 @@
 
 namespace sight::io::dicom
 {
+
 namespace container
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomInstance::DicomInstance() :
     m_isMultiFiles(true),
@@ -49,11 +50,12 @@ DicomInstance::DicomInstance() :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-DicomInstance::DicomInstance(const data::Series::csptr& series,
-                             const core::log::Logger::sptr& logger,
-                             bool isMultiFiles) :
+DicomInstance::DicomInstance(
+    const data::Series::csptr& series,
+    const core::log::Logger::sptr& logger,
+    bool isMultiFiles) :
     m_isMultiFiles(isMultiFiles),
     m_SOPClassUID(""),
     m_studyInstanceUID(series->getStudy()->getInstanceUID()),
@@ -71,10 +73,11 @@ DicomInstance::DicomInstance(const data::Series::csptr& series,
     m_frameOfReferenceUID = uidGenerator.Generate();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-DicomInstance::DicomInstance(const data::DicomSeries::csptr& dicomSeries,
-                             const core::log::Logger::sptr& logger) :
+DicomInstance::DicomInstance(
+    const data::DicomSeries::csptr& dicomSeries,
+    const core::log::Logger::sptr& logger) :
     m_isMultiFiles(dicomSeries->getDicomContainer().size() > 1),
     m_studyInstanceUID(dicomSeries->getStudy()->getInstanceUID()),
     m_seriesInstanceUID(dicomSeries->getInstanceUID()),
@@ -84,6 +87,7 @@ DicomInstance::DicomInstance(const data::DicomSeries::csptr& dicomSeries,
 
     // Get SOPClassUID
     data::DicomSeries::SOPClassUIDContainerType sopClassUIDContainer = dicomSeries->getSOPClassUIDs();
+
     if(!sopClassUIDContainer.empty())
     {
         m_SOPClassUID = *(sopClassUIDContainer.begin());
@@ -92,7 +96,7 @@ DicomInstance::DicomInstance(const data::DicomSeries::csptr& dicomSeries,
     this->readUIDFromDicomSeries(dicomSeries);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomInstance::DicomInstance(const DicomInstance& dicomInstance)
 {
@@ -102,13 +106,13 @@ DicomInstance::DicomInstance(const DicomInstance& dicomInstance)
     m_logger                  = dicomInstance.m_logger;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomInstance::~DicomInstance()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomInstance::computeSOPClassUID(const data::Series::csptr& series)
 {
@@ -125,15 +129,15 @@ void DicomInstance::computeSOPClassUID(const data::Series::csptr& series)
         data::Image::csptr image = imageSeries->getImage();
 
         // Compute instance dimension
-        unsigned int dimension =
-            (this->getIsMultiFiles()) ? 2 : static_cast<unsigned int>(image->getNumberOfDimensions());
+        unsigned int dimension
+            = (this->getIsMultiFiles()) ? 2 : static_cast<unsigned int>(image->getNumberOfDimensions());
 
         // Define SOP Class UID from the modality
         ::gdcm::MediaStorage mediaStorage;
         mediaStorage.GuessFromModality(series->getModality().c_str(), dimension);
 
         // Identify the SOPClassUID from a guess
-        if (mediaStorage != ::gdcm::MediaStorage::MS_END && mediaStorage.GetString() != 0)
+        if(mediaStorage != ::gdcm::MediaStorage::MS_END && mediaStorage.GetString() != 0)
         {
             sopClassUID = mediaStorage.GetString();
         }
@@ -152,7 +156,7 @@ void DicomInstance::computeSOPClassUID(const data::Series::csptr& series)
     this->setSOPClassUID(sopClassUID);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomInstance::generateSOPInstanceUIDs(const data::Series::csptr& series)
 {
@@ -166,23 +170,24 @@ void DicomInstance::generateSOPInstanceUIDs(const data::Series::csptr& series)
     ::gdcm::UIDGenerator uidGenerator;
 
     // Generate UIDs
-    for(std::size_t i = 0; i < nbInstances; ++i)
+    for(std::size_t i = 0 ; i < nbInstances ; ++i)
     {
         m_SOPInstanceUIDContainer.push_back(uidGenerator.Generate());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomInstance::readUIDFromDicomSeries(const data::DicomSeries::csptr& dicomSeries)
 {
     const ::gdcm::Tag SOPInstanceUIDTag      = ::gdcm::Tag(0x0008, 0x0018); // SOP Instance UID
-    const ::gdcm::Tag frameOfReferenceUIDTag = ::gdcm::Tag(0x0020, 0x0052);    // Frame of Reference UID
-    std::set< ::gdcm::Tag > selectedtags;
-    selectedtags.insert( SOPInstanceUIDTag );
-    selectedtags.insert( frameOfReferenceUIDTag );
+    const ::gdcm::Tag frameOfReferenceUIDTag = ::gdcm::Tag(0x0020, 0x0052); // Frame of Reference UID
+    std::set< ::gdcm::Tag> selectedtags;
+    selectedtags.insert(SOPInstanceUIDTag);
+    selectedtags.insert(frameOfReferenceUIDTag);
 
     std::set<std::string> frameOfReferenceUIDContainer;
+
     for(const auto& item : dicomSeries->getDicomContainer())
     {
         const core::memory::BufferObject::sptr bufferObj         = item.second;
@@ -191,11 +196,14 @@ void DicomInstance::readUIDFromDicomSeries(const data::DicomSeries::csptr& dicom
 
         ::gdcm::Reader reader;
         reader.SetStream(*is);
+
         if(!reader.ReadSelectedTags(selectedtags))
         {
-            SIGHT_THROW("Unable to read Dicom file '"<< bufferObj->getStreamInfo().fsFile.string() <<"' "<<
-                        "(slice: '" << item.first << "')");
+            SIGHT_THROW(
+                "Unable to read Dicom file '" << bufferObj->getStreamInfo().fsFile.string() << "' "
+                                              << "(slice: '" << item.first << "')");
         }
+
         const ::gdcm::DataSet& dataset = reader.GetFile().GetDataSet();
         // SOP Instance UID
         m_SOPInstanceUIDContainer.push_back(io::dicom::helper::DicomDataReader::getTagValue<0x0008, 0x0018>(dataset));
@@ -211,6 +219,7 @@ void DicomInstance::readUIDFromDicomSeries(const data::DicomSeries::csptr& dicom
     {
         const std::string msg = "The selected DICOM series contain several Frame of Reference.";
         SIGHT_WARN_IF(msg, !m_logger);
+
         if(m_logger)
         {
             m_logger->critical(msg);
@@ -220,6 +229,7 @@ void DicomInstance::readUIDFromDicomSeries(const data::DicomSeries::csptr& dicom
     {
         const std::string msg = "No Frame of Reference has been found in the selected series.";
         SIGHT_WARN_IF(msg, !m_logger);
+
         if(m_logger)
         {
             m_logger->critical(msg);
@@ -227,6 +237,8 @@ void DicomInstance::readUIDFromDicomSeries(const data::DicomSeries::csptr& dicom
     }
 }
 
-//------------------------------------------------------------------------------
-} //namespace container
-} //namespace sight::io::dicom
+// ------------------------------------------------------------------------------
+
+} // namespace container
+
+} // namespace sight::io::dicom

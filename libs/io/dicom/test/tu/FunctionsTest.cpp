@@ -27,26 +27,27 @@
 #include <string>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::dicom::ut::FunctionsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::dicom::ut::FunctionsTest);
 
 namespace sight::io::dicom
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FunctionsTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FunctionsTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FunctionsTest::generatePatientIdTest()
 {
@@ -55,7 +56,7 @@ void FunctionsTest::generatePatientIdTest()
     CPPUNIT_ASSERT(0 < id.length());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FunctionsTest::generateStudyInstanceUidTest()
 {

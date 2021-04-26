@@ -27,6 +27,7 @@
 
 namespace sight::core::location
 {
+
 /**
  * @brief Abstract base class to define a location (file path, directory, archive) that can be used in Sight reader /
  * writer
@@ -40,7 +41,6 @@ public:
     CORE_API virtual std::string toString() const = 0;
 
 protected:
-
     /// Constructor
     CORE_API ILocation() = default;
 

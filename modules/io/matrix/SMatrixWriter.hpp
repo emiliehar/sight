@@ -62,9 +62,7 @@ namespace sight::module::io::matrix
  */
 class MODULE_IO_MATRIX_CLASS_API SMatrixWriter : public sight::io::base::service::IWriter
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SMatrixWriter, sight::io::base::service::IWriter)
 
     /// Constructor.
@@ -90,7 +88,6 @@ public:
     MODULE_IO_MATRIX_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 protected:
-
     /// Does nothing
     MODULE_IO_MATRIX_API void configuring() override;
 
@@ -104,7 +101,6 @@ protected:
     MODULE_IO_MATRIX_API void updating() override;
 
 private:
-
     /// SLOT: Save current matrices.
     void saveMatrix(core::HiResClock::HiResClockType timestamp);
 

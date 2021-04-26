@@ -53,7 +53,6 @@ namespace sight::module::io::vision
 class MODULE_IO_VISION_CLASS_API SCalibrationImagesWriter : public sight::io::base::service::IWriter
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SCalibrationImagesWriter, sight::io::base::service::IWriter)
 
     /// Constructor.
@@ -73,7 +72,6 @@ public:
     MODULE_IO_VISION_API void openLocationDialog() override;
 
 protected:
-
     /// Returns the folder path type.
     MODULE_IO_VISION_API sight::io::base::service::IOPathType getIOPathType() const override;
 
@@ -90,10 +88,8 @@ protected:
     MODULE_IO_VISION_API void stopping() override;
 
 private:
-
     /// Output file extension, can be any format handled by `cv::imwrite()`.
     std::string m_fileExtension;
-
 };
 
 } // namespace sight::module::io::vision

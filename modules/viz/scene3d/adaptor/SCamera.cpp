@@ -48,20 +48,20 @@ static const service::IService::KeyType s_CALIBRATION_INPUT   = "calibration";
 static const service::IService::KeyType s_CAMERA_SERIES_INPUT = "cameraSeries";
 static const service::IService::KeyType s_TRANSFORM_INOUT     = "transform";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 struct SCamera::CameraNodeListener : public ::Ogre::MovableObject::Listener
 {
-    SCamera* m_layer { nullptr };
+    SCamera* m_layer{nullptr};
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     CameraNodeListener(SCamera* _renderer) :
         m_layer(_renderer)
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void objectMoved(::Ogre::MovableObject*) override
     {
@@ -69,7 +69,7 @@ struct SCamera::CameraNodeListener : public ::Ogre::MovableObject::Listener
     }
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCamera::SCamera() noexcept
 {
@@ -77,20 +77,20 @@ SCamera::SCamera() noexcept
     newSlot(s_CALIBRATE_SLOT, &SCamera::calibrate, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCamera::~SCamera() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::configuring()
 {
     this->configureParams();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::starting()
 {
@@ -101,40 +101,46 @@ void SCamera::starting()
     m_cameraNodeListener = new CameraNodeListener(this);
     m_camera->setListener(m_cameraNodeListener);
 
-    m_layerConnection.connect(this->getLayer(), sight::viz::scene3d::Layer::s_CAMERA_RANGE_UPDATED_SIG,
-                              this->getSptr(), s_CALIBRATE_SLOT);
-    m_layerConnection.connect(this->getLayer(), sight::viz::scene3d::Layer::s_RESIZE_LAYER_SIG,
-                              this->getSptr(), s_CALIBRATE_SLOT);
+    m_layerConnection.connect(
+        this->getLayer(),
+        sight::viz::scene3d::Layer::s_CAMERA_RANGE_UPDATED_SIG,
+        this->getSptr(),
+        s_CALIBRATE_SLOT);
+    m_layerConnection.connect(
+        this->getLayer(),
+        sight::viz::scene3d::Layer::s_RESIZE_LAYER_SIG,
+        this->getSptr(),
+        s_CALIBRATE_SLOT);
 
     this->calibrate();
     this->updating();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SCamera::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
-    connections.push(s_TRANSFORM_INOUT, data::Matrix4::s_MODIFIED_SIG, s_UPDATE_SLOT );
-    connections.push(s_CALIBRATION_INPUT, data::Camera::s_INTRINSIC_CALIBRATED_SIG, s_CALIBRATE_SLOT );
+    connections.push(s_TRANSFORM_INOUT, data::Matrix4::s_MODIFIED_SIG, s_UPDATE_SLOT);
+    connections.push(s_CALIBRATION_INPUT, data::Camera::s_INTRINSIC_CALIBRATED_SIG, s_CALIBRATE_SLOT);
     connections.push(s_CAMERA_SERIES_INPUT, data::CameraSeries::s_MODIFIED_SIG, s_CALIBRATE_SLOT);
     connections.push(s_CAMERA_SERIES_INPUT, data::CameraSeries::s_EXTRINSIC_CALIBRATED_SIG, s_CALIBRATE_SLOT);
 
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::updating()
 {
     ::Ogre::Affine3 ogreMatrix;
     {
-        const auto transform = this->getLockedInOut< data::Matrix4 >(s_TRANSFORM_INOUT);
+        const auto transform = this->getLockedInOut<data::Matrix4>(s_TRANSFORM_INOUT);
 
         // Received input line and column data from Sight transformation matrix
-        for (size_t lt = 0; lt < 4; lt++)
+        for(size_t lt = 0 ; lt < 4 ; lt++)
         {
-            for (size_t ct = 0; ct < 4; ct++)
+            for(size_t ct = 0 ; ct < 4 ; ct++)
             {
                 ogreMatrix[ct][lt] = static_cast<Ogre::Real>(transform->getCoefficient(ct, lt));
             }
@@ -168,7 +174,7 @@ void SCamera::updating()
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::stopping()
 {
@@ -182,7 +188,7 @@ void SCamera::stopping()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::updateTF3D()
 {
@@ -190,6 +196,7 @@ void SCamera::updateTF3D()
     {
         // We were called from the listener after update() was called, so skip that
         m_skipUpdate = false;
+
         return;
     }
 
@@ -203,16 +210,16 @@ void SCamera::updateTF3D()
 
     ::Ogre::Matrix4 newTransMat;
 
-    for( size_t i = 0; i < 3; i++)
+    for(size_t i = 0 ; i < 3 ; i++)
     {
-        for( size_t j = 0; j < 3; j++)
+        for(size_t j = 0 ; j < 3 ; j++)
         {
             // Set the 3x3 matrix representing the rotation
             newTransMat[i][j] = mat33[i][j];
         }
     }
 
-    for( size_t i = 0; i < 3; i++)
+    for(size_t i = 0 ; i < 3 ; i++)
     {
         // Last column represents translation
         newTransMat[i][3] = position[i];
@@ -233,25 +240,25 @@ void SCamera::updateTF3D()
 
     newTransMat = newTransMat * ::Ogre::Matrix4(rotate);
 
-    const auto transform = this->getLockedInOut< data::Matrix4 >(s_TRANSFORM_INOUT);
+    const auto transform = this->getLockedInOut<data::Matrix4>(s_TRANSFORM_INOUT);
 
     // Received input line and column data from Sight transformation matrix
-    for (size_t lt = 0; lt < 4; lt++)
+    for(size_t lt = 0 ; lt < 4 ; lt++)
     {
-        for (size_t ct = 0; ct < 4; ct++)
+        for(size_t ct = 0 ; ct < 4 ; ct++)
         {
             transform->setCoefficient(ct, lt, static_cast<double>(newTransMat[ct][lt]));
         }
     }
 
-    auto sig = transform->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+    auto sig = transform->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     {
         core::com::Connection::Blocker blocker(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::setNearClipDistance(::Ogre::Real _nearClipDistance)
 {
@@ -260,7 +267,7 @@ void SCamera::setNearClipDistance(::Ogre::Real _nearClipDistance)
     m_camera->setNearClipDistance(_nearClipDistance);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::setFarClipDistance(::Ogre::Real _farClipDistance)
 {
@@ -269,7 +276,7 @@ void SCamera::setFarClipDistance(::Ogre::Real _farClipDistance)
     m_camera->setFarClipDistance(_farClipDistance);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCamera::setAspectRatio(::Ogre::Real _ratio)
 {
@@ -279,50 +286,56 @@ void SCamera::setAspectRatio(::Ogre::Real _ratio)
     m_camera->setAspectRatio(m_aspectRatio);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCamera::calibrate()
 {
-    const auto cameraSeriesW      = this->getWeakInput< data::CameraSeries >(s_CAMERA_SERIES_INPUT);
-    const auto cameraCalibrationW = this->getWeakInput< data::Camera >(s_CALIBRATION_INPUT);
+    const auto cameraSeriesW      = this->getWeakInput<data::CameraSeries>(s_CAMERA_SERIES_INPUT);
+    const auto cameraCalibrationW = this->getWeakInput<data::Camera>(s_CALIBRATION_INPUT);
 
     const auto cameraSeries      = cameraSeriesW.lock();
     const auto cameraCalibration = cameraCalibrationW.lock();
 
-    SIGHT_WARN_IF("A '" + s_CALIBRATION_INPUT +"' input was set but will not be used because a '"
-                  + s_CAMERA_SERIES_INPUT + "' was defined as well", cameraSeries && cameraCalibration);
+    SIGHT_WARN_IF(
+        "A '" + s_CALIBRATION_INPUT + "' input was set but will not be used because a '"
+        + s_CAMERA_SERIES_INPUT + "' was defined as well",
+        cameraSeries && cameraCalibration);
 
     if(cameraSeries)
     {
         this->calibrateCameraSeries(cameraSeries.get_shared());
     }
-    else if (cameraCalibration)
+    else if(cameraCalibration)
     {
         this->calibrateMonoCamera(cameraCalibration.get_shared());
     }
     else
     {
-        const float width  = static_cast< float >(m_camera->getViewport()->getActualWidth());
-        const float height = static_cast <float >(m_camera->getViewport()->getActualHeight());
+        const float width  = static_cast<float>(m_camera->getViewport()->getActualWidth());
+        const float height = static_cast<float>(m_camera->getViewport()->getActualHeight());
 
         const float aspectRatio = width / height;
         m_camera->setAspectRatio(aspectRatio);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::calibrateMonoCamera(const data::Camera::csptr& _cam)
 {
-    const float width    = static_cast< float >(m_camera->getViewport()->getActualWidth());
-    const float height   = static_cast <float >(m_camera->getViewport()->getActualHeight());
-    const float nearClip = static_cast< float >(m_camera->getNearClipDistance());
-    const float farClip  = static_cast< float >(m_camera->getFarClipDistance());
+    const float width    = static_cast<float>(m_camera->getViewport()->getActualWidth());
+    const float height   = static_cast<float>(m_camera->getViewport()->getActualHeight());
+    const float nearClip = static_cast<float>(m_camera->getNearClipDistance());
+    const float farClip  = static_cast<float>(m_camera->getFarClipDistance());
 
-    if ( _cam->getIsCalibrated() )
+    if(_cam->getIsCalibrated())
     {
-        ::Ogre::Matrix4 m = sight::viz::scene3d::helper::Camera::computeProjectionMatrix(*_cam, width, height,
-                                                                                         nearClip, farClip);
+        ::Ogre::Matrix4 m = sight::viz::scene3d::helper::Camera::computeProjectionMatrix(
+            *_cam,
+            width,
+            height,
+            nearClip,
+            farClip);
 
         m_camera->setCustomProjectionMatrix(true, m);
 
@@ -330,18 +343,20 @@ void SCamera::calibrateMonoCamera(const data::Camera::csptr& _cam)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCamera::calibrateCameraSeries(const data::CameraSeries::csptr& _cs)
 {
-    const float width    = static_cast< float >(m_camera->getViewport()->getActualWidth());
-    const float height   = static_cast <float >(m_camera->getViewport()->getActualHeight());
-    const float nearClip = static_cast< float >(m_camera->getNearClipDistance());
-    const float farClip  = static_cast< float >(m_camera->getFarClipDistance());
+    const float width    = static_cast<float>(m_camera->getViewport()->getActualWidth());
+    const float height   = static_cast<float>(m_camera->getViewport()->getActualHeight());
+    const float nearClip = static_cast<float>(m_camera->getNearClipDistance());
+    const float farClip  = static_cast<float>(m_camera->getFarClipDistance());
     const size_t nbCams  = _cs->getNumberOfCameras();
 
-    SIGHT_WARN_IF("There are no cameras in the '" + s_CAMERA_SERIES_INPUT + "', the default projection transform"
-                  "will be used.", nbCams == 0);
+    SIGHT_WARN_IF(
+        "There are no cameras in the '" + s_CAMERA_SERIES_INPUT + "', the default projection transform"
+                                                                  "will be used.",
+        nbCams == 0);
 
     auto layer = this->getLayer();
 
@@ -355,15 +370,19 @@ void SCamera::calibrateCameraSeries(const data::CameraSeries::csptr& _cs)
         sight::viz::scene3d::Layer::CameraCalibrationsType calibrations;
         ::Ogre::Matrix4 extrinsicMx(::Ogre::Matrix4::IDENTITY);
 
-        for(size_t i = 0; i < nbCams; ++i)
+        for(size_t i = 0 ; i < nbCams ; ++i)
         {
             const data::Camera::csptr camera = _cs->getCamera(i);
 
             if(camera->getIsCalibrated())
             {
-                const auto intrinsicProjMx =
-                    sight::viz::scene3d::helper::Camera::computeProjectionMatrix(*camera, width, height,
-                                                                                 nearClip, farClip);
+                const auto intrinsicProjMx
+                    = sight::viz::scene3d::helper::Camera::computeProjectionMatrix(
+                          *camera,
+                          width,
+                          height,
+                          nearClip,
+                          farClip);
 
                 calibrations.push_back(intrinsicProjMx * extrinsicMx);
             }
@@ -389,6 +408,6 @@ void SCamera::calibrateCameraSeries(const data::CameraSeries::csptr& _cs)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

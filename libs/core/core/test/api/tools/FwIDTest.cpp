@@ -32,43 +32,44 @@
 #include <thread>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::FwIDTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::FwIDTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void FwIDTest::setUp()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void FwIDTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void FwIDTest::objectFwIDTest()
 {
     const std::string fwID = "myID";
 
-    core::tools::Object::sptr obj = std::make_shared< core::tools::Object >();
+    core::tools::Object::sptr obj = std::make_shared<core::tools::Object>();
 
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwID) == false);
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwID) == false);
 
     obj->setID(fwID);
 
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwID) );
-    CPPUNIT_ASSERT_EQUAL(  fwID, obj->getID() );
-    CPPUNIT_ASSERT_EQUAL( obj, core::tools::fwID::getObject(fwID) );
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwID));
+    CPPUNIT_ASSERT_EQUAL(fwID, obj->getID());
+    CPPUNIT_ASSERT_EQUAL(obj, core::tools::fwID::getObject(fwID));
 
-    core::tools::Object::sptr obj2 = std::make_shared< core::tools::Object >();
+    core::tools::Object::sptr obj2 = std::make_shared<core::tools::Object>();
 
     CPPUNIT_ASSERT(obj2->hasID() == false);
     CPPUNIT_ASSERT_THROW(obj2->getID(core::tools::fwID::MUST_EXIST), core::tools::Failed);
@@ -77,27 +78,28 @@ void FwIDTest::objectFwIDTest()
     CPPUNIT_ASSERT_NO_THROW(obj2->getID(core::tools::fwID::MUST_EXIST));
 
     CPPUNIT_ASSERT(obj2->hasID() == true);
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwid) );
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwid));
 
     obj2->resetID();
     CPPUNIT_ASSERT(obj2->hasID() == false);
 
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwid) == false );
-    CPPUNIT_ASSERT( !core::tools::fwID::getObject(fwid) );
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwid) == false);
+    CPPUNIT_ASSERT(!core::tools::fwID::getObject(fwid));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void FwIDTest::concurrentAccessOnFwIDMapTest()
 {
     const auto fn = std::bind(&FwIDTest::runFwIDCreation, this);
-    std::vector< std::future<void> > futures;
-    for (unsigned int i = 0; i < 10; ++i)
+    std::vector<std::future<void> > futures;
+
+    for(unsigned int i = 0 ; i < 10 ; ++i)
     {
-        futures.push_back( std::async(std::launch::async, fn) );
+        futures.push_back(std::async(std::launch::async, fn));
     }
 
-    for (auto& future : futures)
+    for(auto& future : futures)
     {
         const auto status = future.wait_for(std::chrono::seconds(1));
         CPPUNIT_ASSERT(status == std::future_status::ready);
@@ -105,25 +107,25 @@ void FwIDTest::concurrentAccessOnFwIDMapTest()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void FwIDTest::runFwIDCreation()
 {
     const std::string fwID = core::tools::UUID::generateUUID();
 
-    core::tools::Object::sptr obj = std::make_shared< core::tools::Object >();
+    core::tools::Object::sptr obj = std::make_shared<core::tools::Object>();
 
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwID) == false);
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwID) == false);
 
     obj->setID(fwID);
 
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwID) );
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwID));
 
-    CPPUNIT_ASSERT_EQUAL(  fwID, obj->getID() );
+    CPPUNIT_ASSERT_EQUAL(fwID, obj->getID());
 
-    CPPUNIT_ASSERT_EQUAL( obj, core::tools::fwID::getObject(fwID) );
+    CPPUNIT_ASSERT_EQUAL(obj, core::tools::fwID::getObject(fwID));
 
-    core::tools::Object::sptr obj2 = std::make_shared< core::tools::Object >();
+    core::tools::Object::sptr obj2 = std::make_shared<core::tools::Object>();
 
     CPPUNIT_ASSERT(obj2->hasID() == false);
     CPPUNIT_ASSERT_THROW(obj2->getID(core::tools::fwID::MUST_EXIST), core::tools::Failed);
@@ -132,16 +134,17 @@ void FwIDTest::runFwIDCreation()
     CPPUNIT_ASSERT_NO_THROW(obj2->getID(core::tools::fwID::MUST_EXIST));
 
     CPPUNIT_ASSERT(obj2->hasID() == true);
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwID2) );
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwID2));
 
     obj2->resetID();
     CPPUNIT_ASSERT(obj2->hasID() == false);
 
-    CPPUNIT_ASSERT( core::tools::fwID::exist(fwID2) == false );
-    CPPUNIT_ASSERT( !core::tools::fwID::getObject(fwID2) );
+    CPPUNIT_ASSERT(core::tools::fwID::exist(fwID2) == false);
+    CPPUNIT_ASSERT(!core::tools::fwID::getObject(fwID2));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::core::tools

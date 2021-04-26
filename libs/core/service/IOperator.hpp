@@ -39,16 +39,13 @@ namespace sight::service
  */
 class SERVICE_CLASS_API IOperator : public service::IParametersService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IOperator, service::IParametersService)
 
     SERVICE_API static const core::com::Signals::SignalKeyType s_COMPUTED_SIG;
     typedef core::com::Signal<void ()> ComputedSignalType;
 
 protected:
-
     /// IOperator constructor.
     SERVICE_API IOperator();
 

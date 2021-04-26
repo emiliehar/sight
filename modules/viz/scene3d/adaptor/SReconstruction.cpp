@@ -43,7 +43,7 @@ static const std::string s_RECONSTRUCTION_INPUT = "reconstruction";
 static const std::string s_AUTORESET_CAMERA_CONFIG = "autoresetcamera";
 static const std::string s_QUERY_CONFIG            = "queryFlags";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SReconstruction::SReconstruction() noexcept
 {
@@ -51,13 +51,13 @@ SReconstruction::SReconstruction() noexcept
     m_slots(s_VISIBILITY_SLOT, &SReconstruction::modifyVisibility, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SReconstruction::~SReconstruction() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::configuring()
 {
@@ -66,23 +66,26 @@ void SReconstruction::configuring()
     const ConfigType configType = this->getConfigTree();
     const ConfigType config     = configType.get_child("config.<xmlattr>");
 
-    this->setTransformId(config.get<std::string>(sight::viz::scene3d::ITransformable::s_TRANSFORM_CONFIG,
-                                                 this->getID() + "_transform"));
+    this->setTransformId(
+        config.get<std::string>(
+            sight::viz::scene3d::ITransformable::s_TRANSFORM_CONFIG,
+            this->getID() + "_transform"));
     m_autoResetCamera = config.get<std::string>(s_AUTORESET_CAMERA_CONFIG, "yes") == "yes";
 
     const std::string hexaMask = config.get<std::string>(s_QUERY_CONFIG, "");
+
     if(!hexaMask.empty())
     {
         SIGHT_ASSERT(
             "Hexadecimal values should start with '0x'"
             "Given value : " + hexaMask,
-            hexaMask.length() > 2 &&
-            hexaMask.substr(0, 2) == "0x");
-        m_queryFlags = static_cast< std::uint32_t >(std::stoul(hexaMask, nullptr, 16));
+            hexaMask.length() > 2
+            && hexaMask.substr(0, 2) == "0x");
+        m_queryFlags = static_cast<std::uint32_t>(std::stoul(hexaMask, nullptr, 16));
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::starting()
 {
@@ -91,28 +94,30 @@ void SReconstruction::starting()
     createMeshService();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap module::viz::scene3d::adaptor::SReconstruction::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
-    connections.push(s_RECONSTRUCTION_INPUT, data::Reconstruction::s_MESH_CHANGED_SIG, s_CHANGE_MESH_SLOT );
-    connections.push(s_RECONSTRUCTION_INPUT, data::Reconstruction::s_VISIBILITY_MODIFIED_SIG, s_VISIBILITY_SLOT );
+    connections.push(s_RECONSTRUCTION_INPUT, data::Reconstruction::s_MESH_CHANGED_SIG, s_CHANGE_MESH_SLOT);
+    connections.push(s_RECONSTRUCTION_INPUT, data::Reconstruction::s_VISIBILITY_MODIFIED_SIG, s_VISIBILITY_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::updating()
 {
-    if (!m_meshAdaptor.expired())
+    if(!m_meshAdaptor.expired())
     {
-        const auto reconstruction = this->getLockedInput< data::Reconstruction >(s_RECONSTRUCTION_INPUT);
+        const auto reconstruction = this->getLockedInput<data::Reconstruction>(s_RECONSTRUCTION_INPUT);
 
         module::viz::scene3d::adaptor::SMesh::sptr meshAdaptor = this->getMeshAdaptor();
 
         // Do nothing if the mesh is identical
         auto mesh = service::OSR::getRegistered("mesh", service::IService::AccessType::INOUT, meshAdaptor);
+
         if(mesh != reconstruction->getMesh())
         {
             // Updates the mesh adaptor according to the reconstruction
@@ -127,24 +132,25 @@ void SReconstruction::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::stopping()
 {
     this->unregisterServices();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::createMeshService()
 {
     // Retrieves the associated Reconstruction object
-    const auto reconstruction = this->getLockedInput< data::Reconstruction >(s_RECONSTRUCTION_INPUT);
+    const auto reconstruction = this->getLockedInput<data::Reconstruction>(s_RECONSTRUCTION_INPUT);
     data::Mesh::sptr mesh     = reconstruction->getMesh();
+
     if(mesh)
     {
         // Creates an Ogre adaptor and associates it with the Sight mesh object
-        auto meshAdaptor = this->registerService< module::viz::scene3d::adaptor::SMesh >(
+        auto meshAdaptor = this->registerService<module::viz::scene3d::adaptor::SMesh>(
             "::sight::module::viz::scene3d::adaptor::SMesh");
         meshAdaptor->registerInOut(mesh, "mesh", true);
 
@@ -165,56 +171,55 @@ void SReconstruction::createMeshService()
         meshAdaptor->start();
 
         m_meshAdaptor = meshAdaptor;
-
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::setVisible(bool _hide)
 {
-    if (!m_meshAdaptor.expired())
+    if(!m_meshAdaptor.expired())
     {
         module::viz::scene3d::adaptor::SMesh::sptr meshAdaptor = this->getMeshAdaptor();
 
-        if (meshAdaptor)
+        if(meshAdaptor)
         {
-            const auto reconstruction = this->getLockedInput< data::Reconstruction >(s_RECONSTRUCTION_INPUT);
+            const auto reconstruction = this->getLockedInput<data::Reconstruction>(s_RECONSTRUCTION_INPUT);
             meshAdaptor->setVisible(_hide ? false : reconstruction->getIsVisible());
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::changeMesh(data::Mesh::sptr)
 {
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SReconstruction::modifyVisibility()
 {
-    if (!m_meshAdaptor.expired())
+    if(!m_meshAdaptor.expired())
     {
-        const auto reconstruction = this->getLockedInput< data::Reconstruction >(s_RECONSTRUCTION_INPUT);
+        const auto reconstruction = this->getLockedInput<data::Reconstruction>(s_RECONSTRUCTION_INPUT);
         this->updateVisibility(!reconstruction->getIsVisible());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 adaptor::SMesh::sptr SReconstruction::getMeshAdaptor()
 {
     // Retrieves the associated mesh adaptor
-    sight::viz::scene3d::IAdaptor::sptr adaptor            = m_meshAdaptor.lock();
-    module::viz::scene3d::adaptor::SMesh::sptr meshAdaptor =
-        module::viz::scene3d::adaptor::SMesh::dynamicCast(adaptor);
+    sight::viz::scene3d::IAdaptor::sptr adaptor = m_meshAdaptor.lock();
+    module::viz::scene3d::adaptor::SMesh::sptr meshAdaptor
+        = module::viz::scene3d::adaptor::SMesh::dynamicCast(adaptor);
 
     return meshAdaptor;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

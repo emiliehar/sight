@@ -35,15 +35,14 @@ namespace sight::activity
  */
 class ACTIVITY_CLASS_API ActivityMsg
 {
-
 public:
-
     typedef activity::extension::ActivityAppConfig::ActivityAppConfigParamsType ParametersType;
     typedef std::map<std::string, std::string> ReplaceMapType;
 
-    ACTIVITY_API ActivityMsg(const data::ActivitySeries::sptr& series,
-                             const activity::extension::ActivityInfo& info,
-                             const ParametersType& parameters);
+    ACTIVITY_API ActivityMsg(
+        const data::ActivitySeries::sptr& series,
+        const activity::extension::ActivityInfo& info,
+        const ParametersType& parameters);
 
     ACTIVITY_API virtual ~ActivityMsg()
     {
@@ -104,7 +103,6 @@ public:
     }
 
 private:
-
     bool m_closable; /// Flag if activity is closable.
     std::string m_title; ///< Activity title
     std::string m_tabID; ///< Tab identifier

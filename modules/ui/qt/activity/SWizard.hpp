@@ -46,6 +46,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
@@ -105,9 +106,7 @@ namespace activity
 class MODULE_UI_QT_CLASS_API SWizard : public QObject,
                                        public sight::ui::base::IEditor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SWizard, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -130,21 +129,20 @@ public:
      * @{
      */
     MODULE_UI_QT_API static const core::com::Signals::SignalKeyType s_ACTIVITY_CREATED_SIG;
-    typedef core::com::Signal< void ( data::ActivitySeries::sptr ) > ActivityCreatedSignalType;
+    typedef core::com::Signal<void (data::ActivitySeries::sptr)> ActivityCreatedSignalType;
 
     MODULE_UI_QT_API static const core::com::Signals::SignalKeyType s_ACTIVITY_UPDATED_SIG;
-    typedef core::com::Signal< void ( data::ActivitySeries::sptr ) > ActivityUpdatedSignalType;
+    typedef core::com::Signal<void (data::ActivitySeries::sptr)> ActivityUpdatedSignalType;
 
     MODULE_UI_QT_API static const core::com::Signals::SignalKeyType s_CANCELED_SIG;
-    typedef core::com::Signal< void () > CanceledSignalType;
+    typedef core::com::Signal<void ()> CanceledSignalType;
     /// @}
 
 protected:
-
-    ///This method creates the editor gui.
+    /// This method creates the editor gui.
     void starting() override;
 
-    ///This method destroys the editor gui.
+    /// This method destroys the editor gui.
     void stopping() override;
 
     /// Update the activity if it is defined in the configuration, else does nothing.
@@ -154,7 +152,6 @@ protected:
     void configuring() override;
 
 private:
-
     enum class Mode : std::uint8_t
     {
         CREATE,
@@ -195,7 +192,7 @@ private:
     data::ActivitySeries::sptr m_actSeries; ///< Activity series builded
 
     QPointer<DataView> m_DataView; ///< view used to select required data for activity
-    QPointer<QPushButton> m_okButton; ///<  Button 'Apply' or 'Next' to validate the activity creation
+    QPointer<QPushButton> m_okButton; ///< Button 'Apply' or 'Next' to validate the activity creation
     QPointer<QPushButton> m_resetButton; ///< Button to clear the activity parameters
     QPointer<QPushButton> m_cancelButton; ///< Button to cancel the activity creation
     QPointer<QLabel> m_title; ///< Label to show activity title
@@ -209,13 +206,13 @@ private:
     Mode m_mode; ///< editor mode (CREATE or UPDATE)
 
     bool m_confirmUpdate; ///< if true, the editor proposes a confirmation dialog when the activity is updated.
-    bool m_isCancelable;  /// true if the cancel button is proposed
+    bool m_isCancelable; /// true if the cancel button is proposed
 
     ActivityCreatedSignalType::sptr m_sigActivityCreated; ///< Signal emitted when the activitySeries is created
     ActivityCreatedSignalType::sptr m_sigActivityUpdated; ///< Signal emitted when the activitySeries is updated
-    CanceledSignalType::sptr m_sigCanceled;               /// Signal emitted when the creation is canceled.
-
+    CanceledSignalType::sptr m_sigCanceled; /// Signal emitted when the creation is canceled.
 };
 
 } // editor
+
 } // sight::module::ui::qt

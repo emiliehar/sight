@@ -33,6 +33,7 @@
 
 namespace sight::module::ui::debug
 {
+
 namespace action
 {
 
@@ -41,9 +42,7 @@ namespace action
  */
 class MODULE_UI_DEBUG_CLASS_API ComponentsTree : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(ComponentsTree, ::sight::ui::base::IAction)
 
     /// Does nothing
@@ -53,7 +52,6 @@ public:
     MODULE_UI_DEBUG_API virtual ~ComponentsTree() noexcept;
 
 protected:
-
     /// Calls classic IAction methods to configure
     void configuring() override;
 
@@ -67,13 +65,13 @@ protected:
     void stopping() override;
 
 private:
-
     /// Dialog shown on update method
-    QPointer< QDialog > m_dialog;
+    QPointer<QDialog> m_dialog;
 
     /// Widget used to show association ( service impl , data impl )
-    QPointer< QTreeWidget > m_treeContainer;
+    QPointer<QTreeWidget> m_treeContainer;
 };
 
 } // namespace action
+
 } // namespace sight::module::ui::debug

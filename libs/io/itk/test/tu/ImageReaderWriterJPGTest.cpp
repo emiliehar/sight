@@ -38,14 +38,15 @@
 #include <itkImageFileWriter.h>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::itk::ut::ImageReaderWriterJPGTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::itk::ut::ImageReaderWriterJPGTest);
 
 namespace sight::io::itk
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterJPGTest::setUp()
 {
@@ -53,14 +54,14 @@ void ImageReaderWriterJPGTest::setUp()
     srand(time(NULL));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterJPGTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterJPGTest::testImageWriter()
 {
@@ -70,22 +71,23 @@ void ImageReaderWriterJPGTest::testImageWriter()
 
     // save image in inr
     const std::filesystem::path PATH = core::tools::System::getTemporaryFolder() / "imageJPG";
-    std::filesystem::create_directories( PATH );
+    std::filesystem::create_directories(PATH);
     io::itk::JpgImageWriter::sptr myWriter = io::itk::JpgImageWriter::New();
     myWriter->setObject(image);
     myWriter->setFolder(PATH);
     CPPUNIT_ASSERT_NO_THROW(myWriter->write());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageReaderWriterJPGTest::testImageWriter2()
 {
     // create Image
     std::filesystem::path pathInr = utestData::Data::dir() / "sight/image/inr/image.inr.gz";
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + pathInr.string() + "' does not exist",
-                           std::filesystem::exists(pathInr));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + pathInr.string() + "' does not exist",
+        std::filesystem::exists(pathInr));
 
     data::Image::sptr image             = data::Image::New();
     io::itk::ImageReader::sptr myReader = io::itk::ImageReader::New();
@@ -95,14 +97,15 @@ void ImageReaderWriterJPGTest::testImageWriter2()
 
     // save image in inr
     const std::filesystem::path PATH = core::tools::System::getTemporaryFolder() / "imageJPG";
-    std::filesystem::create_directories( PATH );
+    std::filesystem::create_directories(PATH);
     io::itk::JpgImageWriter::sptr myWriter = io::itk::JpgImageWriter::New();
     myWriter->setObject(image);
     myWriter->setFolder(PATH);
     CPPUNIT_ASSERT_NO_THROW(myWriter->write());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::io::itk
+} // namespace ut
+
+} // namespace sight::io::itk

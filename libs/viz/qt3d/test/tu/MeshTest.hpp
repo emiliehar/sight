@@ -32,14 +32,12 @@ namespace ut
 
 class MeshTest : public CPPUNIT_NS::TestFixture
 {
-
 CPPUNIT_TEST_SUITE(MeshTest);
 CPPUNIT_TEST(setCubeMesh);
 CPPUNIT_TEST(centerCameraOnCube);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     MeshTest();
 
     ~MeshTest() override;
@@ -51,7 +49,6 @@ public:
     void setCubeMesh();
 
     void centerCameraOnCube();
-
 };
 
 } // namespace ut.

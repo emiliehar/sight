@@ -47,20 +47,21 @@ struct OpenGLRunner final : public QRunnable
     {
     }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
     // Destructor.
     ~OpenGLRunner() final
     {
     }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
     // Pulls the GL context if it is not owned by the thread and runs the task.
     void run() final
     {
         QOpenGLContext* workerContext = m_worker->m_glContext.get();
-        if (workerContext->thread() == nullptr)
+
+        if(workerContext->thread() == nullptr)
         {
             QThread* currentThread = QThread::currentThread();
             workerContext->moveToThread(currentThread);
@@ -71,16 +72,14 @@ struct OpenGLRunner final : public QRunnable
     }
 
     private:
-
         // Pointer to the worker running the task.
         OpenGLWorker* m_worker;
 
         // Task to run.
         sight::viz::scene3d::IGraphicsWorker::TaskType m_task;
-
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 OpenGLWorker::OpenGLWorker(QSurface* _surface) :
     m_surface(_surface)
@@ -99,7 +98,7 @@ OpenGLWorker::OpenGLWorker(QSurface* _surface) :
     m_glContext->moveToThread(nullptr);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 OpenGLWorker::~OpenGLWorker()
 {
@@ -107,7 +106,7 @@ OpenGLWorker::~OpenGLWorker()
     m_threadPool->waitForDone(); // Wait on the running task.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void OpenGLWorker::pushTask(sight::viz::scene3d::IGraphicsWorker::TaskType _task)
 {
@@ -117,6 +116,6 @@ void OpenGLWorker::pushTask(sight::viz::scene3d::IGraphicsWorker::TaskType _task
     m_threadPool->start(runner, QThread::Priority::HighestPriority);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3dQt

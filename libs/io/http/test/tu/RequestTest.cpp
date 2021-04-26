@@ -28,14 +28,15 @@
 
 #include <QNetworkRequest>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::http::ut::RequestTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::http::ut::RequestTest);
 
 namespace sight::io::http
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RequestTest::setUp()
 {
@@ -43,13 +44,13 @@ void RequestTest::setUp()
     m_request = sight::io::http::Request::New(dummyUrl);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RequestTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RequestTest::testRequest()
 {
@@ -78,7 +79,7 @@ void RequestTest::testRequest()
     CPPUNIT_ASSERT_EQUAL(newDummyUrl, url);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
 

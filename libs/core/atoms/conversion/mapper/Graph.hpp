@@ -28,16 +28,21 @@
 
 namespace sight::atoms
 {
+
 class Object;
+
 }
 
 namespace sight::data
 {
+
 class Object;
+
 }
 
 namespace sight::atoms::conversion
 {
+
 namespace mapper
 {
 
@@ -51,14 +56,14 @@ namespace mapper
 class ATOMS_CLASS_API Graph : public Base
 {
 public:
-
     /**
      * @brief Convert a data::Object to a atoms::Object.
      * @param object data to convert. It must be a data::Graph.
      * @param cache  cache to register the data already converted, used when a data is referenced multiple times.
      */
-    ATOMS_API virtual SPTR(atoms::Object) convert( SPTR(data::Object) object,
-                                                   DataVisitor::AtomCacheType& cache );
+    ATOMS_API virtual SPTR(atoms::Object) convert(
+        SPTR(data::Object) object,
+        DataVisitor::AtomCacheType& cache);
 
     /**
      * @brief Convert a atoms::Object to a data::Object (which represent a data::Graph).
@@ -66,12 +71,13 @@ public:
      * @param cache  cache to register the atoms already converted, used when an atom is referenced multiple times.
      * @param uuidPolicy AtomVisitor policy
      */
-    ATOMS_API virtual SPTR(data::Object) convert( SPTR(atoms::Object) atom,
-                                                  AtomVisitor::DataCacheType& cache,
-                                                  const AtomVisitor::IReadPolicy& uuidPolicy
-                                                  );
-
+    ATOMS_API virtual SPTR(data::Object) convert(
+        SPTR(atoms::Object) atom,
+        AtomVisitor::DataCacheType& cache,
+        const AtomVisitor::IReadPolicy& uuidPolicy
+        );
 };
 
 }
+
 }

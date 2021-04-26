@@ -44,7 +44,6 @@ namespace sight::ui::qml
 class QmlEngine
 {
 public:
-
     QmlEngine();
 
     ~QmlEngine();
@@ -111,13 +110,11 @@ public:
     UI_QML_API QQmlContext* getRootContext();
 
 private:
-
     /// Engine singleton
     static SPTR(QmlEngine) s_current;
 
     /// qml engine
     QPointer<QQmlApplicationEngine> m_engine;
-
 };
 
 } // fwQml

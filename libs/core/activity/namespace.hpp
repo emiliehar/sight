@@ -35,11 +35,13 @@ namespace builder
 /// Contains activity::builder::registry details
 namespace registry
 {
+
 } // namespace registry
 
 /// Contains activity::builder::factory utilities
 namespace factory
 {
+
 } // namespace factory
 
 } // end namespace builder
@@ -50,11 +52,13 @@ namespace validator
 /// Contains activity::validator::registry details
 namespace registry
 {
+
 } // namespace registry
 
 /// Contains activity::validator::factory utilities
 namespace factory
 {
+
 } // namespace factory
 
 } // namespace validator

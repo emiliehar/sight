@@ -26,6 +26,7 @@
 
 namespace sight::io::session
 {
+
 namespace ut
 {
 
@@ -47,4 +48,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::io::session

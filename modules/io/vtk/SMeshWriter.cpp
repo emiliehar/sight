@@ -50,28 +50,28 @@ namespace sight::module::io::vtk
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SMeshWriter::SMeshWriter() noexcept
 {
-    m_sigJobCreated = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
+    m_sigJobCreated = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SMeshWriter::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshWriter::openLocationDialog()
 {
@@ -88,7 +88,8 @@ void SMeshWriter::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         this->setFile(result->getFile());
         m_selectedExtension = dialogFile.getCurrentSelection();
@@ -101,50 +102,51 @@ void SMeshWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SMeshWriter::info(std::ostream& _sstream )
+void SMeshWriter::info(std::ostream& _sstream)
 {
     _sstream << "SMeshWriter::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename WRITER >
-typename WRITER::sptr configureWriter(const std::filesystem::path& _file )
+template<typename WRITER>
+typename WRITER::sptr configureWriter(const std::filesystem::path& _file)
 {
     typename WRITER::sptr writer = WRITER::New();
     writer->setFile(_file);
+
     return writer;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshWriter::updating()
 {
-    if(  this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        const auto meshlockedPtr = this->getLockedInput< const data::Mesh >(sight::io::base::service::s_DATA_KEY);
+        const auto meshlockedPtr = this->getLockedInput<const data::Mesh>(sight::io::base::service::s_DATA_KEY);
 
         sight::ui::base::Cursor cursor;
         cursor.setCursor(ui::base::ICursor::BUSY);
@@ -169,28 +171,30 @@ void SMeshWriter::updating()
 
         if(extensionToUse == ".vtk")
         {
-            meshWriter = configureWriter< sight::io::vtk::MeshWriter >(fileToWrite);
+            meshWriter = configureWriter<sight::io::vtk::MeshWriter>(fileToWrite);
         }
         else if(extensionToUse == ".vtp")
         {
-            meshWriter = configureWriter< sight::io::vtk::VtpMeshWriter >(fileToWrite);
+            meshWriter = configureWriter<sight::io::vtk::VtpMeshWriter>(fileToWrite);
         }
         else if(extensionToUse == ".stl")
         {
-            meshWriter = configureWriter< sight::io::vtk::StlMeshWriter >(fileToWrite);
+            meshWriter = configureWriter<sight::io::vtk::StlMeshWriter>(fileToWrite);
         }
         else if(extensionToUse == ".ply")
         {
-            meshWriter = configureWriter< sight::io::vtk::PlyMeshWriter >(fileToWrite);
+            meshWriter = configureWriter<sight::io::vtk::PlyMeshWriter>(fileToWrite);
         }
         else if(extensionToUse == ".obj")
         {
-            meshWriter = configureWriter< sight::io::vtk::ObjMeshWriter >(fileToWrite);
+            meshWriter = configureWriter<sight::io::vtk::ObjMeshWriter>(fileToWrite);
         }
         else
         {
-            SIGHT_THROW_EXCEPTION(core::tools::Failed("Extension '"+ fileToWrite.extension().string() +
-                                                      "' is not managed by module::io::vtk::SMeshWriter."));
+            SIGHT_THROW_EXCEPTION(
+                core::tools::Failed(
+                    "Extension '" + fileToWrite.extension().string()
+                    + "' is not managed by module::io::vtk::SMeshWriter."));
         }
 
         m_sigJobCreated->emit(meshWriter->getJob());
@@ -214,7 +218,7 @@ void SMeshWriter::updating()
             // Raise exception  for superior level
             SIGHT_THROW_EXCEPTION(e);
         }
-        catch (const std::exception& e)
+        catch(const std::exception& e)
         {
             m_writeFailed = true;
             std::stringstream ss;
@@ -225,7 +229,7 @@ void SMeshWriter::updating()
                 ss.str(),
                 sight::ui::base::dialog::IMessageDialog::WARNING);
         }
-        catch( ... )
+        catch(...)
         {
             m_writeFailed = true;
             sight::ui::base::dialog::MessageDialog::show(
@@ -242,6 +246,6 @@ void SMeshWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ioVtk

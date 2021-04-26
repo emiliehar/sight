@@ -29,8 +29,10 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief   Defines the generic pulse progress dialog for IHM.
  * Use the Delegate design pattern. The specific implementation selection is ensured by fwGuiRegisterMacro.
@@ -39,10 +41,9 @@ namespace dialog
 class UI_BASE_CLASS_API PulseProgressDialog : public IPulseProgressDialog
 {
 public:
-
     SIGHT_DECLARE_CLASS(PulseProgressDialog, ui::base::dialog::IPulseProgressDialog)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::string& title, const ui::base::dialog::IPulseProgressDialog::Stuff& stuff)
     {
@@ -54,22 +55,21 @@ public:
         const std::string& title,
         Stuff stuff,
         const std::string& msg                                               = std::string(),
-        ui::base::dialog::IPulseProgressDialog::MilliSecond frequenceRefresh = 100 );
+        ui::base::dialog::IPulseProgressDialog::MilliSecond frequenceRefresh = 100);
 
-    ///set the title for the dialog
+    /// set the title for the dialog
     UI_BASE_API void setTitle(const std::string& title) override;
 
-    ///set the message for the dialog
+    /// set the message for the dialog
     UI_BASE_API void setMessage(const std::string& message) override;
 
-    ///show the pulse progress dialog
+    /// show the pulse progress dialog
     UI_BASE_API void show() override;
 
 protected:
-
     ui::base::dialog::IPulseProgressDialog::sptr m_implementation;
-
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

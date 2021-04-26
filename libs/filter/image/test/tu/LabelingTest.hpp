@@ -26,12 +26,13 @@
 
 namespace sight::filter::image
 {
+
 namespace ut
 {
 
 class LabelingTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( LabelingTest );
+CPPUNIT_TEST_SUITE(LabelingTest);
 CPPUNIT_TEST(computeCentroids);
 CPPUNIT_TEST_SUITE_END();
 
@@ -43,5 +44,6 @@ public:
     void computeCentroids();
 };
 
-} //namespace ut.
-} //namespace sight::filter::image.
+} // namespace ut.
+
+} // namespace sight::filter::image.

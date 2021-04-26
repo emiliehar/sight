@@ -26,12 +26,13 @@
 
 namespace sight::data::tools
 {
+
 namespace ut
 {
 
 class ModelSeriesTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ModelSeriesTest );
+CPPUNIT_TEST_SUITE(ModelSeriesTest);
 CPPUNIT_TEST(addReconstruction);
 CPPUNIT_TEST(addMesh);
 CPPUNIT_TEST(createReconstructionFromMesh);

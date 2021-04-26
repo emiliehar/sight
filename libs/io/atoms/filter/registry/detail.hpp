@@ -39,7 +39,7 @@ namespace registry
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(io::atoms::filter::IFilter) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(io::atoms::filter::IFilter)(), KeyType> Type;
 
 IO_ATOMS_API SPTR(Type) get();
 

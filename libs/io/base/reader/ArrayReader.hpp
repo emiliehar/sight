@@ -33,6 +33,7 @@
 
 namespace sight::io::base
 {
+
 namespace reader
 {
 
@@ -42,13 +43,11 @@ namespace reader
  *
  * Ircad reader to read a data::Array on filesystem in a raw format.
  */
-class IO_BASE_CLASS_API ArrayReader :  public GenericObjectReader< data::Array >,
-                                       public core::location::SingleFile
+class IO_BASE_CLASS_API ArrayReader : public GenericObjectReader<data::Array>,
+                                      public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(ArrayReader, GenericObjectReader< data::Array>, io::base::reader::factory::New<ArrayReader>)
+    SIGHT_DECLARE_CLASS(ArrayReader, GenericObjectReader<data::Array>, io::base::reader::factory::New<ArrayReader>)
 
     /// Constructor. Do nothing.
     IO_BASE_API ArrayReader(io::base::reader::IObjectReader::Key key);
@@ -61,8 +60,8 @@ public:
 
     /// Defines extension supported by this reader ".raw"
     IO_BASE_API std::string extension() override;
-
 };
 
 } // namespace reader
+
 } // namespace sight::io::base

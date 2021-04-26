@@ -29,17 +29,18 @@ CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::session::ut::PasswordKeeperTest);
 
 namespace sight::io::session
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PasswordKeeperTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PasswordKeeperTest::tearDown()
 {
@@ -48,7 +49,7 @@ void PasswordKeeperTest::tearDown()
     io::session::PasswordKeeper::unique()->setGlobalPassword("");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PasswordKeeperTest::globalTest()
 {
@@ -72,7 +73,7 @@ void PasswordKeeperTest::globalTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PasswordKeeperTest::localTest()
 {
@@ -96,4 +97,5 @@ void PasswordKeeperTest::localTest()
 }
 
 } // namespace ut
+
 } // namespace sight::io::session

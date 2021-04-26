@@ -33,6 +33,7 @@
 
 namespace sight::ui::qt
 {
+
 namespace layoutManager
 {
 
@@ -42,8 +43,10 @@ namespace layoutManager
 class UI_QT_CLASS_API MenuLayoutManager : public ui::base::layoutManager::IMenuLayoutManager
 {
 public:
-    SIGHT_DECLARE_CLASS(MenuLayoutManager, ui::base::layoutManager::IMenuLayoutManager,
-                        ui::base::factory::New< MenuLayoutManager >)
+    SIGHT_DECLARE_CLASS(
+        MenuLayoutManager,
+        ui::base::layoutManager::IMenuLayoutManager,
+        ui::base::factory::New<MenuLayoutManager>)
 
     UI_QT_API MenuLayoutManager(ui::base::GuiBaseObject::Key key);
 
@@ -54,7 +57,7 @@ public:
      * @pre LayoutManager must be initialized before.
      * @pre parent menu must be instanced.
      */
-    UI_QT_API void createLayout( ui::base::container::fwMenu::sptr parent ) override;
+    UI_QT_API void createLayout(ui::base::container::fwMenu::sptr parent) override;
 
     /**
      * @brief Destroy local menus.
@@ -79,8 +82,8 @@ public:
 
 protected:
     ui::qt::container::QtMenuContainer::sptr m_parent;
-
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::qt

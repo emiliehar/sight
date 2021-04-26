@@ -40,40 +40,40 @@
 namespace sight::module::io::itk
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 JpgImageWriterService::JpgImageWriterService() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 JpgImageWriterService::~JpgImageWriterService() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType JpgImageWriterService::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::openLocationDialog()
 {
@@ -86,7 +86,8 @@ void JpgImageWriterService::openLocationDialog()
     dialogFile.setType(ui::base::dialog::ILocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         this->setFolder(result->getFolder());
         defaultDirectory = result;
@@ -98,26 +99,26 @@ void JpgImageWriterService::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void JpgImageWriterService::info(std::ostream& _sstream )
+void JpgImageWriterService::info(std::ostream& _sstream)
 {
     _sstream << "JpgImageWriterService::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::saveImage(const std::filesystem::path& imgPath, const CSPTR(data::Image)& img)
 {
@@ -129,35 +130,35 @@ void JpgImageWriterService::saveImage(const std::filesystem::path& imgPath, cons
 
     try
     {
-        writer->addHandler( progressMeterGUI );
+        writer->addHandler(progressMeterGUI);
         writer->write();
-
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         std::stringstream ss;
         ss << "Warning during saving : " << e.what();
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     ss.str(),
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     "Warning during saving",
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            "Warning during saving",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void JpgImageWriterService::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::Image::csptr image = this->getInput< data::Image >(sight::io::base::service::s_DATA_KEY);
+        data::Image::csptr image = this->getInput<data::Image>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", image);
 
         sight::ui::base::Cursor cursor;
@@ -171,6 +172,6 @@ void JpgImageWriterService::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::itk

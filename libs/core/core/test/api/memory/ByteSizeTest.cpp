@@ -27,28 +27,29 @@
 #include <limits>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::memory::ut::ByteSizeTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::memory::ut::ByteSizeTest);
 
 namespace sight::core::memory
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ByteSizeTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ByteSizeTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ByteSizeTest::byteSizeTest()
 {
@@ -112,7 +113,8 @@ void ByteSizeTest::byteSizeTest()
         std::string resultSI(bsize.getHumanReadableSize(core::memory::ByteSize::SI));
         CPPUNIT_ASSERT_EQUAL(refIEC, resultIEC);
         CPPUNIT_ASSERT_EQUAL(refSI, resultSI);
-    }    {
+    }
+    {
         double size = 1.5;
         core::memory::ByteSize bsize(size, core::memory::ByteSize::TB);
         std::string refIEC("1.36424 TiB");
@@ -185,4 +187,5 @@ void ByteSizeTest::byteSizeTest()
 }
 
 } // namespace ut
+
 } // namespace sight::core::memory

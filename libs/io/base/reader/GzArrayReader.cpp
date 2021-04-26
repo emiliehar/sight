@@ -28,7 +28,7 @@
 
 #include <iostream>
 
-SIGHT_REGISTER_IO_READER( ::sight::io::base::reader::GzArrayReader );
+SIGHT_REGISTER_IO_READER(::sight::io::base::reader::GzArrayReader);
 
 namespace sight::io::base
 {
@@ -36,25 +36,25 @@ namespace sight::io::base
 namespace reader
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GzArrayReader::GzArrayReader(io::base::reader::IObjectReader::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GzArrayReader::~GzArrayReader()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GzArrayReader::read()
 {
     std::filesystem::path file = this->getFile();
 
-    assert( file.empty() == false );
+    assert(file.empty() == false);
 
     data::Array::sptr array = this->getConcreteObject();
     size_t arraySizeInBytes = array->resize(array->getSize());
@@ -63,7 +63,8 @@ void GzArrayReader::read()
     void* buff = array->getBuffer();
 
     gzFile rawFile = gzopen(file.string().c_str(), "rb");
-    if ( rawFile == 0 )
+
+    if(rawFile == 0)
     {
         gzclose(rawFile);
         std::string str = "Unable to open ";
@@ -73,7 +74,8 @@ void GzArrayReader::read()
 
     const int uncompressedBytesReaded = gzread(rawFile, buff, static_cast<unsigned int>(arraySizeInBytes));
     gzclose(rawFile);
-    if ( uncompressedBytesReaded != static_cast<int>(arraySizeInBytes) )
+
+    if(uncompressedBytesReaded != static_cast<int>(arraySizeInBytes))
     {
         std::string str = "Unable to read ";
         str += file.string();
@@ -81,14 +83,15 @@ void GzArrayReader::read()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string GzArrayReader::extension()
 {
-    return (".raw.gz");
+    return ".raw.gz";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace reader
+
 } // namespace sight::io::base

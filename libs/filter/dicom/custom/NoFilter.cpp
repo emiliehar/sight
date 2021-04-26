@@ -25,53 +25,57 @@
 #include "filter/dicom/exceptions/FilterFailure.hpp"
 #include "filter/dicom/registry/macros.hpp"
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::custom::NoFilter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::custom::NoFilter);
 
 namespace sight::filter::dicom
 {
+
 namespace custom
 {
 
 const std::string NoFilter::s_FILTER_NAME        = "No filter";
 const std::string NoFilter::s_FILTER_DESCRIPTION = "No filter.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 NoFilter::NoFilter(filter::dicom::IFilter::Key key) :
     ICustom()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 NoFilter::~NoFilter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string NoFilter::getName() const
 {
     return NoFilter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string NoFilter::getDescription() const
 {
     return NoFilter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 NoFilter::DicomSeriesContainerType NoFilter::apply(
-    const data::DicomSeries::sptr& series, const core::log::Logger::sptr& logger)
+    const data::DicomSeries::sptr& series,
+    const core::log::Logger::sptr& logger)
 const
 {
     DicomSeriesContainerType result;
     result.push_back(series);
+
     return result;
 }
 
 } // namespace custom
+
 } // namespace sight::filter::dicom

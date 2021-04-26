@@ -36,9 +36,7 @@ namespace sight::module::ui::base
  */
 class MODULE_UI_BASE_CLASS_API SQuit : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SQuit, ::sight::ui::base::IAction)
 
     /**
@@ -52,7 +50,6 @@ public:
     MODULE_UI_BASE_API virtual ~SQuit() noexcept;
 
 protected:
-
     /**
      * @brief This method is used to configure the service parameters: specifies which services must be started or
      * stopped
@@ -71,8 +68,7 @@ protected:
     /*
      * @brief This method gives information about the class.
      */
-    MODULE_UI_BASE_API void info(std::ostream& _sstream ) override;
-
+    MODULE_UI_BASE_API void info(std::ostream& _sstream) override;
 };
 
 } // namespace sight::module::ui::base

@@ -35,6 +35,7 @@ class QLineEdit;
 
 namespace sight::module::ui::qt::viz
 {
+
 /**
  * @brief   This editor regulates the position and rotation defined in a transformation matrix.
  *
@@ -61,6 +62,7 @@ class MODULE_UI_QT_CLASS_API STransformEditor : public QObject,
                                                 public sight::ui::base::IEditor
 {
 Q_OBJECT;
+
 public:
     SIGHT_DECLARE_SERVICE(STransformEditor, sight::ui::base::IEditor)
 
@@ -71,14 +73,13 @@ public:
     MODULE_UI_QT_API virtual ~STransformEditor() noexcept;
 
 protected:
-
     /// This method is used to configure the service parameters:
     MODULE_UI_QT_API void configuring() override;
 
-    ///This method launches the sight::ui::base::IGuiContainer::create method.
+    /// This method launches the sight::ui::base::IGuiContainer::create method.
     MODULE_UI_QT_API void starting() override;
 
-    ///This method launches the sight::ui::base::IGuiContainer::destroy method.
+    /// This method launches the sight::ui::base::IGuiContainer::destroy method.
     MODULE_UI_QT_API void stopping() override;
 
     /// Updates Slider value
@@ -88,7 +89,6 @@ protected:
     MODULE_UI_QT_API KeyConnectionsMap getAutoConnections() const override;
 
 private Q_SLOTS:
-
     /// Slot called when slider value changed.
     void onSliderChanged(int value);
 
@@ -96,7 +96,6 @@ private Q_SLOTS:
     void onTextChanged();
 
 private:
-
     /// Update the editor when the matrix changes
     void updateFromMatrix();
 
@@ -127,7 +126,7 @@ private:
     };
 
     /// Array containing the different structs to regulate the transformation matrix entries.
-    SliderWidget m_sliders[ MAX_SLIDER_INDEX ];
+    SliderWidget m_sliders[MAX_SLIDER_INDEX];
 
     /// Contains a string identifying which axes [xyz] are displayed for rotation
     std::string m_rotation;

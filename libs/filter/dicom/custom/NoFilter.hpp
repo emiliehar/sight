@@ -29,6 +29,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace custom
 {
 
@@ -38,7 +39,7 @@ namespace custom
 class FILTER_DICOM_CLASS_API NoFilter : public ICustom
 {
 public:
-    SIGHT_DECLARE_CLASS(NoFilter, ICustom, filter::dicom::factory::New< NoFilter >)
+    SIGHT_DECLARE_CLASS(NoFilter, ICustom, filter::dicom::factory::New<NoFilter>)
 
     /// Constructor
     FILTER_DICOM_API NoFilter(filter::dicom::IFilter::Key key);
@@ -48,7 +49,8 @@ public:
 
     /// Override
     FILTER_DICOM_API virtual DicomSeriesContainerType apply(
-        const data::DicomSeries::sptr& series, const core::log::Logger::sptr& logger) const override;
+        const data::DicomSeries::sptr& series,
+        const core::log::Logger::sptr& logger) const override;
 
     /// Return the name of the filter
     FILTER_DICOM_API std::string getName() const override;
@@ -57,7 +59,6 @@ public:
     FILTER_DICOM_API std::string getDescription() const override;
 
 protected:
-
     /// Filter name
     static const std::string s_FILTER_NAME;
 
@@ -66,4 +67,5 @@ protected:
 };
 
 } // namespace custom
+
 } // namespace sight::filter::dicom

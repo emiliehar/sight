@@ -33,6 +33,7 @@
 
 namespace sight::ui::dicom
 {
+
 namespace widget
 {
 
@@ -62,18 +63,18 @@ protected Q_SLOTS:
 
 protected:
     /// Group spin box
-    QPointer< ui::dicom::widget::QHexSpinBox > m_groupSpinBox;
+    QPointer<ui::dicom::widget::QHexSpinBox> m_groupSpinBox;
 
     /// Tag spin box
-    QPointer< ui::dicom::widget::QHexSpinBox > m_elementSpinBox;
+    QPointer<ui::dicom::widget::QHexSpinBox> m_elementSpinBox;
 
     /// tag name label
-    QPointer< QLabel > m_tagNameLabel;
+    QPointer<QLabel> m_tagNameLabel;
 
     /// Tag
     DcmTagKey m_tag;
-
 };
 
 } // namespace widget
+
 } // namespace sight::ui::dicom

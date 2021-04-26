@@ -35,9 +35,7 @@ namespace sight::ui::history
  */
 class UI_HISTORY_CLASS_API ICommand
 {
-
 public:
-
     typedef std::shared_ptr<ICommand> sptr;
 
     /**
@@ -69,7 +67,6 @@ public:
     {
         return "";
     }
-
 };
 
 } // namespace sight::ui::history

@@ -39,7 +39,9 @@
 
 namespace Qt3DExtras
 {
+
 class Qt3DWindow;
+
 }
 
 namespace sight::viz::qt3d
@@ -47,7 +49,9 @@ namespace sight::viz::qt3d
 
 namespace core
 {
+
 class GenericScene;
+
 }
 
 /**
@@ -72,9 +76,7 @@ class GenericScene;
  */
 class VIZ_QT3D_CLASS_API SRender final : public viz::base::IRender
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SRender, viz::base::IRender)
 
     /// Creates the service.
@@ -87,7 +89,6 @@ public:
     VIZ_QT3D_API sight::viz::qt3d::core::GenericScene* getScene();
 
 protected:
-
     /// Configures the render service.
     VIZ_QT3D_API void configuring() override;
 
@@ -101,16 +102,14 @@ protected:
     VIZ_QT3D_API void stopping() override;
 
 private:
-
     /// Contains the 3D view.
-    QPointer< Qt3DExtras::Qt3DWindow > m_3dView;
+    QPointer<Qt3DExtras::Qt3DWindow> m_3dView;
 
     /// Contains the generic scene associated to this service.
-    QPointer< sight::viz::qt3d::core::GenericScene > m_scene;
+    QPointer<sight::viz::qt3d::core::GenericScene> m_scene;
 
     /// Specifies the background color.
     QColor m_backgroundColor;
-
 };
 
 } // namespace sight::viz::qt3d.

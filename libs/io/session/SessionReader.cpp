@@ -35,7 +35,6 @@ namespace sight::io::session
 class SessionReader::SessionReaderImpl
 {
 public:
-
     /// Delete default constructors and assignment operators
     SessionReaderImpl()                                    = delete;
     SessionReaderImpl(const SessionReaderImpl&)            = delete;
@@ -46,7 +45,7 @@ public:
     /// Constructor
     inline SessionReaderImpl(SessionReader* const session_reader) :
         m_session_reader(session_reader),
-        m_password( PasswordKeeper::unique() )
+        m_password(PasswordKeeper::unique())
     {
     }
 
@@ -78,7 +77,6 @@ public:
     core::tools::Object::sptr m_object;
 
 private:
-
     /// Pointer to the public interface
     SessionReader* const m_session_reader;
 
@@ -94,7 +92,7 @@ SessionReader::SessionReader(base::reader::IObjectReader::Key key) :
 // Defining the destructor here, allows us to use PImpl with a unique_ptr
 SessionReader::~SessionReader() = default;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionReader::read()
 {
@@ -104,14 +102,14 @@ void SessionReader::read()
     setObject(m_pimpl->m_object);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SessionReader::extension()
 {
     return m_pimpl->extension();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionReader::setPassword(const core::crypto::secure_string& password)
 {

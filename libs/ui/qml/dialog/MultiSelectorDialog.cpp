@@ -32,41 +32,43 @@
 
 #include <QGuiApplication>
 
-fwGuiRegisterMacro( ::sight::ui::qml::dialog::MultiSelectorDialog,
-                    ::sight::ui::base::dialog::IMultiSelectorDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(
+    ::sight::ui::qml::dialog::MultiSelectorDialog,
+    ::sight::ui::base::dialog::IMultiSelectorDialog::REGISTRY_KEY);
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MultiSelectorDialog::MultiSelectorDialog(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MultiSelectorDialog::~MultiSelectorDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MultiSelectorDialog::setSelections(Selections _selections)
 {
     this->m_selections = _selections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MultiSelectorDialog::setTitle(std::string _title)
 {
     this->m_title = QString::fromStdString(_title);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ui::base::dialog::IMultiSelectorDialog::Selections MultiSelectorDialog::show()
 {
@@ -76,8 +78,8 @@ ui::base::dialog::IMultiSelectorDialog::Selections MultiSelectorDialog::show()
     SPTR(ui::qml::QmlEngine) engine = ui::qml::QmlEngine::getDefault();
 
     // get the path of the qml ui file in the 'rc' directory
-    const auto& dialogPath =
-        core::runtime::getLibraryResourceFilePath("fwGuiQml/dialog/MultiSelectorDialog.qml");
+    const auto& dialogPath
+        = core::runtime::getLibraryResourceFilePath("fwGuiQml/dialog/MultiSelectorDialog.qml");
     // set the root context for the model
     engine->getRootContext()->setContextProperty("multiSelectorModel", &model);
     // set the context for the new component
@@ -96,25 +98,29 @@ ui::base::dialog::IMultiSelectorDialog::Selections MultiSelectorDialog::show()
     // fill the repeater for each checkbox that has to be created
     model.addRole(Qt::UserRole + 1, "textOption");
     model.addRole(Qt::UserRole + 2, "check");
-    for( const Selections::value_type& selection :  m_selections)
+
+    for(const Selections::value_type& selection : m_selections)
     {
         QHash<QByteArray, QVariant> data;
         data.insert("textOption", QString::fromStdString(selection.first));
         data.insert("check", selection.second);
         model.addData(QHash<QByteArray, QVariant>(data));
     }
+
     if(!m_message.isNull() && !m_message.isEmpty())
     {
         Q_EMIT messageChanged();
     }
+
     SIGHT_ASSERT("The MultiSelector need at least one selection", !model.isEmpty());
 
-    for( Selections::value_type& selection :  m_selections)
+    for(Selections::value_type& selection : m_selections)
     {
         selection.second = false;
     }
+
     QEventLoop loop;
-    //slot to retrieve the result and open the dialog with invoke
+    // slot to retrieve the result and open the dialog with invoke
     connect(dialog, SIGNAL(accepted()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(reset()), &loop, SLOT(quit()));
@@ -123,19 +129,21 @@ ui::base::dialog::IMultiSelectorDialog::Selections MultiSelectorDialog::show()
     loop.exec();
 
     delete window;
+
     return m_selections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MultiSelectorDialog::resultDialog(QVariant checkList, bool state)
 {
-    if (state == true)
+    if(state == true)
     {
         // retreive each check state of the selection list
         QList<QVariant> checkListState = checkList.toList();
         int index                      = 0;
-        for( Selections::value_type& selection :  m_selections)
+
+        for(Selections::value_type& selection : m_selections)
         {
             selection.second = checkListState[index].toBool();
             index++;
@@ -143,14 +151,15 @@ void MultiSelectorDialog::resultDialog(QVariant checkList, bool state)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MultiSelectorDialog::setMessage(const std::string& msg)
 {
     m_message = QString::fromStdString(msg);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

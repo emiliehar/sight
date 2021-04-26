@@ -27,10 +27,10 @@
 namespace sight::io::igtl::detail
 {
 
-ImageTypeConverter::TypeConverterMap ImageTypeConverter::s_typeConverterMap =
-    ImageTypeConverter::initTypeConverterMap();
+ImageTypeConverter::TypeConverterMap ImageTypeConverter::s_typeConverterMap
+    = ImageTypeConverter::initTypeConverterMap();
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ImageTypeConverter::TypeConverterMap ImageTypeConverter::initTypeConverterMap()
 {
@@ -44,35 +44,39 @@ ImageTypeConverter::TypeConverterMap ImageTypeConverter::initTypeConverterMap()
     convertMap[core::tools::Type::s_UINT32] = ::igtl::ImageMessage::TYPE_UINT32;
     convertMap[core::tools::Type::s_FLOAT]  = ::igtl::ImageMessage::TYPE_FLOAT32;
     convertMap[core::tools::Type::s_DOUBLE] = ::igtl::ImageMessage::TYPE_FLOAT64;
+
     return convertMap;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const core::tools::Type& ImageTypeConverter::getFwToolsType(const std::uint8_t& igtlType)
 {
     for(const auto& typeConverter : ImageTypeConverter::s_typeConverterMap)
     {
-        if (typeConverter.second == igtlType)
+        if(typeConverter.second == igtlType)
         {
             return typeConverter.first;
         }
     }
+
     throw io::igtl::detail::exception::Conversion("Cannot found a fwTools type for igtl image type");
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::uint8_t ImageTypeConverter::getIgtlType(const core::tools::Type& type)
 {
     ImageTypeConverter::TypeConverterMap::const_iterator it;
 
     it = ImageTypeConverter::s_typeConverterMap.find(type);
-    if (it != ImageTypeConverter::s_typeConverterMap.end())
+
+    if(it != ImageTypeConverter::s_typeConverterMap.end())
     {
         return it->second;
     }
+
     throw io::igtl::detail::exception::Conversion("Cannot found a igtl image type for type : " + type.string());
 }
 
-}//namespace sight::io::igtl::detail
+} // namespace sight::io::igtl::detail

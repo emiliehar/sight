@@ -29,6 +29,7 @@
 
 namespace sight::data
 {
+
 namespace mt
 {
 
@@ -39,9 +40,7 @@ namespace mt
  */
 class DATA_CLASS_API ObjectReadLock
 {
-
 public:
-
     /**
      * @brief Constructor : owns an read lock on object mutex.
      * @deprecated use locked_ptr instead, or rely on service::IService::getLockedXXX() to directly receive a
@@ -49,7 +48,7 @@ public:
      * If adopt_lock==false : the mutex is not locked (call lock() to lock mutex)
      */
     [[deprecated("it will be removed in sight 21.0, use locked_ptr")]]
-    DATA_API ObjectReadLock( data::Object::csptr obj, bool lock = true );
+    DATA_API ObjectReadLock(data::Object::csptr obj, bool lock = true);
 
     /// Destructor. Does nothing
     DATA_API ~ObjectReadLock();
@@ -61,10 +60,10 @@ public:
     DATA_API void unlock();
 
 private:
-
     /// lock on object mutex
     core::mt::ReadLock m_lock;
 };
 
 } // mt
+
 } // fwData

@@ -46,7 +46,6 @@ class ResizeListener;
 class VIZ_SCENE3D_CLASS_API Text : public ::Ogre::MovableObject
 {
 public:
-
     /**
      * @brief Text object factory.
      * @param _id id of the new 'Text' object.
@@ -58,10 +57,14 @@ public:
      * @param _cam camera on the viewport rendering this text.
      * @return A new 'Text' instance.
      */
-    static VIZ_SCENE3D_API Text* New(const std::string& _id, ::Ogre::SceneManager* _sm,
-                                     ::Ogre::OverlayContainer* _parent,
-                                     const std::string& _fontSource, size_t _fontSize,
-                                     float _fontResolution, ::Ogre::Camera* _cam);
+    static VIZ_SCENE3D_API Text* New(
+        const std::string& _id,
+        ::Ogre::SceneManager* _sm,
+        ::Ogre::OverlayContainer* _parent,
+        const std::string& _fontSource,
+        size_t _fontSize,
+        float _fontResolution,
+        ::Ogre::Camera* _cam);
 
     /**
      * @brief Text object factory.
@@ -73,8 +76,12 @@ public:
      * @return A new 'Text' instance.
      */
     [[deprecated("Text objects manage their own font now.")]] static VIZ_SCENE3D_API
-    Text* New(const std::string& _id, ::Ogre::SceneManager* _sm, ::Ogre::OverlayContainer* _parent,
-              ::Ogre::FontPtr _font, ::Ogre::Camera* _cam = nullptr);
+    Text* New(
+        const std::string& _id,
+        ::Ogre::SceneManager* _sm,
+        ::Ogre::OverlayContainer* _parent,
+        ::Ogre::FontPtr _font,
+        ::Ogre::Camera* _cam = nullptr);
 
     /// Constructors, instantiates the overlay text element.
     VIZ_SCENE3D_API Text(const std::string& _id);
@@ -107,8 +114,9 @@ public:
     VIZ_SCENE3D_API void setVisible(bool _visible);
 
     /// Aligns the text by setting the x and y coordinates' origin.
-    VIZ_SCENE3D_API void setTextAlignment(const ::Ogre::TextAreaOverlayElement::Alignment _hAlignement,
-                                          const ::Ogre::GuiVerticalAlignment _vAlignment = ::Ogre::GVA_TOP);
+    VIZ_SCENE3D_API void setTextAlignment(
+        const ::Ogre::TextAreaOverlayElement::Alignment _hAlignement,
+        const ::Ogre::GuiVerticalAlignment _vAlignment = ::Ogre::GVA_TOP);
 
     /// Returns this MovableObject's type as a string.
     VIZ_SCENE3D_API const ::Ogre::String& getMovableType() const override;
@@ -127,11 +135,11 @@ public:
     VIZ_SCENE3D_API void _updateRenderQueue(::Ogre::RenderQueue* _queue) override;
 
     /// MovableObject interface. Not used here.
-    VIZ_SCENE3D_API virtual void visitRenderables(::Ogre::Renderable::Visitor* _visitor,
-                                                  bool _debugRenderables) override;
+    VIZ_SCENE3D_API virtual void visitRenderables(
+        ::Ogre::Renderable::Visitor* _visitor,
+        bool _debugRenderables) override;
 
 private:
-
     friend class ResizeListener;
 
     /// Sets the font to be used for rendering. Updates the text's material.
@@ -141,33 +149,32 @@ private:
     void resize();
 
     /// Viewport in which the parent node is displayed, used to compute its projection onto the screen.
-    ::Ogre::Camera* m_camera {nullptr};
+    ::Ogre::Camera* m_camera{nullptr};
 
     /// Overlay element displaying the text.
-    ::Ogre::TextAreaOverlayElement* m_overlayText {nullptr};
+    ::Ogre::TextAreaOverlayElement* m_overlayText{nullptr};
 
     /// Infinite bounding box returned by the 'getBoundingBox' method.
     /// This allows to be always updated, otherwise the text can get stuck against the viewport edges.
-    const ::Ogre::AxisAlignedBox m_bb { ::Ogre::AxisAlignedBox::EXTENT_INFINITE };
+    const ::Ogre::AxisAlignedBox m_bb{::Ogre::AxisAlignedBox::EXTENT_INFINITE};
 
     /// Container holding the text.
-    ::Ogre::OverlayContainer* m_parentContainer {nullptr};
+    ::Ogre::OverlayContainer* m_parentContainer{nullptr};
 
     /// Font used to display the text.
     ::Ogre::FontPtr m_font;
 
     /// The text's height in pixels. Computed using the font size and screen dpi.
-    float m_heightInPixels { 0.f };
+    float m_heightInPixels{0.f};
 
     /// Current position not taking alignemnt into account.
-    ::Ogre::Vector2 m_position { 0.f, 0.f };
+    ::Ogre::Vector2 m_position{0.f, 0.f};
 
     /// Listens to when the viewport dimension are changed. Resizes the text.
-    ResizeListener* m_listener { nullptr };
+    ResizeListener* m_listener{nullptr};
 
     /// Color of the displayed text.
-    ::Ogre::ColourValue m_textColor { 1.f, 1.f, 1.f, 1.f };
-
+    ::Ogre::ColourValue m_textColor{1.f, 1.f, 1.f, 1.f};
 };
 
 } // namespace sight::viz::scene3d

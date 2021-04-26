@@ -33,6 +33,7 @@ namespace sight::filter::dicom
  */
 namespace composite
 {
+
 } // namespace composite
 
 /**
@@ -40,6 +41,7 @@ namespace composite
  */
 namespace custom
 {
+
 } // namespace custom
 
 /**
@@ -47,6 +49,7 @@ namespace custom
  */
 namespace exceptions
 {
+
 } // namespace exceptions
 
 /**
@@ -54,6 +57,7 @@ namespace exceptions
  */
 namespace helper
 {
+
 } // namespace helper
 
 /**
@@ -61,6 +65,7 @@ namespace helper
  */
 namespace modifier
 {
+
 } // namespace modifier
 
 /**
@@ -68,6 +73,7 @@ namespace modifier
  */
 namespace sorter
 {
+
 } // namespace sorter
 
 /**
@@ -75,6 +81,7 @@ namespace sorter
  */
 namespace splitter
 {
+
 } // namespace splitter
 
 /**
@@ -82,6 +89,7 @@ namespace splitter
  */
 namespace factory
 {
+
 } // namespace factory
 
 /**
@@ -89,6 +97,7 @@ namespace factory
  */
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace sight::filter::dicom

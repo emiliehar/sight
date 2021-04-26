@@ -37,7 +37,7 @@ namespace ut
 
 class ActivitySeriesBuilderTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ActivitySeriesBuilderTest );
+CPPUNIT_TEST_SUITE(ActivitySeriesBuilderTest);
 
 CPPUNIT_TEST(buildDataTest);
 
@@ -51,10 +51,10 @@ public:
     void buildDataTest();
 
 protected:
-    SPTR( core::runtime::Module ) m_module;
-    SPTR( activity::extension::Activity ) m_activity;
-
+    SPTR(core::runtime::Module) m_module;
+    SPTR(activity::extension::Activity) m_activity;
 };
 
-} //namespace ut
-} //namespace sight::activity
+} // namespace ut
+
+} // namespace sight::activity

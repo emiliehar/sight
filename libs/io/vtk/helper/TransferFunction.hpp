@@ -40,9 +40,7 @@ namespace helper
  */
 class IO_VTK_CLASS_API TransferFunction
 {
-
 public:
-
     /*!
      * @brief Convert a data::TransferFunction to a vtkLookupTable.
      *
@@ -51,10 +49,11 @@ public:
      * @param[in] size lookup table size
      * @param[out] lt vtkLookupTable
      */
-    IO_VTK_API static void toVtkLookupTable(data::TransferFunction::csptr tf,
-                                            vtkSmartPointer<vtkLookupTable>  lt,
-                                            bool allowTransparency = false,
-                                            unsigned int size      = 256 );
+    IO_VTK_API static void toVtkLookupTable(
+        data::TransferFunction::csptr tf,
+        vtkSmartPointer<vtkLookupTable> lt,
+        bool allowTransparency = false,
+        unsigned int size      = 256);
 
     /*!
      * @brief Convert the range of an Image or a TransferFunction to a black and white vtkLookupTable.
@@ -65,11 +64,13 @@ public:
      * @param[out] lt vtkLookupTable
      *
      */
-    IO_VTK_API static void toBWVtkLookupTable(   double rangeMin, double rangeMax,
-                                                 vtkSmartPointer<vtkLookupTable> lt,
-                                                 unsigned int size = 256 );
-
+    IO_VTK_API static void toBWVtkLookupTable(
+        double rangeMin,
+        double rangeMax,
+        vtkSmartPointer<vtkLookupTable> lt,
+        unsigned int size = 256);
 };
 
 } // namespace helper
+
 } // namespace sight::io::vtk

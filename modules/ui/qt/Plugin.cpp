@@ -42,17 +42,18 @@
 
 namespace sight::module::ui::qt
 {
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 SIGHT_REGISTER_PLUGIN("::sight::module::ui::qt::Plugin");
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Plugin::~Plugin() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Plugin::start()
 {
@@ -64,19 +65,19 @@ void Plugin::start()
     std::function<QSharedPointer<QCoreApplication>(int&, char**)> callback
         = [](int& argc, char** argv)
           {
-              return QSharedPointer< QApplication > ( new ::sight::ui::qt::App(argc, argv, true) );
+              return QSharedPointer<QApplication>(new ::sight::ui::qt::App(argc, argv, true));
           };
 
     m_workerQt = ::sight::ui::qt::getQtWorker(argc, argv, callback, profile->getName(), profile->getVersion());
 
     core::thread::ActiveWorkers::setDefaultWorker(m_workerQt);
 
-    m_workerQt->post( std::bind( &Plugin::loadStyleSheet, this ) );
+    m_workerQt->post(std::bind(&Plugin::loadStyleSheet, this));
 
     core::runtime::getCurrentProfile()->setRunCallback(std::bind(&Plugin::run, this));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Plugin::stop() noexcept
 {
@@ -87,18 +88,18 @@ void Plugin::stop() noexcept
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void setup()
 {
     core::runtime::getCurrentProfile()->setup();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int Plugin::run() noexcept
 {
-    m_workerQt->post( std::bind( &setup ) );
+    m_workerQt->post(std::bind(&setup));
     m_workerQt->getFuture().wait(); // This is required to start WorkerQt loop
 
     core::runtime::getCurrentProfile()->cleanup();
@@ -110,32 +111,33 @@ int Plugin::run() noexcept
     return result;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Plugin::loadStyleSheet()
 {
-    if( this->getModule()->hasParameter("resource") )
+    if(this->getModule()->hasParameter("resource"))
     {
         const std::string resourceFile = this->getModule()->getParameterValue("resource");
         const auto path                = core::runtime::getModuleResourceFilePath(resourceFile);
 
         const bool resourceLoaded = QResource::registerResource(path.string().c_str());
-        SIGHT_ASSERT("Cannot load resources '"+resourceFile+"'.", resourceLoaded);
+        SIGHT_ASSERT("Cannot load resources '" + resourceFile + "'.", resourceLoaded);
     }
 
-    if( this->getModule()->hasParameter("style") )
+    if(this->getModule()->hasParameter("style"))
     {
         const std::string style = this->getModule()->getParameterValue("style");
         qApp->setStyle(QStyleFactory::create(QString::fromStdString(style)));
     }
 
-    if( this->getModule()->hasParameter("stylesheet") )
+    if(this->getModule()->hasParameter("stylesheet"))
     {
         const std::string stylesheetFile = this->getModule()->getParameterValue("stylesheet");
         const auto path                  = core::runtime::getModuleResourceFilePath(stylesheetFile);
 
         QFile data(QString::fromStdString(path.string()));
         QString style;
+
         if(data.open(QFile::ReadOnly))
         {
             QTextStream styleIn(&data);
@@ -146,6 +148,6 @@ void Plugin::loadStyleSheet()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt

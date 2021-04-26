@@ -39,8 +39,10 @@ namespace Study
 class IO_PATCH_CLASS_API V1ToFwMedDataStudyV1 : public io::atoms::patch::IStructuralPatch
 {
 public:
-    SIGHT_DECLARE_CLASS(V1ToFwMedDataStudyV1, patch::structural::data::Study::V1ToFwMedDataStudyV1,
-                        new V1ToFwMedDataStudyV1)
+    SIGHT_DECLARE_CLASS(
+        V1ToFwMedDataStudyV1,
+        patch::structural::data::Study::V1ToFwMedDataStudyV1,
+        new V1ToFwMedDataStudyV1)
 
     /// Constructor
     IO_PATCH_API V1ToFwMedDataStudyV1();
@@ -49,7 +51,7 @@ public:
     IO_PATCH_API ~V1ToFwMedDataStudyV1();
 
     /// Copy constructor
-    IO_PATCH_API V1ToFwMedDataStudyV1( const V1ToFwMedDataStudyV1& cpy );
+    IO_PATCH_API V1ToFwMedDataStudyV1(const V1ToFwMedDataStudyV1& cpy);
 
     /**
      * @brief Applies patch
@@ -57,10 +59,10 @@ public:
      * Removes attributes 'hospital', 'modality', 'acquisition_zone', 'ris_id', 'db_id' and 'acquisitions', renames
      * 'uid' to 'instance_uid', adds 'referring_physicians_name' and 'patient_age'.
      */
-    IO_PATCH_API virtual void apply(const sight::atoms::Object::sptr& previous,
-                                    const sight::atoms::Object::sptr& current,
-                                    io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
+    IO_PATCH_API virtual void apply(
+        const sight::atoms::Object::sptr& previous,
+        const sight::atoms::Object::sptr& current,
+        io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
 };
 
 } // namespace Study

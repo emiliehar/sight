@@ -28,35 +28,38 @@
 
 namespace sight::ui::qml
 {
+
 namespace model
 {
+
 RoleListModel::RoleListModel(QObject* parent) :
     QAbstractListModel(parent)
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 int RoleListModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
+
     return m_data.size();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QVariant RoleListModel::data(const QModelIndex& index, int role) const
 {
     // check if the role exist
-    if (!m_roles.contains(role))
+    if(!m_roles.contains(role))
     {
         return QVariant();
     }
+
     // Check boudaries
-    if(index.column() < 0 ||
-       index.row() < 0 ||
-       rowCount() <= index.row())
+    if(index.column() < 0
+       || index.row() < 0
+       || rowCount() <= index.row())
     {
         return QVariant();
     }
@@ -65,15 +68,14 @@ QVariant RoleListModel::data(const QModelIndex& index, int role) const
     return m_data[index.row()].value(m_roles.value(role));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QHash<int, QByteArray> RoleListModel::roleNames() const
 {
     return m_roles;
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RoleListModel::addData(const QHash<QByteArray, QVariant>& data)
 {
@@ -83,7 +85,7 @@ void RoleListModel::addData(const QHash<QByteArray, QVariant>& data)
     QAbstractListModel::endResetModel();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void RoleListModel::addRole(const int& enumNb, const QByteArray& role)
 {
@@ -92,14 +94,15 @@ void RoleListModel::addRole(const int& enumNb, const QByteArray& role)
     m_data.clear();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool RoleListModel::isEmpty() noexcept
 {
-    return (m_data.isEmpty());
+    return m_data.isEmpty();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace model
+
 } // namespace sight::ui::qml

@@ -30,21 +30,20 @@ namespace sight::module::ui::viz
 
 static const core::com::Signals::SignalKeyType s_STEREO_ACTIVE_SIG = "stereoActive";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SStereoToggler::SStereoToggler()
 {
-    m_stereoActiveSig = newSignal< StereoActiveSigType >(s_STEREO_ACTIVE_SIG);
+    m_stereoActiveSig = newSignal<StereoActiveSigType>(s_STEREO_ACTIVE_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SStereoToggler::~SStereoToggler()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoToggler::configuring()
 {
@@ -61,11 +60,11 @@ void SStereoToggler::configuring()
     {
         m_stereoMode = StereoModeType::STEREO;
     }
-    else if (stereoMode == "AutoStereo5")
+    else if(stereoMode == "AutoStereo5")
     {
         m_stereoMode = StereoModeType::AUTOSTEREO_5;
     }
-    else if (stereoMode == "AutoStereo8")
+    else if(stereoMode == "AutoStereo8")
     {
         m_stereoMode = StereoModeType::AUTOSTEREO_8;
     }
@@ -75,21 +74,21 @@ void SStereoToggler::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoToggler::starting()
 {
     this->actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoToggler::updating()
 {
     if(this->confirmAction())
     {
-        service::registry::ObjectService::ServiceVectorType renderers =
-            service::OSR::getServices("::sight::viz::scene3d::SRender");
+        service::registry::ObjectService::ServiceVectorType renderers
+            = service::OSR::getServices("::sight::viz::scene3d::SRender");
 
         const bool enableStereo = this->getIsActive() && this->getIsExecutable();
         const auto stereoMode   = enableStereo ? m_stereoMode : StereoModeType::NONE;
@@ -117,13 +116,13 @@ void SStereoToggler::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoToggler::stopping()
 {
     this->actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // uiVisuOgre

@@ -25,4 +25,5 @@
 /// The namespace sight::viz::scene3d contains classes for rendering with Ogre.
 namespace sight::viz::scene3d
 {
+
 }

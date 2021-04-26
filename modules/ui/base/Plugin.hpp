@@ -37,10 +37,8 @@ namespace sight::module::ui::base
 
 class MODULE_UI_BASE_CLASS_API Plugin : public core::runtime::Plugin
 {
-
 public:
-
-    ///@brief  Destructor. Do nothing.
+    /// @brief  Destructor. Do nothing.
     MODULE_UI_BASE_API virtual ~Plugin() noexcept;
 
     /**
@@ -62,7 +60,6 @@ private:
     static const std::string s_PREF_SERVICE_UID;
 
     data::Composite::sptr m_preferences;
-
 };
 
 } // namespace sight::module::ui::base

@@ -29,30 +29,30 @@
 #include <boost/array.hpp>
 #include <boost/pool/poolfwd.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(BufferTL));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (BufferTL));
 
 namespace sight::data
 {
+
 /**
  * @brief   This class defines a timeline of buffers. It implements basic features of the Timeline interface such as
  *          pushing or retrieving objects. Allocation must be done by inherited classes.
  */
 class DATA_CLASS_API BufferTL : public TimeLine
 {
-
 public:
     SIGHT_DECLARE_CLASS(BufferTL, data::Object)
 
     typedef core::HiResClock::HiResClockType TimestampType;
-    typedef std::map< TimestampType, SPTR(data::timeline::Buffer) > TimelineType;
-    typedef std::pair< TimestampType, SPTR(data::timeline::Buffer) > BufferPairType;
+    typedef std::map<TimestampType, SPTR(data::timeline::Buffer)> TimelineType;
+    typedef std::pair<TimestampType, SPTR(data::timeline::Buffer)> BufferPairType;
     typedef ::boost::pool<> PoolType;
 
     /**
      * @brief Constructor
      * @param key Private construction key
      */
-    DATA_API BufferTL( data::Object::Key key );
+    DATA_API BufferTL(data::Object::Key key);
 
     /// Destructor
     DATA_API virtual ~BufferTL();
@@ -66,7 +66,8 @@ public:
      * @param direction direction to find the closest object (PAST, FUTURE, BOTH)
      */
     DATA_API virtual CSPTR(data::timeline::Object) getClosestObject(
-        core::HiResClock::HiResClockType timestamp, DirectionType direction = BOTH) const override;
+        core::HiResClock::HiResClockType timestamp,
+        DirectionType direction = BOTH) const override;
 
     /// Return the object matching the specified timestamp, returns NULL if object is not found
     DATA_API virtual CSPTR(data::timeline::Object) getObject(core::HiResClock::HiResClockType timestamp)
@@ -109,14 +110,13 @@ public:
     }
 
 protected:
-
     /// Allocate the pool buffer.
     DATA_API void allocPoolSize(std::size_t size);
 
     /// Mutex to protect m_timeline and m_pool access
     mutable core::mt::ReadWriteMutex m_tlMutex;
 
-    ///Timeline
+    /// Timeline
     TimelineType m_timeline;
 
     /// Pool of buffer
@@ -124,7 +124,6 @@ protected:
 
     /// maximum size
     size_t m_maximumSize;
-
 }; // class BufferTL
 
 } // namespace sight::data

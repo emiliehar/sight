@@ -35,7 +35,7 @@ namespace exception
 /// Bad run exception.
 struct BadRun : core::Exception
 {
-    CORE_API BadRun ( const std::string& err );
+    CORE_API BadRun(const std::string& err);
 };
 
 } // namespace exception

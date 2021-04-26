@@ -103,10 +103,9 @@ namespace sight::module::ui::qml::activity
 class MODULE_UI_QML_CLASS_API SView : public sight::ui::qml::IQmlEditor,
                                       public sight::activity::IActivityLauncher
 {
-
 Q_OBJECT
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(SView, ::sight::ui::qml::IQmlEditor)
 
     /// Constructor. Do nothing.
@@ -117,18 +116,16 @@ public:
     MODULE_UI_QML_API ~SView() override;
 
     /// Signal emited when the activity is launched
-    typedef core::com::Signal< void () > ActivityLaunchedSignalType;
+    typedef core::com::Signal<void ()> ActivityLaunchedSignalType;
 
 Q_SIGNALS:
     void launchRequested(QUrl path, QVariantMap replace);
 
 public Q_SLOTS:
-
     /// Emit 'activityLaunched' signal. Should be called by Qml when the activity's Qml file is pushed in the stack view
     void notifyActivityCreation();
 
 protected:
-
     /// Parse the configuration (set the parameters to replace in the activities to launch
     void configuring() override;
 
@@ -142,7 +139,6 @@ protected:
     void updating() override;
 
 private:
-
     /// Slot: Launch the given activity in the stackView.
     void launchActivity(data::ActivitySeries::sptr activitySeries);
 

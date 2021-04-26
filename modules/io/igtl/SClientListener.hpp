@@ -61,9 +61,7 @@ namespace sight::module::io::igtl
  */
 class MODULE_IO_IGTL_CLASS_API SClientListener : public module::io::igtl::INetworkListener
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SClientListener, module::io::igtl::INetworkListener)
 
     /// Constructor
@@ -73,7 +71,6 @@ public:
     MODULE_IO_IGTL_API virtual ~SClientListener();
 
 protected:
-
     /// Configure port, hostname and device name
     MODULE_IO_IGTL_API void configuring() override;
 
@@ -84,12 +81,11 @@ protected:
     MODULE_IO_IGTL_API void stopping() override;
 
 private:
-
     /**
      * @brief method contain the receive loop
      * this method run in a thread
      */
-    void    runClient();
+    void runClient();
 
     /**
      * @brief method called when the current object is a timeline

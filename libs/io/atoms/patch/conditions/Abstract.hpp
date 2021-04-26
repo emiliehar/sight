@@ -30,6 +30,7 @@
 
 namespace sight::io::atoms::patch
 {
+
 namespace conditions
 {
 
@@ -55,11 +56,11 @@ protected:
     Abstract()
     {
     }
+
     Abstract(sight::atoms::Base::sptr defaultValue);
 
     sight::atoms::Base::sptr m_defaultValue;
     std::string m_message;
-
 };
 
 } // namespace conditions

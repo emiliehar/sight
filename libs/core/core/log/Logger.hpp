@@ -37,12 +37,10 @@ namespace sight::core::log
  */
 class CORE_CLASS_API Logger : public core::tools::Object
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(Logger, core::tools::Object, new Logger)
 
-    typedef std::vector< core::log::Log > LogContainerType;
+    typedef std::vector<core::log::Log> LogContainerType;
     typedef LogContainerType::iterator IteratorType;
     typedef LogContainerType::const_iterator ConstIteratorType;
     typedef LogContainerType::reverse_iterator ReverseIteratorType;
@@ -103,58 +101,63 @@ public:
         return m_logContainer.empty();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     IteratorType begin()
     {
         return m_logContainer.begin();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     IteratorType end()
     {
         return m_logContainer.end();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     ConstIteratorType begin() const
     {
         return m_logContainer.begin();
     }
-    //------------------------------------------------------------------------------
 
-    ConstIteratorType end()   const
+    // ------------------------------------------------------------------------------
+
+    ConstIteratorType end() const
     {
         return m_logContainer.end();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     ReverseIteratorType rbegin()
     {
         return m_logContainer.rbegin();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     ReverseIteratorType rend()
     {
         return m_logContainer.rend();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     ConstReverseIteratorType rbegin() const
     {
         return m_logContainer.rbegin();
     }
-    //------------------------------------------------------------------------------
 
-    ConstReverseIteratorType rend()   const
+    // ------------------------------------------------------------------------------
+
+    ConstReverseIteratorType rend() const
     {
         return m_logContainer.rend();
     }
 
 protected:
-
     /**
      * @brief Function used to sort logs
      * @param logA First log
@@ -164,7 +167,6 @@ protected:
 
     /// Log container
     LogContainerType m_logContainer;
-
 }; // class Logger
 
 } // namespace sight::core::log

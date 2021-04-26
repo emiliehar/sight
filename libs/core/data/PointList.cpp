@@ -29,7 +29,7 @@
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
 
-SIGHT_REGISTER_DATA( sight::data::PointList );
+SIGHT_REGISTER_DATA(sight::data::PointList);
 
 namespace sight::data
 {
@@ -37,7 +37,7 @@ namespace sight::data
 const core::com::Signals::SignalKeyType PointList::s_POINT_ADDED_SIG   = "pointAdded";
 const core::com::Signals::SignalKeyType PointList::s_POINT_REMOVED_SIG = "pointRemoved";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PointList::PointList(data::Object::Key)
 {
@@ -45,44 +45,49 @@ PointList::PointList(data::Object::Key)
     newSignal<PointRemovedSignalType>(s_POINT_REMOVED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PointList::~PointList()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void PointList::shallowCopy(const Object::csptr& _source )
+void PointList::shallowCopy(const Object::csptr& _source)
 {
     PointList::csptr other = PointList::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldShallowCopy( _source );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldShallowCopy(_source);
 
     m_vPoints = other->m_vPoints;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointList::cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& _cache)
 {
     PointList::csptr other = PointList::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( _source, _cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(_source, _cache);
 
     m_vPoints.clear();
-    for(const PointListContainer::value_type& point : other->m_vPoints )
+
+    for(const PointListContainer::value_type& point : other->m_vPoints)
     {
         Point::sptr newPoint = Point::New();
         newPoint = data::Object::copy(point, _cache);
-        m_vPoints.push_back( newPoint );
+        m_vPoints.push_back(newPoint);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

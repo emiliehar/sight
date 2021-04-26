@@ -28,17 +28,18 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace ie
 {
 
 /**
  * @brief Patient Information Entity class
  */
-class IO_DICOM_CLASS_API Patient : public io::dicom::reader::ie::InformationEntity< data::Patient >
+class IO_DICOM_CLASS_API Patient : public io::dicom::reader::ie::InformationEntity<data::Patient>
 {
-
 public:
     /**
      * @brief Constructor
@@ -50,13 +51,14 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API Patient(const CSPTR(data::DicomSeries)& dicomSeries,
-                         const SPTR(::gdcm::Reader)& reader,
-                         const SPTR(io::dicom::container::DicomInstance)& instance,
-                         const data::Patient::sptr& patient,
-                         const core::log::Logger::sptr& logger = nullptr,
-                         ProgressCallback progress             = nullptr,
-                         CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API Patient(
+        const CSPTR(data::DicomSeries)& dicomSeries,
+        const SPTR(::gdcm::Reader)& reader,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const data::Patient::sptr& patient,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~Patient();
@@ -69,5 +71,7 @@ public:
 };
 
 } // namespace ie
+
 } // namespace reader
+
 } // namespace sight::io::dicom

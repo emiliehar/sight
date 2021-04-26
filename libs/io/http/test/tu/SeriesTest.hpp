@@ -28,13 +28,14 @@
 
 namespace sight::io::http
 {
+
 namespace ut
 {
 
 class SeriesTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SeriesTest );
-CPPUNIT_TEST( testSeries );
+CPPUNIT_TEST_SUITE(SeriesTest);
+CPPUNIT_TEST(testSeries);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -54,4 +55,5 @@ private:
 };
 
 } // namespace ut
+
 } // namespace sight::io::http

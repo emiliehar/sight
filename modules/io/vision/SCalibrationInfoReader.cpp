@@ -47,35 +47,34 @@ namespace sight::module::io::vision
 
 static const core::com::Slots::SlotKeyType s_UPDATE_CHESSBOARD_SIZE_SLOT = "updateChessboardSize";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCalibrationInfoReader::SCalibrationInfoReader() noexcept
 {
-    newSlot( s_UPDATE_CHESSBOARD_SIZE_SLOT, &SCalibrationInfoReader::updateChessboardSize, this );
+    newSlot(s_UPDATE_CHESSBOARD_SIZE_SLOT, &SCalibrationInfoReader::updateChessboardSize, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCalibrationInfoReader::~SCalibrationInfoReader() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SCalibrationInfoReader::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationInfoReader::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationInfoReader::openLocationDialog()
 {
@@ -89,7 +88,7 @@ void SCalibrationInfoReader::openLocationDialog()
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
 
-    if (result)
+    if(result)
     {
         this->setFolder(result->getFolder());
         defaultDirectory->setFolder(result->getFolder().parent_path());
@@ -101,7 +100,7 @@ void SCalibrationInfoReader::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationInfoReader::configuring()
 {
@@ -117,21 +116,21 @@ void SCalibrationInfoReader::configuring()
     m_scaleKey = boardConfig.get<std::string>("<xmlattr>.scale", "");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationInfoReader::starting()
 {
     this->updateChessboardSize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationInfoReader::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
-        data::CalibrationInfo::sptr calibInfo =
-            this->getInOut< data::CalibrationInfo >(sight::io::base::service::s_DATA_KEY);
+        data::CalibrationInfo::sptr calibInfo
+            = this->getInOut<data::CalibrationInfo>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("Missing calibration info.", calibInfo);
 
         data::mt::ObjectWriteLock calibInfoLock(calibInfo);
@@ -139,7 +138,7 @@ void SCalibrationInfoReader::updating()
         sight::ui::base::Cursor cursor;
         cursor.setCursor(ui::base::ICursor::BUSY);
 
-        using DetectionPairType = std::pair< data::Image::sptr, data::PointList::sptr >;
+        using DetectionPairType = std::pair<data::Image::sptr, data::PointList::sptr>;
 
         const std::filesystem::path folder = this->getFolder();
 
@@ -155,9 +154,11 @@ void SCalibrationInfoReader::updating()
             {
                 ::cv::cvtColor(img, img, ::cv::COLOR_BGR2RGB);
 
-                data::PointList::sptr chessboardPts = geometry::vision::helper::detectChessboard(img,
-                                                                                                 m_width, m_height,
-                                                                                                 m_scale);
+                data::PointList::sptr chessboardPts = geometry::vision::helper::detectChessboard(
+                    img,
+                    m_width,
+                    m_height,
+                    m_scale);
 
                 if(chessboardPts)
                 {
@@ -173,14 +174,14 @@ void SCalibrationInfoReader::updating()
                 }
                 else
                 {
-                    errorMessage = "Couldn't detect a chessboard in '" +  dirEntry.string() + "'.\n\n"
-                                   "Please make sure that the right chessboard parameters are set.";
+                    errorMessage = "Couldn't detect a chessboard in '" + dirEntry.string() + "'.\n\n"
+                                                                                             "Please make sure that the right chessboard parameters are set.";
                 }
             }
             else
             {
-                errorMessage = "Couldn't read '" +  dirEntry.string() + "'.\n\n"
-                               "Make sure it is a valid image format.";
+                errorMessage = "Couldn't read '" + dirEntry.string() + "'.\n\n"
+                                                                       "Make sure it is a valid image format.";
             }
 
             if(!errorMessage.empty())
@@ -197,6 +198,7 @@ void SCalibrationInfoReader::updating()
                     m_readFailed = true;
                     break;
                 }
+
                 errorMessage.clear();
             }
         }
@@ -211,7 +213,7 @@ void SCalibrationInfoReader::updating()
                 calibInfo->addRecord(img, chessboard);
             }
 
-            auto sig = calibInfo->signal< data::CalibrationInfo::AddedRecordSignalType >
+            auto sig = calibInfo->signal<data::CalibrationInfo::AddedRecordSignalType>
                            (data::CalibrationInfo::s_MODIFIED_SIG);
 
             sig->asyncEmit();
@@ -223,7 +225,7 @@ void SCalibrationInfoReader::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCalibrationInfoReader::stopping()
 {
@@ -234,19 +236,22 @@ void SCalibrationInfoReader::stopping()
 void SCalibrationInfoReader::updateChessboardSize()
 {
     const std::string widthStr = ui::base::preferences::getPreference(m_widthKey);
+
     if(!widthStr.empty())
     {
         m_width = std::stoul(widthStr);
     }
 
     const std::string heightStr = ui::base::preferences::getPreference(m_heightKey);
+
     if(!heightStr.empty())
     {
         m_height = std::stoul(heightStr);
     }
 
     const std::string scaleStr = ui::base::preferences::getPreference(m_scaleKey);
-    if (!scaleStr.empty())
+
+    if(!scaleStr.empty())
     {
         m_scale = std::stof(scaleStr);
 
@@ -258,6 +263,6 @@ void SCalibrationInfoReader::updateChessboardSize()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::vision

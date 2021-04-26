@@ -53,17 +53,20 @@ public:
     VIZ_SCENE3D_API ~Material();
 
     /// Updates material options mode (standard, point normals or cells normals)
-    VIZ_SCENE3D_API void updateOptionsMode(int _optionsMode );
+    VIZ_SCENE3D_API void updateOptionsMode(int _optionsMode);
 
     /// Updates material polygon mode (surface, point or wireframe)
-    VIZ_SCENE3D_API void updatePolygonMode( int _polygonMode );
+    VIZ_SCENE3D_API void updatePolygonMode(int _polygonMode);
 
     /// Update material shading mode (flat/gouraud/phong) in fixed function pipeline
-    VIZ_SCENE3D_API void updateShadingMode(int _shadingMode, int _numLights, bool _hasDiffuseTexture,
-                                           bool useTextureAlpha);
+    VIZ_SCENE3D_API void updateShadingMode(
+        int _shadingMode,
+        int _numLights,
+        bool _hasDiffuseTexture,
+        bool useTextureAlpha);
 
     /// Update material color in fixed function pipeline
-    VIZ_SCENE3D_API void updateRGBAMode( data::Material::sptr _sightMaterial );
+    VIZ_SCENE3D_API void updateRGBAMode(data::Material::sptr _sightMaterial);
 
     void setHasMeshNormal(bool _hasMeshNormal);
     void setHasUV(bool _hasUV);
@@ -85,7 +88,6 @@ public:
     VIZ_SCENE3D_API void setTemplate(const std::string& _templateName);
 
 private:
-
     /// Remove a rendering pass in all techniques on the current material
     void removePass(const std::string& _name);
 
@@ -98,52 +100,52 @@ private:
     ::Ogre::MaterialPtr m_material;
 
     /// Defines if the associated mesh has a normal layer
-    bool m_hasMeshNormal { true };
+    bool m_hasMeshNormal{true};
 
     /// Defines if the associated mesh has a a texture coordinates layer
-    bool m_hasUV { false };
+    bool m_hasUV{false};
 
     /// Defines if the associated mesh has a a per vertex color layer
-    bool m_hasVertexColor { false };
+    bool m_hasVertexColor{false};
 
     /// Defines if the associated mesh has a a per primitive color layer
-    bool m_hasPrimitiveColor { false };
+    bool m_hasPrimitiveColor{false};
 
     /// Primitive type of the associated mesh
-    data::Mesh::CellType m_primitiveType { data::Mesh::CellType::TRIANGLE };
+    data::Mesh::CellType m_primitiveType{data::Mesh::CellType::TRIANGLE};
 
     /// Name of the texture used to store per-primitive color
     std::string m_perPrimitiveColorTextureName;
 
     /// Size of the mesh, used either to adjust the size of normals or to expand billboards
-    ::Ogre::Real m_meshSize { 1.f };
+    ::Ogre::Real m_meshSize{1.f};
 
     /// Name of the material template
     std::string m_templateName;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setHasMeshNormal(bool _hasMeshNormal)
 {
     m_hasMeshNormal = _hasMeshNormal;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setHasUV(bool _hasUV)
 {
     m_hasUV = _hasUV;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setHasVertexColor(bool _hasVertexColor)
 {
     m_hasVertexColor = _hasVertexColor;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setHasPrimitiveColor(bool _hasPrimitiveColor, const std::string& _textureName)
 {
@@ -151,27 +153,27 @@ inline void Material::setHasPrimitiveColor(bool _hasPrimitiveColor, const std::s
     m_perPrimitiveColorTextureName = _textureName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setPrimitiveType(data::Mesh::CellTypesEnum _type)
 {
-    m_primitiveType = static_cast< data::Mesh::CellType >(_type);
+    m_primitiveType = static_cast<data::Mesh::CellType>(_type);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setPrimitiveType(data::Mesh::CellType _type)
 {
     m_primitiveType = _type;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Material::setMeshSize(const float _size)
 {
     m_meshSize = _size;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d

@@ -32,17 +32,23 @@
 
 namespace sight::data
 {
+
 class Reconstruction;
+
 }
 
 namespace sight::data
 {
+
 class ModelSeries;
+
 }
 
 namespace sight::core::jobs
 {
+
 class Observer;
+
 }
 
 namespace sight::io::vtk
@@ -53,14 +59,14 @@ namespace sight::io::vtk
  *
  * Write a data::Reconstruction as .obj file using the VTK lib and the obj format.
  */
-class ModelSeriesObjWriter : public io::base::writer::GenericObjectWriter< data::ModelSeries >,
+class ModelSeriesObjWriter : public io::base::writer::GenericObjectWriter<data::ModelSeries>,
                              public core::location::SingleFolder
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(ModelSeriesObjWriter, io::base::writer::GenericObjectWriter< data::ModelSeries >,
-                        io::base::writer::factory::New< ModelSeriesObjWriter >)
+    SIGHT_DECLARE_CLASS(
+        ModelSeriesObjWriter,
+        io::base::writer::GenericObjectWriter<data::ModelSeries>,
+        io::base::writer::factory::New<ModelSeriesObjWriter>)
 
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
@@ -82,8 +88,7 @@ public:
     IO_VTK_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 };
 

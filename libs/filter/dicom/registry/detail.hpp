@@ -39,7 +39,7 @@ namespace registry
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(filter::dicom::IFilter) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(filter::dicom::IFilter)(), KeyType> Type;
 
 FILTER_DICOM_API SPTR(Type) get();
 

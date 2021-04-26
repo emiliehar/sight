@@ -29,20 +29,20 @@
 namespace sight::viz::scene3d::overlay
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ViewportListener::ViewportListener(ViewportOverlaysMapType& _vpLayerMap) :
     m_viewportLayerMap(_vpLayerMap)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ViewportListener::~ViewportListener()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void ViewportListener::preViewportUpdate(const ::Ogre::RenderTargetViewportEvent& evt)
 {
@@ -61,7 +61,7 @@ void ViewportListener::preViewportUpdate(const ::Ogre::RenderTargetViewportEvent
     this->::Ogre::RenderTargetListener::preViewportUpdate(evt);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void ViewportListener::postViewportUpdate(const Ogre::RenderTargetViewportEvent& evt)
 {
@@ -80,6 +80,6 @@ void ViewportListener::postViewportUpdate(const Ogre::RenderTargetViewportEvent&
     this->::Ogre::RenderTargetListener::postViewportUpdate(evt);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d::overlay

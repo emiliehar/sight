@@ -43,26 +43,26 @@ namespace sight::module::ui::qt
 
 static const core::com::Slots::SlotKeyType s_UPDATE_FROM_PREFS_SLOT = "updateFromPreferences";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SStyleSelector::SStyleSelector() noexcept
 {
     newSlot(s_UPDATE_FROM_PREFS_SLOT, &SStyleSelector::updateFromPrefs, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SStyleSelector::~SStyleSelector() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SStyleSelector::configuring()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SStyleSelector::starting()
 {
@@ -71,7 +71,7 @@ void SStyleSelector::starting()
     const auto styleRc = core::runtime::getModuleResourcePath("sight::module::ui::qt");
 
     // Stores each rcc & qss
-    for(auto& p: std::filesystem::directory_iterator(styleRc))
+    for(auto& p : std::filesystem::directory_iterator(styleRc))
     {
         std::filesystem::path f = p;
 
@@ -80,11 +80,13 @@ void SStyleSelector::starting()
             const std::string filename = f.filename().replace_extension("").string();
 
             std::string name = filename;
-            std::transform(filename.begin(), filename.end(), name.begin(),
-                           [](unsigned char c) -> unsigned char { return std::toupper(c); });
+            std::transform(
+                filename.begin(),
+                filename.end(),
+                name.begin(),
+                [](unsigned char c) -> unsigned char {return std::toupper(c);});
 
             m_styleMap[name] = f.replace_extension("");
-
         }
     }
 
@@ -92,21 +94,20 @@ void SStyleSelector::starting()
     this->updateFromPrefs();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SStyleSelector::stopping()
 {
     m_styleMap.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SStyleSelector::updating()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SStyleSelector::changeStyle(const std::string& _styleName)
 {
@@ -118,15 +119,17 @@ void SStyleSelector::changeStyle(const std::string& _styleName)
         qApp->setStyleSheet("");
         sight::ui::base::preferences::setPreference("THEME", "DEFAULT");
         sight::ui::base::preferences::savePreferences();
+
         return;
     }
 
     // Load ressources
     const bool resourceLoaded = QResource::registerResource(path.replace_extension(".rcc").string().c_str());
-    SIGHT_ASSERT("Cannot load resources '"+path.replace_extension(".rcc").string() + "'.", resourceLoaded);
+    SIGHT_ASSERT("Cannot load resources '" + path.replace_extension(".rcc").string() + "'.", resourceLoaded);
 
     // Load stylesheet.
     QFile data(QString::fromStdString(path.replace_extension(".qss").string()));
+
     if(data.open(QFile::ReadOnly))
     {
         QTextStream styleIn(&data);
@@ -138,18 +141,19 @@ void SStyleSelector::changeStyle(const std::string& _styleName)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SStyleSelector::updateFromPrefs()
 {
     // Apply previously saved style in preferences file.
     const std::string value = sight::ui::base::preferences::getPreference("THEME");
+
     if(!value.empty())
     {
         this->changeStyle(value);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::module

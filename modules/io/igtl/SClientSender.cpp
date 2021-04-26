@@ -35,19 +35,19 @@ namespace sight::module::io::igtl
 
 const service::IService::KeyType s_OBJECTS_GROUP = "objects";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SClientSender::SClientSender()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SClientSender::~SClientSender()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SClientSender::configuring()
 {
@@ -55,11 +55,13 @@ void SClientSender::configuring()
 
     const ConfigType configIn = config.get_child("in");
 
-    SIGHT_ASSERT("configured group must be '" + s_OBJECTS_GROUP + "'",
-                 configIn.get<std::string>("<xmlattr>.group", "") == s_OBJECTS_GROUP);
+    SIGHT_ASSERT(
+        "configured group must be '" + s_OBJECTS_GROUP + "'",
+        configIn.get<std::string>("<xmlattr>.group", "") == s_OBJECTS_GROUP);
 
     const auto keyCfg = configIn.equal_range("key");
-    for(auto itCfg = keyCfg.first; itCfg != keyCfg.second; ++itCfg)
+
+    for(auto itCfg = keyCfg.first ; itCfg != keyCfg.second ; ++itCfg)
     {
         const service::IService::ConfigType& attr = itCfg->second.get_child("<xmlattr>");
         const std::string name                    = attr.get("deviceName", "Sight");
@@ -67,6 +69,7 @@ void SClientSender::configuring()
     }
 
     const std::string serverInfo = config.get("server", "");
+
     if(!serverInfo.empty())
     {
         const std::string::size_type splitPosition = serverInfo.find(':');
@@ -81,7 +84,7 @@ void SClientSender::configuring()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SClientSender::starting()
 {
@@ -95,7 +98,7 @@ void SClientSender::starting()
             m_client.connect(hostname, port);
             m_sigConnected->asyncEmit();
         }
-        catch (core::Exception& ex)
+        catch(core::Exception& ex)
         {
             sight::ui::base::dialog::MessageDialog::show("Connection error", ex.what());
             SIGHT_ERROR(ex.what());
@@ -104,7 +107,7 @@ void SClientSender::starting()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SClientSender::stopping()
 {
@@ -114,28 +117,29 @@ void SClientSender::stopping()
         {
             m_client.disconnect();
         }
+
         m_sigDisconnected->asyncEmit();
     }
-    catch (core::Exception& e)
+    catch(core::Exception& e)
     {
         sight::ui::base::dialog::MessageDialog::show("Error", e.what());
         SIGHT_ERROR(e.what());
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SClientSender::sendObject(const data::Object::csptr& obj, const size_t index)
 {
     SIGHT_ASSERT("No device name associated with object index " << index, index < m_deviceNames.size());
 
-    if (m_client.isConnected())
+    if(m_client.isConnected())
     {
         m_client.setDeviceNameOut(m_deviceNames[index]);
         m_client.sendObject(obj);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::io::igtl

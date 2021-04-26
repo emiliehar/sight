@@ -88,8 +88,8 @@ class MODULE_UI_QML_CLASS_QT_API SSliceIndexPositionEditor : public sight::ui::q
 {
 Q_OBJECT
 Q_PROPERTY(int sliceIndex WRITE configureSliceIndex)
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(SSliceIndexPositionEditor, ::sight::ui::qml::IQmlEditor)
 
     /// Constructor. Do nothing.
@@ -108,10 +108,9 @@ public Q_SLOTS:
     MODULE_UI_QML_QT_API void onSliceIndex(int index);
 
     /// This method is called when the slice type selected changes. Notify the slice type is modified.
-    MODULE_UI_QML_QT_API void onSliceType( int type );
+    MODULE_UI_QML_QT_API void onSliceType(int type);
 
 protected:
-
     /// @brief The slice type: axial, frontal, sagittal.
     using data::helper::MedicalImage::Orientation;
 
@@ -142,10 +141,9 @@ protected:
     MODULE_UI_QML_QT_API void updateSliceIndexFromImg();
 
     /// Update the editor slice type choice from the image slice type.
-    MODULE_UI_QML_QT_API void updateSliceTypeFromImg(Orientation type );
+    MODULE_UI_QML_QT_API void updateSliceTypeFromImg(Orientation type);
 
 private:
-
     /**
      * @name Slots
      * @{
@@ -163,7 +161,7 @@ private:
     void configureSliceIndex(int sliceIndex);
 
     /// @brief The field IDs for the slice index.
-    static const std::string* SLICE_INDEX_FIELDID[ 3 ];
+    static const std::string* SLICE_INDEX_FIELDID[3];
 };
 
 } // uiImageQml

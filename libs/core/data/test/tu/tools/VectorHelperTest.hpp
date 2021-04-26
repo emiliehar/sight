@@ -26,6 +26,7 @@
 
 namespace sight::data::tools
 {
+
 namespace ut
 {
 
@@ -34,8 +35,8 @@ namespace ut
  */
 class VectorHelperTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( VectorHelperTest );
-CPPUNIT_TEST( testHelper );
+CPPUNIT_TEST_SUITE(VectorHelperTest);
+CPPUNIT_TEST(testHelper);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -46,5 +47,6 @@ public:
     void testHelper();
 };
 
-} //namespace ut
-} //namespace sight::data::tools
+} // namespace ut
+
+} // namespace sight::data::tools

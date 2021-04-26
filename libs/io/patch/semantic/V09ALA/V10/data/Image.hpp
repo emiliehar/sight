@@ -28,10 +28,13 @@
 
 namespace sight::io::patch::semantic
 {
+
 namespace V09ALA
 {
+
 namespace V10
 {
+
 namespace data
 {
 
@@ -48,7 +51,7 @@ public:
     IO_PATCH_API ~Image();
 
     /// Copy constructor
-    IO_PATCH_API Image( const Image& cpy );
+    IO_PATCH_API Image(const Image& cpy);
 
     /**
      * @brief Applies patch.
@@ -59,10 +62,12 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace data
+
 } // namespace V10
+
 } // namespace V09ALA
+
 } // namespace sight::io::patch::semantic

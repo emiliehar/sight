@@ -28,6 +28,7 @@
 
 namespace sight::io::http
 {
+
 namespace exceptions
 {
 
@@ -48,4 +49,5 @@ public:
 };
 
 } // namespace exceptions
+
 } // namespace sight::io::http

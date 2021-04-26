@@ -28,8 +28,10 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace creator
 {
+
 namespace data
 {
 
@@ -46,13 +48,14 @@ public:
     IO_PATCH_API ~PointList1();
 
     /// Copy constructor
-    IO_PATCH_API PointList1( const PointList1& cpy );
+    IO_PATCH_API PointList1(const PointList1& cpy);
 
     /// Create the specified object (sets 'points' attribute).
     IO_PATCH_API sight::atoms::Object::sptr create() override;
-
 };
 
 } // namespace data
+
 } // namespace creator
+
 } // namespace sight::io::patch::structural

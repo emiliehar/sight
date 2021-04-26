@@ -26,18 +26,19 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class GenericTLTest : public CPPUNIT_NS::TestFixture
 {
 public:
-    CPPUNIT_TEST_SUITE( GenericTLTest );
-    CPPUNIT_TEST( pushPopTest );
-    CPPUNIT_TEST( pushClassTest );
-    CPPUNIT_TEST( copyTest );
-    CPPUNIT_TEST( iteratorTest );
-    CPPUNIT_TEST( objectValid );
+    CPPUNIT_TEST_SUITE(GenericTLTest);
+    CPPUNIT_TEST(pushPopTest);
+    CPPUNIT_TEST(pushClassTest);
+    CPPUNIT_TEST(copyTest);
+    CPPUNIT_TEST(iteratorTest);
+    CPPUNIT_TEST(objectValid);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -52,5 +53,6 @@ public:
     void objectValid();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

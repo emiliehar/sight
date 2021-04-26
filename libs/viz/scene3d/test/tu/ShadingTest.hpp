@@ -28,6 +28,7 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace helper
 {
 
@@ -36,16 +37,16 @@ namespace ut
 
 class ShadingTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ShadingTest );
-CPPUNIT_TEST( isColorTechnique );
-CPPUNIT_TEST( isPeelTechnique );
-CPPUNIT_TEST( isGeometricTechnique );
-CPPUNIT_TEST( isDepthOnlyTechnique );
-CPPUNIT_TEST( getPermutation );
-CPPUNIT_TEST( getR2VBGeometryProgramName );
-CPPUNIT_TEST( setPermutationInProgramName );
-CPPUNIT_TEST( setTechniqueInProgramName );
-CPPUNIT_TEST( createObjectFromShaderParameter );
+CPPUNIT_TEST_SUITE(ShadingTest);
+CPPUNIT_TEST(isColorTechnique);
+CPPUNIT_TEST(isPeelTechnique);
+CPPUNIT_TEST(isGeometricTechnique);
+CPPUNIT_TEST(isDepthOnlyTechnique);
+CPPUNIT_TEST(getPermutation);
+CPPUNIT_TEST(getR2VBGeometryProgramName);
+CPPUNIT_TEST(setPermutationInProgramName);
+CPPUNIT_TEST(setTechniqueInProgramName);
+CPPUNIT_TEST(createObjectFromShaderParameter);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -70,6 +71,8 @@ private:
     ::Ogre::MaterialPtr m_material;
 };
 
-} //namespace ut
-} //namespace helper
-} //namespace sight::viz::scene3d
+} // namespace ut
+
+} // namespace helper
+
+} // namespace sight::viz::scene3d

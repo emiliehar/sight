@@ -43,7 +43,7 @@
 namespace sight::module::ui::qt
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 /** @brief Help browser */
 class HelpBrowser : public QTextBrowser
 {
@@ -54,11 +54,11 @@ public:
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     QVariant loadResource(int type, const QUrl& url)
     {
-        if (url.scheme() == "qthelp")
+        if(url.scheme() == "qthelp")
         {
             return QVariant(helpEngine->fileData(url));
         }
@@ -71,30 +71,30 @@ public:
 private:
     QHelpEngine* helpEngine;
 };
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SShowHelp::SShowHelp( ) noexcept :
+SShowHelp::SShowHelp() noexcept :
     m_bServiceIsConfigured(false),
     m_fsHelpPath("")
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SShowHelp::~SShowHelp() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SShowHelp::info(std::ostream& _sstream )
+void SShowHelp::info(std::ostream& _sstream)
 {
     _sstream << "Action for show help contents" << std::endl;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowHelp::configuring()
 {
@@ -105,16 +105,17 @@ void SShowHelp::configuring()
      *                             the appearance and available features of Qt Assistant.
      */
     this->sight::ui::base::IAction::initialize();
-    if( m_configuration->findConfigurationElement("filename") )
+
+    if(m_configuration->findConfigurationElement("filename"))
     {
         std::string filename = m_configuration->findConfigurationElement("filename")->getExistingAttributeValue("id");
-        m_fsHelpPath           = std::filesystem::path( filename );
+        m_fsHelpPath           = std::filesystem::path(filename);
         m_bServiceIsConfigured = std::filesystem::exists(m_fsHelpPath);
-        SIGHT_WARN_IF("Help file " <<filename<< " doesn't exist", !m_bServiceIsConfigured);
+        SIGHT_WARN_IF("Help file " << filename << " doesn't exist", !m_bServiceIsConfigured);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowHelp::updating()
 {
@@ -123,12 +124,13 @@ void SShowHelp::updating()
     QDialog* dialog = new QDialog(qApp->activeWindow());
     dialog->setWindowTitle(QString("Help"));
     QHelpEngine* helpEngine = new QHelpEngine(QString::fromStdString(m_fsHelpPath.string()), dialog);
-    if (!helpEngine->setupData())
+
+    if(!helpEngine->setupData())
     {
         SIGHT_ERROR("HelpEngine error: " << helpEngine->error().toStdString());
         sight::ui::base::dialog::MessageDialog messageBox;
         messageBox.setTitle("Warning");
-        messageBox.setMessage( "Help file is missing or not correct." );
+        messageBox.setMessage("Help file is missing or not correct.");
         messageBox.setIcon(sight::ui::base::dialog::IMessageDialog::WARNING);
         messageBox.addButton(sight::ui::base::dialog::IMessageDialog::OK);
         messageBox.show();
@@ -145,28 +147,31 @@ void SShowHelp::updating()
 
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->addWidget(helpPanel);
-        dialog->setLayout( hLayout );
-        QObject::connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl&)), helpBrowser,
-                         SLOT(setSource(const QUrl&)));
+        dialog->setLayout(hLayout);
+        QObject::connect(
+            helpEngine->contentWidget(),
+            SIGNAL(linkActivated(const QUrl&)),
+            helpBrowser,
+            SLOT(setSource(const QUrl&)));
 
         dialog->exec();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowHelp::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowHelp::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt

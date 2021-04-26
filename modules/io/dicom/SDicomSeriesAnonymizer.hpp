@@ -28,12 +28,16 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::data
 {
+
 class SeriesDB;
+
 }
 
 namespace sight::module::io::dicom
@@ -59,11 +63,10 @@ namespace sight::module::io::dicom
  */
 class MODULE_IO_DICOM_CLASS_API SDicomSeriesAnonymizer : public service::IController
 {
-
 public:
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignal;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignal;
 
-    SIGHT_DECLARE_SERVICE(SDicomSeriesAnonymizer,  service::IController)
+    SIGHT_DECLARE_SERVICE(SDicomSeriesAnonymizer, service::IController)
 
     /// Constructor
     MODULE_IO_DICOM_API SDicomSeriesAnonymizer() noexcept;
@@ -72,7 +75,6 @@ public:
     MODULE_IO_DICOM_API ~SDicomSeriesAnonymizer() noexcept override;
 
 protected:
-
     /// Do nothing.
     MODULE_IO_DICOM_API void configuring() override;
 
@@ -86,7 +88,7 @@ protected:
     MODULE_IO_DICOM_API void updating() override;
 
     /// Override
-    MODULE_IO_DICOM_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_DICOM_API void info(std::ostream& _sstream) override;
 
     /// Override
     MODULE_IO_DICOM_API void anonymize();

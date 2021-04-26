@@ -44,10 +44,11 @@ Q_DECLARE_METATYPE(QCameraInfo)
 
 namespace sight::module::ui::qt
 {
+
 namespace video
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 CameraDeviceDlg::CameraDeviceDlg() :
     QDialog()
@@ -68,26 +69,29 @@ CameraDeviceDlg::CameraDeviceDlg() :
     // Detect available devices.
     const QList<QCameraInfo> devices = QCameraInfo::availableCameras();
 
-    std::map<std::string, QCameraInfo > nameToUID;
-    std::vector< std::string> nameList;
+    std::map<std::string, QCameraInfo> nameToUID;
+    std::vector<std::string> nameList;
 
-    //We should keep the same order than given by Qt, and uniquely identify cameras with the same name.
+    // We should keep the same order than given by Qt, and uniquely identify cameras with the same name.
 
     // First run: collect all detected device names and UIDs
     size_t index = 0;
+
     for(const QCameraInfo& camInfo : devices)
     {
-        //MacOs appends random number when cameras has same names, remove it to do it ourself.
+        // MacOs appends random number when cameras has same names, remove it to do it ourself.
         const std::string qtCamName = camInfo.description().toStdString();
         const std::string camName   = qtCamName.substr(0, qtCamName.rfind("#") - 1);
 
         // check if the name already exists
         const auto multipleName = std::count(nameList.begin(), nameList.end(), camName);
         std::string uniqueName  = camName;
-        if(  multipleName > 0)
+
+        if(multipleName > 0)
         {
-            uniqueName = camName + " #" + std::to_string(multipleName+1);
+            uniqueName = camName + " #" + std::to_string(multipleName + 1);
         }
+
         nameList.push_back(camName);
         // prefix by index to keep the order in the map
         nameToUID[std::to_string(index) + ". " + uniqueName] = camInfo;
@@ -95,12 +99,12 @@ CameraDeviceDlg::CameraDeviceDlg() :
         ++index;
     }
 
-    //Second Run: Add generated unique name into the comboBox.
+    // Second Run: Add generated unique name into the comboBox.
     for(auto& p : nameToUID)
     {
         const auto& deviceName = p.first;
         auto& deviceInfo       = p.second;
-        m_devicesComboBox->addItem( QString(deviceName.c_str()), QVariant::fromValue(deviceInfo));
+        m_devicesComboBox->addItem(QString(deviceName.c_str()), QVariant::fromValue(deviceInfo));
     }
 
     buttonLayout->addWidget(validateButton);
@@ -121,23 +125,25 @@ CameraDeviceDlg::CameraDeviceDlg() :
     QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 CameraDeviceDlg::~CameraDeviceDlg()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool CameraDeviceDlg::getSelectedCamera(data::Camera::sptr& camera)
 {
     int index = m_devicesComboBox->currentIndex();
+
     if(index >= 0)
     {
         QCameraInfo camInfo              = qvariant_cast<QCameraInfo>(m_devicesComboBox->itemData(index));
         data::Camera::PixelFormat format = data::Camera::PixelFormat::INVALID;
 
         QListWidgetItem* item = m_camSettings->currentItem();
+
         if(item)
         {
             QCameraViewfinderSettings settings = qvariant_cast<QCameraViewfinderSettings>(item->data(Qt::UserRole));
@@ -166,24 +172,27 @@ bool CameraDeviceDlg::getSelectedCamera(data::Camera::sptr& camera)
             SIGHT_ERROR("No camera setting selected, using default...");
         }
 
-//FIXME : Setting the pixel format generate an error (gstreamer)
+// FIXME : Setting the pixel format generate an error (gstreamer)
 #ifndef __linux__
         camera->setPixelFormat(format);
 #endif
         camera->setCameraSource(data::Camera::DEVICE);
         camera->setCameraID(camInfo.deviceName().toStdString());
-        //Use our description.
+        // Use our description.
         camera->setDescription(m_devicesComboBox->currentText().toStdString());
+
         return true;
     }
+
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void CameraDeviceDlg::onSelectDevice(int index)
 {
     m_camSettings->clear();
+
     if(index >= 0)
     {
         QCameraInfo camInfo = qvariant_cast<QCameraInfo>(m_devicesComboBox->itemData(index));
@@ -191,11 +200,10 @@ void CameraDeviceDlg::onSelectDevice(int index)
         cam->load();
 
 #ifdef __linux__
-
-        //NOTE : Work arround for the camera resolution settings on linux (maybe on OSX too)
-        QCameraImageCapture* imageCapture            = new QCameraImageCapture(cam);
-        QList<QSize> res                             = imageCapture->supportedResolutions();
-        QList< QVideoFrame::PixelFormat > pixFormats = imageCapture->supportedBufferFormats();
+        // NOTE : Work arround for the camera resolution settings on linux (maybe on OSX too)
+        QCameraImageCapture* imageCapture          = new QCameraImageCapture(cam);
+        QList<QSize> res                           = imageCapture->supportedResolutions();
+        QList<QVideoFrame::PixelFormat> pixFormats = imageCapture->supportedBufferFormats();
 
         for(const QSize& supportedSize : res)
         {
@@ -215,12 +223,12 @@ void CameraDeviceDlg::onSelectDevice(int index)
                     SIGHT_ERROR("No compatible pixel format found");
                 }
 
-                //Create QCameraViewfinderSettings from the informations of the QCameraImageCapture
+                // Create QCameraViewfinderSettings from the informations of the QCameraImageCapture
                 QCameraViewfinderSettings settings;
-                //TODO : Can we get the maximum frameRate from an other way ?
+                // TODO : Can we get the maximum frameRate from an other way ?
                 settings.setMaximumFrameRate(30.0);
                 settings.setResolution(supportedSize);
-                //FIXME : Setting the pixel format generate an error (gstreamer) (see getSelectedCamera method)
+                // FIXME : Setting the pixel format generate an error (gstreamer) (see getSelectedCamera method)
                 settings.setPixelFormat(pixFormat);
 
                 std::stringstream stream;
@@ -231,13 +239,13 @@ void CameraDeviceDlg::onSelectDevice(int index)
                 item->setData(Qt::UserRole, QVariant::fromValue(settings));
                 m_camSettings->addItem(item);
             }
-
         }
 
         delete imageCapture;
 #else
         QList<QCameraViewfinderSettings> settingsList = cam->supportedViewfinderSettings();
-        for(const QCameraViewfinderSettings& settings : settingsList )
+
+        for(const QCameraViewfinderSettings& settings : settingsList)
         {
             data::Camera::PixelFormat format = data::Camera::PixelFormat::INVALID;
 
@@ -260,9 +268,7 @@ void CameraDeviceDlg::onSelectDevice(int index)
             QListWidgetItem* item = new QListWidgetItem(QString::fromStdString(stream.str()));
             item->setData(Qt::UserRole, QVariant::fromValue(settings));
             m_camSettings->addItem(item);
-
         }
-
 #endif //linux
 
         cam->unload();
@@ -271,7 +277,8 @@ void CameraDeviceDlg::onSelectDevice(int index)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // video
+
 } // sight::module::ui::qt

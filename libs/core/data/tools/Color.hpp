@@ -36,13 +36,12 @@ namespace sight::data::tools
 class Color
 {
 public:
-
     /**
      * @brief Convert a color coded as an hexadecimal string into an array of four bytes (RGBA)
      * @param _hexaColor[in] Color string that start with '#' and followed by 6 ou 8 hexadecimal digits (ex: #FF81EC)
      * @param _rgba[out] RGBA values
      */
-    DATA_API static void hexaStringToRGBA( const std::string& _hexaColor, std::uint8_t _rgba[4] );
+    DATA_API static void hexaStringToRGBA(const std::string& _hexaColor, std::uint8_t _rgba[4]);
 };
 
 } // end namespace sight::data::tools

@@ -53,7 +53,7 @@ namespace sight::module::io::dicom
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesDBReader::SSeriesDBReader() noexcept :
     m_showLogDialog(true),
@@ -63,27 +63,27 @@ SSeriesDBReader::SSeriesDBReader() noexcept :
     m_sigJobCreated = newSignal<JobCreatedSignal>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesDBReader::~SSeriesDBReader() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SSeriesDBReader::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::openLocationDialog()
 {
@@ -96,7 +96,8 @@ void SSeriesDBReader::openLocationDialog()
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         this->setFolder(result->getFolder());
         defaultDirectory->setFolder(result->getFolder());
@@ -113,23 +114,26 @@ void SSeriesDBReader::openLocationDialog()
         // Get the config
         core::runtime::ConfigurationElement::csptr filterSelectorConfig;
         filterSelectorConfig = service::extension::Config::getDefault()->getServiceConfig(
-            m_filterConfig, "::sight::module::ui::dicom::SFilterSelectorDialog");
+            m_filterConfig,
+            "::sight::module::ui::dicom::SFilterSelectorDialog");
 
-        SIGHT_ASSERT("Sorry, there is no service configuration "
-                     << m_filterConfig
-                     << " for module::ui::dicom::SFilterSelectorDialog", filterSelectorConfig);
+        SIGHT_ASSERT(
+            "Sorry, there is no service configuration "
+                << m_filterConfig
+                << " for module::ui::dicom::SFilterSelectorDialog",
+                filterSelectorConfig);
 
         // Init and execute the service
         service::IService::sptr filterSelectorSrv;
         data::String::sptr key = data::String::New();
         filterSelectorSrv = service::add("::sight::module::ui::dicom::SFilterSelectorDialog");
         filterSelectorSrv->registerInOut(key, "filter");
-        filterSelectorSrv->setConfiguration( core::runtime::ConfigurationElement::constCast(filterSelectorConfig) );
+        filterSelectorSrv->setConfiguration(core::runtime::ConfigurationElement::constCast(filterSelectorConfig));
         filterSelectorSrv->configure();
         filterSelectorSrv->start();
         filterSelectorSrv->update();
         filterSelectorSrv->stop();
-        service::OSR::unregisterService( filterSelectorSrv );
+        service::OSR::unregisterService(filterSelectorSrv);
 
         m_filterType = key->getValue();
 
@@ -141,7 +145,7 @@ void SSeriesDBReader::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::configuring()
 {
@@ -163,8 +167,10 @@ void SSeriesDBReader::configuring()
 
     // Enable dicomdir
     const std::string dicomDirStr = config.get<std::string>("dicomdirSupport", "user_selection");
-    SIGHT_ASSERT("<dicomdirSupport> value must be 'always' or 'never' or 'user_selection'",
-                 dicomDirStr == "always" || dicomDirStr == "never" || dicomDirStr == "user_selection");
+    SIGHT_ASSERT(
+        "<dicomdirSupport> value must be 'always' or 'never' or 'user_selection'",
+        dicomDirStr == "always" || dicomDirStr == "never" || dicomDirStr == "user_selection");
+
     if(dicomDirStr == "always")
     {
         m_dicomDirSupport = ALWAYS;
@@ -179,11 +185,12 @@ void SSeriesDBReader::configuring()
     }
 
     // Get SOP Class selection
-    if(config.count("SOPClassSelection") == 1 )
+    if(config.count("SOPClassSelection") == 1)
     {
         const auto sopClassSelectionConfig = config.get_child("SOPClassSelection");
         const auto sopClassRange           = sopClassSelectionConfig.equal_range("SOPClass");
-        for(auto sopClassIter = sopClassRange.first; sopClassIter != sopClassRange.second; ++sopClassIter)
+
+        for(auto sopClassIter = sopClassRange.first ; sopClassIter != sopClassRange.second ; ++sopClassIter)
         {
             const service::IService::ConfigType& sopClassConfig = sopClassIter->second;
             const service::IService::ConfigType& sopClassAttr   = sopClassConfig.get_child("<xmlattr>");
@@ -194,35 +201,35 @@ void SSeriesDBReader::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SSeriesDBReader::info(std::ostream& _sstream )
+void SSeriesDBReader::info(std::ostream& _sstream)
 {
     _sstream << "SSeriesDBReader::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SSeriesDBReader::getSelectorDialogTitle()
 {
     return "Choose a directory with DICOM images";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::SeriesDB::sptr SSeriesDBReader::createSeriesDB( const std::filesystem::path& dicomDir)
+data::SeriesDB::sptr SSeriesDBReader::createSeriesDB(const std::filesystem::path& dicomDir)
 {
     auto reader                = sight::io::dicom::reader::SeriesDB::New();
     data::SeriesDB::sptr dummy = data::SeriesDB::New();
@@ -238,8 +245,9 @@ data::SeriesDB::sptr SSeriesDBReader::createSeriesDB( const std::filesystem::pat
     {
         sight::ui::base::dialog::MessageDialog messageBox;
         messageBox.setTitle("Dicomdir file");
-        messageBox.setMessage( "There is a dicomdir file in the root folder. "
-                               "Would you like to use it for the reading process ?" );
+        messageBox.setMessage(
+            "There is a dicomdir file in the root folder. "
+            "Would you like to use it for the reading process ?");
         messageBox.setIcon(ui::base::dialog::IMessageDialog::QUESTION);
         messageBox.addButton(ui::base::dialog::IMessageDialog::YES_NO);
         sight::ui::base::dialog::IMessageDialog::Buttons button = messageBox.show();
@@ -250,7 +258,7 @@ data::SeriesDB::sptr SSeriesDBReader::createSeriesDB( const std::filesystem::pat
     {
         reader->setDicomdirActivated(true);
     }
-    else //m_dicomDirSupport == NEVER
+    else // m_dicomDirSupport == NEVER
     {
         reader->setDicomdirActivated(false);
     }
@@ -270,24 +278,27 @@ data::SeriesDB::sptr SSeriesDBReader::createSeriesDB( const std::filesystem::pat
         // Display logger dialog if enabled
         if(m_showLogDialog && !logger->empty())
         {
-
             std::stringstream ss;
+
             if(dummy->size() > 1)
             {
                 ss << "The reading process is over : <b>" << dummy->size() << " series</b> have been found. "
-                    "<br>Please verify the log report to be informed of the potential errors.";
+                                                                              "<br>Please verify the log report to be informed of the potential errors.";
             }
             else
             {
                 ss << "The reading process is over : <b>" << dummy->size() << " series</b> has been found. "
-                    "<br>Please verify the log report to be informed of the potential errors.";
+                                                                              "<br>Please verify the log report to be informed of the potential errors.";
             }
 
             bool result = false;
+
             if(!job->cancelRequested())
             {
-                result = sight::ui::base::dialog::LoggerDialog::showLoggerDialog("Reading process over",
-                                                                                 ss.str(), logger);
+                result = sight::ui::base::dialog::LoggerDialog::showLoggerDialog(
+                    "Reading process over",
+                    ss.str(),
+                    logger);
             }
 
             // If the user cancel the reading process we delete the loaded series
@@ -298,36 +309,40 @@ data::SeriesDB::sptr SSeriesDBReader::createSeriesDB( const std::filesystem::pat
             }
         }
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         m_readFailed = true;
         std::stringstream ss;
         ss << "Warning during loading : " << e.what();
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", ss.str(), sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
         m_readFailed = true;
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", "Warning during loading", sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            "Warning during loading",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
 
     return dummy;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         data::SeriesDB::sptr localSeriesDB = this->createSeriesDB(this->getFolder());
 
-        if( !localSeriesDB->empty() )
+        if(!localSeriesDB->empty())
         {
             // Retrieve dataStruct associated with this service
-            data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(sight::io::base::service::s_DATA_KEY);
+            data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(sight::io::base::service::s_DATA_KEY);
 
             // Clear SeriesDB and add new series
             data::helper::SeriesDB sDBhelper(seriesDB);
@@ -344,7 +359,7 @@ void SSeriesDBReader::updating()
 
             m_readFailed = false;
 
-            auto sig = seriesDB->signal< data::SeriesDB::AddedSeriesSignalType >(
+            auto sig = seriesDB->signal<data::SeriesDB::AddedSeriesSignalType>(
                 data::SeriesDB::s_ADDED_SERIES_SIG);
             sig->asyncEmit(addedSeries);
         }
@@ -359,6 +374,6 @@ void SSeriesDBReader::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::dicom

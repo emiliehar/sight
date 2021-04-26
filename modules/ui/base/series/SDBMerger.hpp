@@ -33,11 +33,14 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::module::ui::base
 {
+
 namespace series
 {
 
@@ -82,15 +85,14 @@ class MODULE_UI_BASE_CLASS_API SDBMerger : public ::sight::ui::base::IAction
 public:
     SIGHT_DECLARE_SERVICE(SDBMerger, sight::ui::base::IAction)
 
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignalType;
-    typedef core::com::Slot< void ( SPTR(core::jobs::IJob) ) > ForwardJobSlotType;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignalType;
+    typedef core::com::Slot<void (SPTR(core::jobs::IJob))> ForwardJobSlotType;
 
     MODULE_UI_BASE_API SDBMerger() noexcept;
 
     MODULE_UI_BASE_API virtual ~SDBMerger() noexcept;
 
 protected:
-
     /**
      * @brief Configure action. Retrieves the IOSelector config.
      *
@@ -111,7 +113,7 @@ protected:
 
     /// Stop action.
     void stopping() override;
-    void info(std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
     void forwardJob(SPTR(core::jobs::IJob) iJob);
@@ -120,8 +122,8 @@ private:
 
     SPTR(JobCreatedSignalType) m_sigJobCreated;
     SPTR(ForwardJobSlotType) m_slotForwardJob;
-
 };
 
 } // namespace series
+
 } // namespace sight::module::ui::base

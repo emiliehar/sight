@@ -34,14 +34,15 @@
 
 #include <ui/base/registry/macros.hpp>
 
-fwGuiRegisterMacro( ::sight::ui::qt::dialog::SelectorDialog, ::sight::ui::base::dialog::ISelectorDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(::sight::ui::qt::dialog::SelectorDialog, ::sight::ui::base::dialog::ISelectorDialog::REGISTRY_KEY);
 
 namespace sight::ui::qt
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SelectorDialog::SelectorDialog(ui::base::GuiBaseObject::Key key) :
     m_message(""),
@@ -49,27 +50,27 @@ SelectorDialog::SelectorDialog(ui::base::GuiBaseObject::Key key) :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SelectorDialog::~SelectorDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SelectorDialog::setSelections(std::vector< std::string > _selections)
+void SelectorDialog::setSelections(std::vector<std::string> _selections)
 {
     this->m_selections = _selections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::setTitle(std::string _title)
 {
     this->m_title = _title;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SelectorDialog::show()
 {
@@ -79,9 +80,10 @@ std::string SelectorDialog::show()
     dialog->setWindowTitle(QString::fromStdString(m_title));
 
     QListWidget* selectionList = new QListWidget(dialog);
-    for( std::string selection :  m_selections)
+
+    for(std::string selection : m_selections)
     {
-        selectionList->addItem(QString::fromStdString( selection ));
+        selectionList->addItem(QString::fromStdString(selection));
     }
 
     QListWidgetItem* firstItem = selectionList->item(0);
@@ -101,11 +103,13 @@ std::string SelectorDialog::show()
     }
 
     QVBoxLayout* vLayout = new QVBoxLayout();
+
     if(!m_message.empty())
     {
         QLabel* msgText = new QLabel(QString::fromStdString(m_message), dialog);
-        vLayout->addWidget( msgText);
+        vLayout->addWidget(msgText);
     }
+
     vLayout->addWidget(selectionList);
     vLayout->addLayout(hLayout);
 
@@ -115,6 +119,7 @@ std::string SelectorDialog::show()
     QObject::connect(selectionList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), dialog, SLOT(accept()));
 
     std::string selection = "";
+
     if(dialog->exec())
     {
         selection = selectionList->currentItem()->text().toStdString();
@@ -123,23 +128,24 @@ std::string SelectorDialog::show()
     return selection;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::setMessage(const std::string& msg)
 {
     m_message = msg;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SelectorDialog::addCustomButton(const std::string& label, std::function<void()> clickedFn)
 {
-    QPushButton* button = new QPushButton( QString::fromStdString(label) );
-    m_customButtons.push_back( button );
+    QPushButton* button = new QPushButton(QString::fromStdString(label));
+    m_customButtons.push_back(button);
     QObject::connect(button, &QPushButton::clicked, clickedFn);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qt

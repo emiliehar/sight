@@ -54,21 +54,24 @@ SeriesRetriever::~SeriesRetriever()
 
 // ----------------------------------------------------------------------------
 
-void SeriesRetriever::initialize(const std::string& applicationTitle,
-                                 unsigned short applicationport, int timeout,
-                                 ProgressCallbackSlotType::sptr progressCallback)
+void SeriesRetriever::initialize(
+    const std::string& applicationTitle,
+    unsigned short applicationport,
+    int timeout,
+    ProgressCallbackSlotType::sptr progressCallback)
 {
-    //Callback
+    // Callback
     m_progressCallback = progressCallback;
 
-    //Creating folder
+    // Creating folder
     m_path = core::tools::System::getTemporaryFolder() / "dicom/";
-    if (!std::filesystem::exists(m_path))
+
+    if(!std::filesystem::exists(m_path))
     {
         std::filesystem::create_directories(m_path);
     }
 
-    //Configure network connection
+    // Configure network connection
     this->setAETitle(applicationTitle.c_str());
     this->setPort(applicationport);
 
@@ -96,15 +99,16 @@ bool SeriesRetriever::start()
 
 // ----------------------------------------------------------------------------
 
-OFCondition SeriesRetriever::handleIncomingCommand(T_DIMSE_Message* incomingMsg,
-                                                   const DcmPresentationContextInfo& presContextInfo)
+OFCondition SeriesRetriever::handleIncomingCommand(
+    T_DIMSE_Message* incomingMsg,
+    const DcmPresentationContextInfo& presContextInfo)
 {
     OFCondition cond;
 
     // Process C-STORE request
-    if( incomingMsg->CommandField == DIMSE_C_STORE_RQ )
+    if(incomingMsg->CommandField == DIMSE_C_STORE_RQ)
     {
-        cond = handleSTORERequest( incomingMsg, presContextInfo.presentationContextID );
+        cond = handleSTORERequest(incomingMsg, presContextInfo.presentationContextID);
     }
     // Process other requests
     else
@@ -117,8 +121,9 @@ OFCondition SeriesRetriever::handleIncomingCommand(T_DIMSE_Message* incomingMsg,
 
 // ----------------------------------------------------------------------------
 
-OFCondition SeriesRetriever::handleSTORERequest(T_DIMSE_Message* incomingMsg,
-                                                T_ASC_PresentationContextID presID)
+OFCondition SeriesRetriever::handleSTORERequest(
+    T_DIMSE_Message* incomingMsg,
+    T_ASC_PresentationContextID presID)
 {
     OFCondition cond;
 
@@ -127,31 +132,34 @@ OFCondition SeriesRetriever::handleSTORERequest(T_DIMSE_Message* incomingMsg,
 
     // Get Dataset
     DcmDataset* dataset = new DcmDataset();
-    if (this->receiveDIMSEDataset(&presID, &dataset).good())
-    {
-        if (dataset != NULL)
-        {
 
-            //Find the series UID
+    if(this->receiveDIMSEDataset(&presID, &dataset).good())
+    {
+        if(dataset != NULL)
+        {
+            // Find the series UID
             OFString seriesID;
+
             if(dataset->findAndGetOFStringArray(DCM_SeriesInstanceUID, seriesID).good())
             {
             }
 
-            //Find the instance UID
+            // Find the instance UID
             OFString iname;
-            if (dataset->findAndGetOFStringArray(DCM_SOPInstanceUID, iname).good())
+
+            if(dataset->findAndGetOFStringArray(DCM_SOPInstanceUID, iname).good())
             {
             }
 
-            //Create Folder
+            // Create Folder
             std::filesystem::path seriesPath = std::filesystem::path(m_path.string() + seriesID.c_str() + "/");
-            if (!std::filesystem::exists(seriesPath))
+
+            if(!std::filesystem::exists(seriesPath))
             {
                 std::filesystem::create_directories(seriesPath);
             }
 
-            //Save the file in the specified folder
+            // Save the file in the specified folder
             std::string filePath = seriesPath.string() + iname.c_str();
             dataset->saveFile(filePath.c_str());
 
@@ -162,7 +170,7 @@ OFCondition SeriesRetriever::handleSTORERequest(T_DIMSE_Message* incomingMsg,
 
             // Dump outgoing message
 
-            if (cond.bad())
+            if(cond.bad())
             {
                 const std::string msg = "Cannot send C-STORE Response to the server.";
                 throw io::dimse::exceptions::RequestFailure(msg);
@@ -176,12 +184,10 @@ OFCondition SeriesRetriever::handleSTORERequest(T_DIMSE_Message* incomingMsg,
             {
                 m_progressCallback->asyncRun(seriesID.c_str(), ++m_instanceIndex, filePath);
             }
-
         }
     }
 
     return cond;
-
 }
 
-} //namespace sight::io::dimse
+} // namespace sight::io::dimse

@@ -27,8 +27,10 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
+
 /**
  *
  * @brief class to manage conversion between data::Matrix4 and igtl::TransformationMessage
@@ -55,7 +57,7 @@ public:
      *
      * @return an data::Image converted from an ::igtl::ImageMessage
      */
-    IO_IGTL_API ::igtl::MessageBase::Pointer fromFwDataObject (data::Object::csptr src) const;
+    IO_IGTL_API ::igtl::MessageBase::Pointer fromFwDataObject(data::Object::csptr src) const;
 
     /**
      * @brief create new MatrixConverter
@@ -77,6 +79,7 @@ public:
      * @return the fwData Object type supported for conversion
      */
     IO_IGTL_API std::string const& getFwDataObjectType() const;
+
 private:
     /// igtl type supported for conversion
     static const std::string s_IGTL_TYPE;
@@ -84,5 +87,7 @@ private:
     /// fwData type supported for conversion
     static const std::string s_FWDATA_OBJECT_TYPE;
 };
+
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

@@ -25,45 +25,46 @@
 #include <data/Boolean.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::BooleanTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::BooleanTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BooleanTest::setUp()
 {
     // Set up context before running a test.
-
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void BooleanTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BooleanTest::methode1()
 {
     const bool TRUE_VALUE  = true;
     const bool FALSE_VALUE = !TRUE_VALUE;
 
-    data::Boolean::sptr p1 = data::Boolean::New( TRUE_VALUE );
-    data::Boolean::sptr p2 = data::Boolean::New( FALSE_VALUE );
+    data::Boolean::sptr p1 = data::Boolean::New(TRUE_VALUE);
+    data::Boolean::sptr p2 = data::Boolean::New(FALSE_VALUE);
 
     // check
-    CPPUNIT_ASSERT_EQUAL(TRUE_VALUE, data::Boolean::New( TRUE_VALUE )->value());
-    CPPUNIT_ASSERT_EQUAL(FALSE_VALUE, data::Boolean::New( FALSE_VALUE )->value());
+    CPPUNIT_ASSERT_EQUAL(TRUE_VALUE, data::Boolean::New(TRUE_VALUE)->value());
+    CPPUNIT_ASSERT_EQUAL(FALSE_VALUE, data::Boolean::New(FALSE_VALUE)->value());
 
     CPPUNIT_ASSERT_EQUAL(TRUE_VALUE, p1->value());
     CPPUNIT_ASSERT_EQUAL(FALSE_VALUE, p2->value());
-
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

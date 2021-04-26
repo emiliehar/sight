@@ -41,6 +41,7 @@
 
 namespace sight::ui::base
 {
+
 namespace layoutManager
 {
 
@@ -54,12 +55,11 @@ public:
 
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
     typedef std::string RegistryKeyType;
-    typedef std::vector< ui::base::IMenuItemCallback::sptr > CallbacksType;
+    typedef std::vector<ui::base::IMenuItemCallback::sptr> CallbacksType;
 
     class ActionInfo
     {
     public:
-
         ActionInfo() :
             m_name(""),
             m_shortcut(""),
@@ -99,17 +99,17 @@ public:
     /**
      * @brief Returns the vector of fwMenuItem managed by this layout.
      */
-    UI_BASE_API virtual std::vector< ui::base::container::fwMenuItem::sptr > getMenuItems();
+    UI_BASE_API virtual std::vector<ui::base::container::fwMenuItem::sptr> getMenuItems();
 
     /**
      * @brief Returns the vector of fwMenu managed by this layout.
      */
-    UI_BASE_API virtual std::vector< ui::base::container::fwMenu::sptr > getMenus();
+    UI_BASE_API virtual std::vector<ui::base::container::fwMenu::sptr> getMenus();
 
     /**
      * @brief Returns the vector of fwContainer managed by this layout.
      */
-    UI_BASE_API virtual std::vector< ui::base::container::fwContainer::sptr > getContainers();
+    UI_BASE_API virtual std::vector<ui::base::container::fwContainer::sptr> getContainers();
 
     /**
      * @brief Initialize layout managers.
@@ -160,12 +160,12 @@ public:
      *  - \<editor\> : to add an editor in the toolbar
      *  - \<separator/\> : allow to divide the toolbar by part (draw a line).
      */
-    UI_BASE_API virtual void initialize( ConfigurationType configuration);
+    UI_BASE_API virtual void initialize(ConfigurationType configuration);
 
     /**
      * @brief Instantiate actions with parent toolBar.
      */
-    UI_BASE_API virtual void createLayout( ui::base::container::fwToolBar::sptr parent) = 0;
+    UI_BASE_API virtual void createLayout(ui::base::container::fwToolBar::sptr parent) = 0;
 
     /**
      * @brief Destroy local actions.
@@ -197,23 +197,22 @@ public:
     }
 
 protected:
-
     /**
      * @brief Helper to destroy local actions.
      */
     UI_BASE_API virtual void destroyActions();
 
     /// All actions managed by this layout.
-    std::vector< ui::base::container::fwMenuItem::sptr > m_menuItems;
+    std::vector<ui::base::container::fwMenuItem::sptr> m_menuItems;
 
     /// All menus managed by this layout.
-    std::vector< ui::base::container::fwMenu::sptr > m_menus;
+    std::vector<ui::base::container::fwMenu::sptr> m_menus;
 
     /// All editors managed by this layout.
-    std::vector< ui::base::container::fwContainer::sptr > m_containers;
+    std::vector<ui::base::container::fwContainer::sptr> m_containers;
 
     /// Save action informations from configuration.
-    std::vector< ActionInfo > m_actionInfo;
+    std::vector<ActionInfo> m_actionInfo;
 
     /// Callbacks associate with toolBar items
     CallbacksType m_callbacks;
@@ -223,4 +222,5 @@ protected:
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::base

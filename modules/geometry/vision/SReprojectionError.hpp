@@ -32,6 +32,7 @@
 
 namespace sight::module::geometry::vision
 {
+
 /**
  * @brief   SReprojectionError Class used to compute the mean error of reprojection between 3d object points
  * and 2d image points.
@@ -88,17 +89,17 @@ public:
     SIGHT_DECLARE_SERVICE(SReprojectionError, service::IController)
 
     /// Double changed signal type
-    typedef core::com::Signal< void (double) > ErrorComputedSignalType;
+    typedef core::com::Signal<void (double)> ErrorComputedSignalType;
 
     MODULE_GEOMETRY_VISION_API static const core::com::Slots::SlotKeyType s_COMPUTE_SLOT;
 
     MODULE_GEOMETRY_VISION_API static const core::com::Slots::SlotKeyType s_SET_BOOL_PARAMETER_SLOT;
     MODULE_GEOMETRY_VISION_API static const core::com::Slots::SlotKeyType s_SET_COLOR_PARAMETER_SLOT;
 
-    ///Constructor
+    /// Constructor
     MODULE_GEOMETRY_VISION_API SReprojectionError();
 
-    ///Destructor
+    /// Destructor
     MODULE_GEOMETRY_VISION_API ~SReprojectionError();
 
     /// Connect MatrixTL::s_OBJECT_PUSHED_SIG to s_COMPUTE_SLOT
@@ -126,12 +127,11 @@ protected:
     MODULE_GEOMETRY_VISION_API void stopping() override;
 
 private:
-
     void compute(core::HiResClock::HiResClockType timestamp);
 
-    ///Slot called when a color value is changed
-    void setColorParameter(std::array< std::uint8_t, 4 > _val, std::string _key);
-    ///Slot called when a boolean value is changed
+    /// Slot called when a color value is changed
+    void setColorParameter(std::array<std::uint8_t, 4> _val, std::string _key);
+    /// Slot called when a boolean value is changed
     void setBoolParameter(bool _val, std::string _key);
 
     /// Last timestamp
@@ -141,10 +141,10 @@ private:
     double m_patternWidth;
 
     /// 3D object points
-    std::vector< ::cv::Point3f > m_objectPoints;
+    std::vector< ::cv::Point3f> m_objectPoints;
     /// Camera Matrix (fx, fy, cx, cy)
     ::cv::Mat m_cameraMatrix;
-    ///Distorsion coefficient
+    /// Distorsion coefficient
     ::cv::Mat m_distorsionCoef;
     /// Color of the reprojection circle
     ::cv::Scalar m_cvColor;
@@ -154,7 +154,7 @@ private:
     ::cv::Mat m_extrinsic;
 
     /// List of tags associated with each input matrix
-    std::vector< data::MarkerMap::KeyType> m_matricesTag;
+    std::vector<data::MarkerMap::KeyType> m_matricesTag;
 };
 
-}//namespace sight::module::geometry::vision
+} // namespace sight::module::geometry::vision

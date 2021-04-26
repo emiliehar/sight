@@ -30,15 +30,17 @@
 
 namespace sight::core::memory
 {
+
 namespace stream
 {
+
 namespace in
 {
 
-struct HoldCounterStream : ::boost::iostreams::stream< ::boost::iostreams::array_source >
+struct HoldCounterStream : ::boost::iostreams::stream< ::boost::iostreams::array_source>
 {
     HoldCounterStream(char* buf, size_t size, const Buffer::LockType& lock) :
-        ::boost::iostreams::stream< ::boost::iostreams::array_source >(buf, size),
+        ::boost::iostreams::stream< ::boost::iostreams::array_source>(buf, size),
         m_counter(lock)
     {
     }
@@ -46,7 +48,7 @@ struct HoldCounterStream : ::boost::iostreams::stream< ::boost::iostreams::array
     Buffer::LockType m_counter;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Buffer::LockType noFactory()
 {
@@ -74,12 +76,14 @@ SPTR(std::istream) Buffer::get()
     namespace io = boost::iostreams;
 
     typedef HoldCounterStream ArrayStreamType;
-    SPTR( ArrayStreamType ) arrayInStream
-        = std::make_shared< ArrayStreamType > ( static_cast<char*>(m_buf), m_size, m_counterFactory() );
+    SPTR(ArrayStreamType) arrayInStream
+        = std::make_shared<ArrayStreamType>(static_cast<char*>(m_buf), m_size, m_counterFactory());
 
     return arrayInStream;
 }
 
 } // namespace in
+
 } // namespace stream
+
 } // namespace sight::core::memory

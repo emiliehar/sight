@@ -49,8 +49,8 @@ int main(int argc, char** argv)
     ::boost::program_options::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "produce help message")
-        ("input,i", ::boost::program_options::value< std::string >(), "set input folder")
-        ("output,o", ::boost::program_options::value< std::string >(), "set output folder")
+        ("input,i", ::boost::program_options::value<std::string>(), "set input folder")
+        ("output,o", ::boost::program_options::value<std::string>(), "set output folder")
     ;
 
     // Manage the options
@@ -58,41 +58,47 @@ int main(int argc, char** argv)
     ::boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
     ::boost::program_options::notify(vm);
 
-    if (vm.count("help"))
+    if(vm.count("help"))
     {
         std::cout << desc << std::endl;
+
         return EXIT_SUCCESS;
     }
     else if(!vm.count("input"))
     {
         std::cout << "You must specify an input file." << std::endl << std::endl;
         std::cout << desc << std::endl;
+
         return EXIT_FAILURE;
     }
     else if(!vm.count("output"))
     {
         std::cout << "You must specify an output file." << std::endl << std::endl;
         std::cout << desc << std::endl;
+
         return EXIT_FAILURE;
     }
-    else if(vm["input"].as< std::string >() == vm["output"].as< std::string >())
+    else if(vm["input"].as<std::string>() == vm["output"].as<std::string>())
     {
         std::cout << "The output folder can not be the input folder." << std::endl;
+
         return EXIT_FAILURE;
     }
 
     // Get paths
-    std::filesystem::path input(vm["input"].as< std::string >());
-    std::filesystem::path output(vm["output"].as< std::string >());
+    std::filesystem::path input(vm["input"].as<std::string>());
+    std::filesystem::path output(vm["output"].as<std::string>());
 
     if(!std::filesystem::exists(input) || !std::filesystem::is_directory(input))
     {
         std::cout << "The specified input folder " << input << " is not a directory." << "\n";
+
         return EXIT_FAILURE;
     }
     else if(std::filesystem::exists(output))
     {
         std::cout << "The specified output folder " << output << " already exists." << "\n";
+
         return EXIT_FAILURE;
     }
 

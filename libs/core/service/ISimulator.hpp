@@ -35,19 +35,15 @@ namespace sight::service
  */
 class SERVICE_CLASS_API ISimulator : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(ISimulator, service::IService)
 
 protected:
-
     /// ISimulator constructor. Do nothing.
     SERVICE_API ISimulator();
 
     /// ISimulator destructor. Do nothing.
     SERVICE_API virtual ~ISimulator();
-
 };
 
 }

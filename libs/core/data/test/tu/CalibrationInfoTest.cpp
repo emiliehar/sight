@@ -33,14 +33,15 @@
 #include <utestData/helper/compare.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::data::ut::CalibrationInfoTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::data::ut::CalibrationInfoTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfoTest::setUp()
 {
@@ -48,26 +49,26 @@ void CalibrationInfoTest::setUp()
     utestData::generator::Image::initRand();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfoTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfoTest::calibrationInfoTest()
 {
     data::CalibrationInfo::sptr calInfo = data::CalibrationInfo::New();
 
     data::Image::sptr img = data::Image::New();
-    utestData::generator::Image::generateRandomImage( img, core::tools::Type::s_INT16);
+    utestData::generator::Image::generateRandomImage(img, core::tools::Type::s_INT16);
 
     data::PointList::sptr pl = data::PointList::New();
 
-    data::Point::sptr pt1 = data::Point::New( 1.0, 2.0, 3.0 );
-    data::Point::sptr pt2 = data::Point::New( 4.0, 5.0, 6.0 );
-    data::Point::sptr pt3 = data::Point::New( 7.0, 8.0, 9.0 );
+    data::Point::sptr pt1 = data::Point::New(1.0, 2.0, 3.0);
+    data::Point::sptr pt2 = data::Point::New(4.0, 5.0, 6.0);
+    data::Point::sptr pt3 = data::Point::New(7.0, 8.0, 9.0);
 
     pl->getPoints().push_back(pt1);
     pl->getPoints().push_back(pt2);
@@ -75,7 +76,7 @@ void CalibrationInfoTest::calibrationInfoTest()
 
     calInfo->addRecord(img, pl);
 
-    //Testing values
+    // Testing values
 
     data::CalibrationInfo::ImageContainerType imgList = calInfo->getImageContainer();
 
@@ -105,20 +106,20 @@ void CalibrationInfoTest::calibrationInfoTest()
     CPPUNIT_ASSERT(calInfo->getPointListContainer().empty());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfoTest::shallowCopyTest()
 {
     data::CalibrationInfo::sptr calInfo = data::CalibrationInfo::New();
 
     data::Image::sptr img = data::Image::New();
-    utestData::generator::Image::generateRandomImage( img, core::tools::Type::s_INT16);
+    utestData::generator::Image::generateRandomImage(img, core::tools::Type::s_INT16);
 
     data::PointList::sptr pl = data::PointList::New();
 
-    data::Point::sptr pt1 = data::Point::New( 1.0, 2.0, 3.0 );
-    data::Point::sptr pt2 = data::Point::New( 4.0, 5.0, 6.0 );
-    data::Point::sptr pt3 = data::Point::New( 7.0, 8.0, 9.0 );
+    data::Point::sptr pt1 = data::Point::New(1.0, 2.0, 3.0);
+    data::Point::sptr pt2 = data::Point::New(4.0, 5.0, 6.0);
+    data::Point::sptr pt3 = data::Point::New(7.0, 8.0, 9.0);
 
     pl->getPoints().push_back(pt1);
     pl->getPoints().push_back(pt2);
@@ -133,20 +134,20 @@ void CalibrationInfoTest::shallowCopyTest()
     CPPUNIT_ASSERT(calInfo->getPointListContainer() == calInfo2->getPointListContainer());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfoTest::deepCopyTest()
 {
     data::CalibrationInfo::sptr calInfo = data::CalibrationInfo::New();
 
     data::Image::sptr img = data::Image::New();
-    utestData::generator::Image::generateRandomImage( img, core::tools::Type::s_INT16);
+    utestData::generator::Image::generateRandomImage(img, core::tools::Type::s_INT16);
 
     data::PointList::sptr pl = data::PointList::New();
 
-    data::Point::sptr pt1 = data::Point::New( 1.0, 2.0, 3.0 );
-    data::Point::sptr pt2 = data::Point::New( 4.0, 5.0, 6.0 );
-    data::Point::sptr pt3 = data::Point::New( 7.0, 8.0, 9.0 );
+    data::Point::sptr pt1 = data::Point::New(1.0, 2.0, 3.0);
+    data::Point::sptr pt2 = data::Point::New(4.0, 5.0, 6.0);
+    data::Point::sptr pt3 = data::Point::New(7.0, 8.0, 9.0);
 
     pl->getPoints().push_back(pt1);
     pl->getPoints().push_back(pt2);
@@ -186,7 +187,8 @@ void CalibrationInfoTest::deepCopyTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

@@ -32,43 +32,44 @@
 namespace sight::activity
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IActivitySequencer::IActivitySequencer()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IActivitySequencer::~IActivitySequencer()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 int IActivitySequencer::parseActivities(const data::SeriesDB::sptr& seriesDB)
 {
     int lastActivityIndex = -1;
 
-    for (const auto& series: seriesDB->getContainer())
+    for(const auto& series : seriesDB->getContainer())
     {
         data::ActivitySeries::sptr activity = data::ActivitySeries::dynamicCast(series);
 
-        if (!activity)
+        if(!activity)
         {
             // Remove the wrong data
-            SIGHT_ERROR("The series DB must only contain 'ActivitySeries'. The series of type '" +
-                        series->getClassname() + "' will be removed")
+            SIGHT_ERROR(
+                "The series DB must only contain 'ActivitySeries'. The series of type '"
+                + series->getClassname() + "' will be removed")
 
             data::helper::SeriesDB helper(seriesDB);
             helper.remove(series);
             helper.notify();
         }
-        else if(!(lastActivityIndex+1 < m_activityIds.size() &&
-                  m_activityIds[lastActivityIndex+1] == activity->getActivityConfigId()))
+        else if(!(lastActivityIndex + 1 < m_activityIds.size()
+                  && m_activityIds[lastActivityIndex + 1] == activity->getActivityConfigId()))
         {
             // Remove the wrong data
-            SIGHT_ERROR("The activity '" +activity->getActivityConfigId() + "' is unknown, it will be removed")
+            SIGHT_ERROR("The activity '" + activity->getActivityConfigId() + "' is unknown, it will be removed")
 
             data::helper::SeriesDB helper(seriesDB);
             helper.remove(activity);
@@ -77,6 +78,7 @@ int IActivitySequencer::parseActivities(const data::SeriesDB::sptr& seriesDB)
         else
         {
             const bool ok = this->validateActivity(activity).first;
+
             if(ok)
             {
                 ++lastActivityIndex;
@@ -88,13 +90,16 @@ int IActivitySequencer::parseActivities(const data::SeriesDB::sptr& seriesDB)
             }
         }
     }
+
     return lastActivityIndex;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void IActivitySequencer::storeActivityData(const data::SeriesDB::sptr& seriesDB, int index,
-                                           const data::Composite::csptr& overrides)
+void IActivitySequencer::storeActivityData(
+    const data::SeriesDB::sptr& seriesDB,
+    int index,
+    const data::Composite::csptr& overrides)
 {
     // Retrives the current activity data
     const size_t currentIdx = static_cast<size_t>(index);
@@ -108,7 +113,8 @@ void IActivitySequencer::storeActivityData(const data::SeriesDB::sptr& seriesDB,
     {
         // Do not store overriden requirements
         auto overridesContainer = overrides->getContainer();
-        for (const auto& elt : composite->getContainer())
+
+        for(const auto& elt : composite->getContainer())
         {
             if(overridesContainer.count(elt.first) == 0)
             {
@@ -118,21 +124,24 @@ void IActivitySequencer::storeActivityData(const data::SeriesDB::sptr& seriesDB,
     }
     else
     {
-        for (const auto& elt : composite->getContainer())
+        for(const auto& elt : composite->getContainer())
         {
             m_requirements[elt.first] = elt.second;
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::ActivitySeries::sptr IActivitySequencer::getActivity(const data::SeriesDB::sptr& seriesDB,
-                                                           size_t index, const core::com::SlotBase::sptr& slot,
-                                                           const data::Composite::csptr& overrides)
+data::ActivitySeries::sptr IActivitySequencer::getActivity(
+    const data::SeriesDB::sptr& seriesDB,
+    size_t index,
+    const core::com::SlotBase::sptr& slot,
+    const data::Composite::csptr& overrides)
 {
     data::ActivitySeries::sptr activity;
-    if (seriesDB->size() > index) // The activity already exists, update the data
+
+    if(seriesDB->size() > index) // The activity already exists, update the data
     {
         data::Series::sptr series = seriesDB->getContainer()[index];
         activity = data::ActivitySeries::dynamicCast(series);
@@ -142,27 +151,27 @@ data::ActivitySeries::sptr IActivitySequencer::getActivity(const data::SeriesDB:
         // FIXME: update all the data or only the requirement ?
         if(overrides)
         {
-            const std::string activityId                  = m_activityIds[index];
-            const activity::extension::ActivityInfo& info =
-                activity::extension::Activity::getDefault()->getInfo(activityId);
+            const std::string activityId = m_activityIds[index];
+            const activity::extension::ActivityInfo& info
+                = activity::extension::Activity::getDefault()->getInfo(activityId);
 
             auto overridesContainer = overrides->getContainer();
 
             for(const auto& req : info.requirements)
             {
-                if(m_requirements.find(req.name) != m_requirements.end() ||
-                   overridesContainer.find(req.name) != m_requirements.end())
+                if(m_requirements.find(req.name) != m_requirements.end()
+                   || overridesContainer.find(req.name) != m_requirements.end())
                 {
-                    composite->getContainer()[req.name] = overridesContainer.count(req.name) == 0 ?
-                                                          m_requirements[req.name] : overridesContainer[req.name];
+                    composite->getContainer()[req.name] = overridesContainer.count(req.name) == 0
+                                                          ? m_requirements[req.name] : overridesContainer[req.name];
                 }
             }
         }
         else
         {
-            const std::string activityId                  = m_activityIds[index];
-            const activity::extension::ActivityInfo& info =
-                activity::extension::Activity::getDefault()->getInfo(activityId);
+            const std::string activityId = m_activityIds[index];
+            const activity::extension::ActivityInfo& info
+                = activity::extension::Activity::getDefault()->getInfo(activityId);
 
             for(const auto& req : info.requirements)
             {
@@ -176,19 +185,19 @@ data::ActivitySeries::sptr IActivitySequencer::getActivity(const data::SeriesDB:
     else // create a new activity series
     {
         // try to create the intermediate activities
-        if (index > 0 && (index - 1) >= seriesDB->size())
+        if(index > 0 && (index - 1) >= seriesDB->size())
         {
-            this->getActivity(seriesDB, index-1, slot, overrides);
+            this->getActivity(seriesDB, index - 1, slot, overrides);
         }
 
-        const std::string activityId                  = m_activityIds[index];
-        const activity::extension::ActivityInfo& info =
-            activity::extension::Activity::getDefault()->getInfo(activityId);
+        const std::string activityId = m_activityIds[index];
+        const activity::extension::ActivityInfo& info
+            = activity::extension::Activity::getDefault()->getInfo(activityId);
 
         activity = data::ActivitySeries::New();
 
         activity->setModality("OT");
-        activity->setInstanceUID("activity." + core::tools::UUID::generateUUID() );
+        activity->setInstanceUID("activity." + core::tools::UUID::generateUUID());
 
         const ::boost::posix_time::ptime now = ::boost::posix_time::second_clock::local_time();
         activity->setDate(core::tools::getDate(now));
@@ -199,28 +208,29 @@ data::ActivitySeries::sptr IActivitySequencer::getActivity(const data::SeriesDB:
 
         data::Composite::sptr composite = activity->getData();
 
-        for (const auto& req : info.requirements)
+        for(const auto& req : info.requirements)
         {
-            if (overrides)
+            if(overrides)
             {
                 auto overridesContainer = overrides->getContainer();
+
                 if(overridesContainer.count(req.name) != 0)
                 {
                     composite->getContainer()[req.name] = overridesContainer[req.name];
                 }
             }
-            else if (m_requirements.find(req.name) != m_requirements.end())
+            else if(m_requirements.find(req.name) != m_requirements.end())
             {
                 composite->getContainer()[req.name] = m_requirements[req.name];
             }
-            else if (req.create == true || (req.minOccurs == 0 && req.maxOccurs == 0))
+            else if(req.create == true || (req.minOccurs == 0 && req.maxOccurs == 0))
             {
                 // create the new data
                 data::Object::sptr newObj = data::factory::New(req.type);
                 composite->getContainer()[req.name] = newObj;
                 m_requirements[req.name]            = newObj;
             }
-            else if (req.minOccurs == 0)
+            else if(req.minOccurs == 0)
             {
                 // create empty composite for optional data
                 data::Composite::sptr optionalDataComposite = data::Composite::New();
@@ -232,11 +242,12 @@ data::ActivitySeries::sptr IActivitySequencer::getActivity(const data::SeriesDB:
         data::helper::SeriesDB helper(seriesDB);
         helper.add(activity);
         {
-            auto sig = seriesDB->signal< data::SeriesDB::AddedSeriesSignalType >(
+            auto sig = seriesDB->signal<data::SeriesDB::AddedSeriesSignalType>(
                 data::SeriesDB::s_ADDED_SERIES_SIG);
-            if (slot)
+
+            if(slot)
             {
-                core::com::Connection::Blocker block(sig->getConnection( slot ));
+                core::com::Connection::Blocker block(sig->getConnection(slot));
                 helper.notify();
             }
             else
@@ -245,9 +256,10 @@ data::ActivitySeries::sptr IActivitySequencer::getActivity(const data::SeriesDB:
             }
         }
     }
+
     return activity;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::activity

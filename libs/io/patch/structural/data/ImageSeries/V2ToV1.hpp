@@ -28,8 +28,10 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace data
 {
+
 namespace ImageSeries
 {
 
@@ -46,7 +48,7 @@ public:
     IO_PATCH_API ~V2ToV1();
 
     /// Copy constructor
-    IO_PATCH_API V2ToV1( const V2ToV1& cpy );
+    IO_PATCH_API V2ToV1(const V2ToV1& cpy);
 
     /**
      * @brief Applies patch
@@ -57,9 +59,10 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace ImageSeries
+
 } // namespace data
+
 } // namespace sight::io::patch::structural

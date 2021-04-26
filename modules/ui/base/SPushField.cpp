@@ -34,29 +34,30 @@
 
 namespace sight::module::ui::base
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 static const core::com::Slots::SlotKeyType s_UPDATE_OBJECTS_SLOT = "updateObject";
 
 static const std::string s_SOURCE_KEY      = "source";
 static const std::string s_DESTINATION_KEY = "destination";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPushField::SPushField() noexcept
 {
     newSlot(s_UPDATE_OBJECTS_SLOT, &SPushField::updateObjects, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPushField::~SPushField() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushField::configuring()
 {
@@ -68,7 +69,7 @@ void SPushField::configuring()
     m_field = pushCfg->getAttributeValue("field");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushField::starting()
 {
@@ -76,52 +77,53 @@ void SPushField::starting()
     this->updateObjects();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushField::stopping()
 {
     this->actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushField::updating()
 {
-    data::Object::sptr objectSrc = this->getInOut< data::Object >(s_SOURCE_KEY);
-    SIGHT_ASSERT( s_SOURCE_KEY + " doesn't exist or is not a composite", objectSrc);
+    data::Object::sptr objectSrc = this->getInOut<data::Object>(s_SOURCE_KEY);
+    SIGHT_ASSERT(s_SOURCE_KEY + " doesn't exist or is not a composite", objectSrc);
 
     data::Object::sptr obj = objectSrc->getField(m_field);
 
     SIGHT_WARN_IF("'" + m_field + "' not found in object '" + objectSrc->getID() + "'", obj == nullptr);
-    if (obj)
+
+    if(obj)
     {
         this->setOutput(s_DESTINATION_KEY, obj);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPushField::updateObjects()
 {
-    data::Object::sptr objectSrc = this->getInOut< data::Object >(s_SOURCE_KEY);
-    SIGHT_ASSERT( s_SOURCE_KEY + " doesn't exist or is not a composite", objectSrc);
+    data::Object::sptr objectSrc = this->getInOut<data::Object>(s_SOURCE_KEY);
+    SIGHT_ASSERT(s_SOURCE_KEY + " doesn't exist or is not a composite", objectSrc);
 
     const bool executable = (objectSrc->getField(m_field) != nullptr);
 
-    this->::sight::ui::base::IAction::setIsExecutable( executable );
+    this->::sight::ui::base::IAction::setIsExecutable(executable);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SPushField::getAutoConnections() const
 {
     KeyConnectionsMap connections;
-    connections.push( s_SOURCE_KEY, data::Object::s_ADDED_FIELDS_SIG, s_UPDATE_OBJECTS_SLOT );
-    connections.push( s_SOURCE_KEY, data::Object::s_REMOVED_FIELDS_SIG, s_UPDATE_OBJECTS_SLOT );
+    connections.push(s_SOURCE_KEY, data::Object::s_ADDED_FIELDS_SIG, s_UPDATE_OBJECTS_SLOT);
+    connections.push(s_SOURCE_KEY, data::Object::s_REMOVED_FIELDS_SIG, s_UPDATE_OBJECTS_SLOT);
 
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::base

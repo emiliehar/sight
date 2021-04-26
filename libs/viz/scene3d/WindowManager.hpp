@@ -40,9 +40,7 @@ namespace sight::viz::scene3d
  */
 class VIZ_SCENE3D_CLASS_API WindowManager : public core::BaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(WindowManager, viz::scene3d::WindowManager, new WindowManager)
 
     SIGHT_ALLOW_SHARED_FROM_THIS()
@@ -66,13 +64,11 @@ public:
     VIZ_SCENE3D_API bool hasWindow();
 
 private:
-
     /// Contains the first window.
     ::Ogre::RenderWindow* m_firstWindow;
 
     /// Stores all Ogre windows.
-    std::set< ::Ogre::RenderWindow* > m_windows;
-
+    std::set< ::Ogre::RenderWindow*> m_windows;
 };
 
 } // namespace sight::viz::scene3d.

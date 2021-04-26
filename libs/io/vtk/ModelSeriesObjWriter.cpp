@@ -47,34 +47,35 @@
 
 #include <filesystem>
 
-SIGHT_REGISTER_IO_WRITER( ::sight::io::vtk::ModelSeriesObjWriter );
+SIGHT_REGISTER_IO_WRITER(::sight::io::vtk::ModelSeriesObjWriter);
 
 namespace sight::io::vtk
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 ModelSeriesObjWriter::ModelSeriesObjWriter(io::base::writer::IObjectWriter::Key) :
     m_job(core::jobs::Observer::New("ModelSeries Writer"))
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ModelSeriesObjWriter::~ModelSeriesObjWriter()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-vtkSmartPointer< vtkActor > createActor( const data::Reconstruction::sptr& pReconstruction )
+vtkSmartPointer<vtkActor> createActor(const data::Reconstruction::sptr& pReconstruction)
 {
-    vtkSmartPointer< vtkActor >  actor = vtkSmartPointer< vtkActor >::New();
+    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 
     data::Mesh::sptr mesh         = pReconstruction->getMesh();
     data::Material::sptr material = pReconstruction->getMaterial();
 
-    vtkSmartPointer< vtkPolyData > polyData = vtkSmartPointer< vtkPolyData >::New();
-    io::vtk::helper::Mesh::toVTKMesh( mesh, polyData);
+    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+    io::vtk::helper::Mesh::toVTKMesh(mesh, polyData);
     vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
     mapper->SetInputData(polyData);
     actor->SetMapper(mapper);
@@ -83,20 +84,20 @@ vtkSmartPointer< vtkActor > createActor( const data::Reconstruction::sptr& pReco
 
     data::Color::sptr diffuse = material->diffuse();
     property->SetDiffuseColor(diffuse->red(), diffuse->green(), diffuse->blue());
-    property->SetOpacity( diffuse->alpha() );
+    property->SetOpacity(diffuse->alpha());
 
     data::Color::sptr ambient = material->ambient();
     property->SetAmbientColor(ambient->red(), ambient->green(), ambient->blue());
 
     property->SetSpecularColor(1., 1., 1.);
-    property->SetSpecularPower(100.); //Shininess
+    property->SetSpecularPower(100.); // Shininess
 
     property->SetInterpolationToPhong();
 
     return actor;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesObjWriter::write()
 {
@@ -104,7 +105,7 @@ void ModelSeriesObjWriter::write()
 
     [[maybe_unused]] const auto objectLock = m_object.lock();
 
-    SIGHT_ASSERT("Object Lock null.", objectLock );
+    SIGHT_ASSERT("Object Lock null.", objectLock);
 
     const std::filesystem::path prefix = this->getFolder();
 
@@ -112,35 +113,37 @@ void ModelSeriesObjWriter::write()
 
     m_job->setTotalWorkUnits(modelSeries->getReconstructionDB().size());
     std::uint64_t units = 0;
-    for(const data::Reconstruction::sptr& rec :  modelSeries->getReconstructionDB() )
+
+    for(const data::Reconstruction::sptr& rec : modelSeries->getReconstructionDB())
     {
-        vtkSmartPointer< vtkRenderer > renderer = vtkSmartPointer< vtkRenderer >::New();
-        vtkSmartPointer< vtkActor >  actor      = createActor(rec);
+        vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+        vtkSmartPointer<vtkActor> actor       = createActor(rec);
         renderer->AddActor(actor);
 
-        vtkSmartPointer< vtkRenderWindow > renderWindow = vtkSmartPointer< vtkRenderWindow >::New();
+        vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
         renderWindow->AddRenderer(renderer);
 
         const std::string filename = (prefix / (rec->getOrganName() + "_" + rec->getUUID())).string();
 
-        vtkSmartPointer< vtkOBJExporter > exporter = vtkSmartPointer< vtkOBJExporter >::New();
+        vtkSmartPointer<vtkOBJExporter> exporter = vtkSmartPointer<vtkOBJExporter>::New();
         exporter->SetRenderWindow(renderWindow);
         exporter->SetFilePrefix(filename.c_str());
         exporter->Write();
         m_job->doneWork(++units);
         // can not observe progression, not a vtkAlgorithm ...
     }
+
     m_job->finish();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string ModelSeriesObjWriter::extension()
 {
     return ".obj";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::jobs::IJob::sptr ModelSeriesObjWriter::getJob() const
 {

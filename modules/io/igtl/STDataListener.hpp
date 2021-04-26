@@ -36,7 +36,9 @@
 
 namespace sight::data
 {
+
 class Composite;
+
 }
 
 namespace sight::module::io::igtl
@@ -70,9 +72,7 @@ namespace sight::module::io::igtl
  */
 class MODULE_IO_IGTL_CLASS_API STDataListener : public module::io::igtl::INetworkListener
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(STDataListener, module::io::igtl::INetworkListener)
 
     /// Constructor
@@ -82,7 +82,6 @@ public:
     MODULE_IO_IGTL_API virtual ~STDataListener();
 
 protected:
-
     /// Configure port, hostname and device name
     MODULE_IO_IGTL_API void configuring() override;
 
@@ -93,10 +92,9 @@ protected:
     MODULE_IO_IGTL_API void stopping() override;
 
 private:
+    typedef std::map<std::string, unsigned long> MatrixNameIndexType;
 
-    typedef std::map< std::string, unsigned long > MatrixNameIndexType;
-
-    ///Push received matrices in timeline
+    /// Push received matrices in timeline
     void manageTimeline(const SPTR(data::Composite)& obj, double timestamp = 0);
 
     /**
@@ -118,7 +116,7 @@ private:
     std::string m_portConfig;
 
     /// device names key
-    std::vector < core::runtime::ConfigurationElement::sptr > m_deviceNamesConfig;
+    std::vector<core::runtime::ConfigurationElement::sptr> m_deviceNamesConfig;
 
     MatrixNameIndexType m_matrixNameIndex;
 };

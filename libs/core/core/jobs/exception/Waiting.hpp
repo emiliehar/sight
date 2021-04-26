@@ -28,13 +28,14 @@
 
 namespace sight::core::jobs
 {
+
 namespace exception
 {
 
 /// No worker exception.
 struct Waiting : core::Exception
 {
-    CORE_API Waiting ( const std::string& err );
+    CORE_API Waiting(const std::string& err);
 };
 
 } // namespace exception

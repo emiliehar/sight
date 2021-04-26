@@ -62,9 +62,7 @@ namespace sight::service
  */
 class SERVICE_CLASS_API SConfigController : public service::IController
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SConfigController, service::IController)
 
     /// Constructor. Does nothing.
@@ -74,7 +72,6 @@ public:
     SERVICE_API virtual ~SConfigController() noexcept;
 
 protected:
-
     /// Starts the config
     void starting() override;
 
@@ -110,13 +107,11 @@ protected:
     void swapping() override;
 
     /// Overrides
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
     /// AppConfig manager
     service::helper::ConfigLauncher::uptr m_configLauncher;
-
 };
 
 } // fwServices

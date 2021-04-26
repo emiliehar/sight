@@ -31,18 +31,21 @@
 
 namespace sight::data
 {
+
 namespace reflection
 {
-//------------------------------------------------------------------------------
 
-data::Object::sptr getObject( data::Object::csptr object,
-                              const std::string& path,
-                              bool raiseException )
+// ------------------------------------------------------------------------------
+
+data::Object::sptr getObject(
+    data::Object::csptr object,
+    const std::string& path,
+    bool raiseException)
 {
-    SIGHT_FATAL_IF( "Path for desired object is empty.", path.empty() );
-    SIGHT_FATAL_IF( "Path for desired object doesn't start with '@'.", path[0] != '@' );
-    const std::string objectPath = path.substr( 1 );
-    data::reflection::visitor::GetObject visitor( object, objectPath );
+    SIGHT_FATAL_IF("Path for desired object is empty.", path.empty());
+    SIGHT_FATAL_IF("Path for desired object doesn't start with '@'.", path[0] != '@');
+    const std::string objectPath = path.substr(1);
+    data::reflection::visitor::GetObject visitor(object, objectPath);
     data::Object::sptr subObject;
     try
     {
@@ -61,4 +64,5 @@ data::Object::sptr getObject( data::Object::csptr object,
 }
 
 } // namespace reflection
+
 } // namespace sight::data

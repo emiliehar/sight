@@ -30,8 +30,10 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief ILoggerDialog is used to display a dialog message and a set of logs
  * Use the Delegate design pattern. The specific implementation selection is ensured by fwGuiRegisterMacro.
@@ -39,9 +41,7 @@ namespace dialog
  */
 class UI_BASE_CLASS_API LoggerDialog : public ILoggerDialog
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(LoggerDialog, ui::base::dialog::ILoggerDialog, new LoggerDialog)
 
     /**
@@ -51,8 +51,10 @@ public:
      * @param[in] logger Logger of the dialog
      * @return Returns true or false whether the user has selected the OK or CANCEL button
      */
-    UI_BASE_API static bool showLoggerDialog(const std::string& title, const std::string& message,
-                                             const core::log::Logger::sptr& logger);
+    UI_BASE_API static bool showLoggerDialog(
+        const std::string& title,
+        const std::string& message,
+        const core::log::Logger::sptr& logger);
 
     /// Constructor that will instantiate the concrete implementation
     UI_BASE_API LoggerDialog();
@@ -66,8 +68,10 @@ public:
      * @param[in] message Message of the dialog
      * @param[in] logger Logger of the dialog
      */
-    UI_BASE_API LoggerDialog(const std::string& title, const std::string& message,
-                             const core::log::Logger::sptr& logger);
+    UI_BASE_API LoggerDialog(
+        const std::string& title,
+        const std::string& message,
+        const core::log::Logger::sptr& logger);
 
     /**
      * @brief Set the dialog title.
@@ -93,10 +97,9 @@ public:
     UI_BASE_API bool show() override;
 
 protected:
-
     ui::base::dialog::ILoggerDialog::sptr m_implementation;
-
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::base

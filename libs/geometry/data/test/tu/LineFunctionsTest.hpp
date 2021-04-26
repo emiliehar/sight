@@ -26,22 +26,22 @@
 
 namespace sight::geometry::data
 {
+
 namespace ut
 {
 
 class LineFunctionsTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( LineFunctionsTest );
-    CPPUNIT_TEST( checkGetClosestPoint);
-    CPPUNIT_TEST( checkGetClosestPoints);
-    CPPUNIT_TEST( checkIntersect1);
-    CPPUNIT_TEST( checkIntersect2);
-    CPPUNIT_TEST( checkIntersect3);
+    CPPUNIT_TEST_SUITE(LineFunctionsTest);
+    CPPUNIT_TEST(checkGetClosestPoint);
+    CPPUNIT_TEST(checkGetClosestPoints);
+    CPPUNIT_TEST(checkIntersect1);
+    CPPUNIT_TEST(checkIntersect2);
+    CPPUNIT_TEST(checkIntersect3);
     CPPUNIT_TEST_SUITE_END();
 
 public:
-
     void setUp();
     void tearDown();
 
@@ -52,5 +52,6 @@ public:
     void checkIntersect3();
 };
 
-} //namespace ut
-} //namespace sight::geometry::data
+} // namespace ut
+
+} // namespace sight::geometry::data

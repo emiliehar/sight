@@ -77,9 +77,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API SText final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SText, ::sight::viz::scene3d::IAdaptor)
 
@@ -90,7 +88,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SText() noexcept override;
 
 protected:
-
     /// Configures the service.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -112,7 +109,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     /// Defines the text string.
     void setText(std::string str);
 
@@ -123,16 +119,16 @@ private:
     void updatePositionFromAlignment();
 
     /// Contains the displayed stats in the overlay.
-    sight::viz::scene3d::Text* m_text { nullptr };
+    sight::viz::scene3d::Text* m_text{nullptr};
 
     /// Defines the text's color.
     ::Ogre::ColourValue m_textColor;
 
     /// Defines the font size in points.
-    size_t m_fontSize { 16 };
+    size_t m_fontSize{16};
 
     /// Defines the position of the text.
-    ::Ogre::Vector2 m_position { 0.f, 0.f };
+    ::Ogre::Vector2 m_position{0.f, 0.f};
 
     /// Defines the vertical alignment type (top, center or bottom).
     std::string m_verticalAlignment;
@@ -144,8 +140,7 @@ private:
     std::string m_textString;
 
     /// Defines the TrueType font source file.
-    std::string m_fontSource {"DejaVuSans.ttf"};
-
+    std::string m_fontSource{"DejaVuSans.ttf"};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

@@ -31,9 +31,9 @@
 
 #include <core/reflection/UserObject.hpp>
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(Series))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (Series))
 {
     builder
     .tag("object_version", "2")

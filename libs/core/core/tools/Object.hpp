@@ -32,8 +32,8 @@ namespace sight::core::tools
 /**
  * @brief   Define Base class for Sight objects and services
  */
-class CORE_CLASS_API Object  : public core::BaseObject,
-                               protected core::tools::fwID
+class CORE_CLASS_API Object : public core::BaseObject,
+                              protected core::tools::fwID
 {
 public:
     SIGHT_DECLARE_CLASS(Object, core::BaseObject)

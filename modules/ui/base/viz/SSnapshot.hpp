@@ -44,9 +44,7 @@ namespace sight::module::ui::base::viz
  */
 class MODULE_UI_BASE_CLASS_API SSnapshot : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SSnapshot, ::sight::ui::base::IAction)
 
     /// Constructor. Do nothing.
@@ -56,7 +54,6 @@ public:
     MODULE_UI_BASE_API virtual ~SSnapshot() noexcept;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /// Starts action
@@ -79,16 +76,15 @@ protected:
      */
     void configuring() override;
 
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
     /**
      * @name Signals
      * @{
      */
     /// Type of signal to snap shot
-    typedef core::com::Signal< void (std::string) > SnappedSignalType;
+    typedef core::com::Signal<void (std::string)> SnappedSignalType;
     static const core::com::Signals::SignalKeyType s_SNAPPED_SIG;
 
     SnappedSignalType::sptr m_sigSnapped; ///< snap shot signal
@@ -97,7 +93,6 @@ private:
      */
 
     std::string requestFileName();
-
 };
 
 } // uiVisu

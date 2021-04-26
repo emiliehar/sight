@@ -66,15 +66,13 @@ namespace sight::module::io::document
 
 class MODULE_IO_DOCUMENT_CLASS_API SPdfWriter : public sight::io::base::service::IWriter
 {
-
 public:
+    typedef std::vector<QImage> ImagesScaledListType;
+    typedef std::vector<data::Image::sptr> ImagesListType;
+    typedef std::vector<std::string> ImagesIDsType;
 
-    typedef std::vector< QImage > ImagesScaledListType;
-    typedef std::vector< data::Image::sptr > ImagesListType;
-    typedef std::vector< std::string > ImagesIDsType;
-
-    typedef std::vector< QWidget* > ContainersListType;
-    typedef std::vector< std::string > ContainersIDsType;
+    typedef std::vector<QWidget*> ContainersListType;
+    typedef std::vector<std::string> ContainersIDsType;
 
     SIGHT_DECLARE_SERVICE(SPdfWriter, sight::io::base::service::IWriter)
     /**
@@ -88,7 +86,6 @@ public:
     MODULE_IO_DOCUMENT_API ~SPdfWriter() noexcept;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */
@@ -114,7 +111,7 @@ protected:
      * Gets the images or containers from their IDs.
      *
      */
-    MODULE_IO_DOCUMENT_API void configuring( ) override;
+    MODULE_IO_DOCUMENT_API void configuring() override;
 
     /**
      * @brief Configure the image path.
@@ -150,14 +147,13 @@ protected:
      *
      * @param[out] _sstream output stream
      */
-    MODULE_IO_DOCUMENT_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_DOCUMENT_API void info(std::ostream& _sstream) override;
     /// @}
 
     /// Returns managed path type, here service manages only single file
     MODULE_IO_DOCUMENT_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 private:
-
     /**
      * @brief convertFwImageToQImage: converts a data::Image to a QImage
      * @param data::Image to convert
@@ -192,6 +188,6 @@ private:
      * @brief List of containers to export into the PDF.
      */
     ContainersListType m_containersToExport;
-
 };
-}
+
+} // namespace sight::module

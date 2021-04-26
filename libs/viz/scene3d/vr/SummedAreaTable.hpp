@@ -46,10 +46,11 @@ namespace vr
 class VIZ_SCENE3D_CLASS_API SummedAreaTable
 {
 public:
-
     /// Constructor, creates an SAT with the given resolution.
-    VIZ_SCENE3D_API SummedAreaTable(std::string _parentId, ::Ogre::SceneManager* _sceneManager,
-                                    float _sizeRatio = 0.25f);
+    VIZ_SCENE3D_API SummedAreaTable(
+        std::string _parentId,
+        ::Ogre::SceneManager* _sceneManager,
+        float _sizeRatio = 0.25f);
 
     /// Destructor, does nothing.
     VIZ_SCENE3D_API ~SummedAreaTable();
@@ -58,9 +59,10 @@ public:
     VIZ_SCENE3D_API void computeSequential(data::Image::sptr _image, data::TransferFunction::sptr _tf);
 
     /// Computes the SAT using Hensley's recursive doubling algorithm.
-    VIZ_SCENE3D_API void computeParallel(::Ogre::TexturePtr _imgTexture,
-                                         const viz::scene3d::TransferFunction::sptr& _gpuTf,
-                                         float _sampleDistance);
+    VIZ_SCENE3D_API void computeParallel(
+        ::Ogre::TexturePtr _imgTexture,
+        const viz::scene3d::TransferFunction::sptr& _gpuTf,
+        float _sampleDistance);
 
     /// Returns the texture holding the SAT.
     VIZ_SCENE3D_API ::Ogre::TexturePtr getTexture() const;
@@ -75,7 +77,6 @@ public:
     VIZ_SCENE3D_API void updateSatFromRatio(float _sizeRatio);
 
 private:
-
     /// Creates the buffers and initializes the SAT
     void initializeSAT();
 
@@ -117,7 +118,7 @@ private:
     float m_currentSliceDepth;
 
     /// Number of texture reads per pass. A higher number will result in fewer passes.
-    /// /!\ This number must be the same as the one used in the FS.
+    ////!\ This number must be the same as the one used in the FS.
     const int m_nbTextReads = 32;
 
     /// Returns the voxel colour after TF application.
@@ -134,24 +135,23 @@ private:
 
     // Resource name of the target buffer.
     const std::string TARGET_BUFFER_NAME = "__GPU_SummedAreaTable_Pong";
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline Ogre::TexturePtr SummedAreaTable::getTexture() const
 {
     return m_sourceBuffer;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline Ogre::TexturePtr SummedAreaTable::getSpareTexture() const
 {
     return m_targetBuffer;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace vr
 

@@ -30,6 +30,7 @@ namespace sight::atoms
  */
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace sight::atoms

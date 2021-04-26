@@ -26,6 +26,7 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -34,9 +35,9 @@ namespace ut
  */
 class AppConfigParametersTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( AppConfigParametersTest );
-CPPUNIT_TEST( appConfigParametersTest );
-CPPUNIT_TEST( concurentAccessToAppConfigParametersTest );
+CPPUNIT_TEST_SUITE(AppConfigParametersTest);
+CPPUNIT_TEST(appConfigParametersTest);
+CPPUNIT_TEST(concurentAccessToAppConfigParametersTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -47,8 +48,8 @@ public:
     // fonctions de tests
     void appConfigParametersTest();
     void concurentAccessToAppConfigParametersTest();
-
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

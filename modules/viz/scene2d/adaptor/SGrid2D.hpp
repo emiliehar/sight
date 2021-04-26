@@ -28,8 +28,10 @@
 
 namespace sight::module::viz::scene2d
 {
+
 namespace adaptor
 {
+
 /**
  * @brief Render grid on the scene2d.
  *
@@ -62,7 +64,6 @@ namespace adaptor
  */
 class MODULE_VIZ_SCENE2D_CLASS_API SGrid2D : public sight::viz::scene2d::IAdaptor
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SGrid2D, ::sight::viz::scene2d::IAdaptor)
 
@@ -80,7 +81,6 @@ public:
     MODULE_VIZ_SCENE2D_API virtual ~SGrid2D() noexcept;
 
 protected:
-
     MODULE_VIZ_SCENE2D_API void configuring() override;
 
     /// Initialize the layer, set the pen style to DashLine and call the draw() function.
@@ -92,10 +92,9 @@ protected:
     MODULE_VIZ_SCENE2D_API void stopping() override;
 
     /// Manage the given events
-    MODULE_VIZ_SCENE2D_API void processInteraction( sight::viz::scene2d::data::Event& _event ) override;
+    MODULE_VIZ_SCENE2D_API void processInteraction(sight::viz::scene2d::data::Event& _event) override;
 
 private:
-
     /// Calculate the x/y start/end values, create the lines, set'em m_pen, push'em back in
     /// the m_lines vector, add'em to the layer, set the layer position and zValue and add it
     /// to the scene.
@@ -127,8 +126,8 @@ private:
 
     /// The layer.
     QGraphicsItemGroup* m_layer;
-
 };
 
 } // namespace adaptor
+
 } // namespace sight::module::viz::scene2d

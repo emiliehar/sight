@@ -29,7 +29,7 @@
 namespace sight::core::crypto
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void hash(const secure_string& message, unsigned char output[HASH_SIZE])
 {
@@ -40,7 +40,7 @@ void hash(const secure_string& message, unsigned char output[HASH_SIZE])
     SHA256_Final(output, &sha256);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string hash(const secure_string& message)
 {
@@ -54,6 +54,7 @@ secure_string hash(const secure_string& message)
     std::ostringstream stream;
 
     stream << std::hex << std::setfill('0');
+
     for(int byte : output)
     {
         stream << std::setw(2) << byte;

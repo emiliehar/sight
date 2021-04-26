@@ -35,9 +35,7 @@ namespace sight::viz::scene3d
  */
 class VIZ_SCENE3D_CLASS_API IParameter : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IParameter, viz::scene3d::IAdaptor)
 
     /**
@@ -80,7 +78,6 @@ public:
     void setDirty();
 
 protected:
-
     /// Configure the adaptor
     VIZ_SCENE3D_API void configuring() override;
 
@@ -100,7 +97,6 @@ protected:
     VIZ_SCENE3D_API service::IService::KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// SLOT : Set the uniform from an integer value
     void setBoolParameter(bool value, std::string name);
 
@@ -141,7 +137,7 @@ private:
     bool m_dirty;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void IParameter::setDirty()
 {

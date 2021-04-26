@@ -49,7 +49,7 @@ static const core::com::Slots::SlotKeyType s_RECORD       = "record";
 const std::string SVideoWriter::s_MP4_EXTENSION = ".mp4";
 const std::string SVideoWriter::s_AVC1_CODEC    = "avc1";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SVideoWriter::SVideoWriter() noexcept
 {
@@ -59,40 +59,40 @@ SVideoWriter::SVideoWriter() noexcept
     newSlot(s_RECORD, &SVideoWriter::record, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SVideoWriter::~SVideoWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SVideoWriter::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::openLocationDialog()
 {
@@ -104,6 +104,7 @@ void SVideoWriter::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
+
     if(result)
     {
         m_selectedExtension = dialogFile.getCurrentSelection();
@@ -115,23 +116,22 @@ void SVideoWriter::openLocationDialog()
     {
         this->clearLocations();
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::stopping()
 {
     this->stopRecord();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::writeBuffer(int width, int height, CSPTR(data::FrameTL::BufferType)buffer)
 {
@@ -143,24 +143,25 @@ void SVideoWriter::writeBuffer(int width, int height, CSPTR(data::FrameTL::Buffe
         m_imageType, const_cast<std::uint8_t*>(imageBuffer),
         ::cv::Mat::AUTO_STEP
         );
-    if (m_imageType == CV_16UC1)
+
+    if(m_imageType == CV_16UC1)
     {
         // Convert the image to a RGB image
         ::cv::Mat img8bit;
         ::cv::Mat imgColor;
-        image.convertTo(img8bit, CV_8UC1, 1/100.0);
+        image.convertTo(img8bit, CV_8UC1, 1 / 100.0);
         ::cv::cvtColor(img8bit, imgColor, ::cv::COLOR_GRAY2RGB);
 
         m_writer->write(imgColor);
     }
-    else if (m_imageType == CV_8UC3)
+    else if(m_imageType == CV_8UC3)
     {
         // convert the image from RGB to BGR
         ::cv::Mat imageBGR;
         ::cv::cvtColor(image, imageBGR, ::cv::COLOR_RGB2BGR);
         m_writer->write(imageBGR);
     }
-    else if (m_imageType == CV_8UC4)
+    else if(m_imageType == CV_8UC4)
     {
         // convert the image from RGBA to BGR
         ::cv::Mat imageBGR;
@@ -173,33 +174,35 @@ void SVideoWriter::writeBuffer(int width, int height, CSPTR(data::FrameTL::Buffe
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::saveFrame(core::HiResClock::HiResClockType timestamp)
 {
-    if (m_isRecording)
+    if(m_isRecording)
     {
-        auto frameTL = this->getLockedInput< data::FrameTL >(sight::io::base::service::s_DATA_KEY);
+        auto frameTL = this->getLockedInput<data::FrameTL>(sight::io::base::service::s_DATA_KEY);
+
         if(m_writer && m_writer->isOpened())
         {
             // Get the buffer of the copied timeline
             CSPTR(data::FrameTL::BufferType) buffer = frameTL->getClosestBuffer(timestamp);
-            if (buffer)
+
+            if(buffer)
             {
-                const int width  = static_cast<int>( frameTL->getWidth() );
-                const int height = static_cast<int>( frameTL->getHeight() );
+                const int width  = static_cast<int>(frameTL->getWidth());
+                const int height = static_cast<int>(frameTL->getHeight());
                 this->writeBuffer(width, height, buffer);
             }
         }
         else
         {
-            if(m_timestamps.size() >= 5 )
+            if(m_timestamps.size() >= 5)
             {
                 // computes number of fps
-                const double fps = 1000 * m_timestamps.size() /
-                                   (m_timestamps.back() - m_timestamps.front());
-                const int width                     = static_cast<int>( frameTL->getWidth() );
-                const int height                    = static_cast<int>( frameTL->getHeight() );
+                const double fps = 1000 * m_timestamps.size()
+                                   / (m_timestamps.back() - m_timestamps.front());
+                const int width                     = static_cast<int>(frameTL->getWidth());
+                const int height                    = static_cast<int>(frameTL->getHeight());
                 std::filesystem::path path          = this->getFile();
                 const std::string providedExtension = path.extension().string();
                 std::string extensionToUse;
@@ -217,7 +220,7 @@ void SVideoWriter::saveFrame(core::HiResClock::HiResClockType timestamp)
                     extensionToUse = providedExtension;
                 }
 
-                if (extensionToUse == s_MP4_EXTENSION)
+                if(extensionToUse == s_MP4_EXTENSION)
                 {
                     codec = s_AVC1_CODEC;
                 }
@@ -225,22 +228,30 @@ void SVideoWriter::saveFrame(core::HiResClock::HiResClockType timestamp)
                 {
                     sight::ui::base::dialog::MessageDialog::show(
                         "Video recording",
-                        "The extension "+ extensionToUse+ " is not supported. Unable to write the file: " +
-                        path.string());
+                        "The extension " + extensionToUse + " is not supported. Unable to write the file: "
+                        + path.string());
                     this->stopRecord();
+
                     return;
                 }
 
-                m_writer =
-                    std::make_unique< ::cv::VideoWriter >(path.string(),
-                                                          ::cv::VideoWriter::fourcc(codec[0], codec[1], codec[2],
-                                                                                    codec[3]),
-                                                          fps, ::cv::Size(width, height), true);
+                m_writer
+                    = std::make_unique< ::cv::VideoWriter>(
+                          path.string(),
+                          ::cv::VideoWriter::fourcc(
+                              codec[0],
+                              codec[1],
+                              codec[2],
+                              codec[3]),
+                          fps,
+                          ::cv::Size(width, height),
+                          true);
 
-                if (!m_writer->isOpened())
+                if(!m_writer->isOpened())
                 {
                     sight::ui::base::dialog::MessageDialog::show(
-                        "Video recording", "Unable to write the video in the file: " + path.string());
+                        "Video recording",
+                        "Unable to write the video in the file: " + path.string());
                     this->stopRecord();
                 }
                 else
@@ -249,7 +260,8 @@ void SVideoWriter::saveFrame(core::HiResClock::HiResClockType timestamp)
                     {
                         // writes the old frames used to compute the number of fps
                         CSPTR(data::FrameTL::BufferType) buffer = frameTL->getClosestBuffer(oldTimestamp);
-                        if (buffer)
+
+                        if(buffer)
                         {
                             this->writeBuffer(width, height, buffer);
                         }
@@ -264,47 +276,51 @@ void SVideoWriter::saveFrame(core::HiResClock::HiResClockType timestamp)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::startRecord()
 {
-    if (!this->hasLocationDefined())
+    if(!this->hasLocationDefined())
     {
         this->openLocationDialog();
     }
 
-    if (this->hasLocationDefined())
+    if(this->hasLocationDefined())
     {
-        auto frameTL = this->getLockedInput< data::FrameTL >(sight::io::base::service::s_DATA_KEY);
+        auto frameTL = this->getLockedInput<data::FrameTL>(sight::io::base::service::s_DATA_KEY);
 
-        if (frameTL->getType() == core::tools::Type::s_UINT8 && frameTL->getNumberOfComponents() == 3)
+        if(frameTL->getType() == core::tools::Type::s_UINT8 && frameTL->getNumberOfComponents() == 3)
         {
             m_imageType = CV_8UC3;
         }
-        else if (frameTL->getType() == core::tools::Type::s_UINT8 && frameTL->getNumberOfComponents() == 4)
+        else if(frameTL->getType() == core::tools::Type::s_UINT8 && frameTL->getNumberOfComponents() == 4)
         {
             m_imageType = CV_8UC4;
         }
-        else if (frameTL->getType() == core::tools::Type::s_UINT16 && frameTL->getNumberOfComponents() == 1)
+        else if(frameTL->getType() == core::tools::Type::s_UINT16 && frameTL->getNumberOfComponents() == 1)
         {
             m_imageType = CV_16UC1;
         }
         else
         {
-            SIGHT_ERROR("This type of frame : " + frameTL->getType().string() + " with " +
-                        std::to_string(frameTL->getNumberOfComponents()) + " components is not supported");
+            SIGHT_ERROR(
+                "This type of frame : " + frameTL->getType().string() + " with "
+                + std::to_string(frameTL->getNumberOfComponents()) + " components is not supported");
+
             return;
         }
+
         m_isRecording = true;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::stopRecord()
 {
     m_isRecording = false;
     m_timestamps.clear();
+
     if(m_writer)
     {
         m_writer->release();
@@ -313,11 +329,11 @@ void SVideoWriter::stopRecord()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SVideoWriter::record(bool state)
 {
-    if (state)
+    if(state)
     {
         this->startRecord();
     }
@@ -327,15 +343,16 @@ void SVideoWriter::record(bool state)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SVideoWriter::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(sight::io::base::service::s_DATA_KEY, data::FrameTL::s_OBJECT_PUSHED_SIG, s_SAVE_FRAME);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::video

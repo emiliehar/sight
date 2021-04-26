@@ -42,7 +42,6 @@ V1ToV2::V1ToV2() :
     m_targetClassname = "::sight::data::Reconstruction";
     m_originVersion   = "1";
     m_targetVersion   = "2";
-
 }
 
 // ----------------------------------------------------------------------------
@@ -53,7 +52,7 @@ V1ToV2::~V1ToV2()
 
 // ----------------------------------------------------------------------------
 
-V1ToV2::V1ToV2( const V1ToV2& cpy ) :
+V1ToV2::V1ToV2(const V1ToV2& cpy) :
     io::atoms::patch::IStructuralPatch(cpy)
 {
 }

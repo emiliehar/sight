@@ -26,6 +26,7 @@
 
 namespace sight::core::crypto
 {
+
 namespace ut
 {
 
@@ -48,4 +49,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::core::crypto

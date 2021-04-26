@@ -37,6 +37,7 @@ QT_END_NAMESPACE
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
 
@@ -46,11 +47,11 @@ namespace container
  */
 class UI_QT_CLASS_API QtToolBarContainer : public ui::base::container::fwToolBar
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(QtToolBarContainer, ui::base::container::fwToolBar,
-                        ui::base::factory::New< QtToolBarContainer >)
+    SIGHT_DECLARE_CLASS(
+        QtToolBarContainer,
+        ui::base::container::fwToolBar,
+        ui::base::factory::New<QtToolBarContainer>)
 
     UI_QT_API QtToolBarContainer(ui::base::GuiBaseObject::Key key) noexcept;
 
@@ -63,9 +64,9 @@ public:
     UI_QT_API virtual QToolBar* getQtToolBar();
 
 private:
-
     QPointer<QToolBar> m_toolBar;
 };
 
 } // namespace container
+
 } // namespace sight::ui::qt

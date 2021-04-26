@@ -24,6 +24,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace modifier
 {
 
@@ -31,13 +32,13 @@ IModifier::IModifier()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IModifier::~IModifier()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IFilter::FilterType IModifier::getFilterType() const
 {
@@ -45,4 +46,5 @@ IFilter::FilterType IModifier::getFilterType() const
 }
 
 } // namespace modifier
+
 } // namespace sight::filter::dicom

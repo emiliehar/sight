@@ -26,38 +26,41 @@
 
 namespace sight::io::dicom
 {
+
 namespace container
 {
+
 namespace sr
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-DicomSRUIDRefNode::DicomSRUIDRefNode(const DicomCodedAttribute& codedAttribute,
-                                     const std::string& relationship,
-                                     const std::string uidValue) :
+DicomSRUIDRefNode::DicomSRUIDRefNode(
+    const DicomCodedAttribute& codedAttribute,
+    const std::string& relationship,
+    const std::string uidValue) :
     io::dicom::container::sr::DicomSRNode(codedAttribute, "UIDREF", relationship),
     m_uidValue(uidValue)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomSRUIDRefNode::~DicomSRUIDRefNode()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSRUIDRefNode::write(::gdcm::DataSet& dataset) const
 {
     io::dicom::container::sr::DicomSRNode::write(dataset);
 
     // UID Value - Type 1C
-    io::dicom::helper::DicomDataWriter::setTagValue< 0x0040, 0xa124 >(m_uidValue, dataset);
+    io::dicom::helper::DicomDataWriter::setTagValue<0x0040, 0xa124>(m_uidValue, dataset);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSRUIDRefNode::print(std::ostream& os) const
 {
@@ -65,8 +68,10 @@ void DicomSRUIDRefNode::print(std::ostream& os) const
     os << "\\nUID value : [" << m_uidValue << "]";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sr
-} //namespace container
-} //namespace sight::io::dicom
+} // namespace sr
+
+} // namespace container
+
+} // namespace sight::io::dicom

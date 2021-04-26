@@ -44,63 +44,62 @@ const core::com::Slots::SlotKeyType s_CHECK_NEXT_SLOT = "checkNext";
 const core::com::Slots::SlotKeyType s_NEXT_SLOT       = "next";
 const core::com::Slots::SlotKeyType s_PREVIOUS_SLOT   = "previous";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSequencer::SSequencer()
 {
-    m_sigActivityCreated = newSignal< ActivityCreatedSignalType >(s_ACTIVITY_CREATED_SIG);
-    m_sigDataRequired    = newSignal< DataRequiredSignalType >(s_DATA_REQUIRED_SIG);
+    m_sigActivityCreated = newSignal<ActivityCreatedSignalType>(s_ACTIVITY_CREATED_SIG);
+    m_sigDataRequired    = newSignal<DataRequiredSignalType>(s_DATA_REQUIRED_SIG);
     newSlot(s_GO_TO_SLOT, &SSequencer::goTo, this);
     newSlot(s_CHECK_NEXT_SLOT, &SSequencer::checkNext, this);
     newSlot(s_NEXT_SLOT, &SSequencer::next, this);
     newSlot(s_PREVIOUS_SLOT, &SSequencer::previous, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSequencer::~SSequencer()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::starting()
 {
-    for (int i = 0; i < m_qActivityIds.size(); ++i)
+    for(int i = 0 ; i < m_qActivityIds.size() ; ++i)
     {
         m_activityIds.push_back(m_qActivityIds.at(i).toStdString());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::stopping()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::updating()
 {
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIESDB_INOUT);
-    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT +"' seriesDB", seriesDB);
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIESDB_INOUT);
+    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT + "' seriesDB", seriesDB);
 
     m_currentActivity = this->parseActivities(seriesDB);
 
-    if (m_currentActivity >= 0)
+    if(m_currentActivity >= 0)
     {
-        for (int i = 0; i <= m_currentActivity; ++i)
+        for(int i = 0 ; i <= m_currentActivity ; ++i)
         {
             Q_EMIT enable(i);
         }
+
         this->goTo(m_currentActivity);
     }
     else
@@ -111,19 +110,21 @@ void SSequencer::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::goTo(int index)
 {
-    if (index < 0 || index >= static_cast<int>(m_activityIds.size()))
+    if(index < 0 || index >= static_cast<int>(m_activityIds.size()))
     {
         SIGHT_ERROR("no activity to launch at index " << index)
+
         return;
     }
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIESDB_INOUT);
-    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT +"' seriesDB", seriesDB);
 
-    if (m_currentActivity >= 0)
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIESDB_INOUT);
+    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT + "' seriesDB", seriesDB);
+
+    if(m_currentActivity >= 0)
     {
         this->storeActivityData(seriesDB, m_currentActivity);
     }
@@ -136,6 +137,7 @@ void SSequencer::goTo(int index)
     std::string errorMsg;
 
     std::tie(ok, errorMsg) = this->validateActivity(activity);
+
     if(ok)
     {
         m_sigActivityCreated->asyncEmit(activity);
@@ -150,22 +152,23 @@ void SSequencer::goTo(int index)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::checkNext()
 {
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIESDB_INOUT);
-    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT +"' seriesDB", seriesDB);
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIESDB_INOUT);
+    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT + "' seriesDB", seriesDB);
 
     // Store current activity data before checking the next one,
     // new data can be added in the current activity during the process.
-    if (m_currentActivity >= 0)
+    if(m_currentActivity >= 0)
     {
         this->storeActivityData(seriesDB, m_currentActivity);
     }
 
     const size_t nextIdx = static_cast<size_t>(m_currentActivity + 1);
-    if (nextIdx < m_activityIds.size())
+
+    if(nextIdx < m_activityIds.size())
     {
         data::ActivitySeries::sptr nextActivity = this->getActivity(seriesDB, nextIdx, m_slotUpdate);
 
@@ -181,31 +184,31 @@ void SSequencer::checkNext()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::next()
 {
     this->goTo(m_currentActivity + 1);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::previous()
 {
     this->goTo(m_currentActivity - 1);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SSequencer::getAutoConnections() const
 {
     KeyConnectionsMap connections;
-    connections.push( s_SERIESDB_INOUT, data::SeriesDB::s_ADDED_SERIES_SIG, s_UPDATE_SLOT );
-    connections.push( s_SERIESDB_INOUT, data::SeriesDB::s_MODIFIED_SIG, s_UPDATE_SLOT );
+    connections.push(s_SERIESDB_INOUT, data::SeriesDB::s_ADDED_SERIES_SIG, s_UPDATE_SLOT);
+    connections.push(s_SERIESDB_INOUT, data::SeriesDB::s_MODIFIED_SIG, s_UPDATE_SLOT);
 
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}// namespace sight::module::ui::qml::activity
+} // namespace sight::module::ui::qml::activity

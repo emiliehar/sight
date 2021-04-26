@@ -40,7 +40,7 @@ namespace sight::service
 {
 
 /// Associations of <pattern, value>.
-typedef std::map< std::string, std::string > FieldAdaptorType;
+typedef std::map<std::string, std::string> FieldAdaptorType;
 
 namespace extension
 {
@@ -50,7 +50,6 @@ namespace extension
 class SERVICE_CLASS_API AppInfo : public core::BaseObject
 {
 public:
-
     SIGHT_DECLARE_CLASS(AppInfo, core::BaseObject, new AppInfo)
 
     /// Constructor, do nothing.
@@ -65,7 +64,7 @@ public:
 
     std::string group;
     std::string desc;
-    typedef std::map< std::string, std::string > ParametersType;
+    typedef std::map<std::string, std::string> ParametersType;
     ParametersType parameters;
     core::runtime::ConfigurationElement::csptr config;
     std::string moduleId; ///< Module identifier (used to start the module when the appConfig is launched)
@@ -78,11 +77,9 @@ public:
  */
 class SERVICE_CLASS_API AppConfig : public core::BaseObject
 {
-
 public:
-
     /// Associations of <pattern, value>.
-    typedef std::map< std::string, std::string > FieldAdaptorType;
+    typedef std::map<std::string, std::string> FieldAdaptorType;
 
     SIGHT_DECLARE_CLASS(AppConfig, core::BaseObject, new AppConfig)
 
@@ -102,7 +99,7 @@ public:
      * @note This method is thread safe.
      */
     SERVICE_API void parseBundleInformation(
-        const std::vector< std::shared_ptr< core::runtime::Extension > >& extensions);
+        const std::vector<std::shared_ptr<core::runtime::Extension> >& extensions);
 
     /**
      * @brief Register a new config.
@@ -114,12 +111,13 @@ public:
      * @param config the registered config.
      * @note This method is thread safe
      */
-    SERVICE_API void addAppInfo( const std::string& configId,
-                                 const std::string& group,
-                                 const std::string& desc,
-                                 const AppInfo::ParametersType& parameters,
-                                 const core::runtime::ConfigurationElement::csptr& config,
-                                 const std::string& moduleId);
+    SERVICE_API void addAppInfo(
+        const std::string& configId,
+        const std::string& group,
+        const std::string& desc,
+        const AppInfo::ParametersType& parameters,
+        const core::runtime::ConfigurationElement::csptr& config,
+        const std::string& moduleId);
 
     /**
      * @brief  Return the adapted config with the identifier configId.
@@ -127,9 +125,10 @@ public:
      * @param replaceFields associations between the value and the pattern to replace in the config.
      * @note This method is thread safe.
      */
-    SERVICE_API core::runtime::ConfigurationElement::csptr getAdaptedTemplateConfig( const std::string& configId,
-                                                                                     const FieldAdaptorType replaceFields,
-                                                                                     bool autoPrefixId ) const;
+    SERVICE_API core::runtime::ConfigurationElement::csptr getAdaptedTemplateConfig(
+        const std::string& configId,
+        const FieldAdaptorType replaceFields,
+        bool autoPrefixId) const;
 
     /**
      * @brief  Return the adapted config with the identifier configId.
@@ -137,28 +136,29 @@ public:
      * @param replaceFields composite of association between the value and the pattern to replace in the config.
      * @note This method is thread safe.
      */
-    SERVICE_API core::runtime::ConfigurationElement::csptr getAdaptedTemplateConfig( const std::string& configId,
-                                                                                     data::Composite::csptr replaceFields,
-                                                                                     bool autoPrefixId )
+    SERVICE_API core::runtime::ConfigurationElement::csptr getAdaptedTemplateConfig(
+        const std::string& configId,
+        data::Composite::csptr replaceFields,
+        bool autoPrefixId)
     const;
 
     /**
      * @brief Retrieves the bunble from the config id
      * @param configId the config identifier
      */
-    SERVICE_API std::shared_ptr< core::runtime::Module > getModule(const std::string& _configId);
+    SERVICE_API std::shared_ptr<core::runtime::Module> getModule(const std::string& _configId);
 
     /**
      * @brief Return all configurations ( standard and template ) register in the registry.
      * @note This method is thread safe.
      */
-    SERVICE_API std::vector< std::string > getAllConfigs() const;
+    SERVICE_API std::vector<std::string> getAllConfigs() const;
 
     /**
      * @brief Return all configurations with specified group.
      * @note This method is thread safe.
      */
-    SERVICE_API std::vector< std::string > getConfigsFromGroup(const std::string& group) const;
+    SERVICE_API std::vector<std::string> getConfigsFromGroup(const std::string& group) const;
 
     /**
      * @brief Clear the registry.
@@ -170,14 +170,13 @@ public:
      * @brief Create an unique identifier
      * @note This method is thread safe.
      */
-    SERVICE_API static std::string getUniqueIdentifier(const std::string& serviceUid = "" );
+    SERVICE_API static std::string getUniqueIdentifier(const std::string& serviceUid = "");
 
     /// Return an instance of AppConfig.
     SERVICE_API static AppConfig::sptr getDefault();
 
 protected:
-
-    typedef std::map< std::string, AppInfo::sptr > Registry;
+    typedef std::map<std::string, AppInfo::sptr> Registry;
 
     /// Container of <configId, AppConfig information>
     Registry m_reg;
@@ -186,23 +185,24 @@ protected:
     SERVICE_API AppConfig();
 
 private:
-
-    typedef std::unordered_set< std::string > UidParameterReplaceType;
+    typedef std::unordered_set<std::string> UidParameterReplaceType;
 
     /// Convert the composite into map <pattern, value>.
-    FieldAdaptorType compositeToFieldAdaptor( data::Composite::csptr fieldAdaptors ) const;
+    FieldAdaptorType compositeToFieldAdaptor(data::Composite::csptr fieldAdaptors) const;
 
-    static void collectUIDForParameterReplace(core::runtime::ConfigurationElement::csptr _cfgElem,
-                                              UidParameterReplaceType& replaceMap);
+    static void collectUIDForParameterReplace(
+        core::runtime::ConfigurationElement::csptr _cfgElem,
+        UidParameterReplaceType& replaceMap);
 
     /// Adapts the configuration : replace field thanks to field adaptors
-    static core::runtime::EConfigurationElement::sptr adaptConfig(core::runtime::ConfigurationElement::csptr _cfgElem,
-                                                                  const FieldAdaptorType& _fieldAdaptors,
-                                                                  const UidParameterReplaceType& _uidParameterReplace,
-                                                                  const std::string& _autoPrefixId );
+    static core::runtime::EConfigurationElement::sptr adaptConfig(
+        core::runtime::ConfigurationElement::csptr _cfgElem,
+        const FieldAdaptorType& _fieldAdaptors,
+        const UidParameterReplaceType& _uidParameterReplace,
+        const std::string& _autoPrefixId);
 
     /// Adapts field thanks to field adaptors
-    static std::string adaptField(const std::string& _str, const FieldAdaptorType& _variablesMap );
+    static std::string adaptField(const std::string& _str, const FieldAdaptorType& _variablesMap);
 
     /// Used to protect the registry access.
     mutable core::mt::ReadWriteMutex m_registryMutex;
@@ -217,7 +217,7 @@ private:
     static std::string s_mandatoryParameterIdentifier;
 
     /// Associations of <tag id, generic-uid attribute>.
-    typedef std::multimap< std::string, std::string > UidDefinitionType;
+    typedef std::multimap<std::string, std::string> UidDefinitionType;
     static UidDefinitionType s_uidDefinitionDictionary;
 };
 

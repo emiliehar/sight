@@ -37,7 +37,7 @@ HiResTimer::~HiResTimer()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void HiResTimer::start()
 {
@@ -47,7 +47,7 @@ void HiResTimer::start()
     m_startTimeInMicroSec = core::HiResClock::getTimeInMicroSec();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void HiResTimer::stop()
 {
@@ -56,25 +56,28 @@ void HiResTimer::stop()
     m_endTimeInMicroSec = core::HiResClock::getTimeInMicroSec();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void HiResTimer::reset(core::HiResClock::HiResClockType initial_value)
 {
     bool wasStopped = m_stopped;
-    if (!wasStopped)
+
+    if(!wasStopped)
     {
         this->stop();
     }
+
     m_startTimeInMicroSec = 0.;
     m_endTimeInMicroSec   = 0.;
     m_cumulTimeInMicroSec = initial_value;
-    if (!wasStopped)
+
+    if(!wasStopped)
     {
         this->start();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::HiResClock::HiResClockType HiResTimer::getElapsedTimeInMicroSec()
 {
@@ -86,18 +89,18 @@ core::HiResClock::HiResClockType HiResTimer::getElapsedTimeInMicroSec()
     return m_cumulTimeInMicroSec + (m_endTimeInMicroSec - m_startTimeInMicroSec);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::HiResClock::HiResClockType HiResTimer::getElapsedTimeInMilliSec()
 {
     return this->getElapsedTimeInMicroSec() * 0.001;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::HiResClock::HiResClockType HiResTimer::getElapsedTimeInSec()
 {
     return this->getElapsedTimeInMicroSec() * 0.000001;
 }
 
-} //namespace sight::core
+} // namespace sight::core

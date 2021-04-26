@@ -38,7 +38,6 @@ namespace sight::module::ui::base
 class MODULE_UI_BASE_CLASS_API SView : public ::sight::ui::base::view::IView
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SView, ::sight::ui::base::view::IView)
 
     /// Constructor. Do nothing.
@@ -48,7 +47,6 @@ public:
     MODULE_UI_BASE_API virtual ~SView() noexcept;
 
 protected:
-
     /**
      * @name Service methods ( override from service::IService )
      * @{
@@ -80,9 +78,8 @@ protected:
     /**
      * @brief This method gives information about the class. Do nothing.
      */
-    MODULE_UI_BASE_API void info(std::ostream& _sstream ) override;
+    MODULE_UI_BASE_API void info(std::ostream& _sstream) override;
     ///@}
-
 };
 
 } // namespace sight::module::ui::base

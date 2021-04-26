@@ -39,7 +39,6 @@ namespace sight::io::atoms::patch
  */
 class IO_ATOMS_CLASS_API IStructuralCreator : public core::BaseObject
 {
-
 public:
     SIGHT_DECLARE_CLASS(IStructuralCreator)
     SIGHT_ALLOW_SHARED_FROM_THIS();
@@ -48,7 +47,7 @@ public:
     IO_ATOMS_API IStructuralCreator();
 
     /// Copy constructor
-    IO_ATOMS_API IStructuralCreator( const IStructuralCreator& cpy );
+    IO_ATOMS_API IStructuralCreator(const IStructuralCreator& cpy);
 
     /// Destructor
     IO_ATOMS_API virtual ~IStructuralCreator();
@@ -63,7 +62,6 @@ public:
     IO_ATOMS_API virtual const std::string& getObjectClassname() const;
 
 protected:
-
     /// Create the object base : create meta infos : classname, version and id
     IO_ATOMS_API sight::atoms::Object::sptr createObjBase() const;
 
@@ -74,4 +72,4 @@ protected:
     std::string m_version;
 };
 
-} //fwAtomsPatch
+} // fwAtomsPatch

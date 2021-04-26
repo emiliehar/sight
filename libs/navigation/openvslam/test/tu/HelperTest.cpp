@@ -33,48 +33,58 @@
 
 #include <spdlog/spdlog.h>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::navigation::openvslam::ut::HelperTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::navigation::openvslam::ut::HelperTest);
 
 namespace sight::navigation::openvslam
 {
+
 namespace ut
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void HelperTest::setUp()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void HelperTest::tearDown()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void HelperTest::toSight()
 {
-    const ::openvslam::camera::perspective oVSlamCam =
-        ::openvslam::camera::perspective("Dummy SLAM camera", ::openvslam::camera::setup_type_t::Monocular,
-                                         ::openvslam::camera::color_order_t::RGB,
-                                         1920, 1080, 60,
-                                         400, 401, 200, 201, 0.0, 0.1, 0.2, 0.3, 0.4);
+    const ::openvslam::camera::perspective oVSlamCam
+        = ::openvslam::camera::perspective(
+              "Dummy SLAM camera",
+              ::openvslam::camera::setup_type_t::Monocular,
+              ::openvslam::camera::color_order_t::RGB,
+              1920,
+              1080,
+              60,
+              400,
+              401,
+              200,
+              201,
+              0.0,
+              0.1,
+              0.2,
+              0.3,
+              0.4);
 
     const data::Camera::sptr cam = navigation::openvslam::Helper::toSight(oVSlamCam);
 
     compareCam(cam, oVSlamCam, true);
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void HelperTest::fromSight()
 {
-    //Create a dummy data::Camera;
+    // Create a dummy data::Camera;
     data::Camera::sptr cam = data::Camera::New();
 
     cam->setCameraID("Dummy Test Camera");
@@ -91,14 +101,13 @@ void HelperTest::fromSight()
 
     // Compare values.
     compareCam(cam, oVSlamCam, false);
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void HelperTest::createConfig()
 {
-    //Create a dummy data::Camera;
+    // Create a dummy data::Camera;
     data::Camera::sptr cam = data::Camera::New();
 
     cam->setCameraID("Dummy Test Camera");
@@ -121,7 +130,7 @@ void HelperTest::createConfig()
     const auto config = navigation::openvslam::Helper::createMonocularConfig(cam, orbParam);
 
     // We know that the camera is perspective.
-    ::openvslam::camera::perspective* camera = dynamic_cast< ::openvslam::camera::perspective* >(config->camera_);
+    ::openvslam::camera::perspective* camera = dynamic_cast< ::openvslam::camera::perspective*>(config->camera_);
 
     ::openvslam::feature::orb_params orbParamFromConfig = config->orb_params_;
 
@@ -132,14 +141,13 @@ void HelperTest::createConfig()
     CPPUNIT_ASSERT_EQUAL(orbParamFromConfig.ini_fast_thr_, orbParam.iniFastThr);
     CPPUNIT_ASSERT_EQUAL(orbParamFromConfig.min_fast_thr, orbParam.minFastThr);
     CPPUNIT_ASSERT_EQUAL(orbParamFromConfig.scale_factor_, orbParam.scaleFactor);
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void HelperTest::writeReadConfig()
 {
-    //Create a dummy data::Camera;
+    // Create a dummy data::Camera;
     data::Camera::sptr cam = data::Camera::New();
 
     cam->setCameraID("Dummy Test Camera");
@@ -171,21 +179,23 @@ void HelperTest::writeReadConfig()
 
     const std::filesystem::path tmp = core::tools::System::getTemporaryFolder();
 
-    CPPUNIT_ASSERT_NO_THROW(navigation::openvslam::Helper::writeOpenvslamConfig(config->yaml_node_,
-                                                                                tmp.string() +
-                                                                                "/test.yaml"));
+    CPPUNIT_ASSERT_NO_THROW(
+        navigation::openvslam::Helper::writeOpenvslamConfig(
+            config->yaml_node_,
+            tmp.string()
+            + "/test.yaml"));
 
     const auto config2 = navigation::openvslam::Helper::readOpenvslamConfig(tmp.string() + "/test.yaml");
     CPPUNIT_ASSERT(config2 != nullptr);
 
-    const auto orb = config2->orb_params_;
-    ::openvslam::camera::perspective* camera = dynamic_cast< ::openvslam::camera::perspective* >(config2->camera_);
+    const auto orb                           = config2->orb_params_;
+    ::openvslam::camera::perspective* camera = dynamic_cast< ::openvslam::camera::perspective*>(config2->camera_);
 
     CPPUNIT_ASSERT_EQUAL(orbParam.maxNumKeyPts, orb.max_num_keypts_);
-    CPPUNIT_ASSERT_EQUAL(orbParam.numLevels, orb.num_levels_ );
-    CPPUNIT_ASSERT_EQUAL(orbParam.iniFastThr, orb.ini_fast_thr_ );
-    CPPUNIT_ASSERT_EQUAL(orbParam.minFastThr, orb.min_fast_thr );
-    CPPUNIT_ASSERT_EQUAL(orbParam.scaleFactor, orb.scale_factor_ );
+    CPPUNIT_ASSERT_EQUAL(orbParam.numLevels, orb.num_levels_);
+    CPPUNIT_ASSERT_EQUAL(orbParam.iniFastThr, orb.ini_fast_thr_);
+    CPPUNIT_ASSERT_EQUAL(orbParam.minFastThr, orb.min_fast_thr);
+    CPPUNIT_ASSERT_EQUAL(orbParam.scaleFactor, orb.scale_factor_);
 
     compareCam(cam, *camera, false);
 
@@ -193,23 +203,31 @@ void HelperTest::writeReadConfig()
 
     const auto node = config2->yaml_node_;
 
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(static_cast<double>(initParams.reprojErrThr),
-                                 node["Initializer.reprojection_error_threshold"].as<double>(), 10e-7);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(static_cast<double>(initParams.scalingFactor),
-                                 node["Initializer.scaling_factor"].as<double>(),  10e-7);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL(static_cast<double>(initParams.parallaxDegThr),
-                                 node["Initializer.parallax_deg_threshold"].as<double>(), 10e-7);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(
+        static_cast<double>(initParams.reprojErrThr),
+        node["Initializer.reprojection_error_threshold"].as<double>(),
+        10e-7);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(
+        static_cast<double>(initParams.scalingFactor),
+        node["Initializer.scaling_factor"].as<double>(),
+        10e-7);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(
+        static_cast<double>(initParams.parallaxDegThr),
+        node["Initializer.parallax_deg_threshold"].as<double>(),
+        10e-7);
     CPPUNIT_ASSERT_EQUAL(initParams.numBAIterations, node["Initializer.num_ba_iterations"].as<unsigned int>());
     CPPUNIT_ASSERT_EQUAL(initParams.numRansacIterations, node["Initializer.num_ransac_iterations"].as<unsigned int>());
-    CPPUNIT_ASSERT_EQUAL(initParams.minNumTriangulatedPts,
-                         node["Initializer.num_min_triangulated_pts"].as<unsigned int>());
-
+    CPPUNIT_ASSERT_EQUAL(
+        initParams.minNumTriangulatedPts,
+        node["Initializer.num_min_triangulated_pts"].as<unsigned int>());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void HelperTest::compareCam(const data::Camera::csptr _sightCam, const ::openvslam::camera::perspective& _ovsCam,
-                            bool _sightExpected)
+void HelperTest::compareCam(
+    const data::Camera::csptr _sightCam,
+    const ::openvslam::camera::perspective& _ovsCam,
+    bool _sightExpected)
 {
     if(_sightExpected)
     {
@@ -249,6 +267,8 @@ void HelperTest::compareCam(const data::Camera::csptr _sightCam, const ::openvsl
     }
 }
 
-//-----------------------------------------------------------------------------
-}
-}
+// -----------------------------------------------------------------------------
+
+} // namespace ut
+
+} // namespace sight::navigation

@@ -55,6 +55,7 @@ sight::atoms::Object::sptr PatchingManager::transformTo(const std::string& newVe
     if(currentVersion == newVersion)
     {
         SIGHT_WARN("Trying to patch an object with the same version (" << currentVersion << ").");
+
         return m_object;
     }
 
@@ -69,42 +70,45 @@ sight::atoms::Object::sptr PatchingManager::transformTo(const std::string& newVe
     io::atoms::patch::VersionsGraph::sptr versionsGraph;
     versionsGraph = io::atoms::patch::VersionsManager::getDefault()->getGraph(context);
 
-    SIGHT_THROW_EXCEPTION_IF( io::atoms::patch::exceptions::ImpossibleConversion(
-                                  "There is no way to go from version '" + currentVersion + "' to version '" +
-                                  newVersion + "' for context '" + context +"'."), !versionsGraph);
+    SIGHT_THROW_EXCEPTION_IF(
+        io::atoms::patch::exceptions::ImpossibleConversion(
+            "There is no way to go from version '" + currentVersion + "' to version '"
+            + newVersion + "' for context '" + context + "'."),
+        !versionsGraph);
 
     io::atoms::patch::VersionsGraph::VersionSeriesType series
         = versionsGraph->shortestPath(currentVersion, newVersion);
 
-    SIGHT_THROW_EXCEPTION_IF( io::atoms::patch::exceptions::ImpossibleConversion(
-                                  "There is no way to go from version '" + currentVersion + "' to version '" +
-                                  newVersion + "' for context '" + context +"'."),
-                              series.empty());
+    SIGHT_THROW_EXCEPTION_IF(
+        io::atoms::patch::exceptions::ImpossibleConversion(
+            "There is no way to go from version '" + currentVersion + "' to version '"
+            + newVersion + "' for context '" + context + "'."),
+        series.empty());
 
     io::atoms::patch::VersionsGraph::NodeIDType currentVersionNode = versionsGraph->getNode(currentVersion);
 
     io::atoms::patch::patcher::IPatcher::sptr patcher;
     std::string currentName, targetName;
 
-    for(io::atoms::patch::VersionsGraph::VersionSeriesType::value_type elt :  series)
+    for(io::atoms::patch::VersionsGraph::VersionSeriesType::value_type elt : series)
     {
         io::atoms::patch::VersionsGraph::NodeIDType targetVersionNode = elt;
 
-        //Retrieve versions names
+        // Retrieve versions names
         currentName = versionsGraph->getNode(currentVersionNode).getVersionName();
         targetName  = versionsGraph->getNode(targetVersionNode).getVersionName();
 
-        //Retrieve link
+        // Retrieve link
         const io::atoms::patch::LinkDescriptor& link
             = versionsGraph->getEdge(currentVersionNode, targetVersionNode);
 
-        //Retrieve patcher
+        // Retrieve patcher
         patcher = io::atoms::patch::patcher::factory::New(link.getPatcher());
         SIGHT_ASSERT("There is no patcher called \"" << link.getPatcher() << "\".", patcher);
 
         fwAtomsPatchInfoLogMacro("Begin patcher '" + link.getPatcher() + "'");
 
-        //Patching
+        // Patching
         m_object = patcher->transformObject(m_object, context, currentName, targetName);
         fwAtomsPatchInfoLogMacro("End patcher '" + link.getPatcher() + "'");
 
@@ -116,4 +120,4 @@ sight::atoms::Object::sptr PatchingManager::transformTo(const std::string& newVe
     return m_object;
 }
 
-} //namespace sight::io::atoms::patch
+} // namespace sight::io::atoms::patch

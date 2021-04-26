@@ -39,19 +39,19 @@ namespace sight::module::viz::scene3d::adaptor
 
 static const std::string s_MATRIX_INOUT = "matrix";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SOrientationMarker::SOrientationMarker() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SOrientationMarker::~SOrientationMarker() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SOrientationMarker::configuring()
 {
@@ -66,10 +66,10 @@ void SOrientationMarker::configuring()
     // Set the resource this use, if it has been set via xml
     m_patientMeshRc = config.get<std::string>("resource", m_patientMeshRc);
 
-    m_markerDepth = config.get< float > ("depth", m_markerDepth);
+    m_markerDepth = config.get<float>("depth", m_markerDepth);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SOrientationMarker::starting()
 {
@@ -79,7 +79,7 @@ void SOrientationMarker::starting()
 
     ::Ogre::SceneNode* const rootSceneNode = this->getSceneManager()->getRootSceneNode();
     ::Ogre::SceneNode* const transformNode = this->getTransformNode(rootSceneNode);
-    m_sceneNode                            = transformNode->createChildSceneNode(this->getID() + "_mainNode");
+    m_sceneNode = transformNode->createChildSceneNode(this->getID() + "_mainNode");
 
     ::Ogre::SceneManager* const sceneMgr = this->getSceneManager();
 
@@ -87,9 +87,9 @@ void SOrientationMarker::starting()
     m_material = data::Material::New();
 
     // Creates the material for the marker
-    const sight::module::viz::scene3d::adaptor::SMaterial::sptr materialAdaptor =
-        this->registerService< sight::module::viz::scene3d::adaptor::SMaterial >(
-            "::sight::module::viz::scene3d::adaptor::SMaterial");
+    const sight::module::viz::scene3d::adaptor::SMaterial::sptr materialAdaptor
+        = this->registerService<sight::module::viz::scene3d::adaptor::SMaterial>(
+              "::sight::module::viz::scene3d::adaptor::SMaterial");
     materialAdaptor->registerInOut(m_material, sight::module::viz::scene3d::adaptor::SMaterial::s_MATERIAL_INOUT, true);
     materialAdaptor->setID(this->getID() + materialAdaptor->getID());
     materialAdaptor->setMaterialName(this->getID() + materialAdaptor->getID());
@@ -109,7 +109,7 @@ void SOrientationMarker::starting()
     this->requestRender();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SOrientationMarker::updating()
 {
@@ -117,21 +117,21 @@ void SOrientationMarker::updating()
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrientationMarker::updateCameraMatrix()
 {
     // Copy orientation matrix to Ogre.
     ::Ogre::Matrix3 ogreMatrix;
     {
-        const auto transform = this->getLockedInput< data::Matrix4 >(s_MATRIX_INOUT);
+        const auto transform = this->getLockedInput<data::Matrix4>(s_MATRIX_INOUT);
 
         // Fill the ogreMatrix.
-        for (size_t lt = 0; lt < 3; lt++)
+        for(size_t lt = 0 ; lt < 3 ; lt++)
         {
-            for (size_t ct = 0; ct < 3; ct++)
+            for(size_t ct = 0 ; ct < 3 ; ct++)
             {
-                ogreMatrix[ct][lt] = static_cast< ::Ogre::Real >(transform->getCoefficient(ct, lt));
+                ogreMatrix[ct][lt] = static_cast< ::Ogre::Real>(transform->getCoefficient(ct, lt));
             }
         }
     }
@@ -157,14 +157,14 @@ void SOrientationMarker::updateCameraMatrix()
     transformNode->translate(0.f, 0.f, m_markerDepth);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SOrientationMarker::stopping()
 {
     this->unregisterServices();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SOrientationMarker::setVisible(bool _visible)
 {
@@ -176,15 +176,16 @@ void SOrientationMarker::setVisible(bool _visible)
     this->updating();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SOrientationMarker::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
-    connections.push(s_MATRIX_INOUT, data::Matrix4::s_MODIFIED_SIG, s_UPDATE_SLOT );
+    connections.push(s_MATRIX_INOUT, data::Matrix4::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

@@ -55,9 +55,7 @@ namespace sight::module::filter::mesh
  */
 class MODULE_FILTER_MESH_CLASS_API SVTKMesher : public service::IOperator
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SVTKMesher, sight::service::IOperator)
 
     MODULE_FILTER_MESH_API SVTKMesher() noexcept;
@@ -65,7 +63,6 @@ public:
     MODULE_FILTER_MESH_API virtual ~SVTKMesher() noexcept;
 
 protected:
-
     MODULE_FILTER_MESH_API void starting() override;
 
     MODULE_FILTER_MESH_API void stopping() override;
@@ -75,7 +72,6 @@ protected:
     MODULE_FILTER_MESH_API void updating() override;
 
 private:
-
     unsigned int m_reduction;
 };
 

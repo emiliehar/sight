@@ -37,8 +37,8 @@
 
 namespace sight::module::ui::qt::calibration
 {
-// -------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------
 
 const core::com::Slots::SlotKeyType SCameraInformationEditor::s_UPDATE_INFOS_SLOT = "updateInfos";
 
@@ -134,12 +134,12 @@ void SCameraInformationEditor::swapping()
 
 void SCameraInformationEditor::updateInformations()
 {
-    data::Camera::csptr camera = this->getInput< data::Camera >("camera");
+    data::Camera::csptr camera = this->getInput<data::Camera>("camera");
     std::stringstream out;
 
     m_description->setText(QString::fromStdString(camera->getDescription()));
 
-    //IS CALIBRATED
+    // IS CALIBRATED
     if(camera->getIsCalibrated())
     {
         m_isCalibrated->setText("<b>The camera is calibrated.</b>");
@@ -148,39 +148,40 @@ void SCameraInformationEditor::updateInformations()
     {
         m_isCalibrated->setText("<b>The camera is not calibrated.</b>");
         this->clearLabels();
+
         return;
     }
 
-    //Height
+    // Height
     out << "Height: <font color='#0066CC'>" << camera->getHeight() << "</font>";
     m_height->setText(out.str().c_str());
 
     out.str("");
 
-    //Width
+    // Width
     out << "Width: <font color='#0066CC'>" << camera->getWidth() << "</font>";
     m_width->setText(out.str().c_str());
 
     out.str("");
-    //CX
+    // CX
     out << "Cx: <font color='#0066CC'>" << camera->getCx() << "</font>";
     m_cx->setText(out.str().c_str());
 
     out.str("");
 
-    //CY
+    // CY
     out << "Cy: <font color='#0066CC'>" << camera->getCy() << "</font>";
     m_cy->setText(out.str().c_str());
 
     out.str("");
 
-    //FX
+    // FX
     out << "Fx: <font color='#0066CC'>" << camera->getFx() << "</font>";
     m_fx->setText(out.str().c_str());
 
     out.str("");
 
-    //FY
+    // FY
     out << "Fy: <font color='#0066CC'>" << camera->getFy() << "</font>";
     m_fy->setText(out.str().c_str());
 
@@ -188,40 +189,39 @@ void SCameraInformationEditor::updateInformations()
 
     out.str("");
 
-    //K1
+    // K1
     out << "K1: <font color='#0066CC'>" << dist[0] << "</font>";
     m_k1->setText(out.str().c_str());
 
     out.str("");
 
-    //K2
+    // K2
     out << "K2: <font color='#0066CC'>" << dist[1] << "</font>";
     m_k2->setText(out.str().c_str());
 
     out.str("");
 
-    //P1
+    // P1
     out << "P1: <font color='#0066CC'>" << dist[2] << "</font>";
     m_p1->setText(out.str().c_str());
 
     out.str("");
 
-    //P2
+    // P2
     out << "P2: <font color='#0066CC'>" << dist[3] << "</font>";
     m_p2->setText(out.str().c_str());
 
     out.str("");
 
-    //K3
+    // K3
     out << "K3: <font color='#0066CC'>" << dist[4] << "</font>";
     m_k3->setText(out.str().c_str());
 
     out.str("");
 
-    //SKEW
+    // SKEW
     out << "Skew: <font color='#0066CC'>" << camera->getSkew() << "</font>";
     m_skew->setText(out.str().c_str());
-
 }
 
 // -------------------------------------------------------------------------
@@ -246,11 +246,10 @@ void SCameraInformationEditor::clearLabels()
 
 service::IService::KeyConnectionsMap SCameraInformationEditor::getAutoConnections() const
 {
-
     KeyConnectionsMap connections;
 
-    connections.push( "camera", data::Camera::s_ID_MODIFIED_SIG, s_UPDATE_INFOS_SLOT );
-    connections.push( "camera", data::Camera::s_INTRINSIC_CALIBRATED_SIG, s_UPDATE_INFOS_SLOT );
+    connections.push("camera", data::Camera::s_ID_MODIFIED_SIG, s_UPDATE_INFOS_SLOT);
+    connections.push("camera", data::Camera::s_INTRINSIC_CALIBRATED_SIG, s_UPDATE_INFOS_SLOT);
 
     return connections;
 }

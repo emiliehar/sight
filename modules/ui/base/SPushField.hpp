@@ -33,6 +33,7 @@
 
 namespace sight::module::ui::base
 {
+
 /**
  * @brief   To add or remove an object in composite with specific key.
  *
@@ -48,9 +49,7 @@ namespace sight::module::ui::base
  */
 class MODULE_UI_BASE_CLASS_API SPushField : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SPushField, ::sight::ui::base::IAction)
 
     /// Constructor. Do nothing.
@@ -69,7 +68,6 @@ public:
     MODULE_UI_BASE_API KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// Configure the service.
     void configuring() override;
 
@@ -83,7 +81,6 @@ protected:
     void updating() override;
 
 private:
-
     /**
      * @brief Slot: called when source composite objects are updated, enabled/disabled the action if the defined objects
      * are present/not present.

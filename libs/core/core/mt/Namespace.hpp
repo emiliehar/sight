@@ -24,11 +24,13 @@
 
 namespace sight::core
 {
+
 /**
  * @brief       This namespace sightcore::mt provides common foundations for multithread in Sight.
  */
 namespace mt
 {
+
 }
 
 }

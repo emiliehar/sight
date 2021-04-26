@@ -38,10 +38,9 @@ namespace sight::filter::dicom
 /**
  * @brief Base class for Dicom instance filter.
  */
-class FILTER_DICOM_CLASS_API IFilter :   public core::tools::Object
+class FILTER_DICOM_CLASS_API IFilter : public core::tools::Object
 {
 public:
-
     typedef filter::dicom::factory::Key Key;
 
     /**
@@ -50,7 +49,7 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -62,7 +61,7 @@ public:
 
     SIGHT_DECLARE_CLASS(IFilter, core::tools::Object)
 
-    typedef std::vector< data::DicomSeries::sptr > DicomSeriesContainerType;
+    typedef std::vector<data::DicomSeries::sptr> DicomSeriesContainerType;
 
     /**
      * @brief Filter types
@@ -72,8 +71,8 @@ public:
         MODIFIER  = 0,  /*! Modifier */
         SORTER    = 1,  /*! Sorter */
         SPLITTER  = 2,  /*! Splitter */
-        COMPOSITE = 3,  /*! Composite */
-        CUSTOM    = 4,  /*! Custom */
+        COMPOSITE = 3, /*! Composite */
+        CUSTOM    = 4   /*! Custom */
     } FilterType;
 
     /// Destructor
@@ -84,7 +83,8 @@ public:
      * @return Returns one or more Dicom Instance Group
      */
     FILTER_DICOM_API virtual DicomSeriesContainerType apply(
-        const data::DicomSeries::sptr& series, const core::log::Logger::sptr& logger) const = 0;
+        const data::DicomSeries::sptr& series,
+        const core::log::Logger::sptr& logger) const = 0;
 
     /// Return the name of the filter
     FILTER_DICOM_API virtual std::string getName() const = 0;
@@ -105,10 +105,8 @@ public:
     FILTER_DICOM_API virtual void configureWithGUI();
 
 protected:
-
     /// Constructor
     FILTER_DICOM_API IFilter();
-
 };
 
 } // namespace sight::filter::dicom

@@ -68,7 +68,6 @@ public:
     MODULE_FILTER_VISION_API virtual ~STransformDepthMap2mm();
 
 protected:
-
     /// Do nothing
     MODULE_FILTER_VISION_API void starting() override;
 

@@ -40,7 +40,7 @@ static const sight::core::com::Slots::SlotKeyType s_START_TIMER_SLOT = "startTim
 
 static const std::string s_ARRAY_INOUT = "array";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SIncrementArray::SIncrementArray() noexcept :
     m_periodInMillisec(500)
@@ -48,57 +48,55 @@ SIncrementArray::SIncrementArray() noexcept :
     newSlot(s_START_TIMER_SLOT, &SIncrementArray::startTimer, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SIncrementArray::~SIncrementArray() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SIncrementArray::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SIncrementArray::starting()
 {
     m_timer = m_associatedWorker->createTimer();
-    m_timer->setFunction( std::bind(&SIncrementArray::updating, this) );
-    m_timer->setDuration( std::chrono::milliseconds(m_periodInMillisec) );
+    m_timer->setFunction(std::bind(&SIncrementArray::updating, this));
+    m_timer->setDuration(std::chrono::milliseconds(m_periodInMillisec));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SIncrementArray::updating()
 {
-    const auto array = this->getInOut< sight::data::Array >(s_ARRAY_INOUT);
-    SIGHT_ASSERT("Bad number of dimensions", array->getNumberOfDimensions() == 1 );
+    const auto array = this->getInOut<sight::data::Array>(s_ARRAY_INOUT);
+    SIGHT_ASSERT("Bad number of dimensions", array->getNumberOfDimensions() == 1);
 
     const auto dumpLock = array->lock();
 
-    auto itr       = array->begin< unsigned int >();
-    const auto end = array->end< unsigned int >();
+    auto itr       = array->begin<unsigned int>();
+    const auto end = array->end<unsigned int>();
 
     // Increment the array values.
-    for (; itr != end; ++itr)
+    for( ; itr != end ; ++itr)
     {
         ++(*itr);
     }
 
     // Notify that the array is modified.
-    const auto sig = array->signal< sight::data::Object::ModifiedSignalType>( sight::data::Object::s_MODIFIED_SIG );
+    const auto sig = array->signal<sight::data::Object::ModifiedSignalType>(sight::data::Object::s_MODIFIED_SIG);
     {
         sight::core::com::Connection::Blocker blockUpdate(sig->getConnection(m_slotUpdate));
         sight::core::com::Connection::Blocker blockTimer(sig->getConnection(this->slot(s_START_TIMER_SLOT)));
         sig->asyncEmit();
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SIncrementArray::stopping()
 {
@@ -106,16 +104,17 @@ void SIncrementArray::stopping()
     {
         m_timer->stop();
     }
+
     m_timer.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SIncrementArray::startTimer()
 {
     m_timer->start();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace Tuto05MultithreadConsoleCpp.

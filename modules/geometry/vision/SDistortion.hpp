@@ -78,7 +78,6 @@ namespace sight::module::geometry::vision
 class MODULE_GEOMETRY_VISION_CLASS_API SDistortion : public service::IOperator
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SDistortion, sight::service::IOperator)
 
     /**
@@ -102,7 +101,6 @@ public:
     MODULE_GEOMETRY_VISION_API service::IService::KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// Does nothing
     MODULE_GEOMETRY_VISION_API void configuring() override;
 
@@ -116,7 +114,6 @@ protected:
     MODULE_GEOMETRY_VISION_API void updating() override;
 
 private:
-
     /// Distort or undistort the video.
     void remap();
 
@@ -127,13 +124,13 @@ private:
     void calibrate();
 
     /// True if the undistortion is enabled.
-    bool m_isEnabled { false };
+    bool m_isEnabled{false};
 
     /// If true, distort the output image, otherwise we undistort it
-    bool m_distort { true };
+    bool m_distort{true};
 
     /// True when a calibration mismatch is detected, this avoids to pop-up the error at each update
-    bool m_calibrationMismatch { false };
+    bool m_calibrationMismatch{false};
 
     /// This is used to reset m_calibrationMismatch when the image resolution changes
     data::Image::Size m_prevImageSize{0, 0, 0};

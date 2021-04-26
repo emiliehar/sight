@@ -40,8 +40,8 @@ struct CORE_CLASS_API SignalBase : virtual core::BaseObject
     /**
      * @name Typedefs
      * @{ */
-    typedef SPTR ( SignalBase ) sptr;
-    typedef WPTR ( SignalBase )   wptr;
+    typedef SPTR(SignalBase) sptr;
+    typedef WPTR(SignalBase)   wptr;
     /**  @} */
 
     SignalBase()
@@ -56,23 +56,23 @@ struct CORE_CLASS_API SignalBase : virtual core::BaseObject
      * @brief Connects the given slot.
      * @throws BadSlot If given slot doesn't match signal type.
      */
-    virtual Connection connect( SPTR( SlotBase ) slot ) = 0;
+    virtual Connection connect(SPTR(SlotBase) slot) = 0;
 
     /**
      * @brief Disconnects the given slot.
      * @throws BadSlot If given slot is not found in current connections.
      */
-    virtual void disconnect( SPTR( SlotBase ) slot ) = 0;
+    virtual void disconnect(SPTR(SlotBase) slot) = 0;
 
     /// Returns number of connections.
     virtual size_t getNumberOfConnections() const = 0;
 
     protected:
         /// Copy constructor forbidden
-        SignalBase( const SignalBase& );
+        SignalBase(const SignalBase&);
 
         /// Copy operator forbiden
-        SignalBase& operator=( const SignalBase& );
+        SignalBase& operator=(const SignalBase&);
 };
 
 } // namespace sight::core::com

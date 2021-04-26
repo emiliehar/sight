@@ -43,38 +43,38 @@ static const core::com::Slots::SlotKeyType s_SHOW_DISTANCE_SLOT = "showDistance"
 
 static const service::IService::KeyType s_IMAGE_INOUT = "image";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SShowDistance::SShowDistance( ) noexcept
+SShowDistance::SShowDistance() noexcept
 {
     newSlot(s_SHOW_DISTANCE_SLOT, &SShowDistance::showDistance, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SShowDistance::~SShowDistance() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowDistance::configuring()
 {
     this->sight::ui::base::IAction::initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowDistance::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowDistance::updating()
 {
-    const auto image = this->getLockedInOut< data::Image >(s_IMAGE_INOUT);
+    const auto image = this->getLockedInOut<data::Image>(s_IMAGE_INOUT);
 
     if(!data::fieldHelper::MedicalImageHelpers::checkImageValidity(image.get_shared()))
     {
@@ -82,9 +82,11 @@ void SShowDistance::updating()
     }
     else
     {
-        const data::Boolean::sptr showDistances =
-            image->getField< data::Boolean >(data::fieldHelper::Image::m_distanceVisibility, data::Boolean::New(
-                                                 true));
+        const data::Boolean::sptr showDistances
+            = image->getField<data::Boolean>(
+                  data::fieldHelper::Image::m_distanceVisibility,
+                  data::Boolean::New(
+                      true));
         const bool isShown = showDistances->value();
 
         const bool toShow = !isShown;
@@ -93,7 +95,7 @@ void SShowDistance::updating()
         // Manage hide/show from the field information.
         this->sight::ui::base::IAction::setIsActive(!toShow);
 
-        const auto sig = image->signal< data::Image::DistanceDisplayedSignalType >(
+        const auto sig = image->signal<data::Image::DistanceDisplayedSignalType>(
             data::Image::s_DISTANCE_DISPLAYED_SIG);
         {
             core::com::Connection::Blocker block(sig->getConnection(this->slot(s_SHOW_DISTANCE_SLOT)));
@@ -102,36 +104,38 @@ void SShowDistance::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowDistance::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SShowDistance::getAutoConnections() const
 {
     KeyConnectionsMap connections;
-    connections.push( s_IMAGE_INOUT, data::Image::s_DISTANCE_DISPLAYED_SIG, s_SHOW_DISTANCE_SLOT );
+    connections.push(s_IMAGE_INOUT, data::Image::s_DISTANCE_DISPLAYED_SIG, s_SHOW_DISTANCE_SLOT);
 
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShowDistance::showDistance(bool)
 {
-    const auto image = this->getLockedInOut< data::Image >(s_IMAGE_INOUT);
+    const auto image = this->getLockedInOut<data::Image>(s_IMAGE_INOUT);
 
-    data::Boolean::sptr SShowDistances =
-        image->getField< data::Boolean >(data::fieldHelper::Image::m_distanceVisibility, data::Boolean::New(
-                                             true));
+    data::Boolean::sptr SShowDistances
+        = image->getField<data::Boolean>(
+              data::fieldHelper::Image::m_distanceVisibility,
+              data::Boolean::New(
+                  true));
 
-    this->sight::ui::base::IAction::setIsActive( !(SShowDistances->value()) );
+    this->sight::ui::base::IAction::setIsActive(!(SShowDistances->value()));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::base::metrics

@@ -34,7 +34,9 @@ VersionDescriptor::VersionDescriptor() :
 // ----------------------------------------------------------------------------
 
 VersionDescriptor::VersionDescriptor(
-    const std::string& context, const std::string& versionName, const VersionsType& versions) :
+    const std::string& context,
+    const std::string& versionName,
+    const VersionsType& versions) :
     m_context(context),
     m_versionName(versionName),
     m_versions(versions)
@@ -47,4 +49,4 @@ VersionDescriptor::~VersionDescriptor()
 {
 }
 
-} //namespace sight::io::atoms::patch
+} // namespace sight::io::atoms::patch

@@ -24,6 +24,7 @@
 
 namespace sight::service
 {
+
 /**
  * @brief       The namespace sight::service::op contains several methods for managing services to object
  */
@@ -31,4 +32,5 @@ namespace op
 {
 
 }
+
 }

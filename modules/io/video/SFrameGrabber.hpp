@@ -38,7 +38,9 @@
 
 namespace sight::data
 {
+
 class Camera;
+
 }
 
 namespace sight::module::io::video
@@ -104,9 +106,7 @@ namespace sight::module::io::video
  */
 class MODULE_IO_VIDEO_CLASS_API SFrameGrabber : public service::IGrabber
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SFrameGrabber, sight::service::IGrabber)
 
     /// Constructor. Do nothing.
@@ -116,7 +116,6 @@ public:
     MODULE_IO_VIDEO_API virtual ~SFrameGrabber() noexcept;
 
 protected:
-
     /// Initialize the layout and the camera.
     MODULE_IO_VIDEO_API void starting() override;
 
@@ -154,9 +153,8 @@ protected:
     void setStep(int step, std::string key) override;
 
 private:
-
-    typedef std::vector< std::filesystem::path > ImageFilesType;
-    typedef std::vector< double > ImageTimestampsType;
+    typedef std::vector<std::filesystem::path> ImageFilesType;
+    typedef std::vector<double> ImageTimestampsType;
 
     /// Initializes the video reader, start the timer.
     void readVideo(const std::filesystem::path& file);

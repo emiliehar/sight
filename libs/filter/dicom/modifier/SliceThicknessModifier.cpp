@@ -34,46 +34,47 @@
 #include <dcmtk/dcmimgle/dcmimage.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::modifier::SliceThicknessModifier );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::modifier::SliceThicknessModifier);
 
 namespace sight::filter::dicom
 {
+
 namespace modifier
 {
 
-const std::string SliceThicknessModifier::s_FILTER_NAME        = "Slice thickness modifier";
-const std::string SliceThicknessModifier::s_FILTER_DESCRIPTION =
-    "Compute and modify slice thickness using <i>ImagePositionPatient</i> "
-    "and <i>ImageOrientationPatient</i> tags of the two first instances.";
+const std::string SliceThicknessModifier::s_FILTER_NAME = "Slice thickness modifier";
+const std::string SliceThicknessModifier::s_FILTER_DESCRIPTION
+    = "Compute and modify slice thickness using <i>ImagePositionPatient</i> "
+      "and <i>ImageOrientationPatient</i> tags of the two first instances.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SliceThicknessModifier::SliceThicknessModifier(filter::dicom::IFilter::Key key) :
     IModifier()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SliceThicknessModifier::~SliceThicknessModifier()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string SliceThicknessModifier::getName() const
 {
     return SliceThicknessModifier::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string SliceThicknessModifier::getDescription() const
 {
     return SliceThicknessModifier::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SliceThicknessModifier::DicomSeriesContainerType SliceThicknessModifier::apply(
     const data::DicomSeries::sptr& series,
@@ -85,6 +86,7 @@ SliceThicknessModifier::DicomSeriesContainerType SliceThicknessModifier::apply(
     {
         SIGHT_WARN("SliceThicknessModifier is being applied on a series containing only one slice.");
         result.push_back(series);
+
         return result;
     }
 
@@ -111,10 +113,11 @@ SliceThicknessModifier::DicomSeriesContainerType SliceThicknessModifier::apply(
     }
 
     result.push_back(series);
+
     return result;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 double SliceThicknessModifier::getInstanceZPosition(const core::memory::BufferObject::sptr& bufferObj) const
 {
@@ -123,16 +126,17 @@ double SliceThicknessModifier::getInstanceZPosition(const core::memory::BufferOb
 
     const size_t buffSize = bufferObj->getSize();
     core::memory::BufferObject::Lock lock(bufferObj);
-    char* buffer = static_cast< char* >( lock.getBuffer() );
+    char* buffer = static_cast<char*>(lock.getBuffer());
 
     DcmInputBufferStream is;
     is.setBuffer(buffer, offile_off_t(buffSize));
     is.setEos();
 
     fileFormat.transferInit();
-    if (!fileFormat.read(is).good())
+
+    if(!fileFormat.read(is).good())
     {
-        SIGHT_THROW("Unable to read Dicom file '"<< bufferObj->getStreamInfo().fsFile.string() <<"'");
+        SIGHT_THROW("Unable to read Dicom file '" << bufferObj->getStreamInfo().fsFile.string() << "'");
     }
 
     fileFormat.loadAllDataIntoMemory();
@@ -147,29 +151,31 @@ double SliceThicknessModifier::getInstanceZPosition(const core::memory::BufferOb
     }
 
     fwVec3d imagePosition;
-    for(unsigned int i = 0; i < 3; ++i)
+
+    for(unsigned int i = 0 ; i < 3 ; ++i)
     {
         dataset->findAndGetFloat64(DCM_ImagePositionPatient, imagePosition[i], i);
     }
 
     fwVec3d imageOrientationU;
     fwVec3d imageOrientationV;
-    for(unsigned int i = 0; i < 3; ++i)
+
+    for(unsigned int i = 0 ; i < 3 ; ++i)
     {
         dataset->findAndGetFloat64(DCM_ImageOrientationPatient, imageOrientationU[i], i);
-        dataset->findAndGetFloat64(DCM_ImageOrientationPatient, imageOrientationV[i], i+3);
+        dataset->findAndGetFloat64(DCM_ImageOrientationPatient, imageOrientationV[i], i + 3);
     }
 
-    //Compute Z direction (cross product)
+    // Compute Z direction (cross product)
     const fwVec3d zVector = geometry::data::cross(imageOrientationU, imageOrientationV);
 
-    //Compute dot product to get the index
+    // Compute dot product to get the index
     const double index = geometry::data::dot(imagePosition, zVector);
 
     return index;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 double SliceThicknessModifier::getSliceThickness(const core::memory::BufferObject::sptr& bufferObj) const
 {
@@ -179,16 +185,17 @@ double SliceThicknessModifier::getSliceThickness(const core::memory::BufferObjec
 
     const size_t buffSize = bufferObj->getSize();
     core::memory::BufferObject::Lock lock(bufferObj);
-    char* buffer = static_cast< char* >( lock.getBuffer() );
+    char* buffer = static_cast<char*>(lock.getBuffer());
 
     DcmInputBufferStream is;
     is.setBuffer(buffer, offile_off_t(buffSize));
     is.setEos();
 
     fileFormat.transferInit();
-    if (!fileFormat.read(is).good())
+
+    if(!fileFormat.read(is).good())
     {
-        SIGHT_THROW("Unable to read Dicom file '"<< bufferObj->getStreamInfo().fsFile.string() <<"'");
+        SIGHT_THROW("Unable to read Dicom file '" << bufferObj->getStreamInfo().fsFile.string() << "'");
     }
 
     fileFormat.loadAllDataIntoMemory();
@@ -203,4 +210,5 @@ double SliceThicknessModifier::getSliceThickness(const core::memory::BufferObjec
 }
 
 } // namespace modifier
+
 } // namespace sight::filter::dicom

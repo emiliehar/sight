@@ -48,7 +48,7 @@ public:
     IO_PATCH_API ~V3ToV4();
 
     /// Copy constructor
-    IO_PATCH_API V3ToV4( const V3ToV4& cpy );
+    IO_PATCH_API V3ToV4(const V3ToV4& cpy);
 
     /**
      * @brief Applies patch
@@ -59,7 +59,6 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace Mesh

@@ -29,51 +29,54 @@
 
 namespace sight::ui::base
 {
+
 namespace builder
 {
 
 const IMenuBarBuilder::RegistryKeyType IMenuBarBuilder::REGISTRY_KEY = "::ui::base::MenuBarBuilder";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IMenuBarBuilder::IMenuBarBuilder()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IMenuBarBuilder::~IMenuBarBuilder()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void IMenuBarBuilder::initialize( core::runtime::ConfigurationElement::sptr configuration)
+void IMenuBarBuilder::initialize(core::runtime::ConfigurationElement::sptr configuration)
 {
-    if (configuration->hasAttribute("backgroundColor"))
+    if(configuration->hasAttribute("backgroundColor"))
     {
         const std::string hexaColor = configuration->getExistingAttributeValue("backgroundColor");
+
         if(!hexaColor.empty())
         {
             SIGHT_ASSERT(
                 "Color string should start with '#' and followed by 6 or 8 "
                 "hexadecimal digits. Given color: " << hexaColor,
                     hexaColor[0] == '#'
-                    && ( hexaColor.length() == 7 || hexaColor.length() == 9)
+                    && (hexaColor.length() == 7 || hexaColor.length() == 9)
                 );
             m_backgroundColor = hexaColor;
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ui::base::container::fwMenuBar::sptr IMenuBarBuilder::getMenuBar()
 {
     return this->m_menuBar;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace builder
+
 } // namespace sight::ui::base

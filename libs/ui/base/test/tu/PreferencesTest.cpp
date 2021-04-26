@@ -36,26 +36,27 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::ui::base::preferences::ut::PreferencesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::ui::base::preferences::ut::PreferencesTest);
 
 namespace sight::ui::base::preferences
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PreferencesTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PreferencesTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PreferencesTest::runtimeTest()
 {
@@ -73,7 +74,7 @@ void PreferencesTest::runtimeTest()
     CPPUNIT_ASSERT_EQUAL(m_preferencesPath.string(), file.string());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PreferencesTest::helperTest()
 {
@@ -85,11 +86,11 @@ void PreferencesTest::helperTest()
     const std::filesystem::path appPrefDir = core::tools::os::getUserDataDir("sight", profile->getName());
     const std::filesystem::path prefFile   = appPrefDir / "preferences.json";
 
-    //Check preference file dir
+    // Check preference file dir
     const std::filesystem::path file = ui::base::preferences::getPreferencesFile();
     CPPUNIT_ASSERT_EQUAL(prefFile.string(), file.string());
 
-    //Check set preference
+    // Check set preference
     const bool isModified = ui::base::preferences::setPreference(preferenceKey, preferenceValue);
     CPPUNIT_ASSERT(isModified);
 
@@ -100,10 +101,10 @@ void PreferencesTest::helperTest()
     data::Composite::sptr prefs = ui::base::preferences::getPreferences();
     CPPUNIT_ASSERT(prefs);
 
-    data::String::sptr prefStr = prefs->at< data::String >(preferenceKey);
+    data::String::sptr prefStr = prefs->at<data::String>(preferenceKey);
     CPPUNIT_ASSERT_EQUAL(preferenceValue, prefStr->value());
 
-    //Check get value
+    // Check get value
     const std::string preferenceKey2        = "PREF_KEY_TEST_2";
     const std::uint32_t preferenceValueInt2 = 1664;
     const std::string preferenceValue2      = std::to_string(preferenceValueInt2);
@@ -113,7 +114,7 @@ void PreferencesTest::helperTest()
     std::string resValue = ui::base::preferences::getValue(preferenceKey2);
     CPPUNIT_ASSERT_EQUAL(preferenceKey2, resValue);
 
-    std::uint32_t resValueInt = ui::base::preferences::getValue< std::uint32_t >(preferenceValue2);
+    std::uint32_t resValueInt = ui::base::preferences::getValue<std::uint32_t>(preferenceValue2);
     CPPUNIT_ASSERT_EQUAL(preferenceValueInt2, resValueInt);
 
     const char delimiter                = '%';
@@ -122,11 +123,11 @@ void PreferencesTest::helperTest()
     resValue = ui::base::preferences::getValue(prefKeySubstitute);
     CPPUNIT_ASSERT_EQUAL(preferenceValue2, resValue);
 
-    resValueInt = ui::base::preferences::getValue< std::uint32_t >(prefKeySubstitute);
+    resValueInt = ui::base::preferences::getValue<std::uint32_t>(prefKeySubstitute);
     CPPUNIT_ASSERT_EQUAL(preferenceValueInt2, resValueInt);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PreferencesTest::passwordTest()
 {
@@ -157,7 +158,7 @@ void PreferencesTest::passwordTest()
     CPPUNIT_ASSERT_EQUAL(ui::base::preferences::checkPassword("ON DIT CHIFFRER, ET PAS CRYPTER. :-)"), false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PreferencesTest::cleanup()
 {
@@ -165,7 +166,8 @@ void PreferencesTest::cleanup()
     std::filesystem::remove(m_preferencesPath);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::ui::base::preferences
+} // namespace ut
+
+} // namespace sight::ui::base::preferences

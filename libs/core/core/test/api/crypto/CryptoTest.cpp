@@ -31,24 +31,25 @@ CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::crypto::ut::CryptoTest);
 
 namespace sight::core::crypto
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CryptoTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CryptoTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CryptoTest::hashTest()
 {
@@ -64,7 +65,7 @@ void CryptoTest::hashTest()
     CPPUNIT_ASSERT_EQUAL(sha256_abcd, core::crypto::hash("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CryptoTest::cryptoTest()
 {
@@ -77,7 +78,7 @@ void CryptoTest::cryptoTest()
     CPPUNIT_ASSERT_EQUAL(core::crypto::secure_string("abc"), abc_decrypted);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CryptoTest::base64Test()
 {
@@ -138,4 +139,5 @@ void CryptoTest::base64Test()
 }
 
 } // namespace ut
+
 } // namespace sight::core::memory

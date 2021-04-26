@@ -44,15 +44,14 @@
 
 namespace sight::module::viz::scene3dQt
 {
+
 class Window final :
     public QWindow,
     public ::Ogre::RenderTargetListener
 {
-
 Q_OBJECT
 
 public:
-
     /**
      * @brief Initializes members and connect screenChanged to onScreenChanged.
      * @param _parent the parent container of the widget.
@@ -98,7 +97,6 @@ public:
     void requestRender();
 
 Q_SIGNALS:
-
     /// Emits when the user interacts with the scene using the mouse and keyboard.
     void interacted(sight::viz::scene3d::IWindowInteractor::InteractionInfo);
 
@@ -106,7 +104,6 @@ Q_SIGNALS:
     void cameraClippingComputation();
 
 private:
-
     /// Manages keyboard action.
     void keyPressEvent(QKeyEvent* _e) override;
 
@@ -123,7 +120,7 @@ private:
     void mousePressEvent(QMouseEvent* _e) override;
 
     /// Manages mouse double click.
-    void mouseDoubleClickEvent(QMouseEvent* e ) override;
+    void mouseDoubleClickEvent(QMouseEvent* e) override;
 
     /// Manages mouse click on release.
     void mouseReleaseEvent(QMouseEvent* _e) override;
@@ -140,8 +137,9 @@ private:
     using InteractionInfo = sight::viz::scene3d::IWindowInteractor::InteractionInfo;
 
     /// Converts the mouse event to be able to handle it with ogre.
-    InteractionInfo convertMouseEvent(const QMouseEvent* const _evt,
-                                      InteractionInfo::InteractionEnum _interactionType) const;
+    InteractionInfo convertMouseEvent(
+        const QMouseEvent* const _evt,
+        InteractionInfo::InteractionEnum _interactionType) const;
 
     /**
      * @brief Renders immediately the frame.
@@ -166,22 +164,22 @@ private:
     int m_id;
 
     /// Contains the Ogre root.
-    Ogre::Root* m_ogreRoot { nullptr };
+    Ogre::Root* m_ogreRoot{nullptr};
 
     /// Contains the Ogre render window.
-    Ogre::RenderWindow* m_ogreRenderWindow { nullptr };
+    Ogre::RenderWindow* m_ogreRenderWindow{nullptr};
 
     /// Tells if an update is requested
-    bool m_update_pending { false };
+    bool m_update_pending{false};
 
     /// Tells if the window is currently showed
-    bool m_animating { false };
+    bool m_animating{false};
 
     /// Stores previous mouse positions.
     std::optional<QPoint> m_lastMousePosition;
 
     /// Counts the number of frames rendered since the window's creation.
-    int m_frameId { 0 };
+    int m_frameId{0};
 
     /// Contains the OpenGL context used for offscreen rendering.
     std::shared_ptr<QOpenGLContext> m_glContext;
@@ -190,13 +188,11 @@ private:
     QSize m_ogreSize;
 
 private Q_SLOTS:
-
     /// Called when the screen changes.
     void onScreenChanged(QScreen*);
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline int Window::getFrameId() const
 {

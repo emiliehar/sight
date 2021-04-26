@@ -28,6 +28,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -35,15 +36,17 @@ namespace detail::data
 PatientSerializer::sptr PatientSerializer::shared()
 {
     struct make_shared_enabler final : public PatientSerializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PatientSerializer::uptr PatientSerializer::unique()
 {
     struct make_unique_enabler final : public PatientSerializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
 /// Serialization function
@@ -75,4 +78,5 @@ void PatientSerializer::serialize(
 }
 
 } // detail::data
+
 } // namespace sight::io::session

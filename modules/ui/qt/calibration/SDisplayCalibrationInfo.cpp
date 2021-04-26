@@ -39,7 +39,7 @@
 namespace sight::module::ui::qt::calibration
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static const core::com::Slots::SlotKeyType s_DISPLAY_IMAGE_SLOT = "displayImage";
 static const core::com::Slots::SlotKeyType s_STOP_CONFIG_SLOT   = "stopConfig";
@@ -49,32 +49,32 @@ static const std::string s_CLOSE_CONFIG_CHANNEL_ID = "CLOSE_CONFIG_CHANNEL";
 static const std::string s_CALIBRATION_INFO_1 = "calInfo1";
 static const std::string s_CALIBRATION_INFO_2 = "calInfo2";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SDisplayCalibrationInfo::SDisplayCalibrationInfo() noexcept
 {
-    newSlot( s_DISPLAY_IMAGE_SLOT, &SDisplayCalibrationInfo::displayImage, this );
+    newSlot(s_DISPLAY_IMAGE_SLOT, &SDisplayCalibrationInfo::displayImage, this);
     newSlot(s_STOP_CONFIG_SLOT, &SDisplayCalibrationInfo::stopConfig, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SDisplayCalibrationInfo::~SDisplayCalibrationInfo() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDisplayCalibrationInfo::starting()
 {
     m_proxychannel = this->getID() + "_stopConfig";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDisplayCalibrationInfo::stopping()
 {
-    if (m_configMgr)
+    if(m_configMgr)
     {
         service::registry::Proxy::sptr proxies = service::registry::Proxy::getDefault();
         proxies->disconnect(m_proxychannel, this->slot(s_STOP_CONFIG_SLOT));
@@ -83,39 +83,39 @@ void SDisplayCalibrationInfo::stopping()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDisplayCalibrationInfo::configuring()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDisplayCalibrationInfo::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDisplayCalibrationInfo::stopConfig()
 {
-    if( m_configMgr )
+    if(m_configMgr)
     {
         this->stopping();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDisplayCalibrationInfo::displayImage(size_t idx)
 {
-    if( !m_configMgr )
+    if(!m_configMgr)
     {
         // Grab images from our composite data
-        data::CalibrationInfo::csptr calInfo1 = this->getInput< data::CalibrationInfo >(s_CALIBRATION_INFO_1);
-        SIGHT_ASSERT("Object "+s_CALIBRATION_INFO_1+" is not a CalibrationInfo !", calInfo1);
+        data::CalibrationInfo::csptr calInfo1 = this->getInput<data::CalibrationInfo>(s_CALIBRATION_INFO_1);
+        SIGHT_ASSERT("Object " + s_CALIBRATION_INFO_1 + " is not a CalibrationInfo !", calInfo1);
 
-        data::CalibrationInfo::csptr calInfo2 = this->getInput< data::CalibrationInfo >(s_CALIBRATION_INFO_2);
+        data::CalibrationInfo::csptr calInfo2 = this->getInput<data::CalibrationInfo>(s_CALIBRATION_INFO_2);
 
         std::string strConfig = "displayImageConfig";
 
@@ -128,6 +128,7 @@ void SDisplayCalibrationInfo::displayImage(size_t idx)
         replaceMap["pointListId1"] = pointList1->getID();
 
         core::runtime::ConfigurationElement::csptr config;
+
         if(calInfo2)
         {
             strConfig = "displayTwoImagesConfig";
@@ -140,12 +141,12 @@ void SDisplayCalibrationInfo::displayImage(size_t idx)
 
         replaceMap[s_CLOSE_CONFIG_CHANNEL_ID] = m_proxychannel;
 
-        config =
-            service::extension::AppConfig::getDefault()->getAdaptedTemplateConfig(strConfig, replaceMap, true);
+        config
+            = service::extension::AppConfig::getDefault()->getAdaptedTemplateConfig(strConfig, replaceMap, true);
 
         // Launch configuration
         m_configMgr = service::IAppConfigManager::New();
-        m_configMgr->service::IAppConfigManager::setConfig( config );
+        m_configMgr->service::IAppConfigManager::setConfig(config);
         m_configMgr->launch();
 
         // Proxy to be notified of the window closure
@@ -154,5 +155,6 @@ void SDisplayCalibrationInfo::displayImage(size_t idx)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+
 } // uiCalibration

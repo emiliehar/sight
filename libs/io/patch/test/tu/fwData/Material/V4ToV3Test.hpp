@@ -26,10 +26,13 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace Material
 {
 
@@ -38,8 +41,8 @@ namespace Material
  */
 class V4ToV3Test : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( V4ToV3Test );
-CPPUNIT_TEST( applyPatchTest );
+CPPUNIT_TEST_SUITE(V4ToV3Test);
+CPPUNIT_TEST(applyPatchTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -50,7 +53,10 @@ public:
     void applyPatchTest();
 };
 
-} //namespace Material
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+} // namespace Material
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

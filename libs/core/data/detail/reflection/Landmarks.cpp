@@ -26,11 +26,11 @@
 
 #include <core/reflection/UserObject.hpp>
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(Landmarks))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (Landmarks))
 {
     builder.base< ::sight::data::Object>()
     .tag("object_version", "1")
     .tag("lib_name", "::sight::data");
     // property 'landmarks' is not introspected because it contains a struct that is not managed by camp
-    //.property("landmarks", &::sight::data::Landmarks::m_landmarks);
+    // .property("landmarks", &::sight::data::Landmarks::m_landmarks);
 }

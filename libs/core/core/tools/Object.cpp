@@ -33,7 +33,7 @@ static std::map<const Object*, std::string> s_ptr_to_uuid;
 static std::map<std::string, Object::wptr> s_uuid_to_wptr;
 static std::mutex s_maps_mutex;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Object::sptr Object::fromUUID(const std::string& uuid)
 {
@@ -50,7 +50,7 @@ Object::sptr Object::fromUUID(const std::string& uuid)
     return Object::sptr();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string Object::getUUID() const
 {
@@ -73,7 +73,7 @@ std::string Object::getUUID() const
     {
         uuid = UUID::generateUUID();
     }
-    while (s_uuid_to_wptr.find(uuid) != s_uuid_to_wptr.end());
+    while(s_uuid_to_wptr.find(uuid) != s_uuid_to_wptr.end());
 
     // Store the uuid
     s_ptr_to_uuid[this] = uuid;
@@ -87,7 +87,7 @@ std::string Object::getUUID() const
     return uuid;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Object::setUUID(const std::string& uuid)
 {
@@ -95,6 +95,7 @@ void Object::setUUID(const std::string& uuid)
 
     // Look if the uuid has already been used
     const auto found_wptr = s_uuid_to_wptr.find(uuid);
+
     if(found_wptr != s_uuid_to_wptr.cend())
     {
         // Try to see if the object is different
@@ -109,10 +110,12 @@ void Object::setUUID(const std::string& uuid)
 
     // Look if the object has already been registered
     const auto found_uuid = s_ptr_to_uuid.find(this);
+
     if(found_uuid != s_ptr_to_uuid.cend())
     {
         // Try to see if the uuid is different
         const std::string& old = found_uuid->second;
+
         if(!old.empty() && uuid != old)
         {
             /// That's no good, the object has already be registered with a different uuid
@@ -137,4 +140,4 @@ Object::~Object()
     }
 }
 
-} //namespace sight::core::tools
+} // namespace sight::core::tools

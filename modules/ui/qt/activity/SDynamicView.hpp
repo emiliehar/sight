@@ -49,10 +49,13 @@
 class QTabWidget;
 namespace sight::data
 {
+
 class Composite;
+
 }
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
@@ -109,7 +112,6 @@ class MODULE_UI_QT_CLASS_API SDynamicView : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SDynamicView, sight::ui::base::view::IActivityView)
 
     /// Constructor. Do nothing.
@@ -119,12 +121,12 @@ public:
 
     MODULE_UI_QT_API virtual ~SDynamicView() noexcept;
 
-    typedef core::com::Signal< void ( data::Object::sptr ) > ActivitySelectedSignalType;
+    typedef core::com::Signal<void (data::Object::sptr)> ActivitySelectedSignalType;
     MODULE_UI_QT_API static const core::com::Signals::SignalKeyType s_ACTIVITY_SELECTED_SIG;
-    typedef core::com::Signal< void () > NothingSelectedSignalType;
+    typedef core::com::Signal<void ()> NothingSelectedSignalType;
     MODULE_UI_QT_API static const core::com::Signals::SignalKeyType s_NOTHING_SELECTED_SIG;
-protected:
 
+protected:
     /**
      * @brief Install the container.
      */
@@ -154,11 +156,10 @@ protected:
      */
     void configuring() override;
 
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
-    typedef std::set< std::string > ActivityIdType;
+    typedef std::set<std::string> ActivityIdType;
 
     struct SDynamicViewInfo
     {
@@ -175,7 +176,7 @@ private:
         data::ActivitySeries::sptr activitySeries;
     };
 
-    typedef std::map< QWidget*, SDynamicViewInfo > SDynamicViewInfoMapType;
+    typedef std::map<QWidget*, SDynamicViewInfo> SDynamicViewInfoMapType;
 
     /**
      * @brief Launch tab
@@ -202,10 +203,9 @@ private:
      * @param index : index of the tab to close
      * @param forceClose : if true, close the tab even if the tab is not "closable"
      */
-    void closeTab( int index, bool forceClose );
+    void closeTab(int index, bool forceClose);
 
 protected Q_SLOTS:
-
     /// Called when the tab close button is clicked: close the tab if it is "closable"
     void closeTabSignal(int index);
 
@@ -213,9 +213,8 @@ protected Q_SLOTS:
     void changedTab(int index);
 
 private:
-
-    std::map< std::string, unsigned int > m_titleToCount;
-    std::set< std::string > m_tabIDList;
+    std::map<std::string, unsigned int> m_titleToCount;
+    std::set<std::string> m_tabIDList;
 
     ActivityIdType m_activityIds;
 
@@ -231,8 +230,9 @@ private:
     bool m_mainActivityClosable;
 
     /// Allows to set the document mode.
-    bool m_documentMode {true};
+    bool m_documentMode{true};
 };
 
-} //namespace activity
+} // namespace activity
+
 } // guiQt

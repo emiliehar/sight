@@ -42,7 +42,6 @@ class SessionSerializer : public ISession
 {
 public:
     SIGHT_DECLARE_CLASS(SessionSerializer, ISession)
-
     /// Delete default constructors and assignment operators
     SessionSerializer(const SessionSerializer&)            = delete;
     SessionSerializer(SessionSerializer&&)                 = delete;
@@ -66,10 +65,10 @@ public:
         const core::crypto::secure_string& password = "") = 0;
 
 protected:
-
     /// Default constructor
     SessionSerializer() = default;
 };
 
 } // namespace detail
+
 } // namespace sight::io::session

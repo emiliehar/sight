@@ -29,6 +29,7 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace vr
 {
 
@@ -38,13 +39,14 @@ namespace vr
 class VIZ_SCENE3D_CLASS_API RayEntryCompositor
 {
 public:
-
-    using uptr = std::unique_ptr< RayEntryCompositor >;
+    using uptr = std::unique_ptr<RayEntryCompositor>;
 
     /// Construstor. Creates the ogre compositor.
-    VIZ_SCENE3D_API RayEntryCompositor(const std::string& _compositorName, std::uint8_t _rqGroup,
-                                       compositor::Core::StereoModeType _stereoMode,
-                                       bool _enableMixedRendering = false);
+    VIZ_SCENE3D_API RayEntryCompositor(
+        const std::string& _compositorName,
+        std::uint8_t _rqGroup,
+        compositor::Core::StereoModeType _stereoMode,
+        bool _enableMixedRendering = false);
 
     /// Destructor. Deletes the created compositor.
     VIZ_SCENE3D_API virtual ~RayEntryCompositor();
@@ -53,7 +55,6 @@ public:
     VIZ_SCENE3D_API const std::string& getName() const;
 
 private:
-
     /// Compositor created by this object.
     ::Ogre::CompositorPtr m_compositor;
 
@@ -62,4 +63,5 @@ private:
 };
 
 } // namespace vr
+
 } // namespace sight::viz::scene3d

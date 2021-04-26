@@ -30,6 +30,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace ut
 {
 
@@ -38,9 +39,9 @@ namespace ut
  */
 class SliceThicknessModifierTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SliceThicknessModifierTest );
-CPPUNIT_TEST( simpleApplication );
-CPPUNIT_TEST( applyFilterOn2DImage );
+CPPUNIT_TEST_SUITE(SliceThicknessModifierTest);
+CPPUNIT_TEST(simpleApplication);
+CPPUNIT_TEST(applyFilterOn2DImage);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -53,8 +54,8 @@ public:
 
     /// Apply the filter on an unsupported 2D image
     void applyFilterOn2DImage();
-
 };
 
 } // namespace ut
+
 } // namespace sight::filter::dicom

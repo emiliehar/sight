@@ -36,50 +36,56 @@
 
 namespace sight::ui::qt
 {
+
 namespace widget
 {
 
 class Page
 {
 public:
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setText(const QString& text)
     {
         button->setText(text);
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     void setIcon(const QIcon& is)
     {
         button->setIcon(is);
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     void setToolTip(const QString& tip)
     {
         button->setToolTip(tip);
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     QString toolTip() const
     {
         return button->toolTip();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     QString text() const
     {
         return button->text();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     QIcon icon() const
     {
         return button->icon();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     inline bool operator==(const Page& other) const
     {
@@ -122,15 +128,13 @@ public:
     UI_QT_API void expandItem(int index);
 
 protected:
-
-    typedef QList< ui::qt::widget::Page > PageList;
+    typedef QList<ui::qt::widget::Page> PageList;
 
 private Q_SLOTS:
     void buttonToggled(bool checked);
     void widgetDestroyed(QObject*);
 
 private:
-
     ui::qt::widget::Page* page(QWidget* widget) const;
     const ui::qt::widget::Page* page(int index) const;
     ui::qt::widget::Page* page(int index);
@@ -142,4 +146,5 @@ private:
 };
 
 } // namespace widget
+
 } // namespace sight::ui::qt

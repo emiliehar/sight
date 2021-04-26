@@ -27,7 +27,7 @@
 namespace sight::ui::history
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 UndoRedoManager::UndoRedoManager(size_t maxMemory, size_t maxCommands) :
     m_maxMemory(maxMemory),
@@ -38,26 +38,28 @@ UndoRedoManager::UndoRedoManager(size_t maxMemory, size_t maxCommands) :
     SIGHT_ASSERT("The number of commands must be greater than 0", maxCommands > 0);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool UndoRedoManager::enqueue(ICommand::sptr cmd)
 {
     if(m_maxMemory == 0)
     {
         SIGHT_WARN("Cannot add a command because maxMemory is 0.");
+
         return false;
     }
 
     if(cmd->getSize() > m_maxMemory)
     {
         SIGHT_WARN("The current command is bigger than the maximum history size");
+
         return false;
     }
 
     // Remove all commands following the current history point.
     if(!m_commandQueue.empty())
     {
-        for(std::int64_t i = m_commandQueue.size() - 1; i > m_commandIndex; --i)
+        for(std::int64_t i = m_commandQueue.size() - 1 ; i > m_commandIndex ; --i)
         {
             m_usedMemory -= m_commandQueue[i]->getSize();
             m_commandQueue.pop_back();
@@ -83,7 +85,7 @@ bool UndoRedoManager::enqueue(ICommand::sptr cmd)
     return true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool UndoRedoManager::redo()
 {
@@ -98,7 +100,7 @@ bool UndoRedoManager::redo()
     return success;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool UndoRedoManager::undo()
 {
@@ -113,21 +115,21 @@ bool UndoRedoManager::undo()
     return success;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool UndoRedoManager::canUndo() const
 {
     return m_commandIndex > -1;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool UndoRedoManager::canRedo() const
 {
     return (m_commandIndex != this->getCommandCount() - 1) && (this->getCommandCount() > 0);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void UndoRedoManager::clear()
 {
@@ -136,14 +138,14 @@ void UndoRedoManager::clear()
     m_usedMemory   = 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 size_t UndoRedoManager::getCommandCount() const
 {
     return m_commandQueue.size();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void UndoRedoManager::setCommandCount(size_t cmdCount)
 {
@@ -151,14 +153,14 @@ void UndoRedoManager::setCommandCount(size_t cmdCount)
     m_maxCommands = cmdCount;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 size_t UndoRedoManager::getHistorySize() const
 {
     return m_usedMemory;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void UndoRedoManager::setHistorySize(size_t histSize)
 {
@@ -166,7 +168,7 @@ void UndoRedoManager::setHistorySize(size_t histSize)
     m_maxMemory = histSize;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void UndoRedoManager::popFront()
 {
@@ -176,6 +178,6 @@ void UndoRedoManager::popFront()
     m_commandQueue.pop_front();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::ui::history

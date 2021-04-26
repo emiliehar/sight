@@ -34,6 +34,7 @@
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
@@ -48,30 +49,29 @@ Q_PROPERTY(QString message MEMBER m_message NOTIFY messageChanged)
 Q_PROPERTY(QUrl icon MEMBER m_iconImage NOTIFY iconChanged)
 
 public:
-
-    SIGHT_DECLARE_CLASS(MessageDialog, ui::base::dialog::IMessageDialog, ui::base::factory::New< MessageDialog > )
+    SIGHT_DECLARE_CLASS(MessageDialog, ui::base::dialog::IMessageDialog, ui::base::factory::New<MessageDialog>)
 
     UI_QML_API MessageDialog(ui::base::GuiBaseObject::Key key);
 
     UI_QML_API ~MessageDialog() override;
 
     /// Set the title of the message box
-    UI_QML_API void setTitle( const std::string& title ) override;
+    UI_QML_API void setTitle(const std::string& title) override;
 
     /// Set the message
-    UI_QML_API void setMessage( const std::string& msg ) override;
+    UI_QML_API void setMessage(const std::string& msg) override;
 
     /// Set the icon (CRITICAL, WARNING, INFO or QUESTION)
-    UI_QML_API void setIcon( IMessageDialog::Icons icon) override;
+    UI_QML_API void setIcon(IMessageDialog::Icons icon) override;
 
     /// Add a button (OK, YES_NO, CANCEL)
-    UI_QML_API void addButton( IMessageDialog::Buttons button ) override;
+    UI_QML_API void addButton(IMessageDialog::Buttons button) override;
 
     /// Add a custom button to this dialog
     UI_QML_API void addCustomButton(const std::string& label, std::function<void()> clickedFn) override;
 
     /// Set the default buttons
-    UI_QML_API void setDefaultButton( IMessageDialog::Buttons button ) override;
+    UI_QML_API void setDefaultButton(IMessageDialog::Buttons button) override;
 
     /// Show the message box and return the clicked button.
     UI_QML_API Buttons show() override;
@@ -87,23 +87,22 @@ protected Q_SLOTS:
     void resultDialog(int button);
 
 private:
-
     /// Dialog title
     QString m_title;
 
     /// Dialog box message
     QString m_message;
 
-    ui::base::dialog::IMessageDialog::Buttons m_buttons {ui::base::dialog::IMessageDialog::NOBUTTON};
+    ui::base::dialog::IMessageDialog::Buttons m_buttons{ui::base::dialog::IMessageDialog::NOBUTTON};
 
     /// Icon
-    ui::base::dialog::IMessageDialog::Icons m_icon {ui::base::dialog::IMessageDialog::NONE};
+    ui::base::dialog::IMessageDialog::Icons m_icon{ui::base::dialog::IMessageDialog::NONE};
 
     /// Resume the biggest error get with an icon
-    QUrl m_iconImage {""};
+    QUrl m_iconImage{""};
 
     /// boolean to check if button was pressed
-    ui::base::dialog::IMessageDialog::Buttons m_clicked {ui::base::dialog::IMessageDialog::NOBUTTON};
+    ui::base::dialog::IMessageDialog::Buttons m_clicked{ui::base::dialog::IMessageDialog::NOBUTTON};
 
     /// Setter to QProperty and emit signal
     UI_QML_API void emitButtons(StandardButton*);
@@ -111,4 +110,5 @@ private:
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

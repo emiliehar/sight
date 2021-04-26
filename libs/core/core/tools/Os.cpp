@@ -42,7 +42,7 @@ namespace sight::core::tools
 namespace os
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string getEnv(const std::string& name, bool* ok)
 {
@@ -50,23 +50,27 @@ std::string getEnv(const std::string& name, bool* ok)
     std::string value;
     size_t requiredSize = 0;
     // verify if env var exists and retrieves value size
-    getenv_s( &requiredSize, nullptr, 0, name.c_str() );
+    getenv_s(&requiredSize, nullptr, 0, name.c_str());
     const bool envVarExists = (requiredSize > 0);
-    if (envVarExists)
+
+    if(envVarExists)
     {
         std::vector<char> data(requiredSize + 1);
         // get the value of the env variable.
-        getenv_s( &requiredSize, &data[0], requiredSize, name.c_str() );
+        getenv_s(&requiredSize, &data[0], requiredSize, name.c_str());
         value = std::string(&data[0], requiredSize - 1);
     }
+
     if(ok != nullptr)
     {
         *ok = envVarExists;
     }
+
     return value;
 #else
     const char* value = std::getenv(name.c_str());
     const bool exists = (value != nullptr);
+
     if(ok != nullptr)
     {
         *ok = exists;
@@ -75,18 +79,19 @@ std::string getEnv(const std::string& name, bool* ok)
 #endif
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string getEnv(const std::string& name, const std::string& defaultValue)
 {
     bool ok                 = false;
     const std::string value = getEnv(name, &ok);
+
     return ok ? value : defaultValue;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::string getUserDataDir( std::string company, std::string appName, bool createDirectory )
+std::string getUserDataDir(std::string company, std::string appName, bool createDirectory)
 {
     std::string dataDir;
 #ifdef WIN32
@@ -99,29 +104,29 @@ std::string getUserDataDir( std::string company, std::string appName, bool creat
     dataDir = hasXdgConfigHome ? xdgConfigHome : (hasHome ? std::string(home) + "/.config" : "");
 #endif
 
-    if ( !company.empty() )
+    if(!company.empty())
     {
         dataDir += "/" + company;
     }
 
-    if ( !appName.empty() )
+    if(!appName.empty())
     {
         dataDir += "/" + appName;
     }
 
-    if ( !dataDir.empty() )
+    if(!dataDir.empty())
     {
-        if (std::filesystem::exists(dataDir))
+        if(std::filesystem::exists(dataDir))
         {
-            if ( !std::filesystem::is_directory(dataDir) )
+            if(!std::filesystem::is_directory(dataDir))
             {
-                SIGHT_ERROR( dataDir << " already exists and is not a directory." );
+                SIGHT_ERROR(dataDir << " already exists and is not a directory.");
                 dataDir = "";
             }
         }
-        else if (createDirectory)
+        else if(createDirectory)
         {
-            SIGHT_INFO("Creating application data directory: "<< dataDir);
+            SIGHT_INFO("Creating application data directory: " << dataDir);
             std::filesystem::create_directories(dataDir);
         }
     }
@@ -129,10 +134,9 @@ std::string getUserDataDir( std::string company, std::string appName, bool creat
     return dataDir;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 #if defined(WIN32)
-
 static std::string _getWin32SharedLibraryPath(const std::string& _libName)
 {
     char path[MAX_PATH];
@@ -143,9 +147,10 @@ static std::string _getWin32SharedLibraryPath(const std::string& _libName)
     // we try with the raw name.
     const std::string libNameDbg = _libName + "d";
 
-    if ( ( hm = GetModuleHandle(libNameDbg.c_str()) ) == nullptr)
+    if((hm = GetModuleHandle(libNameDbg.c_str())) == nullptr)
 #endif // _DEBUG
-    if ( ( hm = GetModuleHandle(_libName.c_str()) ) == nullptr)
+
+    if((hm = GetModuleHandle(_libName.c_str())) == nullptr)
     {
         const DWORD ret = GetLastError();
         std::stringstream err;
@@ -154,7 +159,7 @@ static std::string _getWin32SharedLibraryPath(const std::string& _libName)
         SIGHT_THROW_EXCEPTION(core::tools::Exception(err.str()));
     }
 
-    if (GetModuleFileName(hm, path, sizeof(path)) == NULL)
+    if(GetModuleFileName(hm, path, sizeof(path)) == NULL)
     {
         const DWORD ret = GetLastError();
         std::stringstream err;
@@ -162,23 +167,26 @@ static std::string _getWin32SharedLibraryPath(const std::string& _libName)
         err << "GetModuleFileName failed, error = " << ret << std::endl;
         SIGHT_THROW_EXCEPTION(core::tools::Exception(err.str()));
     }
+
     return path;
 }
-
 #elif defined(__APPLE__)
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static std::string _getMacOsSharedLibraryPath(const std::string& _libName)
 {
     const std::regex matchLib(std::string("lib") + _libName);
     const std::regex matchFramework(_libName);
     std::string path;
-    for (std::uint32_t i = 0; i < _dyld_image_count(); ++i)
+
+    for(std::uint32_t i = 0 ; i < _dyld_image_count() ; ++i)
     {
         const char* const image_name = _dyld_get_image_name(i);
-        if (image_name)
+
+        if(image_name)
         {
             const std::string libName(image_name);
+
             if(std::regex_search(libName, matchLib))
             {
                 path = libName;
@@ -193,17 +201,21 @@ static std::string _getMacOsSharedLibraryPath(const std::string& _libName)
             }
         }
     }
+
     if(path.empty())
     {
-        SIGHT_THROW_EXCEPTION(core::tools::Exception(std::string("Could not find shared library path for ") +
-                                                     _libName));
+        SIGHT_THROW_EXCEPTION(
+            core::tools::Exception(
+                std::string("Could not find shared library path for ")
+                + _libName));
     }
+
     return path;
 }
-#else
+#else // if defined(WIN32)
 struct FindModuleFunctor
 {
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static int callback(struct dl_phdr_info* info, size_t, void*)
     {
@@ -214,6 +226,7 @@ struct FindModuleFunctor
         {
             s_location = info->dlpi_name;
         }
+
         return 0;
     }
 
@@ -223,10 +236,9 @@ struct FindModuleFunctor
 
 std::string FindModuleFunctor::s_location;
 std::string FindModuleFunctor::s_libName;
+#endif // if defined(WIN32)
 
-#endif
-
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::filesystem::path getSharedLibraryPath(const std::string& _libName)
 {
@@ -242,8 +254,10 @@ std::filesystem::path getSharedLibraryPath(const std::string& _libName)
 
     if(functor.s_location.empty())
     {
-        SIGHT_THROW_EXCEPTION(core::tools::Exception(std::string("Could not find shared library path for ") +
-                                                     _libName));
+        SIGHT_THROW_EXCEPTION(
+            core::tools::Exception(
+                std::string("Could not find shared library path for ")
+                + _libName));
     }
     return functor.s_location;
 #endif

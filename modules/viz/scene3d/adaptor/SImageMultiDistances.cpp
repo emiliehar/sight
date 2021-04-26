@@ -60,70 +60,82 @@ static const std::string s_QUERY_FLAGS_CONFIG = "distanceQueryFlags";
 
 static constexpr std::uint8_t s_DISTANCE_RQ_GROUP_ID = sight::viz::scene3d::compositor::Core::s_SURFACE_RQ_GROUP_ID;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::ColourValue SImageMultiDistances::generateColor(core::tools::fwID::IDType _id)
 {
-    switch(std::hash< std::string >()(_id) % 7)
+    switch(std::hash<std::string>()(_id) % 7)
     {
         case 0:
-            return ::Ogre::ColourValue(63/255.0f, 105/255.0f, 170/255.0f);
+            return ::Ogre::ColourValue(63 / 255.0f, 105 / 255.0f, 170 / 255.0f);
+
         case 1:
-            return ::Ogre::ColourValue(249/255.0f, 103/255.0f, 20/255.0f);
+            return ::Ogre::ColourValue(249 / 255.0f, 103 / 255.0f, 20 / 255.0f);
+
         case 2:
-            return ::Ogre::ColourValue(236/255.0f, 219/255.0f, 84/255.0f);
+            return ::Ogre::ColourValue(236 / 255.0f, 219 / 255.0f, 84 / 255.0f);
+
         case 3:
-            return ::Ogre::ColourValue(233/255.0f, 75/255.0f, 60/255.0f);
+            return ::Ogre::ColourValue(233 / 255.0f, 75 / 255.0f, 60 / 255.0f);
+
         case 4:
-            return ::Ogre::ColourValue(121/255.0f, 199/255.0f, 83/255.0f);
+            return ::Ogre::ColourValue(121 / 255.0f, 199 / 255.0f, 83 / 255.0f);
+
         case 5:
-            return ::Ogre::ColourValue(149/255.0f, 222/255.0f, 227/255.0f);
+            return ::Ogre::ColourValue(149 / 255.0f, 222 / 255.0f, 227 / 255.0f);
+
         default:
-            return ::Ogre::ColourValue(29/255.0f, 45/255.0f, 168/255.0f);
+            return ::Ogre::ColourValue(29 / 255.0f, 45 / 255.0f, 168 / 255.0f);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::Vector3 SImageMultiDistances::getCamDirection(const ::Ogre::Camera* const _cam)
 {
     const ::Ogre::Matrix4 view = _cam->getViewMatrix();
     ::Ogre::Vector3 direction(view[2][0], view[2][1], view[2][2]);
     direction.normalise();
+
     return -direction;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SImageMultiDistances::generateDashedLine(::Ogre::ManualObject* const _object,
-                                              const ::Ogre::Vector3& _begin,
-                                              const ::Ogre::Vector3& _end, float _thickness)
+void SImageMultiDistances::generateDashedLine(
+    ::Ogre::ManualObject* const _object,
+    const ::Ogre::Vector3& _begin,
+    const ::Ogre::Vector3& _end,
+    float _thickness)
 {
-    const ::Ogre::Vector3 dashedLineDir = (_end-_begin);
+    const ::Ogre::Vector3 dashedLineDir = (_end - _begin);
     const float len                     = dashedLineDir.length();
-    ::Ogre::Vector3 dashedLineDirN = (_end-_begin);
+    ::Ogre::Vector3 dashedLineDirN      = (_end - _begin);
     dashedLineDirN.normalise();
 
     ::Ogre::Vector3 dashedLinePos = _begin;
-    for(float i = 0.f; i+_thickness*1.5 <= len; i += _thickness*2)
+
+    for(float i = 0.f ; i + _thickness * 1.5 <= len ; i += _thickness * 2)
     {
         _object->position(dashedLinePos);
-        dashedLinePos += dashedLineDirN*_thickness;
+        dashedLinePos += dashedLineDirN * _thickness;
         _object->position(dashedLinePos);
-        dashedLinePos += dashedLineDirN*_thickness;
+        dashedLinePos += dashedLineDirN * _thickness;
     }
+
     _object->end();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SImageMultiDistances::getLength(const ::Ogre::Vector3& _begin, const ::Ogre::Vector3& _end)
 {
-    const int length = static_cast< int >(std::round((_end-_begin).length()));
+    const int length = static_cast<int>(std::round((_end - _begin).length()));
+
     return std::to_string(length) + "mm";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageMultiDistances::SImageMultiDistances() noexcept
 {
@@ -132,13 +144,13 @@ SImageMultiDistances::SImageMultiDistances() noexcept
     newSlot(s_UPDATE_VISIBILITY_FROM_FIELDS_SLOT, &SImageMultiDistances::updateVisibilityFromField, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageMultiDistances::~SImageMultiDistances() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::configuring()
 {
@@ -148,36 +160,37 @@ void SImageMultiDistances::configuring()
     const ConfigType config    = srvconfig.get_child("config.<xmlattr>");
 
     m_fontSource           = config.get(s_FONT_SOURCE_CONFIG, m_fontSource);
-    m_fontSize             = config.get< size_t >(s_FONT_SIZE_CONFIG, m_fontSize);
-    m_distanceSphereRadius = config.get< float >(s_RADIUS_CONFIG, m_distanceSphereRadius);
+    m_fontSize             = config.get<size_t>(s_FONT_SIZE_CONFIG, m_fontSize);
+    m_distanceSphereRadius = config.get<float>(s_RADIUS_CONFIG, m_distanceSphereRadius);
     m_interactive          = config.get<bool>(s_INTERACTIVE_CONFIG, m_interactive);
-    m_priority             = config.get< int >(s_PRIORITY_CONFIG, m_priority);
+    m_priority             = config.get<int>(s_PRIORITY_CONFIG, m_priority);
 
     std::string hexaMask = config.get<std::string>(s_QUERY_MASK_CONFIG, "");
+
     if(!hexaMask.empty())
     {
         SIGHT_ASSERT(
             "Hexadecimal values should start with '0x'"
             "Given value : " + hexaMask,
-            hexaMask.length() > 2 &&
-            hexaMask.substr(0, 2) == "0x");
-        m_queryMask = static_cast< std::uint32_t >(std::stoul(hexaMask, nullptr, 16));
+            hexaMask.length() > 2
+            && hexaMask.substr(0, 2) == "0x");
+        m_queryMask = static_cast<std::uint32_t>(std::stoul(hexaMask, nullptr, 16));
     }
 
     hexaMask = config.get<std::string>(s_QUERY_FLAGS_CONFIG, "");
+
     if(!hexaMask.empty())
     {
         SIGHT_ASSERT(
             "Hexadecimal values should start with '0x'"
             "Given value : " + hexaMask,
-            hexaMask.length() > 2 &&
-            hexaMask.substr(0, 2) == "0x");
-        m_distanceQueryFlag = static_cast< std::uint32_t >(std::stoul(hexaMask, nullptr, 16));
+            hexaMask.length() > 2
+            && hexaMask.substr(0, 2) == "0x");
+        m_distanceQueryFlag = static_cast<std::uint32_t>(std::stoul(hexaMask, nullptr, 16));
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::starting()
 {
@@ -192,24 +205,28 @@ void SImageMultiDistances::starting()
     m_dashedLineMaterialName = this->getID() + "_dashedLineMaterialName";
 
     // Create materials from our wrapper.
-    m_sphereMaterial = std::make_unique< sight::viz::scene3d::Material >(m_sphereMaterialName,
-                                                                         sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
+    m_sphereMaterial = std::make_unique<sight::viz::scene3d::Material>(
+        m_sphereMaterialName,
+        sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
     m_sphereMaterial->setHasVertexColor(true);
     m_sphereMaterial->updateShadingMode(data::Material::PHONG, layer->getLightsNumber(), false, false);
 
-    m_lineMaterial = std::make_unique< sight::viz::scene3d::Material >(m_lineMaterialName,
-                                                                       sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
+    m_lineMaterial = std::make_unique<sight::viz::scene3d::Material>(
+        m_lineMaterialName,
+        sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
     m_lineMaterial->setHasVertexColor(true);
     m_lineMaterial->updateShadingMode(data::Material::AMBIENT, layer->getLightsNumber(), false, false);
 
-    m_dashedLineMaterial = std::make_unique< sight::viz::scene3d::Material >(m_dashedLineMaterialName,
-                                                                             sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
+    m_dashedLineMaterial = std::make_unique<sight::viz::scene3d::Material>(
+        m_dashedLineMaterialName,
+        sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME);
     m_dashedLineMaterial->setHasVertexColor(true);
     m_dashedLineMaterial->updateShadingMode(data::Material::AMBIENT, layer->getLightsNumber(), false, false);
 
     // Retrive the ogre material to change the depth check.
     const ::Ogre::MaterialPtr ogreSphereMaterial = ::Ogre::MaterialManager::getSingleton().getByName(
-        m_sphereMaterialName, sight::viz::scene3d::RESOURCE_GROUP);
+        m_sphereMaterialName,
+        sight::viz::scene3d::RESOURCE_GROUP);
     SIGHT_ASSERT("'" + m_sphereMaterialName + "' does not exist.", ogreSphereMaterial);
     const ::Ogre::Technique* const sphereTech = ogreSphereMaterial->getTechnique(0);
     SIGHT_ASSERT("No techique found", sphereTech);
@@ -218,7 +235,8 @@ void SImageMultiDistances::starting()
     spherePass->setDepthCheckEnabled(false);
 
     const ::Ogre::MaterialPtr ogreDashedLineMaterial = ::Ogre::MaterialManager::getSingleton().getByName(
-        m_dashedLineMaterialName, sight::viz::scene3d::RESOURCE_GROUP);
+        m_dashedLineMaterialName,
+        sight::viz::scene3d::RESOURCE_GROUP);
     SIGHT_ASSERT("'" + m_dashedLineMaterialName + "' does not exist.", ogreDashedLineMaterial);
     const ::Ogre::Technique* const dashedTech = ogreDashedLineMaterial->getTechnique(0);
     SIGHT_ASSERT("No techique found", dashedTech);
@@ -228,12 +246,12 @@ void SImageMultiDistances::starting()
 
     if(m_interactive)
     {
-        auto interactor = std::dynamic_pointer_cast< sight::viz::scene3d::interactor::IInteractor >(this->getSptr());
+        auto interactor = std::dynamic_pointer_cast<sight::viz::scene3d::interactor::IInteractor>(this->getSptr());
         layer->addInteractor(interactor, m_priority);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SImageMultiDistances::getAutoConnections() const
 {
@@ -242,10 +260,11 @@ service::IService::KeyConnectionsMap SImageMultiDistances::getAutoConnections() 
     connections.push(s_IMAGE_INOUT, data::Image::s_DISTANCE_REMOVED_SIG, s_REMOVE_DISTANCES_SLOT);
     connections.push(s_IMAGE_INOUT, data::Image::s_DISTANCE_DISPLAYED_SIG, s_UPDATE_VISIBILITY_SLOT);
     connections.push(s_IMAGE_INOUT, data::Image::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::updating()
 {
@@ -259,10 +278,11 @@ void SImageMultiDistances::updating()
     {
         this->destroyDistance(m_distances.begin()->first);
     }
+
     this->addDistances();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::stopping()
 {
@@ -274,7 +294,7 @@ void SImageMultiDistances::stopping()
 
     if(m_interactive)
     {
-        auto interactor = std::dynamic_pointer_cast< sight::viz::scene3d::interactor::IInteractor >(this->getSptr());
+        auto interactor = std::dynamic_pointer_cast<sight::viz::scene3d::interactor::IInteractor>(this->getSptr());
         this->getLayer()->removeInteractor(interactor);
     }
 
@@ -284,16 +304,17 @@ void SImageMultiDistances::stopping()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::addDistances()
 {
     this->getRenderService()->makeCurrent();
 
-    const auto image = this->getLockedInOut< data::Image >(s_IMAGE_INOUT);
+    const auto image = this->getLockedInOut<data::Image>(s_IMAGE_INOUT);
 
-    const data::Vector::sptr distanceField = image->getField< data::Vector >(
+    const data::Vector::sptr distanceField = image->getField<data::Vector>(
         data::fieldHelper::Image::m_imageDistancesId);
+
     if(distanceField)
     {
         for(const auto& object : *distanceField)
@@ -303,10 +324,11 @@ void SImageMultiDistances::addDistances()
             SIGHT_ASSERT("The distance must contains two points", pointList->getPoints().size() == 2);
 
             const core::tools::fwID::IDType id = pointList->getID();
+
             if(m_distances.find(id) == m_distances.end())
             {
                 this->createDistance(pointList);
-                const auto& sigModified = pointList->signal< data::PointList::ModifiedSignalType >(
+                const auto& sigModified = pointList->signal<data::PointList::ModifiedSignalType>(
                     data::PointList::s_MODIFIED_SIG);
                 sigModified->connect(m_slotUpdate);
             }
@@ -325,18 +347,19 @@ void SImageMultiDistances::addDistances()
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::removeDistances()
 {
     this->getRenderService()->makeCurrent();
 
-    const auto image = this->getLockedInOut< data::Image >(s_IMAGE_INOUT);
+    const auto image = this->getLockedInOut<data::Image>(s_IMAGE_INOUT);
 
     const data::Vector::csptr distanceField
-        = image->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
+        = image->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
 
-    std::vector< core::tools::fwID::IDType > foundId;
+    std::vector<core::tools::fwID::IDType> foundId;
+
     if(distanceField)
     {
         for(const auto& object : *distanceField)
@@ -345,7 +368,8 @@ void SImageMultiDistances::removeDistances()
         }
     }
 
-    std::vector< core::tools::fwID::IDType > currentdId;
+    std::vector<core::tools::fwID::IDType> currentdId;
+
     for(const auto& [id, _] : m_distances)
     {
         currentdId.push_back(id);
@@ -362,16 +386,18 @@ void SImageMultiDistances::removeDistances()
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::updateVisibilityFromField()
 {
     this->getRenderService()->makeCurrent();
 
-    const auto image = this->getLockedInOut< data::Image >(s_IMAGE_INOUT);
+    const auto image = this->getLockedInOut<data::Image>(s_IMAGE_INOUT);
 
-    const bool visibility = image->getField(data::fieldHelper::Image::m_distanceVisibility, data::Boolean::New(
-                                                true))->value();
+    const bool visibility = image->getField(
+        data::fieldHelper::Image::m_distanceVisibility,
+        data::Boolean::New(
+            true))->value();
     m_isVisible = visibility;
 
     for(const auto& distance : m_distances)
@@ -387,7 +413,7 @@ void SImageMultiDistances::updateVisibilityFromField()
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::setVisible(bool _visible)
 {
@@ -406,9 +432,9 @@ void SImageMultiDistances::setVisible(bool _visible)
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::optional< ::Ogre::Vector3 > SImageMultiDistances::getNearestPickedPosition(int _x, int _y)
+std::optional< ::Ogre::Vector3> SImageMultiDistances::getNearestPickedPosition(int _x, int _y)
 {
     sight::viz::scene3d::picker::IPicker picker;
     ::Ogre::SceneManager* sm = this->getSceneManager();
@@ -422,20 +448,20 @@ std::optional< ::Ogre::Vector3 > SImageMultiDistances::getNearestPickedPosition(
 
         // Screen to viewport space conversion.
         const float vpX = static_cast<float>(_x - vp->getActualLeft()) / static_cast<float>(vp->getActualWidth());
-        const float vpY = static_cast<float>(_y - vp->getActualTop())  / static_cast<float>(vp->getActualHeight());
+        const float vpY = static_cast<float>(_y - vp->getActualTop()) / static_cast<float>(vp->getActualHeight());
 
         const ::Ogre::Ray ray = camera->getCameraToViewportRay(vpX, vpY);
 
         ::Ogre::Vector3 normal = -ray.getDirection();
         normal.normalise();
 
-        return picker.getIntersectionInWorldSpace() + normal*0.01f;
+        return picker.getIntersectionInWorldSpace() + normal * 0.01f;
     }
 
     return std::nullopt;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::buttonPressEvent(MouseButton _button, Modifier, int _x, int _y)
 {
@@ -449,26 +475,30 @@ void SImageMultiDistances::buttonPressEvent(MouseButton _button, Modifier, int _
         const auto* const vp            = cam->getViewport();
 
         const float vpX = static_cast<float>(_x - vp->getActualLeft()) / static_cast<float>(vp->getActualWidth());
-        const float vpY = static_cast<float>(_y - vp->getActualTop())  / static_cast<float>(vp->getActualHeight());
+        const float vpY = static_cast<float>(_y - vp->getActualTop()) / static_cast<float>(vp->getActualHeight());
 
         const ::Ogre::Ray ray = cam->getCameraToViewportRay(vpX, vpY);
 
-        bool found = false;
+        bool found                                 = false;
         ::Ogre::RaySceneQuery* const raySceneQuery = sceneMgr->createRayQuery(ray, m_distanceQueryFlag);
         raySceneQuery->setSortByDistance(false);
-        if (raySceneQuery->execute().size() != 0)
+
+        if(raySceneQuery->execute().size() != 0)
         {
             const ::Ogre::Real scale = 1.15f;
 
             const ::Ogre::RaySceneQueryResult& queryResult = raySceneQuery->getLastResults();
-            for (size_t qrIdx = 0; qrIdx < queryResult.size() && !found; qrIdx++)
+
+            for(size_t qrIdx = 0 ; qrIdx < queryResult.size() && !found ; qrIdx++)
             {
                 const ::Ogre::MovableObject* const object = queryResult[qrIdx].movable;
+
                 if(object->isVisible())
                 {
                     for(auto& distance : m_distances)
                     {
                         DistanceData& distanceData = distance.second;
+
                         if(distanceData.m_sphere1 == object)
                         {
                             distanceData.m_node1->setScale(scale, scale, scale);
@@ -487,12 +517,14 @@ void SImageMultiDistances::buttonPressEvent(MouseButton _button, Modifier, int _
                 }
             }
         }
+
         delete raySceneQuery;
 
         if(found)
         {
             // Check if something is picked to update the position of the distance.
-            std::optional< ::Ogre::Vector3 > pickedPos = this->getNearestPickedPosition(_x, _y);
+            std::optional< ::Ogre::Vector3> pickedPos = this->getNearestPickedPosition(_x, _y);
+
             if(pickedPos.has_value())
             {
                 if(m_pickedData.m_first)
@@ -513,7 +545,7 @@ void SImageMultiDistances::buttonPressEvent(MouseButton _button, Modifier, int _
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::mouseMoveEvent(MouseButton, Modifier, int _x, int _y, int, int)
 {
@@ -526,7 +558,8 @@ void SImageMultiDistances::mouseMoveEvent(MouseButton, Modifier, int _x, int _y,
         m_pickedData.m_data->m_sphere2->setQueryFlags(0x0);
 
         // Check if something is picked.
-        std::optional< ::Ogre::Vector3 > pickedPos = this->getNearestPickedPosition(_x, _y);
+        std::optional< ::Ogre::Vector3> pickedPos = this->getNearestPickedPosition(_x, _y);
+
         if(pickedPos.has_value())
         {
             newPos = pickedPos.value();
@@ -540,12 +573,13 @@ void SImageMultiDistances::mouseMoveEvent(MouseButton, Modifier, int _x, int _y,
             const auto* const vp            = cam->getViewport();
 
             const float vpX = static_cast<float>(_x - vp->getActualLeft()) / static_cast<float>(vp->getActualWidth());
-            const float vpY = static_cast<float>(_y - vp->getActualTop())  / static_cast<float>(vp->getActualHeight());
+            const float vpY = static_cast<float>(_y - vp->getActualTop()) / static_cast<float>(vp->getActualHeight());
 
             const ::Ogre::Ray ray           = cam->getCameraToViewportRay(vpX, vpY);
             const ::Ogre::Vector3 direction = this->getCamDirection(cam);
 
             ::Ogre::Vector3 position;
+
             if(m_pickedData.m_first)
             {
                 position = m_pickedData.m_data->m_node1->getPosition();
@@ -557,11 +591,12 @@ void SImageMultiDistances::mouseMoveEvent(MouseButton, Modifier, int _x, int _y,
 
             const ::Ogre::Plane plane(direction, position);
 
-            const std::pair< bool, ::Ogre::Real > hit = ::Ogre::Math::intersects(ray, plane);
+            const std::pair<bool, ::Ogre::Real> hit = ::Ogre::Math::intersects(ray, plane);
 
             if(!hit.first)
             {
                 SIGHT_ERROR("The ray must intersect the plane")
+
                 return;
             }
 
@@ -588,7 +623,7 @@ void SImageMultiDistances::mouseMoveEvent(MouseButton, Modifier, int _x, int _y,
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::buttonReleaseEvent(MouseButton, Modifier, int, int)
 {
@@ -603,7 +638,7 @@ void SImageMultiDistances::buttonReleaseEvent(MouseButton, Modifier, int, int)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::createDistance(data::PointList::sptr _pl)
 {
@@ -616,20 +651,23 @@ void SImageMultiDistances::createDistance(data::PointList::sptr _pl)
     // Retrieve data used to create Ogre resources.
     const ::Ogre::ColourValue colour = SImageMultiDistances::generateColor(id);
 
-    const std::array< double, 3 > front = _pl->getPoints().front()->getCoord();
-    const std::array< double, 3 > back  = _pl->getPoints().back()->getCoord();
+    const std::array<double, 3> front = _pl->getPoints().front()->getCoord();
+    const std::array<double, 3> back  = _pl->getPoints().back()->getCoord();
 
-    const ::Ogre::Vector3 begin(static_cast< float >(front[0]),
-                                static_cast< float >(front[1]),
-                                static_cast< float >(front[2]));
-    const ::Ogre::Vector3 end(static_cast< float >(back[0]),
-                              static_cast< float >(back[1]),
-                              static_cast< float >(back[2]));
+    const ::Ogre::Vector3 begin(static_cast<float>(front[0]),
+                                static_cast<float>(front[1]),
+                                static_cast<float>(front[2]));
+    const ::Ogre::Vector3 end(static_cast<float>(back[0]),
+                              static_cast<float>(back[1]),
+                              static_cast<float>(back[2]));
 
     // First sphere.
     ::Ogre::ManualObject* const sphere1 = sceneMgr->createManualObject(this->getID() + "_sphere1_" + id);
-    sight::viz::scene3d::helper::ManualObject::createSphere(sphere1, m_sphereMaterialName, colour,
-                                                            m_distanceSphereRadius);
+    sight::viz::scene3d::helper::ManualObject::createSphere(
+        sphere1,
+        m_sphereMaterialName,
+        colour,
+        m_distanceSphereRadius);
     sphere1->setQueryFlags(m_distanceQueryFlag);
     // Render this sphere over all others objects.
     sphere1->setRenderQueueGroup(s_DISTANCE_RQ_GROUP_ID);
@@ -640,8 +678,11 @@ void SImageMultiDistances::createDistance(data::PointList::sptr _pl)
 
     // Second sphere.
     ::Ogre::ManualObject* const sphere2 = sceneMgr->createManualObject(this->getID() + "_sphere2_" + id);
-    sight::viz::scene3d::helper::ManualObject::createSphere(sphere2, m_sphereMaterialName, colour,
-                                                            m_distanceSphereRadius);
+    sight::viz::scene3d::helper::ManualObject::createSphere(
+        sphere2,
+        m_sphereMaterialName,
+        colour,
+        m_distanceSphereRadius);
     sphere2->setQueryFlags(m_distanceQueryFlag);
     // Render this sphere over all others objects.
     sphere2->setRenderQueueGroup(s_DISTANCE_RQ_GROUP_ID);
@@ -664,29 +705,40 @@ void SImageMultiDistances::createDistance(data::PointList::sptr _pl)
     // Dashed line.
     ::Ogre::ManualObject* const dashedLine = sceneMgr->createManualObject(this->getID() + "_dashedLine_" + id);
     SIGHT_ASSERT("Can't create the dashed line", dashedLine);
-    dashedLine->begin(m_dashedLineMaterialName, ::Ogre::RenderOperation::OT_LINE_LIST,
-                      sight::viz::scene3d::RESOURCE_GROUP);
+    dashedLine->begin(
+        m_dashedLineMaterialName,
+        ::Ogre::RenderOperation::OT_LINE_LIST,
+        sight::viz::scene3d::RESOURCE_GROUP);
     dashedLine->colour(colour);
-    SImageMultiDistances::generateDashedLine(dashedLine, begin, end,
-                                             m_distanceSphereRadius);
+    SImageMultiDistances::generateDashedLine(
+        dashedLine,
+        begin,
+        end,
+        m_distanceSphereRadius);
     dashedLine->setQueryFlags(0x0);
     // Render this line over all others objects.
     dashedLine->setRenderQueueGroup(s_DISTANCE_RQ_GROUP_ID);
     rootNode->attachObject(dashedLine);
 
     // Label.
-    const sight::viz::scene3d::Layer::sptr layer = this->getLayer();
+    const sight::viz::scene3d::Layer::sptr layer  = this->getLayer();
     ::Ogre::OverlayContainer* const textContainer = layer->getOverlayTextPanel();
     ::Ogre::Camera* const cam                     = layer->getDefaultCamera();
-    const float dpi                  = this->getRenderService()->getInteractorManager()->getLogicalDotsPerInch();
-    sight::viz::scene3d::Text* label = sight::viz::scene3d::Text::New(
-        this->getID() + "_label_" + id, sceneMgr, textContainer, m_fontSource, m_fontSize, dpi, cam);
+    const float dpi                               = this->getRenderService()->getInteractorManager()->getLogicalDotsPerInch();
+    sight::viz::scene3d::Text* label              = sight::viz::scene3d::Text::New(
+        this->getID() + "_label_" + id,
+        sceneMgr,
+        textContainer,
+        m_fontSource,
+        m_fontSize,
+        dpi,
+        cam);
     const std::string length = SImageMultiDistances::getLength(end, begin);
     label->setText(length);
     label->setTextColor(colour);
     label->setQueryFlags(0x0);
-    ::Ogre::SceneNode* const labelNode =
-        rootNode->createChildSceneNode(this->getID() + "_labelNode_" + id, end);
+    ::Ogre::SceneNode* const labelNode
+        = rootNode->createChildSceneNode(this->getID() + "_labelNode_" + id, end);
     SIGHT_ASSERT("Can't create the label node", labelNode);
     labelNode->attachObject(label);
 
@@ -698,15 +750,16 @@ void SImageMultiDistances::createDistance(data::PointList::sptr _pl)
     label->setVisible(m_isVisible);
 
     // Store data in the map.
-    DistanceData data {_pl, node1, sphere1, node2, sphere2, line, dashedLine, labelNode, label};
+    DistanceData data{_pl, node1, sphere1, node2, sphere2, line, dashedLine, labelNode, label};
     m_distances[id] = data;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SImageMultiDistances::updateDistance(const DistanceData* const _data,
-                                          ::Ogre::Vector3 _begin,
-                                          ::Ogre::Vector3 _end)
+void SImageMultiDistances::updateDistance(
+    const DistanceData* const _data,
+    ::Ogre::Vector3 _begin,
+    ::Ogre::Vector3 _end)
 {
     SIGHT_ASSERT("Distance can't be null", _data);
 
@@ -736,7 +789,7 @@ void SImageMultiDistances::updateDistance(const DistanceData* const _data,
     _data->m_pointList->getPoints().front()->setCoord({_begin[0], _begin[1], _begin[2]});
     _data->m_pointList->getPoints().back()->setCoord({_end[0], _end[1], _end[2]});
 
-    const auto& sigModified = _data->m_pointList->signal< data::PointList::ModifiedSignalType >(
+    const auto& sigModified = _data->m_pointList->signal<data::PointList::ModifiedSignalType>(
         data::PointList::s_MODIFIED_SIG);
 
     core::com::Connection::Blocker blocker(sigModified->getConnection(m_slotUpdate));
@@ -745,7 +798,7 @@ void SImageMultiDistances::updateDistance(const DistanceData* const _data,
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageMultiDistances::destroyDistance(core::tools::fwID::IDType _id)
 {
@@ -753,7 +806,7 @@ void SImageMultiDistances::destroyDistance(core::tools::fwID::IDType _id)
     SIGHT_ASSERT("The distance is not found", it != m_distances.end());
 
     // Destroy Ogre resource.
-    const DistanceData distanceData = it->second;
+    const DistanceData distanceData      = it->second;
     ::Ogre::SceneManager* const sceneMgr = this->getSceneManager();
 
     sceneMgr->destroySceneNode(distanceData.m_node1);
@@ -765,7 +818,7 @@ void SImageMultiDistances::destroyDistance(core::tools::fwID::IDType _id)
     sceneMgr->destroySceneNode(distanceData.m_labelNode);
     sceneMgr->destroyMovableObject(distanceData.m_label);
 
-    const auto& sigModified = distanceData.m_pointList->signal< data::PointList::ModifiedSignalType >(
+    const auto& sigModified = distanceData.m_pointList->signal<data::PointList::ModifiedSignalType>(
         data::PointList::s_MODIFIED_SIG);
     sigModified->disconnect(m_slotUpdate);
 
@@ -773,6 +826,6 @@ void SImageMultiDistances::destroyDistance(core::tools::fwID::IDType _id)
     m_distances.erase(it);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

@@ -30,15 +30,15 @@ namespace sight::geometry::eigen
 namespace helper
 {
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
-data::Matrix4::sptr toF4s( const ::Eigen::Matrix4f& _mat)
+data::Matrix4::sptr toF4s(const ::Eigen::Matrix4f& _mat)
 {
     data::Matrix4::sptr trf = data::Matrix4::New();
 
-    for(unsigned int r = 0; r < 4; ++r)
+    for(unsigned int r = 0 ; r < 4 ; ++r)
     {
-        for(unsigned int c = 0; c < 4; ++c)
+        for(unsigned int c = 0 ; c < 4 ; ++c)
         {
             trf->setCoefficient(r, c, static_cast<double>(_mat(r, c)));
         }
@@ -47,15 +47,15 @@ data::Matrix4::sptr toF4s( const ::Eigen::Matrix4f& _mat)
     return trf;
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
-data::Matrix4::sptr toF4s( const ::Eigen::Matrix4d& _mat)
+data::Matrix4::sptr toF4s(const ::Eigen::Matrix4d& _mat)
 {
     data::Matrix4::sptr trf = data::Matrix4::New();
 
-    for(unsigned int r = 0; r < 4; ++r)
+    for(unsigned int r = 0 ; r < 4 ; ++r)
     {
-        for(unsigned int c = 0; c < 4; ++c)
+        for(unsigned int c = 0 ; c < 4 ; ++c)
         {
             trf->setCoefficient(r, c, _mat(r, c));
         }
@@ -64,7 +64,7 @@ data::Matrix4::sptr toF4s( const ::Eigen::Matrix4d& _mat)
     return trf;
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 RvecTvecType eigenMatToRvecTvec(const Eigen::Matrix4d& _mat)
 {
@@ -72,9 +72,9 @@ RvecTvecType eigenMatToRvecTvec(const Eigen::Matrix4d& _mat)
 
     ::Eigen::Matrix3d rotation;
 
-    for(unsigned int r = 0; r < 3; ++r)
+    for(unsigned int r = 0 ; r < 3 ; ++r)
     {
-        for(unsigned int c = 0; c < 3; ++c)
+        for(unsigned int c = 0 ; c < 3 ; ++c)
         {
             rotation(r, c) = _mat(r, c);
         }
@@ -88,57 +88,60 @@ RvecTvecType eigenMatToRvecTvec(const Eigen::Matrix4d& _mat)
     return std::make_pair(rvec, tvec);
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 RvecTvecType f4sMatToRvecTvec(const data::Matrix4::csptr _mat)
 {
-    ::Eigen::Matrix4d eigenMat = toEigen< double >(_mat);
+    ::Eigen::Matrix4d eigenMat = toEigen<double>(_mat);
+
     return eigenMatToRvecTvec(eigenMat);
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 EigenMatrix toEigen(const std::array<float, 16>& _farray)
 {
-    ::Eigen::Matrix< double, 4, 4, ::Eigen::RowMajor > mat;
+    ::Eigen::Matrix<double, 4, 4, ::Eigen::RowMajor> mat;
 
-    for(unsigned int r = 0; r < 4; ++r)
+    for(unsigned int r = 0 ; r < 4 ; ++r)
     {
-        for(unsigned int c = 0; c < 4; ++c)
+        for(unsigned int c = 0 ; c < 4 ; ++c)
         {
-            mat(r, c) = static_cast<double>(_farray[4*r+c]);
+            mat(r, c) = static_cast<double>(_farray[4 * r + c]);
         }
     }
 
     return mat;
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 EigenMatrix toEigen(const std::array<double, 16>& _farray)
 {
-    ::Eigen::Matrix< double, 4, 4, ::Eigen::RowMajor > mat;
+    ::Eigen::Matrix<double, 4, 4, ::Eigen::RowMajor> mat;
 
-    for(unsigned int r = 0; r < 4; ++r)
+    for(unsigned int r = 0 ; r < 4 ; ++r)
     {
-        for(unsigned int c = 0; c < 4; ++c)
+        for(unsigned int c = 0 ; c < 4 ; ++c)
         {
-            mat(r, c) = _farray[4*r+c];
+            mat(r, c) = _farray[4 * r + c];
         }
     }
 
     return mat;
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 RvecTvecType float16ToRvecTvec(const std::array<float, 16>& _farray)
 {
     ::Eigen::Matrix4d eigenMat = toEigen(_farray);
+
     return eigenMatToRvecTvec(eigenMat);
 }
 
-//-------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
-} //namespace helper
-} //namespace sight::geometry::eigen
+} // namespace helper
+
+} // namespace sight::geometry::eigen

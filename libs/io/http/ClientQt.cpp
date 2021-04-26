@@ -39,13 +39,13 @@ ClientQt::ClientQt()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ClientQt::~ClientQt()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QByteArray ClientQt::get(Request::sptr request)
 {
@@ -58,16 +58,21 @@ QByteArray ClientQt::get(Request::sptr request)
     QNetworkReply* reply = networkManager.get(qtRequest);
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    QObject::connect(reply, QOverload<QNetworkReply::NetworkError>::of(
-                         &QNetworkReply::error), this, &ClientQt::processError);
+    QObject::connect(
+        reply,
+        QOverload<QNetworkReply::NetworkError>::of(
+            &QNetworkReply::error),
+        this,
+        &ClientQt::processError);
 
     loop.exec();
     QByteArray data = reply->readAll();
     reply->deleteLater();
+
     return data;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ClientQt::getFile(Request::sptr request)
 {
@@ -80,8 +85,12 @@ std::string ClientQt::getFile(Request::sptr request)
     QNetworkReply* reply = networkManager.get(qtRequest);
     QEventLoop loop;
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    QObject::connect(reply, QOverload<QNetworkReply::NetworkError>::of(
-                         &QNetworkReply::error), this, &ClientQt::processError);
+    QObject::connect(
+        reply,
+        QOverload<QNetworkReply::NetworkError>::of(
+            &QNetworkReply::error),
+        this,
+        &ClientQt::processError);
 
     std::filesystem::path folderPath = core::tools::System::getTemporaryFolder();
     std::filesystem::path filePath   = folderPath / core::tools::UUID::generateUUID();
@@ -94,12 +103,12 @@ std::string ClientQt::getFile(Request::sptr request)
         file.setFileName(filePath.string().c_str());
     }
 
-    if (!file.open(QIODevice::WriteOnly))
+    if(!file.open(QIODevice::WriteOnly))
     {
-        throw ("Could not create a temporary file");
+        throw("Could not create a temporary file");
     }
 
-    QObject::connect(reply, &QNetworkReply::readyRead,  [&]  { file.write(reply->readAll()); } );
+    QObject::connect(reply, &QNetworkReply::readyRead, [&]{file.write(reply->readAll());});
 
     loop.exec();
     file.write(reply->readAll());
@@ -108,7 +117,7 @@ std::string ClientQt::getFile(Request::sptr request)
     return filePath.string();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void ClientQt::processError(QNetworkReply::NetworkError errorCode)
 {
@@ -121,19 +130,22 @@ void ClientQt::processError(QNetworkReply::NetworkError errorCode)
         case QNetworkReply::ConnectionRefusedError:
             throw io::http::exceptions::ConnectionRefused(desc);
             break;
+
         case QNetworkReply::HostNotFoundError:
             throw io::http::exceptions::HostNotFound(desc);
             break;
+
         case QNetworkReply::ContentNotFoundError:
             throw io::http::exceptions::ContentNotFound(desc);
             break;
+
         default:
             throw io::http::exceptions::Base(desc);
             break;
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QByteArray ClientQt::post(Request::sptr request, const QByteArray& body)
 {
@@ -148,26 +160,32 @@ QByteArray ClientQt::post(Request::sptr request, const QByteArray& body)
     QNetworkReply* reply = networkManager.post(qtRequest, body);
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-    QObject::connect(reply, QOverload<QNetworkReply::NetworkError>::of(
-                         &QNetworkReply::error), this, &ClientQt::processError);
+    QObject::connect(
+        reply,
+        QOverload<QNetworkReply::NetworkError>::of(
+            &QNetworkReply::error),
+        this,
+        &ClientQt::processError);
     loop.exec();
     QByteArray data = reply->readAll();
     reply->deleteLater();
+
     return data;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void ClientQt::computeHeaders(QNetworkRequest& request,  const Request::HeadersType& headers)
+void ClientQt::computeHeaders(QNetworkRequest& request, const Request::HeadersType& headers)
 {
     Request::HeadersType::const_iterator cIt = headers.begin();
-    for(; cIt != headers.end(); ++cIt)
+
+    for( ; cIt != headers.end() ; ++cIt)
     {
         request.setRawHeader(cIt->first.c_str(), cIt->second.c_str());
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Request::HeadersType ClientQt::head(Request::sptr request)
 {
@@ -184,18 +202,20 @@ Request::HeadersType ClientQt::head(Request::sptr request)
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    const QList< QNetworkReply::RawHeaderPair>& rawHeaders = reply->rawHeaderPairs();
+    const QList<QNetworkReply::RawHeaderPair>& rawHeaders = reply->rawHeaderPairs();
 
-    QList< QNetworkReply::RawHeaderPair>::const_iterator cIt = rawHeaders.begin();
+    QList<QNetworkReply::RawHeaderPair>::const_iterator cIt = rawHeaders.begin();
 
-    for(; cIt != rawHeaders.end(); ++cIt)
+    for( ; cIt != rawHeaders.end() ; ++cIt)
     {
         headers[cIt->first.data()] = cIt->second.data();
     }
+
     reply->deleteLater();
+
     return headers;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::io::http

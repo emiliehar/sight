@@ -38,13 +38,13 @@ struct CORE_CLASS_API SlotConnectionBase : virtual core::BaseObject
     /**
      * @name Typedefs
      * @{ */
-    typedef std::shared_ptr< SlotConnectionBase > sptr;
-    typedef std::shared_ptr< SlotConnectionBase const > csptr;
-    typedef std::weak_ptr< SlotConnectionBase > wptr;
-    typedef std::weak_ptr< SlotConnectionBase const > cwptr;
+    typedef std::shared_ptr<SlotConnectionBase> sptr;
+    typedef std::shared_ptr<SlotConnectionBase const> csptr;
+    typedef std::weak_ptr<SlotConnectionBase> wptr;
+    typedef std::weak_ptr<SlotConnectionBase const> cwptr;
 
-    typedef std::shared_ptr< void > BlockerSptrType;
-    typedef std::weak_ptr< void >   BlockerWptrType;
+    typedef std::shared_ptr<void> BlockerSptrType;
+    typedef std::weak_ptr<void> BlockerWptrType;
     /**  @} */
 
     SlotConnectionBase()
@@ -58,17 +58,16 @@ struct CORE_CLASS_API SlotConnectionBase : virtual core::BaseObject
     virtual BlockerSptrType getBlocker() = 0;
 
     protected:
-
         /// Copy constructor forbidden
-        SlotConnectionBase( const SlotConnectionBase& );
+        SlotConnectionBase(const SlotConnectionBase&);
 
         /// Copy operator forbidden
-        SlotConnectionBase& operator=( const SlotConnectionBase& );
+        SlotConnectionBase& operator=(const SlotConnectionBase&);
 
         /**
          * @name SlotConnectionBase's friends
          * @{ */
-        template < typename F >
+        template<typename F>
         friend struct Signal;
         /**  @} */
 

@@ -51,23 +51,24 @@
 
 namespace sight::io::session
 {
+
 namespace detail
 {
 
 // Serializer registry
 // No concurrency protection as the map is statically initialized
-static const std::unordered_map< std::string, std::function<data::IDataSerializer::uptr(void)> > s_serializers = {
-    {sight::data::Boolean::classname(), & data::GenericSerializer<sight::data::Boolean>::unique},
-    {sight::data::Integer::classname(), & data::GenericSerializer<sight::data::Integer>::unique},
-    {sight::data::Float::classname(), & data::GenericSerializer<sight::data::Float>::unique},
-    {sight::data::String::classname(), & data::StringSerializer::unique},
-    {sight::data::Composite::classname(), & data::CompositeSerializer::unique},
-    {sight::data::Mesh::classname(), & data::MeshSerializer::unique},
-    {sight::data::Equipment::classname(), & data::EquipmentSerializer::unique},
-    {sight::data::Patient::classname(), & data::PatientSerializer::unique},
-    {sight::data::Study::classname(), & data::StudySerializer::unique},
-    {sight::data::Series::classname(), & data::SeriesSerializer::unique},
-    {sight::data::ActivitySeries::classname(), & data::ActivitySeriesSerializer::unique}
+static const std::unordered_map<std::string, std::function<data::IDataSerializer::uptr(void)> > s_serializers = {
+    {sight::data::Boolean::classname(), &data::GenericSerializer<sight::data::Boolean>::unique},
+    {sight::data::Integer::classname(), &data::GenericSerializer<sight::data::Integer>::unique},
+    {sight::data::Float::classname(), &data::GenericSerializer<sight::data::Float>::unique},
+    {sight::data::String::classname(), &data::StringSerializer::unique},
+    {sight::data::Composite::classname(), &data::CompositeSerializer::unique},
+    {sight::data::Mesh::classname(), &data::MeshSerializer::unique},
+    {sight::data::Equipment::classname(), &data::EquipmentSerializer::unique},
+    {sight::data::Patient::classname(), &data::PatientSerializer::unique},
+    {sight::data::Study::classname(), &data::StudySerializer::unique},
+    {sight::data::Series::classname(), &data::SeriesSerializer::unique},
+    {sight::data::ActivitySeries::classname(), &data::ActivitySeriesSerializer::unique}
 };
 
 // Return a writer from a data object class name
@@ -90,7 +91,6 @@ class SessionSerializerImpl final : public SessionSerializer
 {
 public:
     SIGHT_DECLARE_CLASS(SessionSerializerImpl, SessionSerializer)
-
     /// Delete default copy constructors and assignment operators
     SessionSerializerImpl(const SessionSerializerImpl&)            = delete;
     SessionSerializerImpl(SessionSerializerImpl&&)                 = delete;
@@ -103,7 +103,7 @@ public:
     /// Default destructor
     ~SessionSerializerImpl() override = default;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void serialize(
         const std::filesystem::path& archive_path,
@@ -132,7 +132,6 @@ public:
     }
 
 private:
-
     /// Serializes recursively a data::Object to an opened archive using an initialized property tree
     /// @param cache ptree cache
     /// @param archive opened archive
@@ -210,6 +209,7 @@ private:
 
             // Serialize fields, if needed
             const auto& fields = object->getFields();
+
             if(!fields.empty())
             {
                 boost::property_tree::ptree fields_tree;
@@ -234,14 +234,14 @@ private:
     }
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SessionSerializer::sptr SessionSerializer::shared()
 {
     return std::make_shared<SessionSerializerImpl>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SessionSerializer::uptr SessionSerializer::unique()
 {
@@ -249,4 +249,5 @@ SessionSerializer::uptr SessionSerializer::unique()
 }
 
 } // namespace detail
+
 } // namespace sight::io::session

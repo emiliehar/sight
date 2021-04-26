@@ -58,10 +58,8 @@ namespace sight::module::io::igtl
  **/
 class MODULE_IO_IGTL_CLASS_API SServerListener : public module::io::igtl::INetworkListener
 {
-
 public:
-
-    SIGHT_DECLARE_SERVICE(SServerListener,  module::io::igtl::INetworkListener )
+    SIGHT_DECLARE_SERVICE(SServerListener, module::io::igtl::INetworkListener)
 
     /// Constructor
     MODULE_IO_IGTL_API SServerListener();
@@ -70,7 +68,6 @@ public:
     MODULE_IO_IGTL_API virtual ~SServerListener();
 
 protected:
-
     /// Configure port and device name
     MODULE_IO_IGTL_API void configuring() override;
 
@@ -81,7 +78,6 @@ protected:
     MODULE_IO_IGTL_API void stopping() override;
 
 private:
-
     /**
      * @brief method contain the receive loop
      * this method run in a thread
@@ -101,8 +97,7 @@ private:
     std::string m_portConfig;
 
     /// Vector of device name if the group configuration exists.
-    std::vector< std::string > m_deviceNames;
-
+    std::vector<std::string> m_deviceNames;
 };
 
 } // namespace sight::module::io::igtl

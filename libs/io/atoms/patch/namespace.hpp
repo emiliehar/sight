@@ -33,6 +33,7 @@ namespace sight::io::atoms::patch
  */
 namespace conditions
 {
+
 }
 
 /**
@@ -40,6 +41,7 @@ namespace conditions
  */
 namespace exceptions
 {
+
 }
 
 /**
@@ -47,6 +49,7 @@ namespace exceptions
  */
 namespace helper
 {
+
 }
 
 /**
@@ -54,6 +57,7 @@ namespace helper
  */
 namespace infos
 {
+
 }
 
 /**
@@ -67,15 +71,17 @@ namespace patcher
  */
 namespace factory
 {
-}         // namespace factory
+
+} // namespace factory
 
 /**
  * @brief       Contains io::atoms::patch::regjstry utilities
  */
 namespace registry
 {
-}         // namespace registry
 
-}     // namespace patcher
+} // namespace registry
+
+} // namespace patcher
 
 } // namespace sight::io::atoms::patch

@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -35,7 +36,6 @@ class MeshSerializer : public IDataSerializer
 {
 public:
     SIGHT_DECLARE_CLASS(MeshSerializer, IDataSerializer)
-
     /// Delete default copy constructors and assignment operators
     MeshSerializer(const MeshSerializer&)            = delete;
     MeshSerializer(MeshSerializer&&)                 = delete;
@@ -59,10 +59,10 @@ public:
         const core::crypto::secure_string& password = "") override;
 
 protected:
-
     /// Default constructor
     MeshSerializer() = default;
 };
 
 } // namespace detail::data
+
 } // namespace sight::io::session

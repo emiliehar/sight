@@ -45,18 +45,19 @@ namespace helper
 {
 
 /// container for the data keywords for a service configuration
-const std::array< std::string, 3 > s_DATA_KEYWORDS = {{ "in", "out", "inout" }};
+const std::array<std::string, 3> s_DATA_KEYWORDS = {{"in", "out", "inout"}};
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Config::createConnections( const core::runtime::ConfigurationElement::csptr& connectionCfg,
-                                core::com::helper::SigSlotConnection& connections,
-                                const CSPTR(core::tools::Object)& obj)
+void Config::createConnections(
+    const core::runtime::ConfigurationElement::csptr& connectionCfg,
+    core::com::helper::SigSlotConnection& connections,
+    const CSPTR(core::tools::Object)& obj)
 {
     ConnectionInfo info = parseConnections(connectionCfg, obj);
 
     core::tools::Object::sptr sigSource    = core::tools::fwID::getObject(info.m_signal.first);
-    core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast< core::com::HasSignals >(sigSource);
+    core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast<core::com::HasSignals>(sigSource);
 
     SIGHT_ASSERT("Signal source not found '" + info.m_signal.first + "'", sigSource);
     SIGHT_ASSERT("invalid signal source '" + info.m_signal.first + "'", hasSignals);
@@ -65,17 +66,18 @@ void Config::createConnections( const core::runtime::ConfigurationElement::csptr
     {
         core::tools::Object::sptr slotObj = core::tools::fwID::getObject(slotInfo.first);
         SIGHT_ASSERT("Failed to retrieve object '" + slotInfo.first + "'", slotObj);
-        core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast< core::com::HasSlots >(slotObj);
+        core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast<core::com::HasSlots>(slotObj);
         SIGHT_ASSERT("invalid slot owner " << slotInfo.first, hasSlots);
 
         connections.connect(hasSignals, info.m_signal.second, hasSlots, slotInfo.second);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-Config::ConnectionInfo Config::parseConnections( const core::runtime::ConfigurationElement::csptr& connectionCfg,
-                                                 const CSPTR(core::tools::Object)& obj)
+Config::ConnectionInfo Config::parseConnections(
+    const core::runtime::ConfigurationElement::csptr& connectionCfg,
+    const CSPTR(core::tools::Object)& obj)
 {
     ConnectionInfo info;
 
@@ -83,27 +85,30 @@ Config::ConnectionInfo Config::parseConnections( const core::runtime::Configurat
     std::smatch match;
     std::string src, uid, key;
 
-    for(core::runtime::ConfigurationElement::csptr elem :   connectionCfg->getElements())
+    for(core::runtime::ConfigurationElement::csptr elem : connectionCfg->getElements())
     {
         src = elem->getValue();
-        if( std::regex_match(src, match, re) )
+
+        if(std::regex_match(src, match, re))
         {
-            SIGHT_ASSERT("Wrong value for attribute src: "<<src, match.size() >= 3);
+            SIGHT_ASSERT("Wrong value for attribute src: " << src, match.size() >= 3);
             uid.assign(match[1].first, match[1].second);
             key.assign(match[2].first, match[2].second);
 
-            SIGHT_ASSERT(src << " configuration is not correct for "<< elem->getName(),
-                         !uid.empty() && !key.empty());
+            SIGHT_ASSERT(
+                src << " configuration is not correct for " << elem->getName(),
+                    !uid.empty() && !key.empty());
 
-            if (elem->getName() == "signal")
+            if(elem->getName() == "signal")
             {
-                SIGHT_ASSERT("There must be only one signal by connection",
-                             info.m_signal.first.empty() && info.m_signal.second.empty());
+                SIGHT_ASSERT(
+                    "There must be only one signal by connection",
+                    info.m_signal.first.empty() && info.m_signal.second.empty());
                 info.m_signal = std::make_pair(uid, key);
             }
-            else if (elem->getName() == "slot")
+            else if(elem->getName() == "slot")
             {
-                info.m_slots.push_back( std::make_pair(uid, key) );
+                info.m_slots.push_back(std::make_pair(uid, key));
             }
         }
         else
@@ -112,8 +117,9 @@ Config::ConnectionInfo Config::parseConnections( const core::runtime::Configurat
             uid = obj->getID();
             key = src;
             SIGHT_ASSERT("Element must be a signal or must be written as <fwID/Key>", elem->getName() == "signal");
-            SIGHT_ASSERT("There must be only one signal by connection",
-                         info.m_signal.first.empty() && info.m_signal.second.empty());
+            SIGHT_ASSERT(
+                "There must be only one signal by connection",
+                info.m_signal.first.empty() && info.m_signal.second.empty());
             info.m_signal = std::make_pair(uid, key);
         }
     }
@@ -122,11 +128,12 @@ Config::ConnectionInfo Config::parseConnections( const core::runtime::Configurat
     return info;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationElement::csptr& connectionCfg,
-                                           const std::string& errMsgHead,
-                                           std::function<std::string()> generateChannelNameFn)
+ProxyConnections Config::parseConnections2(
+    const core::runtime::ConfigurationElement::csptr& connectionCfg,
+    const std::string& errMsgHead,
+    std::function<std::string()> generateChannelNameFn)
 {
 #ifndef _DEBUG
     SIGHT_NOT_USED(errMsgHead);
@@ -136,6 +143,7 @@ ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationEle
     std::string src, uid, key;
 
     std::string channel;
+
     if(connectionCfg->hasAttribute("channel"))
     {
         channel = connectionCfg->getAttributeValue("channel");
@@ -152,28 +160,32 @@ ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationEle
     for(core::runtime::ConfigurationElement::csptr elem : connectionCfg->getElements())
     {
         src = elem->getValue();
-        if( std::regex_match(src, match, re) )
+
+        if(std::regex_match(src, match, re))
         {
-            SIGHT_ASSERT("errMsgHead + Wrong value for attribute src: "<<src, match.size() >= 3);
+            SIGHT_ASSERT("errMsgHead + Wrong value for attribute src: " << src, match.size() >= 3);
             uid.assign(match[1].first, match[1].second);
             key.assign(match[2].first, match[2].second);
 
-            SIGHT_ASSERT(errMsgHead + src << " configuration is not correct for "<< elem->getName(),
-                         !uid.empty() && !key.empty());
+            SIGHT_ASSERT(
+                errMsgHead + src << " configuration is not correct for " << elem->getName(),
+                    !uid.empty() && !key.empty());
 
-            if (elem->getName() == "signal")
+            if(elem->getName() == "signal")
             {
                 proxyCnt.addSignalConnection(uid, key);
             }
-            else if (elem->getName() == "slot")
+            else if(elem->getName() == "slot")
             {
                 proxyCnt.addSlotConnection(uid, key);
             }
         }
         else
         {
-            SIGHT_ASSERT(errMsgHead + "Signal or slot must be written as <signal>fwID/Key</signal> or "
-                         "<slot>fwID/Key</slot>", false);
+            SIGHT_ASSERT(
+                errMsgHead + "Signal or slot must be written as <signal>fwID/Key</signal> or "
+                             "<slot>fwID/Key</slot>",
+                false);
         }
     }
 
@@ -181,12 +193,13 @@ ProxyConnections Config::parseConnections2(const core::runtime::ConfigurationEle
     return proxyCnt;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Config::createProxy( const std::string& objectKey,
-                          const CSPTR(core::runtime::ConfigurationElement)& cfg,
-                          Config::ProxyConnectionsMapType& proxyMap,
-                          const CSPTR(data::Object)& obj)
+void Config::createProxy(
+    const std::string& objectKey,
+    const CSPTR(core::runtime::ConfigurationElement)& cfg,
+    Config::ProxyConnectionsMapType& proxyMap,
+    const CSPTR(data::Object)& obj)
 {
     service::registry::Proxy::sptr proxy = service::registry::Proxy::getDefault();
 
@@ -197,10 +210,12 @@ void Config::createProxy( const std::string& objectKey,
     std::regex re("(.*)/(.*)");
     std::smatch match;
     std::string src, uid, key;
-    for(core::runtime::ConfigurationElement::csptr elem :   cfg->getElements())
+
+    for(core::runtime::ConfigurationElement::csptr elem : cfg->getElements())
     {
         src = elem->getValue();
-        if( std::regex_match(src, match, re) )
+
+        if(std::regex_match(src, match, re))
         {
             SIGHT_ASSERT("Wrong value for attribute src: " + src, match.size() >= 3);
             uid.assign(match[1].first, match[1].second);
@@ -210,17 +225,17 @@ void Config::createProxy( const std::string& objectKey,
 
             core::tools::Object::sptr channelObj = core::tools::fwID::getObject(uid);
 
-            if (elem->getName() == "signal")
+            if(elem->getName() == "signal")
             {
-                core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast< core::com::HasSignals >(channelObj);
+                core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast<core::com::HasSignals>(channelObj);
                 SIGHT_ASSERT("Can't find the holder of signal '" + key + "'", hasSignals);
                 core::com::SignalBase::sptr sig = hasSignals->signal(key);
                 proxy->connect(channel, sig);
                 proxyCnt.addSignalConnection(uid, key);
             }
-            else if (elem->getName() == "slot")
+            else if(elem->getName() == "slot")
             {
-                core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast< core::com::HasSlots >(channelObj);
+                core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast<core::com::HasSlots>(channelObj);
                 SIGHT_ASSERT("Can't find the holder of slot '" + key + "'", hasSlots);
                 core::com::SlotBase::sptr slot = hasSlots->slot(key);
                 proxy->connect(channel, slot);
@@ -237,46 +252,51 @@ void Config::createProxy( const std::string& objectKey,
             proxyCnt.addSignalConnection(uid, key);
         }
     }
+
     proxyMap[objectKey].push_back(proxyCnt);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Config::disconnectProxies(const std::string& objectKey, Config::ProxyConnectionsMapType& proxyMap)
 {
     ProxyConnectionsMapType::iterator iter = proxyMap.find(objectKey);
-    if (iter != proxyMap.end())
+
+    if(iter != proxyMap.end())
     {
         service::registry::Proxy::sptr proxy = service::registry::Proxy::getDefault();
 
         ProxyConnectionsVectType vectProxyConnections = iter->second;
 
-        for(ProxyConnectionsVectType::value_type proxyConnections :   vectProxyConnections)
+        for(ProxyConnectionsVectType::value_type proxyConnections : vectProxyConnections)
         {
-            for(ProxyConnections::ProxyEltType signalElt :  proxyConnections.m_signals)
+            for(ProxyConnections::ProxyEltType signalElt : proxyConnections.m_signals)
             {
                 core::tools::Object::sptr obj          = core::tools::fwID::getObject(signalElt.first);
-                core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast< core::com::HasSignals >(obj);
+                core::com::HasSignals::sptr hasSignals = std::dynamic_pointer_cast<core::com::HasSignals>(obj);
                 core::com::SignalBase::sptr sig        = hasSignals->signal(signalElt.second);
                 proxy->disconnect(proxyConnections.m_channel, sig);
             }
-            for(ProxyConnections::ProxyEltType slotElt :  proxyConnections.m_slots)
+
+            for(ProxyConnections::ProxyEltType slotElt : proxyConnections.m_slots)
             {
                 core::tools::Object::sptr obj      = core::tools::fwID::getObject(slotElt.first);
-                core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast< core::com::HasSlots >(obj);
+                core::com::HasSlots::sptr hasSlots = std::dynamic_pointer_cast<core::com::HasSlots>(obj);
                 core::com::SlotBase::sptr slot     = hasSlots->slot(slotElt.second);
                 proxy->disconnect(proxyConnections.m_channel, slot);
             }
         }
+
         vectProxyConnections.clear();
         proxyMap.erase(objectKey);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-service::IService::Config Config::parseService(const core::runtime::ConfigurationElement::csptr& srvElem,
-                                               const std::string& errMsgHead)
+service::IService::Config Config::parseService(
+    const core::runtime::ConfigurationElement::csptr& srvElem,
+    const std::string& errMsgHead)
 {
 #ifndef _DEBUG
     SIGHT_NOT_USED(errMsgHead);
@@ -287,7 +307,7 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
     service::IService::Config srvConfig;
 
     // Uid
-    if (srvElem->hasAttribute("uid"))
+    if(srvElem->hasAttribute("uid"))
     {
         srvConfig.m_uid = srvElem->getAttributeValue("uid");
         SIGHT_ASSERT(errMsgHead + "'uid' attribute is empty.", !srvConfig.m_uid.empty());
@@ -297,7 +317,8 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
 
     // Config
     std::string config;
-    if (srvElem->hasAttribute("config"))
+
+    if(srvElem->hasAttribute("config"))
     {
         config = srvElem->getAttributeValue("config");
         SIGHT_ASSERT(errMsgHead + "\"config\" attribute is empty" + errMsgTail, !config.empty());
@@ -306,18 +327,21 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
     // Type
     SIGHT_ASSERT(errMsgHead + "'type'' attribute is empty" + errMsgTail, srvElem->hasAttribute("type"));
     srvConfig.m_type = srvElem->getAttributeValue("type");
-    SIGHT_ASSERT(errMsgHead + "Attribute \"type\" is required " + errMsgTail,
-                 !srvConfig.m_type.empty());
+    SIGHT_ASSERT(
+        errMsgHead + "Attribute \"type\" is required " + errMsgTail,
+        !srvConfig.m_type.empty());
 
     // AutoConnect
     srvConfig.m_globalAutoConnect = false;
-    const core::runtime::ConfigurationElement::AttributePair attribAutoConnect =
-        srvElem->getSafeAttributeValue("autoConnect");
+    const core::runtime::ConfigurationElement::AttributePair attribAutoConnect
+        = srvElem->getSafeAttributeValue("autoConnect");
+
     if(attribAutoConnect.first)
     {
-        SIGHT_ASSERT("'autoConnect' attribute must be either 'yes' or 'no'" + errMsgTail,
-                     (!attribAutoConnect.first) || attribAutoConnect.second == "yes" ||
-                     attribAutoConnect.second == "no");
+        SIGHT_ASSERT(
+            "'autoConnect' attribute must be either 'yes' or 'no'" + errMsgTail,
+            (!attribAutoConnect.first) || attribAutoConnect.second == "yes"
+            || attribAutoConnect.second == "no");
         srvConfig.m_globalAutoConnect = (attribAutoConnect.second == "yes");
     }
 
@@ -326,19 +350,22 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
 
     // Get service configuration
     core::runtime::ConfigurationElement::csptr cfgElem = srvElem;
-    if (!config.empty())
+
+    if(!config.empty())
     {
         const auto srvCfgFactory = service::extension::Config::getDefault();
         cfgElem = srvCfgFactory->getServiceConfig(config, srvConfig.m_type);
     }
+
     srvConfig.m_config = cfgElem;
 
     // Check if user did not bind a service to another service
-    for(core::runtime::ConfigurationElement::csptr elem :  cfgElem->getElements())
+    for(core::runtime::ConfigurationElement::csptr elem : cfgElem->getElements())
     {
-        SIGHT_ASSERT(errMsgHead + "Cannot bind a service to another service" + errMsgTail,
-                     elem->getName() != "service" &&
-                     elem->getName() != "serviceList");
+        SIGHT_ASSERT(
+            errMsgHead + "Cannot bind a service to another service" + errMsgTail,
+            elem->getName() != "service"
+            && elem->getName() != "serviceList");
     }
 
     // Check first if we can create this service
@@ -346,7 +373,8 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
     auto cfgConstElem = core::runtime::ConfigurationElement::constCast(srvElem);
 
     // Collect all input/output configurations
-    std::vector< core::runtime::ConfigurationElement::sptr > objectCfgs;
+    std::vector<core::runtime::ConfigurationElement::sptr> objectCfgs;
+
     for(const auto& dataKeyword : s_DATA_KEYWORDS)
     {
         auto objCfgs = cfgConstElem->find(dataKeyword);
@@ -358,6 +386,7 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
     {
         // Access type
         service::IService::ObjectServiceConfig objConfig;
+
         if(cfg->getName() == "in")
         {
             objConfig.m_access = service::IService::AccessType::INPUT;
@@ -378,10 +407,12 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
         // AutoConnect
         auto autoConnect = cfg->getSafeAttributeValue("autoConnect");
         objConfig.m_autoConnect = false;
+
         if(autoConnect.first)
         {
-            SIGHT_ASSERT(errMsgHead + "'autoConnect' attribute must be either 'yes' or 'no'" + errMsgTail,
-                         autoConnect.second == "yes" || autoConnect.second == "no" );
+            SIGHT_ASSERT(
+                errMsgHead + "'autoConnect' attribute must be either 'yes' or 'no'" + errMsgTail,
+                autoConnect.second == "yes" || autoConnect.second == "no");
             objConfig.m_autoConnect = (autoConnect.second == "yes");
         }
 
@@ -391,10 +422,12 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
             const std::string optionalStr = cfg->getAttributeValue("optional");
 
             objConfig.m_optional = false;
+
             if(!optionalStr.empty())
             {
-                SIGHT_ASSERT("'optional' attribute must be either 'yes' or 'no'" + errMsgTail,
-                             optionalStr == "" || optionalStr == "yes" || optionalStr == "no");
+                SIGHT_ASSERT(
+                    "'optional' attribute must be either 'yes' or 'no'" + errMsgTail,
+                    optionalStr == "" || optionalStr == "yes" || optionalStr == "no");
                 objConfig.m_optional = optionalStr == "yes" ? true : false;
             }
         }
@@ -405,11 +438,13 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
 
         // Do we use groups ?
         std::string group = cfg->getAttributeValue("group");
+
         if(!group.empty())
         {
-            std::vector< core::runtime::ConfigurationElement::sptr > keyCfgs = cfg->find("key");
+            std::vector<core::runtime::ConfigurationElement::sptr> keyCfgs = cfg->find("key");
 
             size_t count = 0;
+
             for(const auto& groupCfg : keyCfgs)
             {
                 service::IService::ObjectServiceConfig grouObjConfig = objConfig;
@@ -422,12 +457,15 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
 
                 // AutoConnect
                 auto autoConnectPeyKey = groupCfg->getSafeAttributeValue("autoConnect");
+
                 if(autoConnectPeyKey.first)
                 {
-                    SIGHT_ASSERT(errMsgHead + "'autoConnect' attribute must be either 'yes' or 'no'" + errMsgTail,
-                                 autoConnectPeyKey.second == "yes" || autoConnectPeyKey.second == "no" );
+                    SIGHT_ASSERT(
+                        errMsgHead + "'autoConnect' attribute must be either 'yes' or 'no'" + errMsgTail,
+                        autoConnectPeyKey.second == "yes" || autoConnectPeyKey.second == "no");
                     grouObjConfig.m_autoConnect = (autoConnectPeyKey.second == "yes");
                 }
+
                 // Optional
                 if(grouObjConfig.m_access != service::IService::AccessType::OUTPUT)
                 {
@@ -435,14 +473,16 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
 
                     if(!optionalStr.empty())
                     {
-                        SIGHT_ASSERT("'optional' attribute must be either 'yes' or 'no'" + errMsgTail,
-                                     optionalStr == "" || optionalStr == "yes" || optionalStr == "no");
+                        SIGHT_ASSERT(
+                            "'optional' attribute must be either 'yes' or 'no'" + errMsgTail,
+                            optionalStr == "" || optionalStr == "yes" || optionalStr == "no");
                         grouObjConfig.m_optional = optionalStr == "yes" ? true : false;
                     }
                 }
 
                 srvConfig.m_objects.emplace_back(grouObjConfig);
             }
+
             srvConfig.m_groupSize[group] = count;
         }
         else
@@ -465,4 +505,5 @@ service::IService::Config Config::parseService(const core::runtime::Configuratio
 // ----------------------------------------------------------------------------
 
 } // namespace helper
+
 } // namespace sight::service

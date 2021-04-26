@@ -26,6 +26,7 @@
 
 namespace sight::module::io::vtk
 {
+
 namespace ut
 {
 
@@ -34,9 +35,9 @@ namespace ut
  */
 class ModelSeriesWriterTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ModelSeriesWriterTest );
-CPPUNIT_TEST( testWriteMeshes );
-CPPUNIT_TEST( testWriteReconstructions );
+CPPUNIT_TEST_SUITE(ModelSeriesWriterTest);
+CPPUNIT_TEST(testWriteMeshes);
+CPPUNIT_TEST(testWriteReconstructions);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,5 +49,6 @@ public:
     void testWriteReconstructions();
 };
 
-} //namespace ut
-} //namespace sight::module::io::vtk
+} // namespace ut
+
+} // namespace sight::module::io::vtk

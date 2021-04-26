@@ -63,9 +63,7 @@ namespace sight::module::geometry::base
  */
 class MODULE_GEOMETRY_BASE_CLASS_API SSwitchMatrices : public service::IController
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SSwitchMatrices, service::IController)
 
     /**
@@ -81,13 +79,12 @@ public:
     }
 
     MODULE_GEOMETRY_BASE_API static const core::com::Slots::SlotKeyType s_SWITCH_SLOT;
-    typedef core::com::Slot< void () > SwitchSlotType;
+    typedef core::com::Slot<void ()> SwitchSlotType;
 
     MODULE_GEOMETRY_BASE_API static const core::com::Slots::SlotKeyType s_SWITCH_TO_SLOT;
     typedef core::com::Slot<void (size_t)> SwitchToSlotType;
 
 protected:
-
     /// This method is used to configure the service.
     MODULE_GEOMETRY_BASE_API void configuring() override;
 
@@ -109,8 +106,7 @@ protected:
     MODULE_GEOMETRY_BASE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     size_t m_indexOfDesiredMatrix;
 };
 
-} //namespace sight::module::geometry::base
+} // namespace sight::module::geometry::base

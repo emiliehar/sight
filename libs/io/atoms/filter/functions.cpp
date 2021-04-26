@@ -38,15 +38,15 @@
 namespace sight::io::atoms::filter
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool isSeriesKnown(const SPTR(sight::atoms::Object)& series)
 {
     bool isKnown = false;
 
     namespace reg = activity::extension;
-    reg::Activity::sptr registry                  = reg::Activity::getDefault();
-    const std::vector< reg::ActivityInfo >& infos = registry->getInfos();
+    reg::Activity::sptr registry                = reg::Activity::getDefault();
+    const std::vector<reg::ActivityInfo>& infos = registry->getInfos();
 
     const std::string& classname = io::atoms::patch::helper::getClassname(series);
 
@@ -59,9 +59,9 @@ bool isSeriesKnown(const SPTR(sight::atoms::Object)& series)
         if(classname == "sight::data::ActivitySeries")
         {
             // Check if activity config id is known
-            sight::atoms::String::sptr asId = series->getAttribute< sight::atoms::String >("activity_config_id");
+            sight::atoms::String::sptr asId = series->getAttribute<sight::atoms::String>("activity_config_id");
 
-            for(reg::ActivityInfo info :  infos)
+            for(reg::ActivityInfo info : infos)
             {
                 if(info.id == asId->getString())
                 {

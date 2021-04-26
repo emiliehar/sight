@@ -28,6 +28,7 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -36,10 +37,10 @@ namespace ut
  */
 class ServiceConfigTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ServiceConfigTest );
-CPPUNIT_TEST( serviceConfigTest );
-CPPUNIT_TEST( concurentAccessToServiceConfigTest );
-CPPUNIT_TEST( getAllConfigsTest );
+CPPUNIT_TEST_SUITE(ServiceConfigTest);
+CPPUNIT_TEST(serviceConfigTest);
+CPPUNIT_TEST(concurentAccessToServiceConfigTest);
+CPPUNIT_TEST(getAllConfigsTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -55,5 +56,6 @@ private:
     core::runtime::ConfigurationElement::sptr buildConfig();
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

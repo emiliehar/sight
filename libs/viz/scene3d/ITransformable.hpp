@@ -36,7 +36,6 @@ namespace sight::viz::scene3d
 class VIZ_SCENE3D_CLASS_API ITransformable
 {
 public:
-
     /**
      * @brief Get the Ogre identifier of the transform in the scene manager.
      * @return This transform service Id.
@@ -62,14 +61,14 @@ public:
      * @param _parentNode The parent node of the created node.
      * @return The node matching m_transformId.
      */
-    VIZ_SCENE3D_API static ::Ogre::SceneNode* getTransformNode(const std::string& _name,
-                                                               ::Ogre::SceneNode* const _parentNode);
+    VIZ_SCENE3D_API static ::Ogre::SceneNode* getTransformNode(
+        const std::string& _name,
+        ::Ogre::SceneNode* const _parentNode);
 
     /// The xml attribute to retrieve the transform's id.
     VIZ_SCENE3D_API static const std::string s_TRANSFORM_CONFIG;
 
 private:
-
     /// Ogre transform node.
     ::Ogre::SceneNode* m_transformNode;
 
@@ -77,4 +76,4 @@ private:
     viz::scene3d::SRender::OgreObjectIdType m_transformId;
 };
 
-} //namespace sight::viz::scene3d
+} // namespace sight::viz::scene3d

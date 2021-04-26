@@ -26,10 +26,13 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace ModelSeries
 {
 
@@ -38,8 +41,8 @@ namespace ModelSeries
  */
 class V2ToV1Test : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( V2ToV1Test );
-CPPUNIT_TEST( applyPatchTest );
+CPPUNIT_TEST_SUITE(V2ToV1Test);
+CPPUNIT_TEST(applyPatchTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -50,7 +53,10 @@ public:
     void applyPatchTest();
 };
 
-} //namespace ModelSeries
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+} // namespace ModelSeries
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

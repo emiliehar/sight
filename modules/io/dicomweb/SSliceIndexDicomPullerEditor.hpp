@@ -35,26 +35,36 @@
 
 namespace sight
 {
+
 namespace core::thread
 {
+
 class Timer;
+
 }
 
 namespace io::base::service
 {
+
 class IReader;
+
 }
 
 namespace data
 {
+
 class Integer;
 class SeriesDB;
+
 }
 
 namespace core::runtime
 {
+
 struct ConfigurationElement;
+
 }
+
 }
 
 namespace sight::module::io::dicomweb
@@ -66,8 +76,7 @@ class MODULE_IO_DICOMWEB_CLASS_API SSliceIndexDicomPullerEditor : public QObject
 Q_OBJECT;
 
 public:
-
-    SIGHT_DECLARE_SERVICE(SSliceIndexDicomPullerEditor,  sight::ui::base::IEditor )
+    SIGHT_DECLARE_SERVICE(SSliceIndexDicomPullerEditor, sight::ui::base::IEditor)
 
     /**
      * @brief Constructor
@@ -87,7 +96,6 @@ private Q_SLOTS:
     void changeSliceIndex(int value);
 
 protected:
-
     /// Gets the configurations and creates a timer on a worker.
     MODULE_IO_DICOMWEB_API void configuring() override;
 
@@ -119,10 +127,10 @@ private:
     void displayErrorMessage(const std::string& message) const;
 
     /// Slice index slider
-    QPointer< QSlider > m_sliceIndexSlider;
+    QPointer<QSlider> m_sliceIndexSlider;
 
     /// Slice index line edit
-    QPointer< QLineEdit > m_sliceIndexLineEdit;
+    QPointer<QLineEdit> m_sliceIndexLineEdit;
 
     /// Number of instances
     size_t m_numberOfSlices;
@@ -169,7 +177,6 @@ private:
 
     /// Server port
     int m_serverPort{4242};
-
 };
 
 } // namespace sight::module::io::dicomweb

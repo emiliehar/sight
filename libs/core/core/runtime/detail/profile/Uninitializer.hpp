@@ -43,14 +43,13 @@ namespace profile
 class Uninitializer : public boost::noncopyable
 {
 public:
-
     friend class Stopper;
     /**
      * @brief       Constructor
      *
      * @param[in]   identifier a string containing a module identifier
      */
-    Uninitializer( const std::string& identifier );
+    Uninitializer(const std::string& identifier);
 
     /**
      * @brief   Applies the uninitializer on the module.
@@ -60,8 +59,7 @@ public:
     void apply();
 
 protected:
-
-    const std::string m_identifier;     ///< the module identifier
+    const std::string m_identifier; ///< the module identifier
 };
 
 } // namespace profile

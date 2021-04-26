@@ -42,8 +42,8 @@ namespace sight::io::igtl::detail
 class IO_IGTL_CLASS_API MessageFactory
 {
 public:
-    typedef ::boost::function< ::igtl::MessageBase::Pointer() > CreatorType;
-    typedef std::map<std::string, CreatorType>                   CreatorContainer;
+    typedef ::boost::function< ::igtl::MessageBase::Pointer()> CreatorType;
+    typedef std::map<std::string, CreatorType> CreatorContainer;
 
     /**
      * @brief initFactory initialize the factory
@@ -85,9 +85,9 @@ public:
             typename T::Pointer msg;
 
             msg = T::New();
+
             return ::igtl::MessageBase::Pointer(msg);
         }
-
     };
 
     /// Partial specialization of MessageMaker (with parameters).
@@ -98,20 +98,19 @@ public:
          * @brief create message from type specified in template
          * @return a ::igtl::MessageBase smart pointer contain the message
          */
-        static ::igtl::MessageBase::Pointer createMessage (std::string const& bodyType)
+        static ::igtl::MessageBase::Pointer createMessage(std::string const& bodyType)
         {
             typename T::Pointer msg;
 
             msg = T::New(bodyType);
+
             return ::igtl::MessageBase::Pointer(msg);
         }
     };
 
 private:
-
     MessageFactory();
     ~MessageFactory();
-
 };
 
-}//namespace sight::io::igtl::detail
+} // namespace sight::io::igtl::detail

@@ -26,55 +26,58 @@
 
 #include <ui/base/registry/macros.hpp>
 
-fwGuiRegisterMacro( ::sight::ui::qt::Cursor, ::sight::ui::base::ICursor::REGISTRY_KEY );
+fwGuiRegisterMacro(::sight::ui::qt::Cursor, ::sight::ui::base::ICursor::REGISTRY_KEY);
 
 namespace sight::ui::qt
 {
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 Cursor::Cursor(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Cursor::~Cursor()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Cursor::setCursor( ui::base::ICursor::CursorType cursor)
+void Cursor::setCursor(ui::base::ICursor::CursorType cursor)
 {
-
     QCursor qtCursor(Qt::ArrowCursor);
-    switch (cursor)
+
+    switch(cursor)
     {
         case ICursor::BUSY:
             qtCursor.setShape(Qt::BusyCursor);
             break;
+
         case ICursor::WAIT:
             qtCursor.setShape(Qt::WaitCursor);
             break;
+
         case ICursor::CROSS:
             qtCursor.setShape(Qt::CrossCursor);
             break;
+
         case ICursor::DEFAULT:
             qtCursor.setShape(Qt::BusyCursor);
             break;
     }
 
     qApp->setOverrideCursor(qtCursor);
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Cursor::setDefaultCursor()
 {
     qApp->restoreOverrideCursor();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::ui::qt

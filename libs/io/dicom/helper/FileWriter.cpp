@@ -29,12 +29,15 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
-//------------------------------------------------------------------------------
 
-void FileWriter::write(const std::filesystem::path& filename,
-                       const SPTR(::gdcm::Writer)& writer)
+// ------------------------------------------------------------------------------
+
+void FileWriter::write(
+    const std::filesystem::path& filename,
+    const SPTR(::gdcm::Writer)& writer)
 {
     // Set file header
     ::gdcm::FileMetaInformation& metaInformation = writer->GetFile().GetHeader();
@@ -46,14 +49,15 @@ void FileWriter::write(const std::filesystem::path& filename,
     writer->SetFileName(filename.string().c_str()); // NOTE: Must be called when file is ready to be written
 
     // Write data
-    if (!writer->Write())
+    if(!writer->Write())
     {
         const std::string msg = "Unable to write the file " + filename.string();
         throw io::dicom::exception::Failed(msg);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace helper
+
 } // namespace sight::io::dicom

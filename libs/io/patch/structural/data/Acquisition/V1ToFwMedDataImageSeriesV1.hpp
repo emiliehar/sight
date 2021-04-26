@@ -39,8 +39,10 @@ namespace Acquisition
 class IO_PATCH_CLASS_API V1ToFwMedDataImageSeriesV1 : public io::atoms::patch::IStructuralPatch
 {
 public:
-    SIGHT_DECLARE_CLASS(V1ToFwMedDataImageSeriesV1, patch::structural::data::Acquisition::V1ToFwMedDataImageSeriesV1,
-                        new V1ToFwMedDataImageSeriesV1)
+    SIGHT_DECLARE_CLASS(
+        V1ToFwMedDataImageSeriesV1,
+        patch::structural::data::Acquisition::V1ToFwMedDataImageSeriesV1,
+        new V1ToFwMedDataImageSeriesV1)
 
     /// Constructor
     IO_PATCH_API V1ToFwMedDataImageSeriesV1();
@@ -49,7 +51,7 @@ public:
     IO_PATCH_API ~V1ToFwMedDataImageSeriesV1();
 
     /// Copy constructor
-    IO_PATCH_API V1ToFwMedDataImageSeriesV1( const V1ToFwMedDataImageSeriesV1& cpy );
+    IO_PATCH_API V1ToFwMedDataImageSeriesV1(const V1ToFwMedDataImageSeriesV1& cpy);
 
     /**
      * @brief Applies patch
@@ -61,7 +63,6 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace Acquisition

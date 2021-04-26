@@ -26,8 +26,10 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
+
 /**
  * @brief The PointListTest class
  * This class is used to test data::PointList
@@ -35,10 +37,10 @@ namespace ut
 class LandmarksTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( LandmarksTest );
-    CPPUNIT_TEST( copyTest );
-    CPPUNIT_TEST( groupTest );
-    CPPUNIT_TEST( pointsTest );
+    CPPUNIT_TEST_SUITE(LandmarksTest);
+    CPPUNIT_TEST(copyTest);
+    CPPUNIT_TEST(groupTest);
+    CPPUNIT_TEST(pointsTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -54,8 +56,8 @@ public:
 
     /// test to add/ remove points in group
     void pointsTest();
-
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

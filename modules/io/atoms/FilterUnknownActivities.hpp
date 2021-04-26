@@ -30,7 +30,9 @@
 
 namespace sight::atoms
 {
+
 class Object;
+
 }
 
 namespace sight::module::io::atoms
@@ -38,7 +40,6 @@ namespace sight::module::io::atoms
 
 class MODULE_IO_ATOMS_CLASS_API FilterUnknownActivities : public sight::io::atoms::filter::IFilter
 {
-
 public:
     /// Constructor.
     FilterUnknownActivities(sight::io::atoms::filter::IFilter::Key key);

@@ -33,6 +33,7 @@ namespace sight::atoms::conversion
  */
 namespace exception
 {
+
 } // namespace exception
 
 /**
@@ -40,12 +41,14 @@ namespace exception
  */
 namespace mapper
 {
+
 /**
  * @brief Contains atoms::conversion::mapper::factory utilities
  *
  */
 namespace factory
 {
+
 } // namespace factory
 
 /**
@@ -53,6 +56,7 @@ namespace factory
  */
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace mapper

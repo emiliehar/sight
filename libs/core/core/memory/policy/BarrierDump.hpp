@@ -45,56 +45,64 @@ namespace policy
 class CORE_CLASS_API BarrierDump : public core::memory::IPolicy
 {
 public:
-    SIGHT_DECLARE_CLASS(BarrierDump, core::memory::IPolicy, core::memory::policy::factory::New< BarrierDump >)
+    SIGHT_DECLARE_CLASS(BarrierDump, core::memory::IPolicy, core::memory::policy::factory::New<BarrierDump>)
 
     CORE_API BarrierDump();
 
-    CORE_API virtual void allocationRequest( BufferInfo& info,
-                                             core::memory::BufferManager::ConstBufferPtrType buffer,
-                                             BufferInfo::SizeType size ) override;
+    CORE_API virtual void allocationRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer,
+        BufferInfo::SizeType size) override;
 
-    CORE_API virtual void setRequest( BufferInfo& info,
-                                      core::memory::BufferManager::ConstBufferPtrType buffer,
-                                      BufferInfo::SizeType size ) override;
+    CORE_API virtual void setRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer,
+        BufferInfo::SizeType size) override;
 
-    CORE_API virtual void reallocateRequest( BufferInfo& info,
-                                             core::memory::BufferManager::ConstBufferPtrType buffer,
-                                             BufferInfo::SizeType newSize ) override;
+    CORE_API virtual void reallocateRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer,
+        BufferInfo::SizeType newSize) override;
 
-    CORE_API virtual void destroyRequest( BufferInfo& info,
-                                          core::memory::BufferManager::ConstBufferPtrType buffer ) override;
+    CORE_API virtual void destroyRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
 
-    CORE_API virtual void lockRequest( BufferInfo& info,
-                                       core::memory::BufferManager::ConstBufferPtrType buffer ) override;
-    CORE_API virtual void unlockRequest( BufferInfo& info,
-                                         core::memory::BufferManager::ConstBufferPtrType buffer ) override;
+    CORE_API virtual void lockRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
+    CORE_API virtual void unlockRequest(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
 
-    CORE_API virtual void dumpSuccess( BufferInfo& info,
-                                       core::memory::BufferManager::ConstBufferPtrType buffer ) override;
-    CORE_API virtual void restoreSuccess( BufferInfo& info,
-                                          core::memory::BufferManager::ConstBufferPtrType buffer ) override;
+    CORE_API virtual void dumpSuccess(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
+    CORE_API virtual void restoreSuccess(
+        BufferInfo& info,
+        core::memory::BufferManager::ConstBufferPtrType buffer) override;
 
     CORE_API void refresh() override;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    void setBarrier( size_t barrier )
+    void setBarrier(size_t barrier)
     {
         m_barrier = barrier;
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     size_t getBarrier() const
     {
         return m_barrier;
     }
 
-    CORE_API std::string getParam(const std::string& name, bool* ok = NULL ) const override;
+    CORE_API std::string getParam(const std::string& name, bool* ok = NULL) const override;
     CORE_API bool setParam(const std::string& name, const std::string& value) override;
     CORE_API const core::memory::IPolicy::ParamNamesType& getParamNames() const override;
 
 protected:
-
     CORE_API size_t getTotalAlive() const;
     CORE_API bool isBarrierCrossed() const;
 

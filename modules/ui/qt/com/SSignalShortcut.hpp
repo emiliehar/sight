@@ -51,12 +51,12 @@ class MODULE_UI_QT_CLASS_API SSignalShortcut : public QObject,
                                                public service::IService
 {
 Q_OBJECT
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(SSignalShortcut, service::IService)
 
     /// Signal emitted when the shortcut is received.
-    typedef core::com::Signal< void () > ActivatedShortcutSignalType;
+    typedef core::com::Signal<void ()> ActivatedShortcutSignalType;
 
     /// Constructor. Do nothing.
     MODULE_UI_QT_API SSignalShortcut() noexcept;
@@ -65,7 +65,6 @@ public:
     MODULE_UI_QT_API virtual ~SSignalShortcut() noexcept;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */
@@ -92,7 +91,6 @@ private Q_SLOTS:
     void onActivation();
 
 private:
-
     /// string containing the shortcut to trigger
     std::string m_shortcut;
 

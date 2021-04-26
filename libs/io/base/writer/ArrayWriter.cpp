@@ -28,26 +28,27 @@
 #include <fstream>
 #include <iostream>
 
-SIGHT_REGISTER_IO_WRITER( ::sight::io::base::writer::ArrayWriter);
+SIGHT_REGISTER_IO_WRITER(::sight::io::base::writer::ArrayWriter);
 
 namespace sight::io::base
 {
+
 namespace writer
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ArrayWriter::ArrayWriter(io::base::writer::IObjectWriter::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ArrayWriter::~ArrayWriter()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArrayWriter::write()
 {
@@ -58,23 +59,22 @@ void ArrayWriter::write()
     const auto dumpLock      = array->lock();
     const char* buff         = static_cast<const char*>(array->getBuffer());
 
-    std::ofstream fs(file.string().c_str(), std::ios::binary|std::ios::trunc);
+    std::ofstream fs(file.string().c_str(), std::ios::binary | std::ios::trunc);
 
     SIGHT_THROW_IF("Unable to open " << file, !fs.good());
 
     fs.write(buff, static_cast<std::streamsize>(arraySizeInBytes));
     fs.close();
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string ArrayWriter::extension()
 {
     return ".raw";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace writer
 

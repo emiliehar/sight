@@ -26,9 +26,9 @@
 
 #include <core/reflection/UserObject.hpp>
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(Study))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (Study))
 {
     builder
     .tag("object_version", "2")

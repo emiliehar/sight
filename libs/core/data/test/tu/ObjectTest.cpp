@@ -25,28 +25,29 @@
 #include <data/Float.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::ObjectTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::ObjectTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ObjectTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ObjectTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ObjectTest::fieldTest()
 {
@@ -110,5 +111,6 @@ void ObjectTest::fieldTest()
     CPPUNIT_ASSERT(defaultField != fieldObj2);
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

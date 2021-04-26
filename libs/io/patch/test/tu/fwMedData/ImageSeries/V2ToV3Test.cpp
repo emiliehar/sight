@@ -32,30 +32,33 @@
 #include <io/atoms/patch/helper/Object.hpp>
 #include <io/patch/structural/data/ImageSeries/V2ToV3.hpp>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::structural::ut::data::ImageSeries::V2ToV3Test );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::structural::ut::data::ImageSeries::V2ToV3Test);
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace ImageSeries
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V2ToV3Test::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V2ToV3Test::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V2ToV3Test::applyPatchTest()
 {
@@ -120,8 +123,12 @@ void V2ToV3Test::applyPatchTest()
     }
 }
 
-//------------------------------------------------------------------------------
-} //namespace ImageSeries
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+// ------------------------------------------------------------------------------
+
+} // namespace ImageSeries
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

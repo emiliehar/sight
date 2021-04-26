@@ -63,7 +63,6 @@ class MODULE_UI_QT_CLASS_API ImageInfo : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(ImageInfo, sight::ui::base::IEditor)
 
     MODULE_UI_QT_API ImageInfo() noexcept;
@@ -71,7 +70,6 @@ public:
     MODULE_UI_QT_API virtual ~ImageInfo() noexcept;
 
 protected:
-
     /// Starts editor.
     void starting() override;
 
@@ -84,7 +82,7 @@ protected:
     /// Initializes the editor
     void configuring() override;
 
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
     /**
      * @brief Returns proposals to connect service slots to associated object signals,
@@ -96,13 +94,11 @@ protected:
     KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// Slot: get the picking information to display the pixel value
     void getInteraction(data::tools::PickingInfo info);
 
     /// Label to display the pixel value
-    QPointer< QLineEdit >   m_valueText;
-
+    QPointer<QLineEdit> m_valueText;
 };
 
 } // uiImageQt

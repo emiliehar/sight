@@ -41,7 +41,6 @@ namespace Tuto07SceneQt3DQml
 class TUTO07SCENEQT3DQML_CLASS_API AppManager : public QObject,
                                                 public sight::service::AppManager
 {
-
 Q_OBJECT
 
 /// Q_PROPERTY macros associate scene objects with QML properties.
@@ -49,7 +48,6 @@ Q_PROPERTY(sight::viz::qt3d::data::Mesh* mesh READ getMesh WRITE setMesh NOTIFY 
 Q_PROPERTY(sight::viz::qt3d::core::GenericScene* scene READ getScene WRITE setScene NOTIFY sceneChanged)
 
 public:
-
     /// Creates the app manager.
     TUTO07SCENEQT3DQML_API AppManager();
 
@@ -69,7 +67,6 @@ public:
     TUTO07SCENEQT3DQML_API void setScene(sight::viz::qt3d::core::GenericScene* _mesh);
 
 Q_SIGNALS:
-
     /// Signal emitted when the mesh is modified.
     void meshChanged();
 
@@ -77,7 +74,6 @@ Q_SIGNALS:
     void sceneChanged();
 
 public Q_SLOTS:
-
     /// Calls to create the app manager.
     void initialize();
 
@@ -88,13 +84,11 @@ public Q_SLOTS:
     void onOpenModel();
 
 private:
-
     /// Contains the mesh associated to the app manager.
-    QPointer< sight::viz::qt3d::data::Mesh > m_mesh;
+    QPointer<sight::viz::qt3d::data::Mesh> m_mesh;
 
     /// Contains the scene associated to the app manager.
-    QPointer< sight::viz::qt3d::core::GenericScene > m_scene;
-
+    QPointer<sight::viz::qt3d::core::GenericScene> m_scene;
 };
 
 } // namespace Tuto07SceneQt3DQml.

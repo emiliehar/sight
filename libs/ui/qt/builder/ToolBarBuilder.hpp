@@ -34,6 +34,7 @@
 
 namespace sight::ui::base
 {
+
 namespace builder
 {
 
@@ -44,7 +45,7 @@ namespace builder
 class UI_QT_CLASS_API ToolBarBuilder : public ui::base::builder::IToolBarBuilder
 {
 public:
-    SIGHT_DECLARE_CLASS(ToolBarBuilder, ui::base::builder::IToolBarBuilder, ui::base::factory::New< ToolBarBuilder >)
+    SIGHT_DECLARE_CLASS(ToolBarBuilder, ui::base::builder::IToolBarBuilder, ui::base::factory::New<ToolBarBuilder>)
 
     UI_QT_API ToolBarBuilder(ui::base::GuiBaseObject::Key key);
 
@@ -55,7 +56,7 @@ public:
      * @pre LayoutManager must be initialized before.
      * @pre parent toolBar must be instanced.
      */
-    UI_QT_API void createToolBar( ui::base::container::fwContainer::sptr parent ) override;
+    UI_QT_API void createToolBar(ui::base::container::fwContainer::sptr parent) override;
 
     /**
      * @brief Destroy local layout with sub containers.
@@ -68,4 +69,5 @@ protected:
 };
 
 } // namespace builder
+
 } // namespace sight::ui::base

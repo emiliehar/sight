@@ -48,9 +48,7 @@ namespace helper
  */
 class DATA_CLASS_API TransferFunction
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(TransferFunction)
 
     /// Constructor.
@@ -69,7 +67,7 @@ public:
      * Set the current transfer function to the default grey-level if no transfer function was set (using
      * setTransferFunction() ).
      */
-    DATA_API void createTransferFunction( data::Image::sptr image );
+    DATA_API void createTransferFunction(data::Image::sptr image);
 
     /// Set the current TransferFunction
     DATA_API void setTransferFunction(const data::TransferFunction::sptr&);
@@ -95,7 +93,6 @@ public:
     DATA_API core::com::Connection getTFWindowingConnection() const;
 
 protected:
-
     /**
      * @name Connections to transfer function
      * @{
@@ -116,12 +113,11 @@ protected:
 
     /// Slot called when transfer function windowing is modified
     UpdateTFWindowingSlotType::sptr m_slotUpdateTFWindowing;
-    /**
-     * @}
-     */
+/**
+ * @}
+ */
 
 private:
-
     /// Transfer function selection
     data::TransferFunction::wptr m_transferFunction;
 
@@ -131,9 +127,8 @@ private:
     std::function<void()> m_updateTFPoints;
 
     std::function<void(double, double)> m_updateTFWindowing;
-
 };
 
-} //namespace helper
+} // namespace helper
 
-} //namespace sight::data
+} // namespace sight::data

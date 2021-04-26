@@ -31,19 +31,23 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool LoggerDialog::showLoggerDialog(
-    const std::string& title, const std::string& message, const core::log::Logger::sptr& logger)
+    const std::string& title,
+    const std::string& message,
+    const core::log::Logger::sptr& logger)
 {
     ui::base::dialog::LoggerDialog dialog(title, message, logger);
+
     return dialog.show();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 LoggerDialog::LoggerDialog()
 {
@@ -51,13 +55,13 @@ LoggerDialog::LoggerDialog()
     m_implementation = ui::base::dialog::ILoggerDialog::dynamicCast(guiObj);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 LoggerDialog::~LoggerDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 LoggerDialog::LoggerDialog(const std::string& title, const std::string& message, const core::log::Logger::sptr& logger)
 {
@@ -68,28 +72,28 @@ LoggerDialog::LoggerDialog(const std::string& title, const std::string& message,
     m_implementation->setLogger(logger);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void LoggerDialog::setTitle(const std::string& title)
 {
     m_implementation->setTitle(title);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void LoggerDialog::setMessage(const std::string& message)
 {
     m_implementation->setMessage(message);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void LoggerDialog::setLogger(const core::log::Logger::sptr& logger)
 {
     m_implementation->setLogger(logger);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool LoggerDialog::show()
 {
@@ -105,7 +109,8 @@ bool LoggerDialog::show()
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace dialog
-} //namespace sight::ui::base
+} // namespace dialog
+
+} // namespace sight::ui::base

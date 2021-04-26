@@ -40,37 +40,37 @@ const core::com::Signals::SignalKeyType SSnapshot::s_SNAPPED_SIG = "snapped";
 
 SSnapshot::SSnapshot() noexcept
 {
-    m_sigSnapped = newSignal< SnappedSignalType >(s_SNAPPED_SIG);
+    m_sigSnapped = newSignal<SnappedSignalType>(s_SNAPPED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSnapshot::~SSnapshot() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSnapshot::starting()
 {
     sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSnapshot::stopping()
 {
     sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSnapshot::configuring()
 {
     sight::ui::base::IAction::initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSnapshot::updating()
 {
@@ -82,20 +82,19 @@ void SSnapshot::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSnapshot::swapping()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SSnapshot::info( std::ostream& _sstream )
+void SSnapshot::info(std::ostream& _sstream)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SSnapshot::requestFileName()
 {
@@ -112,7 +111,8 @@ std::string SSnapshot::requestFileName()
     dialogFile.setOption(sight::ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         fileName = result->getFile().string();
     }
@@ -120,6 +120,6 @@ std::string SSnapshot::requestFileName()
     return fileName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // uiVisu

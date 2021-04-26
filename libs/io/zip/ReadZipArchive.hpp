@@ -39,15 +39,14 @@ namespace sight::io::zip
  */
 class IO_ZIP_CLASS_API ReadZipArchive : public IReadArchive
 {
-
 public:
     SIGHT_DECLARE_CLASS(ReadZipArchive, IReadArchive)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::filesystem::path& archive, const core::crypto::secure_string& key = "")
     {
-        return std::make_shared< ReadZipArchive >(archive, key);
+        return std::make_shared<ReadZipArchive>(archive, key);
     }
 
     /*
@@ -56,7 +55,7 @@ public:
      * @throw io::zip::exception::Read if archive doesn't exist.
      * @throw io::zip::exception::Read if archive cannot be opened.
      */
-    IO_ZIP_API ReadZipArchive( const std::filesystem::path& archive, const core::crypto::secure_string& key = "");
+    IO_ZIP_API ReadZipArchive(const std::filesystem::path& archive, const core::crypto::secure_string& key = "");
 
     /**
      * @brief Returns input stream for the file in current archive (zip).
@@ -79,7 +78,7 @@ public:
      */
     IO_ZIP_API const std::filesystem::path getArchivePath() const override;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     IReadArchive::sptr clone() const override
     {
@@ -87,7 +86,6 @@ public:
     }
 
 private:
-
     /// Path of the archive file
     std::filesystem::path m_archive;
 

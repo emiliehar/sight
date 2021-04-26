@@ -34,8 +34,10 @@
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
+
 /**
  * @brief   Defines an Input dialog.
  *
@@ -56,18 +58,17 @@ Q_PROPERTY(QString input MEMBER m_input NOTIFY inputChanged)
 Q_PROPERTY(QString message MEMBER m_message NOTIFY messageChanged)
 
 public:
-
-    SIGHT_DECLARE_CLASS(InputDialog, ui::base::dialog::IInputDialog, ui::base::factory::New< InputDialog >)
+    SIGHT_DECLARE_CLASS(InputDialog, ui::base::dialog::IInputDialog, ui::base::factory::New<InputDialog>)
 
     UI_QML_API InputDialog(ui::base::GuiBaseObject::Key key);
 
     UI_QML_API virtual ~InputDialog();
 
     /// Set the title of the message box
-    UI_QML_API void setTitle( const std::string& title ) override;
+    UI_QML_API void setTitle(const std::string& title) override;
 
     /// Set the message
-    UI_QML_API void setMessage( const std::string& msg ) override;
+    UI_QML_API void setMessage(const std::string& msg) override;
 
     /// Set the input text in the input field
     UI_QML_API void setInput(const std::string& text) override;
@@ -93,5 +94,7 @@ private:
     /// Text inputed
     QString m_input;
 };
+
 } // namespace dialog
+
 } // namespace sight::ui::qml

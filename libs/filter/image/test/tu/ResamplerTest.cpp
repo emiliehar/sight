@@ -34,32 +34,31 @@ CPPUNIT_TEST_SUITE_REGISTRATION(sight::filter::image::ut::ResamplerTest);
 
 namespace sight::filter::image
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ResamplerTest::setUp()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ResamplerTest::tearDown()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ResamplerTest::identityTest()
 {
-    const data::Image::Size SIZE = {{ 32, 32, 32 }};
+    const data::Image::Size SIZE = {{32, 32, 32}};
 
     // TODO: make it work with an anisotropic spacing.
-    const data::Image::Spacing SPACING = {{ 0.5, 0.5, 0.5 }};
-    const data::Image::Origin ORIGIN   = {{ 0., 0., 0. }};
+    const data::Image::Spacing SPACING = {{0.5, 0.5, 0.5}};
+    const data::Image::Origin ORIGIN   = {{0., 0., 0.}};
     const core::tools::Type TYPE       = core::tools::Type::s_INT16;
 
     data::Image::sptr imageIn = data::Image::New();
@@ -73,7 +72,10 @@ void ResamplerTest::identityTest()
     data::Matrix4::sptr idMat = data::Matrix4::New();
 
     filter::image::Resampler::resample(
-        data::Image::csptr(imageIn), imageOut, data::Matrix4::csptr(idMat), imageIn);
+        data::Image::csptr(imageIn),
+        imageOut,
+        data::Matrix4::csptr(idMat),
+        imageIn);
 
     CPPUNIT_ASSERT(imageOut->getSize2() == SIZE);
     CPPUNIT_ASSERT(imageOut->getSpacing2() == SPACING);
@@ -82,11 +84,11 @@ void ResamplerTest::identityTest()
     const auto inDumpLock  = imageIn->lock();
     const auto outDumpLock = imageOut->lock();
 
-    for(size_t i = 0; i < SIZE[0]; ++i)
+    for(size_t i = 0 ; i < SIZE[0] ; ++i)
     {
-        for(size_t j = 0; j < SIZE[1]; ++j )
+        for(size_t j = 0 ; j < SIZE[1] ; ++j)
         {
-            for(size_t k = 0; k < SIZE[2]; ++k)
+            for(size_t k = 0 ; k < SIZE[2] ; ++k)
             {
                 const std::int16_t valueIn  = imageIn->at<std::int16_t>(i, j, k);
                 const std::int16_t valueOut = imageOut->at<std::int16_t>(i, j, k);
@@ -99,14 +101,14 @@ void ResamplerTest::identityTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ResamplerTest::translateTest()
 {
     // Generate a simple image with a white cube at its center.
-    const data::Image::Size SIZE       = {{ 16, 16, 16 }};
-    const data::Image::Spacing SPACING = {{ 1., 1., 1. }};
-    const data::Image::Origin ORIGIN   = {{ 0., 0., 0. }};
+    const data::Image::Size SIZE       = {{16, 16, 16}};
+    const data::Image::Spacing SPACING = {{1., 1., 1.}};
+    const data::Image::Origin ORIGIN   = {{0., 0., 0.}};
     const core::tools::Type TYPE       = core::tools::Type::s_UINT8;
 
     data::Image::sptr imageIn  = data::Image::New();
@@ -116,8 +118,8 @@ void ResamplerTest::translateTest()
 
     std::uint8_t value = 255;
 
-    SPTR(data::Image::BufferType) bufferValue =
-        data::fieldHelper::MedicalImageHelpers::getPixelBufferInImageSpace(imageIn, value);
+    SPTR(data::Image::BufferType) bufferValue
+        = data::fieldHelper::MedicalImageHelpers::getPixelBufferInImageSpace(imageIn, value);
 
     const auto inDumpLock = imageIn->lock();
 
@@ -136,15 +138,17 @@ void ResamplerTest::translateTest()
     transMat->setCoefficient(0, 3, 5);
 
     filter::image::Resampler::resample(
-        data::Image::csptr(imageIn), imageOut, data::Matrix4::csptr(transMat));
+        data::Image::csptr(imageIn),
+        imageOut,
+        data::Matrix4::csptr(transMat));
 
     const auto dumpLock = imageOut->lock();
 
-    for(size_t i = 0; i < SIZE[0]; ++i)
+    for(size_t i = 0 ; i < SIZE[0] ; ++i)
     {
-        for(size_t j = 0; j < SIZE[1]; ++j )
+        for(size_t j = 0 ; j < SIZE[1] ; ++j)
         {
-            for(size_t k = 0; k < SIZE[2]; ++k)
+            for(size_t k = 0 ; k < SIZE[2] ; ++k)
             {
                 const uint8_t valueOut = imageOut->at<std::uint8_t>(i, j, k);
 
@@ -165,13 +169,13 @@ void ResamplerTest::translateTest()
     CPPUNIT_ASSERT(imageOut->getSpacing2() == SPACING);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ResamplerTest::rotateTest()
 {
-    const data::Image::Size SIZE       = {{ 64, 64, 64 }};
-    const data::Image::Spacing SPACING = {{ 1., 1., 1. }};
-    const data::Image::Origin ORIGIN   = {{ 0., 0., 0. }};
+    const data::Image::Size SIZE       = {{64, 64, 64}};
+    const data::Image::Spacing SPACING = {{1., 1., 1.}};
+    const data::Image::Origin ORIGIN   = {{0., 0., 0.}};
     const core::tools::Type TYPE       = core::tools::Type::s_FLOAT;
 
     data::Image::sptr imageIn  = data::Image::New();
@@ -184,9 +188,9 @@ void ResamplerTest::rotateTest()
     const auto dumpLock = imageIn->lock();
 
     // draw the back Z face.
-    for(size_t i = 0; i < 64; ++i)
+    for(size_t i = 0 ; i < 64 ; ++i)
     {
-        for(size_t j = 0; j < 64; ++j)
+        for(size_t j = 0 ; j < 64 ; ++j)
         {
             imageIn->at<float>(i, j, 0) = value;
         }
@@ -205,15 +209,17 @@ void ResamplerTest::rotateTest()
     rotMat->setCoefficient(0, 3, SIZE[0] / 2.);
 
     filter::image::Resampler::resample(
-        data::Image::csptr(imageIn), imageOut, data::Matrix4::csptr(rotMat));
+        data::Image::csptr(imageIn),
+        imageOut,
+        data::Matrix4::csptr(rotMat));
 
     const auto outDumpLock = imageOut->lock();
 
-    for(size_t i = 0; i < SIZE[0]; ++i)
+    for(size_t i = 0 ; i < SIZE[0] ; ++i)
     {
-        for(size_t j = 0; j < SIZE[1]; ++j )
+        for(size_t j = 0 ; j < SIZE[1] ; ++j)
         {
-            for(size_t k = 0; k < SIZE[2]; ++k)
+            for(size_t k = 0 ; k < SIZE[2] ; ++k)
             {
                 const float valueOut = imageOut->at<float>(i, j, k);
 
@@ -234,7 +240,8 @@ void ResamplerTest::rotateTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // ut
+
 } // itkRegistrationOp

@@ -26,6 +26,7 @@
 
 namespace sight::core::runtime
 {
+
 namespace ut
 {
 
@@ -34,8 +35,8 @@ namespace ut
  */
 class EConfigurationElementTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( EConfigurationElementTest );
-CPPUNIT_TEST( testConfiguration );
+CPPUNIT_TEST_SUITE(EConfigurationElementTest);
+CPPUNIT_TEST(testConfiguration);
 CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -49,4 +50,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::core::runtime

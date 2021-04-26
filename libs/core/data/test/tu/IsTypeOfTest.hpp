@@ -26,14 +26,15 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class IsTypeOfTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( IsTypeOfTest );
-    CPPUNIT_TEST( checkType );
+    CPPUNIT_TEST_SUITE(IsTypeOfTest);
+    CPPUNIT_TEST(checkType);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,5 +44,7 @@ public:
 
     void checkType();
 };
-} //namespace ut
-} //namespace sight::data
+
+} // namespace ut
+
+} // namespace sight::data

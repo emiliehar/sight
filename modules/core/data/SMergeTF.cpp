@@ -33,33 +33,33 @@ static const service::IService::KeyType s_TF_INOUT      = "tf";
 
 static const core::com::Slots::SlotKeyType s_MERGE_SLOT = "merge";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SMergeTF::SMergeTF() noexcept
 {
     newSlot(s_MERGE_SLOT, &SMergeTF::merge, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SMergeTF::~SMergeTF() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMergeTF::configuring()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMergeTF::starting()
 {
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SMergeTF::getAutoConnections() const
 {
@@ -67,10 +67,11 @@ service::IService::KeyConnectionsMap SMergeTF::getAutoConnections() const
     connections.push(s_TF_POOL_INPUT, sight::data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
     connections.push(s_TF_POOL_INPUT, sight::data::Composite::s_ADDED_OBJECTS_SIG, s_UPDATE_SLOT);
     connections.push(s_TF_POOL_INPUT, sight::data::Composite::s_REMOVED_OBJECTS_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMergeTF::updating()
 {
@@ -78,7 +79,7 @@ void SMergeTF::updating()
 
     // Iterates over each TF to create connections.
     {
-        const auto tfPool = this->getLockedInput< sight::data::Composite >(s_TF_POOL_INPUT);
+        const auto tfPool = this->getLockedInput<sight::data::Composite>(s_TF_POOL_INPUT);
         SIGHT_ASSERT("input '" + s_TF_POOL_INPUT + "' must have at least on TF inside.", tfPool->size() > 0);
 
         for(auto poolElt : *tfPool)
@@ -88,38 +89,45 @@ void SMergeTF::updating()
             SIGHT_ASSERT("inout '" + s_TF_POOL_INPUT + "' must contain only TF.", tf);
 
             m_connections.connect(tf, sight::data::TransferFunction::s_MODIFIED_SIG, this->getSptr(), s_MERGE_SLOT);
-            m_connections.connect(tf, sight::data::TransferFunction::s_POINTS_MODIFIED_SIG,
-                                  this->getSptr(), s_MERGE_SLOT);
-            m_connections.connect(tf, sight::data::TransferFunction::s_WINDOWING_MODIFIED_SIG,
-                                  this->getSptr(), s_MERGE_SLOT);
+            m_connections.connect(
+                tf,
+                sight::data::TransferFunction::s_POINTS_MODIFIED_SIG,
+                this->getSptr(),
+                s_MERGE_SLOT);
+            m_connections.connect(
+                tf,
+                sight::data::TransferFunction::s_WINDOWING_MODIFIED_SIG,
+                this->getSptr(),
+                s_MERGE_SLOT);
         }
     }
 
     this->merge();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMergeTF::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMergeTF::merge() const
 {
     // Get the TF pool.
-    const auto tfPool = this->getLockedInput< sight::data::Composite >(s_TF_POOL_INPUT);
+    const auto tfPool = this->getLockedInput<sight::data::Composite>(s_TF_POOL_INPUT);
     SIGHT_ASSERT("input '" + s_TF_POOL_INPUT + "' must have at least on TF inside.", tfPool->size() > 0);
 
     // Clear the output TF.
-    const auto outTF = this->getLockedInOut< sight::data::TransferFunction >(s_TF_INOUT);
+    const auto outTF = this->getLockedInOut<sight::data::TransferFunction>(s_TF_INOUT);
     outTF->clear();
 
     // Iterates over each TF to merge them in the output one.
     typedef sight::data::TransferFunction::TFValueType TFValue;
-    TFValue min = std::numeric_limits< TFValue >::max();
-    TFValue max = std::numeric_limits< TFValue >::lowest();
+    TFValue min = std::numeric_limits<TFValue>::max();
+    TFValue max = std::numeric_limits<TFValue>::lowest();
+
     for(const auto& poolElt : *tfPool)
     {
         // Checks if the composite element is a TF.
@@ -140,10 +148,12 @@ void SMergeTF::merge() const
                                     value += _delta;
 
                                     outTF->addTFColor(value, this->mergeColors(tfPool.get_shared(), value, tf));
+
                                     if(value < min)
                                     {
                                         min = value;
                                     }
+
                                     if(value > max)
                                     {
                                         max = value;
@@ -151,15 +161,16 @@ void SMergeTF::merge() const
                                 };
 
         // Add new TF value to the output.
-        bool first                                                = true;
-        sight:: data::TransferFunction::TFValueType previousValue = 0;
+        bool first                                               = true;
+        sight::data::TransferFunction::TFValueType previousValue = 0;
+
         for(const auto& elt : tf->getTFData())
         {
             // If the TF interpolation mode is not linear, we create new point in the merged TF.
             if(!first && tf->getInterpolationMode() == sight::data::TransferFunction::NEAREST)
             {
-                sight::data::TransferFunction::TFValueType middleValue = previousValue + (elt.first - previousValue) /
-                                                                         2.;
+                sight::data::TransferFunction::TFValueType middleValue = previousValue + (elt.first - previousValue)
+                                                                         / 2.;
                 addTFPoint(middleValue, -1.);
                 addTFPoint(middleValue, 1.);
             }
@@ -209,19 +220,21 @@ void SMergeTF::merge() const
     }
 
     // Sends the modification signal.
-    const auto sig = outTF->signal< sight::data::TransferFunction::PointsModifiedSignalType >(
+    const auto sig = outTF->signal<sight::data::TransferFunction::PointsModifiedSignalType>(
         sight::data::TransferFunction::s_POINTS_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-sight::data::TransferFunction::TFColor SMergeTF::mergeColors(const sight::data::Composite::csptr _tfPool,
-                                                             sight::data::TransferFunction::TFValueType _value,
-                                                             const sight::data::TransferFunction::csptr& _already_locked_tf)
+sight::data::TransferFunction::TFColor SMergeTF::mergeColors(
+    const sight::data::Composite::csptr _tfPool,
+    sight::data::TransferFunction::TFValueType _value,
+    const sight::data::TransferFunction::csptr& _already_locked_tf)
 const
 {
     sight::data::TransferFunction::TFColor result;
+
     for(const sight::data::Composite::value_type& poolElt : *_tfPool)
     {
         // Checks if the composite element is a TF.

@@ -64,9 +64,7 @@ namespace sight::module::geometry::base
  */
 class MODULE_GEOMETRY_BASE_CLASS_API SManagePointList : public service::IController
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SManagePointList, ::sight::service::IController)
 
@@ -77,7 +75,6 @@ public:
     MODULE_GEOMETRY_BASE_API virtual ~SManagePointList() noexcept final;
 
 private:
-
     /// Configures the service.
     virtual void configuring() final;
 
@@ -112,15 +109,15 @@ private:
     void clearPoints() const;
 
     /// Maximum number of contained points.
-    size_t m_max {0};
+    size_t m_max{0};
 
     /// Allows points to be removed.
-    bool m_removable {true};
+    bool m_removable{true};
 
     /// Allows to add an ID label the points.
-    bool m_label {false};
+    bool m_label{false};
 
-    float m_tolerance { 10.f };
-
+    float m_tolerance{10.f};
 };
+
 } // ctrlPicking

@@ -46,4 +46,5 @@ public:
 };
 
 } /* namespace exceptions */
+
 } /* namespace sight::io::http */

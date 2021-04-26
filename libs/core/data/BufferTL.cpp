@@ -33,33 +33,33 @@ namespace sight::data
 
 const size_t BufferTL::s_DEFAULT_TIMELINE_MAX_SIZE = 1000;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-BufferTL::BufferTL ( data::Object::Key key ) :
+BufferTL::BufferTL(data::Object::Key key) :
     TimeLine(key),
     m_maximumSize(s_DEFAULT_TIMELINE_MAX_SIZE)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-BufferTL::~BufferTL ()
+BufferTL::~BufferTL()
 {
     this->clearTimeline();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BufferTL::allocPoolSize(std::size_t size)
 {
     this->clearTimeline();
     core::mt::WriteLock lock(m_tlMutex);
 
-    SIGHT_ASSERT( "Allocation size must be greater than 0", size > 0 );
-    m_pool = std::make_shared< PoolType >(size);
+    SIGHT_ASSERT("Allocation size must be greater than 0", size > 0);
+    m_pool = std::make_shared<PoolType>(size);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BufferTL::pushObject(const SPTR(data::timeline::Object)& obj)
 {
@@ -67,17 +67,18 @@ void BufferTL::pushObject(const SPTR(data::timeline::Object)& obj)
     SIGHT_ASSERT("Trying to push not compatible Object in the BufferTL.", isObjectValid(obj));
 
     core::mt::WriteLock writeLock(m_tlMutex);
+
     if(m_timeline.size() >= m_maximumSize)
     {
         TimelineType::iterator begin = m_timeline.begin();
         m_timeline.erase(begin);
     }
 
-    SPTR(data::timeline::Buffer) srcObj = std::dynamic_pointer_cast< data::timeline::Buffer >(obj);
+    SPTR(data::timeline::Buffer) srcObj = std::dynamic_pointer_cast<data::timeline::Buffer>(obj);
     m_timeline.insert(TimelineType::value_type(obj->getTimestamp(), srcObj));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(data::timeline::Object) BufferTL::popObject(TimestampType timestamp)
 {
@@ -95,7 +96,7 @@ SPTR(data::timeline::Object) BufferTL::popObject(TimestampType timestamp)
     return object;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BufferTL::modifyTime(TimestampType timestamp, TimestampType newTimestamp)
 {
@@ -113,7 +114,7 @@ void BufferTL::modifyTime(TimestampType timestamp, TimestampType newTimestamp)
     m_timeline.erase(itFind);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BufferTL::setObject(TimestampType timestamp, const SPTR(data::timeline::Object)& obj)
 {
@@ -122,29 +123,32 @@ void BufferTL::setObject(TimestampType timestamp, const SPTR(data::timeline::Obj
 
     core::mt::WriteLock writeLock(m_tlMutex);
 
-    SPTR(data::timeline::Buffer) srcObj = std::dynamic_pointer_cast< data::timeline::Buffer >(obj);
+    SPTR(data::timeline::Buffer) srcObj = std::dynamic_pointer_cast<data::timeline::Buffer>(obj);
     m_timeline[timestamp]               = srcObj;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-CSPTR(data::timeline::Object) BufferTL::getClosestObject(core::HiResClock::HiResClockType timestamp,
-                                                         DirectionType direction) const
+CSPTR(data::timeline::Object) BufferTL::getClosestObject(
+    core::HiResClock::HiResClockType timestamp,
+    DirectionType direction) const
 {
     core::mt::ReadLock readLock(m_tlMutex);
     SPTR(data::timeline::Buffer) result;
+
     if(m_timeline.empty())
     {
         return result;
     }
 
-    TimelineType::const_iterator iter =
-        (direction == PAST) ? m_timeline.upper_bound(timestamp) : m_timeline.lower_bound(timestamp);
-    if (iter != m_timeline.begin())
+    TimelineType::const_iterator iter
+        = (direction == PAST) ? m_timeline.upper_bound(timestamp) : m_timeline.lower_bound(timestamp);
+
+    if(iter != m_timeline.begin())
     {
-        if( iter == m_timeline.end() )
+        if(iter == m_timeline.end())
         {
-            if (direction != FUTURE)
+            if(direction != FUTURE)
             {
                 SPTR(data::timeline::Buffer) previousObj = (--iter)->second;
                 result                                   = previousObj;
@@ -155,19 +159,21 @@ CSPTR(data::timeline::Object) BufferTL::getClosestObject(core::HiResClock::HiRes
             core::HiResClock::HiResClockType nextTS = iter->first;
             SPTR(data::timeline::Buffer) nextObj = iter->second;
 
-            switch ( direction )
+            switch(direction)
             {
                 case PAST:
                     result = (--iter)->second;
                     break;
+
                 case BOTH:
                 {
                     core::HiResClock::HiResClockType previousTS = (--iter)->first;
                     SPTR(data::timeline::Buffer) previousObj = iter->second;
-                    result                                   =
-                        ((nextTS - timestamp) > (timestamp - previousTS)) ? previousObj : nextObj;
+                    result
+                        = ((nextTS - timestamp) > (timestamp - previousTS)) ? previousObj : nextObj;
+                    break;
                 }
-                break;
+
                 case FUTURE:
                     result = nextObj;
                     break;
@@ -176,7 +182,7 @@ CSPTR(data::timeline::Object) BufferTL::getClosestObject(core::HiResClock::HiRes
     }
     else
     {
-        if (direction != PAST)
+        if(direction != PAST)
         {
             SPTR(data::timeline::Buffer) nextObj = iter->second;
             result                               = nextObj;
@@ -186,7 +192,7 @@ CSPTR(data::timeline::Object) BufferTL::getClosestObject(core::HiResClock::HiRes
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CSPTR(data::timeline::Object) BufferTL::getObject(core::HiResClock::HiResClockType timestamp) const
 {
@@ -199,41 +205,46 @@ CSPTR(data::timeline::Object) BufferTL::getObject(core::HiResClock::HiResClockTy
         result = iter->second;
     }
 
-    SIGHT_WARN_IF("There is no object in the timeline matching the timestamp: " << timestamp << ".",
-                  iter == m_timeline.end());
+    SIGHT_WARN_IF(
+        "There is no object in the timeline matching the timestamp: " << timestamp << ".",
+            iter == m_timeline.end());
 
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CSPTR(data::timeline::Object) BufferTL::getNewerObject() const
 {
     SPTR(data::timeline::Object) result;
 
     core::mt::ReadLock readLock(m_tlMutex);
-    if (!m_timeline.empty())
+
+    if(!m_timeline.empty())
     {
         result = m_timeline.rbegin()->second;
     }
+
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::HiResClock::HiResClockType BufferTL::getNewerTimestamp() const
 {
     core::HiResClock::HiResClockType result = 0;
 
     core::mt::ReadLock readLock(m_tlMutex);
-    if (!m_timeline.empty())
+
+    if(!m_timeline.empty())
     {
         result = m_timeline.rbegin()->first;
     }
+
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BufferTL::clearTimeline()
 {

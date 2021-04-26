@@ -42,40 +42,40 @@
 namespace sight::module::io::itk
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SJpgImageSeriesWriter::SJpgImageSeriesWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SJpgImageSeriesWriter::~SJpgImageSeriesWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SJpgImageSeriesWriter::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SJpgImageSeriesWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SJpgImageSeriesWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SJpgImageSeriesWriter::openLocationDialog()
 {
@@ -103,7 +103,8 @@ void SJpgImageSeriesWriter::openLocationDialog()
         messageBox.setIcon(ui::base::dialog::IMessageDialog::QUESTION);
         messageBox.addButton(ui::base::dialog::IMessageDialog::YES);
         messageBox.addButton(ui::base::dialog::IMessageDialog::CANCEL);
-        if( messageBox.show() == sight::ui::base::dialog::IMessageDialog::YES)
+
+        if(messageBox.show() == sight::ui::base::dialog::IMessageDialog::YES)
         {
             break;
         }
@@ -121,35 +122,34 @@ void SJpgImageSeriesWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SJpgImageSeriesWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SJpgImageSeriesWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SJpgImageSeriesWriter::info(std::ostream& _sstream )
+void SJpgImageSeriesWriter::info(std::ostream& _sstream)
 {
     _sstream << "SJpgImageSeriesWriter::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SJpgImageSeriesWriter::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::ImageSeries::csptr imageSeries =
-            this->getInput< data::ImageSeries >(sight::io::base::service::s_DATA_KEY);
+        data::ImageSeries::csptr imageSeries
+            = this->getInput<data::ImageSeries>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", imageSeries);
 
         SIGHT_ASSERT("Image from image series is not instanced", imageSeries->getImage());
@@ -165,6 +165,6 @@ void SJpgImageSeriesWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::itk

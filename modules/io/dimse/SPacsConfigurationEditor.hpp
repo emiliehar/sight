@@ -65,13 +65,11 @@ namespace sight::module::io::dimse
 class MODULE_IO_DIMSE_CLASS_API SPacsConfigurationEditor : public QObject,
                                                            public sight::ui::base::IEditor
 {
-
 Q_OBJECT;
 
 public:
-
     /// Generates default methods as New, dynamicCast, ...
-    SIGHT_DECLARE_SERVICE(SPacsConfigurationEditor,  sight::ui::base::IEditor )
+    SIGHT_DECLARE_SERVICE(SPacsConfigurationEditor, sight::ui::base::IEditor)
 
     /// Creates the service.
     MODULE_IO_DIMSE_API SPacsConfigurationEditor() noexcept;
@@ -80,7 +78,6 @@ public:
     MODULE_IO_DIMSE_API virtual ~SPacsConfigurationEditor() noexcept;
 
 protected:
-
     /// Configures the editor.
     MODULE_IO_DIMSE_API void configuring() override;
 
@@ -94,7 +91,6 @@ protected:
     MODULE_IO_DIMSE_API void stopping() override;
 
 private:
-
     /**
      * @brief Sends a modified signal on the configuration.
      * @param _pacsConfiguration the modified data .
@@ -109,19 +105,19 @@ private:
     void showDialog(const std::string _title, const std::string _message);
 
     /// Contains the AET of the SCU (client name) editor.
-    QPointer< QLineEdit > m_SCUAppEntityTitleEdit;
+    QPointer<QLineEdit> m_SCUAppEntityTitleEdit;
 
     /// Contains the AET of the SCP (server name) editor.
-    QPointer< QLineEdit > m_SCPAppEntityTitleEdit;
+    QPointer<QLineEdit> m_SCPAppEntityTitleEdit;
 
     /// Contains the SCP host name (server adress) editor.
-    QPointer< QLineEdit > m_SCPHostNameEdit;
+    QPointer<QLineEdit> m_SCPHostNameEdit;
 
     /// Contains the SCP port (server port) editor.
-    QPointer< QSpinBox > m_SCPPortEdit;
+    QPointer<QSpinBox> m_SCPPortEdit;
 
     /// Contains the request mode, GET or MOVE, editor.
-    QPointer< QComboBox > m_retrieveMethodWidget;
+    QPointer<QComboBox> m_retrieveMethodWidget;
 
     /**
      * @brief Contains the move AET editor. This AET is use to receive C-MOVE responses.
@@ -131,25 +127,24 @@ private:
      * For more information, see the link bellow:
      * https://book.orthanc-server.com/dicom-guide.html#dicom-network-protocol.
      */
-    QPointer< QLineEdit > m_moveAppEntityTitleEdit;
+    QPointer<QLineEdit> m_moveAppEntityTitleEdit;
 
     /// Contains the move port editor. This port is use to receive C-MOVE responses.
-    QPointer< QSpinBox > m_movePort;
+    QPointer<QSpinBox> m_movePort;
 
     /// Contains the test button, sends a C-ECHO request to the PACS.
-    QPointer< QPushButton > m_pingPacsButtonWidget;
+    QPointer<QPushButton> m_pingPacsButtonWidget;
 
     /// Contains the worker of the series enquire thread.
     core::thread::Worker::sptr m_requestWorker;
 
     /// Defines whether or not the dialog message should be displayed for the ping result.
-    bool m_showDialog { true };
+    bool m_showDialog{true};
 
     /// Contains the slot to show a dialog in the main thread.
-    core::com::Slot< void(const std::string, const std::string) >::sptr m_slotShowDialog { nullptr };
+    core::com::Slot<void(const std::string, const std::string)>::sptr m_slotShowDialog{nullptr};
 
 private Q_SLOTS:
-
     /// Calls for pinging the pacs.
     void pingPACS();
 
@@ -182,7 +177,6 @@ private Q_SLOTS:
      * @param _value the move application port.
      */
     void onMovePortChanged(int _value);
-
 };
 
 } // namespace sight::module::io::dimse.

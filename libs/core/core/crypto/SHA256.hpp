@@ -38,6 +38,7 @@
 
 namespace sight::core::crypto
 {
+
 static const int HASH_SIZE = 32;
 
 /// Compute a sha256 hash using openSSL

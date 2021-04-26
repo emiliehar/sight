@@ -37,11 +37,9 @@ namespace sight::viz::scene2d
  */
 class VIZ_SCENE2D_CLASS_API IAdaptor : public service::IService
 {
-
 public:
-
     /// Point2D coordinate <X, Y>
-    typedef std::pair< double, double > Point2DType;
+    typedef std::pair<double, double> Point2DType;
 
     /// <width, height>
     typedef std::pair<float, float> ViewSizeRatio;
@@ -65,10 +63,9 @@ public:
 
     /// Interact with the mouse events catched on the IAdaptor
     /// (virtual function, its behavior is only defined in the specific adaptors).
-    VIZ_SCENE2D_API virtual void processInteraction(scene2d::data::Event& _event );
+    VIZ_SCENE2D_API virtual void processInteraction(scene2d::data::Event& _event);
 
 protected:
-
     /// Constructor, set the zValue to 0.
     VIZ_SCENE2D_API IAdaptor() noexcept;
 
@@ -90,15 +87,17 @@ protected:
 
     /// Get a pair of doubles (a point), two axis, and convert the pair of doubles values from adaptor
     /// coordinates to scene coordinates
-    VIZ_SCENE2D_API Point2DType mapAdaptorToScene(const Point2DType& _xy,
-                                                  const scene2d::data::Axis::sptr& _xAxis,
-                                                  const scene2d::data::Axis::sptr& _yAxis) const;
+    VIZ_SCENE2D_API Point2DType mapAdaptorToScene(
+        const Point2DType& _xy,
+        const scene2d::data::Axis::sptr& _xAxis,
+        const scene2d::data::Axis::sptr& _yAxis) const;
 
     /// Get a pair of doubles (a point), two axis, and convert the pair of doubles values from scene
     /// coordinates to adaptor coordinates
-    VIZ_SCENE2D_API Point2DType mapSceneToAdaptor(const Point2DType& _xy,
-                                                  const scene2d::data::Axis::sptr& _xAxis,
-                                                  const scene2d::data::Axis::sptr& _yAxis) const;
+    VIZ_SCENE2D_API Point2DType mapSceneToAdaptor(
+        const Point2DType& _xy,
+        const scene2d::data::Axis::sptr& _xAxis,
+        const scene2d::data::Axis::sptr& _yAxis) const;
 
     /// Return the ratio between view's initial size and its current size
     VIZ_SCENE2D_API ViewSizeRatio getViewSizeRatio() const;
@@ -137,6 +136,6 @@ protected:
     ViewportSizeRatio m_viewportInitialSize;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::viz::scene2d

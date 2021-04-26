@@ -43,7 +43,7 @@ namespace sight::ui::base::preferences
 const std::string s_PREFERENCES_KEY          = "preferences";
 static const std::string s_PASSWORD_HASH_KEY = "~~Private~~";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void setPassword(const core::crypto::secure_string& password)
 {
@@ -54,7 +54,8 @@ void setPassword(const core::crypto::secure_string& password)
 
         // Remove the password hash
         data::Composite::sptr prefs = getPreferences();
-        if(prefs && prefs->find(s_PASSWORD_HASH_KEY) != prefs->end() )
+
+        if(prefs && prefs->find(s_PASSWORD_HASH_KEY) != prefs->end())
         {
             setPreference(s_PASSWORD_HASH_KEY, "");
             savePreferences();
@@ -71,14 +72,14 @@ void setPassword(const core::crypto::secure_string& password)
     }
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 const core::crypto::secure_string getPassword()
 {
     return io::session::PasswordKeeper::getGlobalPassword();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 bool checkPassword(const core::crypto::secure_string& password)
 {
@@ -103,14 +104,14 @@ bool checkPassword(const core::crypto::secure_string& password)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool hasPasswordHash()
 {
     return !getPreference(s_PASSWORD_HASH_KEY).empty();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 bool setPreference(const std::string& key, const std::string& value)
 {
@@ -118,10 +119,12 @@ bool setPreference(const std::string& key, const std::string& value)
 
     // Check preferences
     data::Composite::sptr prefs = getPreferences();
+
     if(prefs)
     {
         data::Composite::IteratorType iterPref = prefs->find(key);
-        if ( iterPref != prefs->end() )
+
+        if(iterPref != prefs->end())
         {
             data::String::sptr preferences = data::String::dynamicCast(iterPref->second);
             preferences->value() = value;
@@ -137,26 +140,29 @@ bool setPreference(const std::string& key, const std::string& value)
     return isModified;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 std::string getPreference(const std::string& preferenceKey)
 {
     std::string value;
     // Check preferences
     data::Composite::sptr prefs = getPreferences();
+
     if(prefs)
     {
-        data::Composite::IteratorType iterPref = prefs->find( preferenceKey );
-        if ( iterPref != prefs->end() )
+        data::Composite::IteratorType iterPref = prefs->find(preferenceKey);
+
+        if(iterPref != prefs->end())
         {
             data::String::sptr prefString = data::String::dynamicCast(iterPref->second);
             value = prefString->value();
         }
     }
+
     return value;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::filesystem::path getPreferencesFile()
 {
@@ -171,18 +177,19 @@ std::filesystem::path getPreferencesFile()
 
     SIGHT_THROW_IF("Unable to define user data directory", appPrefDir.empty());
 
-    if (!bfile::exists(appPrefDir))
+    if(!bfile::exists(appPrefDir))
     {
         bfile::create_directories(appPrefDir);
     }
 
-    SIGHT_THROW_IF("Preferences file '"+appPrefFile.string()+"' already exists and is not a regular file.",
-                   bfile::exists(appPrefFile) && !bfile::is_regular_file(appPrefFile));
+    SIGHT_THROW_IF(
+        "Preferences file '" + appPrefFile.string() + "' already exists and is not a regular file.",
+        bfile::exists(appPrefFile) && !bfile::is_regular_file(appPrefFile));
 
     return appPrefFile;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // returns the preferences service (or nullptr if is does not exist). This method is not exposed.
 ui::base::preferences::IPreferences::sptr getPreferencesSrv()
@@ -195,12 +202,13 @@ ui::base::preferences::IPreferences::sptr getPreferencesSrv()
         service::IService::sptr prefService = *preferencesServicesList.begin();
         srv = ui::base::preferences::IPreferences::dynamicCast(prefService);
     }
+
     SIGHT_DEBUG_IF("The preferences service is not found, the preferences can not be used", !srv);
 
     return srv;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Composite::sptr getPreferences()
 {
@@ -210,41 +218,46 @@ data::Composite::sptr getPreferences()
 
     if(prefService)
     {
-        prefs = prefService->getInOut< data::Composite >(s_PREFERENCES_KEY);
+        prefs = prefService->getInOut<data::Composite>(s_PREFERENCES_KEY);
     }
+
     SIGHT_DEBUG_IF("The preferences are not found", !prefs);
 
     return prefs;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void savePreferences()
 {
     const auto prefService = getPreferencesSrv();
     SIGHT_WARN_IF("The preferences service is not found, the preferences can not be saved", !prefService);
-    SIGHT_WARN_IF("The preferences service is not started, the preferences can not be saved",
-                  prefService && !prefService->isStarted());
+    SIGHT_WARN_IF(
+        "The preferences service is not started, the preferences can not be saved",
+        prefService && !prefService->isStarted());
+
     if(prefService && prefService->isStarted())
     {
         prefService->update();
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string getValue(const std::string& var, const char delimiter)
 {
     std::string value(var);
     const size_t first = var.find(delimiter);
     const size_t last  = var.rfind(delimiter);
-    if (first == 0 && last == var.size() - 1)
+
+    if(first == 0 && last == var.size() - 1)
     {
-        value = ui::base::preferences::getPreference( var.substr(1, var.size() - 2) );
+        value = ui::base::preferences::getPreference(var.substr(1, var.size() - 2));
     }
+
     return value;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::ui::base::preferences

@@ -24,6 +24,7 @@
 
 namespace sight::core::runtime
 {
+
 /**
  * @brief       The namespace sightcore::runtime::utils contains template executable factory classes
  */
@@ -31,4 +32,5 @@ namespace utils
 {
 
 }
+
 }

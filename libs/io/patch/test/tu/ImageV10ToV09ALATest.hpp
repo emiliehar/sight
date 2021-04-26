@@ -28,16 +28,18 @@
 
 namespace sight::io::patch::semantic
 {
+
 namespace ut
 {
+
 /**
  * @brief Test patch to convert 'm_imageLandmarksId' field  of 'data::Image' from 'data::PointList' to
  *        `data::Landmarks`.
  */
 class ImageV10ToV09ALATest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ImageV10ToV09ALATest );
-CPPUNIT_TEST( applyPatchTest );
+CPPUNIT_TEST_SUITE(ImageV10ToV09ALATest);
+CPPUNIT_TEST(applyPatchTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -50,5 +52,6 @@ public:
     void addPoint(sight::atoms::Map::sptr map, const std::array<double, 3>& pt, const std::string& label);
 };
 
-} //namespace ut
-} //namespace sight::io::patch::semantic
+} // namespace ut
+
+} // namespace sight::io::patch::semantic

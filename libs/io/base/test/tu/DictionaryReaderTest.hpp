@@ -28,6 +28,7 @@
 
 namespace sight::io::base
 {
+
 namespace ut
 {
 
@@ -36,12 +37,12 @@ namespace ut
  */
 class DictionaryReaderTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( DictionaryReaderTest );
-CPPUNIT_TEST( test_1 );
-CPPUNIT_TEST( test_2 );
-CPPUNIT_TEST( test_3 );
-CPPUNIT_TEST( test_4 );
-CPPUNIT_TEST( test_5 );
+CPPUNIT_TEST_SUITE(DictionaryReaderTest);
+CPPUNIT_TEST(test_1);
+CPPUNIT_TEST(test_2);
+CPPUNIT_TEST(test_3);
+CPPUNIT_TEST(test_4);
+CPPUNIT_TEST(test_5);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -56,7 +57,6 @@ public:
     void test_5();
 
 protected:
-
     void generateDictionaryFileWithMissingSemiColon(std::filesystem::path dictionaryFile);
     void generateDictionaryFileWithWrongCategory(std::filesystem::path dictionaryFile);
     void generateDictionaryFileWithWrongClass(std::filesystem::path dictionaryFile);
@@ -64,5 +64,6 @@ protected:
     std::filesystem::path m_tmpDictionaryFilePath;
 };
 
-} //namespace ut
-} //namespace sight::io::base
+} // namespace ut
+
+} // namespace sight::io::base

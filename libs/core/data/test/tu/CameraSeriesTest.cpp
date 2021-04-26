@@ -30,30 +30,31 @@
 #include <utestData/helper/compare.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::data::ut::CameraSeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::data::ut::CameraSeriesTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeriesTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeriesTest::tearDown()
 {
-    //Hack: force link with arData
+    // Hack: force link with arData
     data::Camera::sptr obj = data::Camera::New();
     obj->getClassname();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::CameraSeries::sptr initCameraSeries()
 {
@@ -81,11 +82,12 @@ data::CameraSeries::sptr initCameraSeries()
 
     // --------------- Extrinsic matrix ----------------------
     data::Matrix4::sptr mat = data::Matrix4::New();
-    for (size_t i = 0; i < 4; ++i)
+
+    for(size_t i = 0 ; i < 4 ; ++i)
     {
-        for (size_t j = 0; j < 4; ++j)
+        for(size_t j = 0 ; j < 4 ; ++j)
         {
-            const auto value = static_cast< data::Matrix4::TM3DType >(2*i+j);
+            const auto value = static_cast<data::Matrix4::TM3DType>(2 * i + j);
             mat->setCoefficient(i, j, value);
         }
     }
@@ -95,7 +97,7 @@ data::CameraSeries::sptr initCameraSeries()
     return series;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeriesTest::cameraTest()
 {
@@ -104,11 +106,12 @@ void CameraSeriesTest::cameraTest()
 
     data::Matrix4::sptr identity = data::Matrix4::New();
     data::Matrix4::sptr mat      = data::Matrix4::New();
-    for (size_t i = 0; i < 4; ++i)
+
+    for(size_t i = 0 ; i < 4 ; ++i)
     {
-        for (size_t j = 0; j < 4; ++j)
+        for(size_t j = 0 ; j < 4 ; ++j)
         {
-            const auto value = static_cast< data::Matrix4::TM3DType >(2*i+j);
+            const auto value = static_cast<data::Matrix4::TM3DType>(2 * i + j);
             mat->setCoefficient(i, j, value);
         }
     }
@@ -151,7 +154,7 @@ void CameraSeriesTest::cameraTest()
     CPPUNIT_ASSERT_EQUAL(size_t(0), series->getNumberOfCameras());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeriesTest::shallowCopyTest()
 {
@@ -165,16 +168,17 @@ void CameraSeriesTest::shallowCopyTest()
     CPPUNIT_ASSERT_EQUAL(series->getCamera(1), series2->getCamera(1));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeriesTest::deepCopyTest()
 {
     data::CameraSeries::sptr series = initCameraSeries();
     data::CameraSeries::sptr series2;
-    series2 = data::Object::copy< data::CameraSeries >(series);
+    series2 = data::Object::copy<data::CameraSeries>(series);
 
     CPPUNIT_ASSERT(utestData::helper::compare(series, series2));
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

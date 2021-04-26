@@ -32,8 +32,10 @@
 
 namespace sight::core::memory
 {
+
 namespace stream
 {
+
 namespace in
 {
 
@@ -51,12 +53,13 @@ public:
     }
 
 protected:
-
     CORE_API SPTR(std::istream) get();
 
     core::memory::FileHolder m_path;
 };
 
 } // namespace in
+
 } // namespace stream
+
 } // namespace sight::core::memory

@@ -32,9 +32,7 @@ namespace sight::module::viz::sample
 /// This class is started when the module is loaded.
 class MODULE_VIZ_SAMPLE_CLASS_API Plugin final : public core::runtime::Plugin
 {
-
 public:
-
     /// Destroys the plugin.
     ~Plugin() noexcept override;
 
@@ -43,7 +41,6 @@ public:
 
     /// Stops the plugin, destroys Ogre resources.
     MODULE_VIZ_SAMPLE_API void stop() noexcept override;
-
 };
 
 } // namespace sight::module::viz::sample.

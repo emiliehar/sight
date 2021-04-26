@@ -36,4 +36,5 @@
 
 namespace sight::atoms
 {
+
 }

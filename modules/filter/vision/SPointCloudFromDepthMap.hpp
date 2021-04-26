@@ -113,7 +113,6 @@ protected:
     MODULE_FILTER_VISION_API void updating() override;
 
 private:
-
     /**
      * @name Slots API
      * @{
@@ -127,26 +126,27 @@ private:
     /**
      * @brief Computes a point cloud from a depth map.
      */
-    void depthMapToPointCloud(const data::Camera::csptr& depthCamera,
-                              const data::Image::csptr& depthMap,
-                              const data::Mesh::sptr& pointCloud);
+    void depthMapToPointCloud(
+        const data::Camera::csptr& depthCamera,
+        const data::Image::csptr& depthMap,
+        const data::Mesh::sptr& pointCloud);
 
     /**
      * @brief Computes a point cloud with colors from a depth map and a color
      * map.
      */
-    void depthMapToPointCloudRGB(const data::Camera::csptr& depthCamera,
-                                 const data::Camera::csptr& colorCamera,
-                                 const data::Image::csptr& depthMap,
-                                 const data::Image::csptr& colorMap,
-                                 const data::Matrix4::csptr& extrinsic,
-                                 const data::Mesh::sptr& pointCloud);
+    void depthMapToPointCloudRGB(
+        const data::Camera::csptr& depthCamera,
+        const data::Camera::csptr& colorCamera,
+        const data::Image::csptr& depthMap,
+        const data::Image::csptr& colorMap,
+        const data::Matrix4::csptr& extrinsic,
+        const data::Mesh::sptr& pointCloud);
 
     /// Min value of depth used to build pointcloud.
     std::uint16_t m_minDepth = 0;
     /// Max value of depth used to build pointcloud.
     std::uint16_t m_maxDepth = UINT16_MAX;
-
 };
 
 } // namespace sight::module::filter::vision

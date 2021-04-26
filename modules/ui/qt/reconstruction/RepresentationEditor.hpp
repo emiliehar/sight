@@ -62,7 +62,6 @@ class MODULE_UI_QT_CLASS_API RepresentationEditor : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(RepresentationEditor, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -72,7 +71,6 @@ public:
     MODULE_UI_QT_API virtual ~RepresentationEditor() noexcept;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /// Initialize the UI
@@ -99,13 +97,11 @@ protected:
     void notifyMaterial();
 
 protected Q_SLOTS:
-
-    void onChangeRepresentation( int id );
-    void onChangeShading( int id );
-    void onShowNormals(int state );
+    void onChangeRepresentation(int id);
+    void onChangeShading(int id);
+    void onShowNormals(int state);
 
 private:
-
     void refreshNormals();
     void refreshRepresentation();
     void refreshShading();
@@ -115,7 +111,6 @@ private:
     QPointer<QButtonGroup> m_normalsRadioBox;
 
     data::Material::sptr m_material;
-
 };
 
 } // uiReconstructionQt

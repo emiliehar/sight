@@ -31,13 +31,13 @@ Logger::Logger()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Logger::~Logger()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Logger::information(const std::string& message)
 {
@@ -46,7 +46,7 @@ void Logger::information(const std::string& message)
     SIGHT_INFO(message);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Logger::warning(const std::string& message)
 {
@@ -55,7 +55,7 @@ void Logger::warning(const std::string& message)
     SIGHT_WARN(message);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Logger::critical(const std::string& message)
 {
@@ -64,57 +64,60 @@ void Logger::critical(const std::string& message)
     SIGHT_ERROR(message);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 core::log::Log Logger::getLog(unsigned int index)
 {
     SIGHT_ASSERT("Please be sure to provide an index lower than the number of items.", index < this->count());
+
     return m_logContainer[index];
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::size_t Logger::count() const
 {
     return m_logContainer.size();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::size_t Logger::count(core::log::Log::LevelType level) const
 {
     std::size_t count = 0;
-    for(const core::log::Log& log: m_logContainer)
+
+    for(const core::log::Log& log : m_logContainer)
     {
         if(log.getLevel() == level)
         {
             ++count;
         }
     }
+
     return count;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Logger::sort()
 {
     std::sort(m_logContainer.begin(), m_logContainer.end(), Logger::logSorter);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Logger::clear()
 {
     m_logContainer.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool Logger::logSorter(const core::log::Log& logA, const core::log::Log& logB)
 {
     return logA.getLevel() > logB.getLevel();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace sight::core::log
+} // namespace sight::core::log

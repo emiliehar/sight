@@ -34,7 +34,7 @@
 #include <OGRE/OgreTextureManager.h>
 #include <OGRE/Overlay/OgreOverlayManager.h>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::viz::scene3d::ut::TextTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::viz::scene3d::ut::TextTest);
 
 namespace sight::viz::scene3d
 {
@@ -42,21 +42,19 @@ namespace sight::viz::scene3d
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 TextTest::TextTest()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 TextTest::~TextTest()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TextTest::setUp()
 {
@@ -67,7 +65,7 @@ void TextTest::setUp()
     logMgr->createLog("OgreTest.log", true, false, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TextTest::tearDown()
 {
@@ -78,16 +76,17 @@ void TextTest::tearDown()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TextTest::factoryTest()
 {
-    //This is needed for the TextureManager to be instanced, no better way has be found.
-    auto ogreRenderWindow = m_ogreRoot->createRenderWindow("Dummy-RenderWindow",
-                                                           static_cast<unsigned int>(1),
-                                                           static_cast<unsigned int>(1),
-                                                           false,
-                                                           nullptr);
+    // This is needed for the TextureManager to be instanced, no better way has be found.
+    auto ogreRenderWindow = m_ogreRoot->createRenderWindow(
+        "Dummy-RenderWindow",
+        static_cast<unsigned int>(1),
+        static_cast<unsigned int>(1),
+        false,
+        nullptr);
     ogreRenderWindow->setVisible(false);
     ogreRenderWindow->setAutoUpdated(false);
     ::Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
@@ -96,21 +95,27 @@ void TextTest::factoryTest()
     ::Ogre::MaterialManager::getSingleton().load("Text", viz::scene3d::RESOURCE_GROUP);
 
     ::Ogre::SceneManager* sceneManager = m_ogreRoot->createSceneManager("DefaultSceneManager", "test");
-    const auto& factoryName = viz::scene3d::factory::Text::FACTORY_TYPE_NAME;
-    const auto& textName1   = "COUCOU";
+    const auto& factoryName            = viz::scene3d::factory::Text::FACTORY_TYPE_NAME;
+    const auto& textName1              = "COUCOU";
 
     ::Ogre::SceneNode* rootNode = sceneManager->getRootSceneNode();
 
     auto& overlayManager = ::Ogre::OverlayManager::getSingleton();
 
-    auto overlayTextPanel =
-        static_cast< ::Ogre::OverlayContainer* >(overlayManager.createOverlayElement("Panel", "_GUI"));
+    auto overlayTextPanel
+        = static_cast< ::Ogre::OverlayContainer*>(overlayManager.createOverlayElement("Panel", "_GUI"));
 
     auto* const camera = sceneManager->createCamera("TestCamera");
     ogreRenderWindow->addViewport(camera);
 
-    viz::scene3d::Text* textObj1 = viz::scene3d::Text::New("testTest", sceneManager, overlayTextPanel,
-                                                           "DejaVuSans.ttf", 32, 96, camera);
+    viz::scene3d::Text* textObj1 = viz::scene3d::Text::New(
+        "testTest",
+        sceneManager,
+        overlayTextPanel,
+        "DejaVuSans.ttf",
+        32,
+        96,
+        camera);
     CPPUNIT_ASSERT(textObj1 != nullptr); // See if it has the right type.
 
     ::Ogre::MovableObject* movableText1 = textObj1;
@@ -136,7 +141,8 @@ void TextTest::factoryTest()
     m_ogreRoot->getRenderSystem()->destroyRenderWindow("Dummy-RenderWindow");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::viz::scene3d
+} // namespace ut
+
+} // namespace sight::viz::scene3d

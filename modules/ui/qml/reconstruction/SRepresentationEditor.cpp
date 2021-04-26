@@ -33,44 +33,44 @@ namespace sight::module::ui::qml::reconstruction
 
 static const service::IService::KeyType s_RECONSTRUCTION_INOUT = "reconstruction";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SRepresentationEditor::SRepresentationEditor() noexcept
 {
     this->registerObject(s_RECONSTRUCTION_INOUT, AccessType::INOUT, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SRepresentationEditor::~SRepresentationEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SRepresentationEditor::configuring()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SRepresentationEditor::starting()
 {
     this->IQmlEditor::starting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SRepresentationEditor::stopping()
 {
     this->IQmlEditor::stopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SRepresentationEditor::updating()
 {
-    data::Reconstruction::sptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::sptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("'" + s_RECONSTRUCTION_INOUT + "' must be set as 'inout'", reconstruction);
     m_material = reconstruction->getMaterial();
 
@@ -80,123 +80,117 @@ void SRepresentationEditor::updating()
     Q_EMIT materialChanged(representationMode, shadingMode, normal);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SRepresentationEditor::onChangeRepresentation( int id )
+void SRepresentationEditor::onChangeRepresentation(int id)
 {
-
     data::Material::RepresentationType selectedMode = data::Material::SURFACE;
 
     switch(id)
     {
         case 1:
-        {
             selectedMode = data::Material::SURFACE;
             break;
-        }
+
         case 2:
-        {
             selectedMode = data::Material::POINT;
             break;
-        }
+
         case 3:
-        {
             selectedMode = data::Material::WIREFRAME;
             break;
-        }
+
         case 4:
-        {
             selectedMode = data::Material::EDGE;
             break;
-        }
+
         default:
             selectedMode = data::Material::SURFACE;
     }
 
-    m_material->setRepresentationMode( selectedMode );
+    m_material->setRepresentationMode(selectedMode);
     this->notifyMaterial();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SRepresentationEditor::onChangeShading(  int id )
+void SRepresentationEditor::onChangeShading(int id)
 {
     data::Material::ShadingType selectedMode = data::Material::PHONG;
 
     switch(id)
     {
         case 0:
-        {
             selectedMode = data::Material::AMBIENT;
             break;
-        }
+
         case 1:
-        {
             selectedMode = data::Material::FLAT;
             break;
-        }
+
         case 2:
-        {
             selectedMode = data::Material::GOURAUD;
             break;
-        }
+
         case 3:
-        {
             selectedMode = data::Material::PHONG;
             break;
-        }
+
         default:
             selectedMode = data::Material::PHONG;
     }
 
-    m_material->setShadingMode( selectedMode );
+    m_material->setShadingMode(selectedMode);
     this->notifyMaterial();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SRepresentationEditor::onShowNormals(int state )
+void SRepresentationEditor::onShowNormals(int state)
 {
-    data::Reconstruction::sptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::sptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("No Reconstruction!", reconstruction);
 
     switch(state)
     {
         case 1:
-            m_material->setOptionsMode( data::Material::STANDARD );
+            m_material->setOptionsMode(data::Material::STANDARD);
             break;
+
         case 2:
-            m_material->setOptionsMode( data::Material::NORMALS );
+            m_material->setOptionsMode(data::Material::NORMALS);
             break;
+
         case 3:
-            m_material->setOptionsMode( data::Material::CELLS_NORMALS );
+            m_material->setOptionsMode(data::Material::CELLS_NORMALS);
             break;
+
         default:
-            m_material->setOptionsMode( data::Material::STANDARD );
+            m_material->setOptionsMode(data::Material::STANDARD);
     }
 
     this->notifyMaterial();
 
     // In VTK backend the normals is handled by the mesh and not by the material
-    auto sig = reconstruction->signal< data::Reconstruction::MeshChangedSignalType >(
+    auto sig = reconstruction->signal<data::Reconstruction::MeshChangedSignalType>(
         data::Reconstruction::s_MESH_CHANGED_SIG);
     sig->asyncEmit(reconstruction->getMesh());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SRepresentationEditor::notifyMaterial()
 {
-    data::Reconstruction::sptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::sptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("No Reconstruction!", reconstruction);
 
     data::Object::ModifiedSignalType::sptr sig;
-    sig = reconstruction->getMaterial()->signal< data::Object::ModifiedSignalType >(
+    sig = reconstruction->getMaterial()->signal<data::Object::ModifiedSignalType>(
         data::Object::s_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SRepresentationEditor::getAutoConnections() const
 {
@@ -207,6 +201,6 @@ service::IService::KeyConnectionsMap SRepresentationEditor::getAutoConnections()
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}
+} // namespace sight::module

@@ -29,7 +29,7 @@
 #include <fstream>
 #include <iostream>
 
-SIGHT_REGISTER_IO_READER( ::sight::io::base::reader::ArrayReader );
+SIGHT_REGISTER_IO_READER(::sight::io::base::reader::ArrayReader);
 
 namespace sight::io::base
 {
@@ -37,19 +37,19 @@ namespace sight::io::base
 namespace reader
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ArrayReader::ArrayReader(io::base::reader::IObjectReader::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ArrayReader::~ArrayReader()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArrayReader::read()
 {
@@ -62,29 +62,31 @@ void ArrayReader::read()
     size_t arraySizeInBytes = array->resize(array->getSize());
     char* buff              = static_cast<char*>(array->getBuffer());
 
-    std::ifstream fs(file.string().c_str(), std::ios::in|std::ios::binary|std::ios::ate);
+    std::ifstream fs(file.string().c_str(), std::ios::in | std::ios::binary | std::ios::ate);
 
     SIGHT_THROW_IF("Unable to read " << file, !fs.good());
 
     std::streampos fileSize = fs.tellg();
     fs.seekg(0, std::ios::beg);
 
-    SIGHT_THROW_IF(file << ": Bad file size, expected: " << arraySizeInBytes << ", was: " << fileSize,
-                   arraySizeInBytes - static_cast<size_t>(fileSize) != 0);
+    SIGHT_THROW_IF(
+        file << ": Bad file size, expected: " << arraySizeInBytes << ", was: " << fileSize,
+            arraySizeInBytes - static_cast<size_t>(fileSize) != 0);
 
     fs.read(buff, static_cast<std::streamsize>(arraySizeInBytes));
 
     fs.close();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string ArrayReader::extension()
 {
-    return (".raw");
+    return ".raw";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace reader
+
 } // namespace sight::io::base

@@ -45,8 +45,7 @@ namespace sight::io::igtl
 class IO_IGTL_CLASS_API Server : public io::igtl::INetwork
 {
 public:
-
-    typedef SPTR (Server) sptr;
+    typedef SPTR(Server) sptr;
 
     /**
      * @brief constructor
@@ -70,7 +69,7 @@ public:
      *
      * @param[in] msec time to wait in millisecond
      */
-    IO_IGTL_API Client::sptr waitForConnection (int msec = 0);
+    IO_IGTL_API Client::sptr waitForConnection(int msec = 0);
 
     /**
      * @brief method to stop the server
@@ -114,7 +113,7 @@ public:
      *
      * @return vector of igl::MessageHeader::Pointer
      */
-    IO_IGTL_API std::vector< ::igtl::MessageHeader::Pointer > receiveHeaders();
+    IO_IGTL_API std::vector< ::igtl::MessageHeader::Pointer> receiveHeaders();
 
     /** @brief receive body pack of a specific connected client
      *
@@ -123,15 +122,16 @@ public:
      *
      *  @return Message
      */
-    IO_IGTL_API ::igtl::MessageBase::Pointer receiveBody(::igtl::MessageHeader::Pointer header,
-                                                         unsigned int client);
+    IO_IGTL_API ::igtl::MessageBase::Pointer receiveBody(
+        ::igtl::MessageHeader::Pointer header,
+        unsigned int client);
 
     /**
      * @brief method to retrieve vector of received object from all connected clients
      *
      * @return a vector of smart pointer of fwData object
      */
-    IO_IGTL_API std::vector< data::Object::sptr > receiveObjects(std::vector<std::string>& deviceNames);
+    IO_IGTL_API std::vector<data::Object::sptr> receiveObjects(std::vector<std::string>& deviceNames);
 
     /**
      * @brief set the device name when a message is sent
@@ -139,18 +139,17 @@ public:
     IO_IGTL_API void setMessageDeviceName(const std::string& deviceName);
 
 private:
-
     /// server socket
     ::igtl::ServerSocket::Pointer m_serverSocket;
 
-    ///mutex
+    /// mutex
     mutable core::mt::Mutex m_mutex;
 
     /// state of server
     bool m_isStarted;
 
     /// vector of clients
-    std::vector< Client::sptr > m_clients;
+    std::vector<Client::sptr> m_clients;
 
     /// Server port
     std::uint16_t m_port;
@@ -160,7 +159,6 @@ private:
 
     /// device name in the sended message
     std::string m_deviceNameOut;
-
 };
 
-}
+} // namespace sight::io

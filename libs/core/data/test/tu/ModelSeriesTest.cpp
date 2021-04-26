@@ -30,14 +30,15 @@
 #include <utestData/generator/Mesh.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::ModelSeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::ModelSeriesTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::setUp()
 {
@@ -45,7 +46,7 @@ void ModelSeriesTest::setUp()
     m_series = data::ModelSeries::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::tearDown()
 {
@@ -53,7 +54,7 @@ void ModelSeriesTest::tearDown()
     m_series.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::modelTest()
 {
@@ -80,12 +81,12 @@ void ModelSeriesTest::modelTest()
     recs.push_back(rec2);
 
     m_series->setReconstructionDB(recs);
-    CPPUNIT_ASSERT_EQUAL(2, (int)m_series->getReconstructionDB().size());
+    CPPUNIT_ASSERT_EQUAL(2, (int) m_series->getReconstructionDB().size());
     CPPUNIT_ASSERT_EQUAL(rec1, m_series->getReconstructionDB()[0]);
     CPPUNIT_ASSERT_EQUAL(rec2, m_series->getReconstructionDB()[1]);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::deepCopyTest()
 {
@@ -104,13 +105,12 @@ void ModelSeriesTest::deepCopyTest()
 
     secondSeries->deepCopy(m_series);
 
-    CPPUNIT_ASSERT_EQUAL(1, (int)m_series->getReconstructionDB().size());
-    CPPUNIT_ASSERT_EQUAL(1, (int)secondSeries->getReconstructionDB().size());
+    CPPUNIT_ASSERT_EQUAL(1, (int) m_series->getReconstructionDB().size());
+    CPPUNIT_ASSERT_EQUAL(1, (int) secondSeries->getReconstructionDB().size());
     CPPUNIT_ASSERT(m_series->getReconstructionDB()[0] != secondSeries->getReconstructionDB()[0]);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::shallowCopyTest()
 {
@@ -133,12 +133,12 @@ void ModelSeriesTest::shallowCopyTest()
 
     CPPUNIT_ASSERT_EQUAL(recs[0], m_series->getReconstructionDB()[0]);
     CPPUNIT_ASSERT_EQUAL(recs[0], secondSeries->getReconstructionDB()[0]);
-    CPPUNIT_ASSERT_EQUAL(1, (int)m_series->getReconstructionDB().size());
-    CPPUNIT_ASSERT_EQUAL(1, (int)secondSeries->getReconstructionDB().size());
-
+    CPPUNIT_ASSERT_EQUAL(1, (int) m_series->getReconstructionDB().size());
+    CPPUNIT_ASSERT_EQUAL(1, (int) secondSeries->getReconstructionDB().size());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

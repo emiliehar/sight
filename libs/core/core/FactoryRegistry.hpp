@@ -36,8 +36,8 @@ namespace sight::core
  * @brief FactoryRegistryBase is a class used to store factories
  * @note This class is thread safe.
  */
-template < typename FACTORY_SIGNATURE, typename KEY_TYPE = std::string,
-           typename FACTORY_HOLDER = std::function< FACTORY_SIGNATURE > >
+template<typename FACTORY_SIGNATURE, typename KEY_TYPE = std::string,
+         typename FACTORY_HOLDER = std::function<FACTORY_SIGNATURE> >
 class FactoryRegistryBase
 {
 public:
@@ -45,7 +45,7 @@ public:
     typedef KEY_TYPE KeyType;
 
     typedef FACTORY_HOLDER FactoryType;
-    typedef std::map< KeyType, FactoryType > RegistryType;
+    typedef std::map<KeyType, FactoryType> RegistryType;
     typedef std::vector<KeyType> KeyVectorType;
 
     FactoryRegistryBase()
@@ -75,10 +75,12 @@ public:
         core::mt::ReadLock lock(m_mutex);
         typename RegistryType::const_iterator iter = m_registry.find(key);
         FactoryType factory;
+
         if(iter != m_registry.end())
         {
             factory = iter->second;
         }
+
         return factory;
     }
 
@@ -89,14 +91,16 @@ public:
     {
         core::mt::ReadLock lock(m_mutex);
         KeyVectorType vectKeys;
-        std::transform( m_registry.begin(), m_registry.end(),
-                        std::back_inserter(vectKeys),
-                        std::bind(&RegistryType::value_type::first, std::placeholders::_1) );
+        std::transform(
+            m_registry.begin(),
+            m_registry.end(),
+            std::back_inserter(vectKeys),
+            std::bind(&RegistryType::value_type::first, std::placeholders::_1));
+
         return vectKeys;
     }
 
 protected:
-
     RegistryType m_registry;
     mutable core::mt::ReadWriteMutex m_mutex;
 };
@@ -104,12 +108,13 @@ protected:
 /**
  * @brief FactoryRegistry is a class used to store factories and create instance object with these factories.
  */
-template <typename F, typename KEY_TYPE = std::string, typename FACTORY_HOLDER = std::function< F > >
+template<typename F, typename KEY_TYPE = std::string, typename FACTORY_HOLDER = std::function<F> >
 class FactoryRegistry;
 
-template< typename RETURN_TYPE, typename KEY_TYPE, typename FACTORY_HOLDER >
-class FactoryRegistry< RETURN_TYPE(), KEY_TYPE, FACTORY_HOLDER > :
-    public FactoryRegistryBase < RETURN_TYPE(), KEY_TYPE >
+template<typename RETURN_TYPE, typename KEY_TYPE, typename FACTORY_HOLDER>
+class FactoryRegistry<RETURN_TYPE(), KEY_TYPE, FACTORY_HOLDER>:
+    public FactoryRegistryBase<RETURN_TYPE(),
+                               KEY_TYPE>
 {
 typedef RETURN_TYPE (FactorySignatureType)();
 typedef FACTORY_HOLDER FactoryType;
@@ -117,7 +122,6 @@ typedef RETURN_TYPE ReturnType;
 typedef KEY_TYPE KeyType;
 
 public:
-
     /**
      * @brief Instantiates an object with the factory associated with the specified key.
      * @return Created instance.
@@ -129,15 +133,18 @@ public:
         if(!factory)
         {
             ReturnType obj;
+
             return obj;
         }
+
         return factory();
     }
 };
 
-template< typename RETURN_TYPE, typename ARG1_TYPE, typename KEY_TYPE, typename FACTORY_HOLDER >
-class FactoryRegistry< RETURN_TYPE(ARG1_TYPE), KEY_TYPE, FACTORY_HOLDER > :
-    public FactoryRegistryBase < RETURN_TYPE(ARG1_TYPE), KEY_TYPE >
+template<typename RETURN_TYPE, typename ARG1_TYPE, typename KEY_TYPE, typename FACTORY_HOLDER>
+class FactoryRegistry<RETURN_TYPE(ARG1_TYPE), KEY_TYPE, FACTORY_HOLDER>:
+    public FactoryRegistryBase<RETURN_TYPE(ARG1_TYPE),
+                               KEY_TYPE>
 {
 typedef RETURN_TYPE (FactorySignatureType)(ARG1_TYPE);
 typedef FACTORY_HOLDER FactoryType;
@@ -146,7 +153,6 @@ typedef ARG1_TYPE Arg1Type;
 typedef KEY_TYPE KeyType;
 
 public:
-
     /**
      * @brief Instantiates an object with the factory associated with the specified key, passing arg1 to the factory.
      * @return Created instance.
@@ -155,12 +161,14 @@ public:
     {
         FactoryType factory = this->getFactory(key);
         ReturnType obj;
+
         if(factory)
         {
             obj = factory(arg1);
         }
+
         return obj;
     }
 };
 
-} //namespace sight::core
+} // namespace sight::core

@@ -57,7 +57,6 @@ class IO_ZIP_CLASS_API ArchiveWriter : public Archive
 {
 public:
     SIGHT_DECLARE_CLASS(ArchiveWriter, Archive)
-
     /// Delete copy constructors and assignment operators, as we don't want to allow resources duplication
     ArchiveWriter(const ArchiveWriter&)            = delete;
     ArchiveWriter(ArchiveWriter&&)                 = delete;
@@ -80,7 +79,6 @@ public:
         const Level level                           = Level::DEFAULT) = 0;
 
 protected:
-
     /// Constructor
     IO_ZIP_API ArchiveWriter() = default;
 

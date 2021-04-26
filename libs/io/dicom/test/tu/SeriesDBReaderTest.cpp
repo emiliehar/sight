@@ -59,41 +59,45 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::dicom::ut::SeriesDBReaderTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::dicom::ut::SeriesDBReaderTest);
 
 namespace sight::io::dicom
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::string getValue(const ::boost::property_tree::ptree& node, const std::string& name,
-                     const std::filesystem::path& filePath )
+std::string getValue(
+    const ::boost::property_tree::ptree& node,
+    const std::string& name,
+    const std::filesystem::path& filePath)
 {
     std::string value;
     try
     {
-        value = node.get< std::string >(name);
+        value = node.get<std::string>(name);
 
         // Remove leading and trailing spaces
         size_t first = value.find_first_not_of(" ");
-        if (first != std::string::npos)
+
+        if(first != std::string::npos)
         {
             size_t last = value.find_last_not_of(" ");
             value = value.substr(first, last - first + 1);
         }
     }
-    catch( ::boost::property_tree::ptree_bad_path& )
+    catch(::boost::property_tree::ptree_bad_path&)
     {
-        SIGHT_WARN(name + " information are missing in '"+ filePath.string() +"'.");
+        SIGHT_WARN(name + " information are missing in '" + filePath.string() + "'.");
         value = "";
     }
 
     return value;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * @brief Verify tag values according to JSON files generated from DICOM dump
@@ -106,7 +110,7 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
     const std::filesystem::path dicomPath = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB";
     const std::filesystem::path metaPath  = dicomPath / "META";
 
-    for(data::SeriesDB::iterator sIt = seriesDB->begin(); sIt != seriesDB->end(); ++sIt)
+    for(data::SeriesDB::iterator sIt = seriesDB->begin() ; sIt != seriesDB->end() ; ++sIt)
     {
         data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(*sIt);
 
@@ -126,15 +130,18 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
 
         data::DicomValuesType performingPhysiciansName = series->getPerformingPhysiciansName();
         std::string performingPhysiciansNameStr        = "";
-        for(data::DicomValuesType::iterator i = performingPhysiciansName.begin();
-            i != performingPhysiciansName.end(); ++i)
+
+        for(data::DicomValuesType::iterator i = performingPhysiciansName.begin() ;
+            i != performingPhysiciansName.end() ; ++i)
         {
             performingPhysiciansNameStr += *i;
-            if((i+1) != performingPhysiciansName.end())
+
+            if((i + 1) != performingPhysiciansName.end())
             {
                 performingPhysiciansNameStr += "\\";
             }
         }
+
         CPPUNIT_ASSERT_EQUAL(getValue(root, "PerformingPhysiciansName", mf), performingPhysiciansNameStr);
 
         // Patient
@@ -163,8 +170,8 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
         // PixelSpacing - Not checked as the image could be rotated
 
         // SliceThickness - This value is recomputed using the SliceThicknessModifier filter.
-//        std::string spacingZ = getValue(root, "SliceThickness", mf);
-//        CPPUNIT_ASSERT_DOUBLES_EQUAL(::boost::lexical_cast< double >(spacingZ), image->getSpacing()[2], 0.0001);
+// std::string spacingZ = getValue(root, "SliceThickness", mf);
+// CPPUNIT_ASSERT_DOUBLES_EQUAL(::boost::lexical_cast< double >(spacingZ), image->getSpacing()[2], 0.0001);
 
         // Origin - Not checked as the image could be rotated
 
@@ -172,12 +179,15 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
 
         // Window Center
         const std::string windowCenter = getValue(root, "WindowCenter", mf);
+
         if(!windowCenter.empty())
         {
-            std::vector< std::string > windowCenterValues;
+            std::vector<std::string> windowCenterValues;
             ::boost::split(windowCenterValues, windowCenter, boost::is_any_of("\\"));
-            CPPUNIT_ASSERT_DOUBLES_EQUAL(::boost::lexical_cast< double >(windowCenterValues[0]),
-                                         image->getWindowCenter(), delta);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(
+                ::boost::lexical_cast<double>(windowCenterValues[0]),
+                image->getWindowCenter(),
+                delta);
         }
         else
         {
@@ -186,12 +196,15 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
 
         // Window Width
         const std::string windowWidth = getValue(root, "WindowWidth", mf);
+
         if(!windowWidth.empty())
         {
-            std::vector< std::string > windowWidthValues;
+            std::vector<std::string> windowWidthValues;
             ::boost::split(windowWidthValues, windowWidth, boost::is_any_of("\\"));
-            CPPUNIT_ASSERT_DOUBLES_EQUAL(::boost::lexical_cast< double >(windowWidthValues[0]),
-                                         image->getWindowWidth(), delta);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(
+                ::boost::lexical_cast<double>(windowWidthValues[0]),
+                image->getWindowWidth(),
+                delta);
         }
         else
         {
@@ -201,6 +214,7 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
         // Number of components
         const std::string photometricInterpretation = getValue(root, "PhotometricInterpretation", mf);
         size_t nbComponents                         = 0;
+
         if(photometricInterpretation == "MONOCHROME2")
         {
             nbComponents = 1;
@@ -213,13 +227,12 @@ void verifyTagValues(const std::string& filename, const data::SeriesDB::sptr& se
         {
             nbComponents = 4;
         }
+
         CPPUNIT_ASSERT_EQUAL(nbComponents, image->getNumberOfComponents());
-
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::setUp()
 {
@@ -234,14 +247,14 @@ void SeriesDBReaderTest::setUp()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readJMSSeriesDBTest()
 {
@@ -249,11 +262,12 @@ void SeriesDBReaderTest::readJMSSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readJMSSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readCTSeriesDBTest()
 {
@@ -261,11 +275,12 @@ void SeriesDBReaderTest::readCTSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readCTSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMRSeriesDBTest()
 {
@@ -273,11 +288,12 @@ void SeriesDBReaderTest::readMRSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readMRSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readOTSeriesDBTest()
 {
@@ -285,11 +301,12 @@ void SeriesDBReaderTest::readOTSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readOTSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readSEGSeriesDBTest()
 {
@@ -297,11 +314,12 @@ void SeriesDBReaderTest::readSEGSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readSEGSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readSFSeriesDBTest()
 {
@@ -309,11 +327,12 @@ void SeriesDBReaderTest::readSFSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readSFSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readSRSeriesDBTest()
 {
@@ -321,11 +340,12 @@ void SeriesDBReaderTest::readSRSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readSRSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::read3DSRSeriesDBTest()
 {
@@ -333,11 +353,12 @@ void SeriesDBReaderTest::read3DSRSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->read3DSRSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readDisabledSeriesDBTest()
 {
@@ -345,11 +366,12 @@ void SeriesDBReaderTest::readDisabledSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readDisabledSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMRSeriesWithDicomDirDBTest()
 {
@@ -357,11 +379,12 @@ void SeriesDBReaderTest::readMRSeriesWithDicomDirDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readMRSeriesWithDicomDir();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMultipleRescaleSeriesDBTest()
 {
@@ -369,11 +392,12 @@ void SeriesDBReaderTest::readMultipleRescaleSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readMultipleRescaleSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readCTWithSurviewSeriesDBTest()
 {
@@ -381,11 +405,12 @@ void SeriesDBReaderTest::readCTWithSurviewSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readCTWithSurviewSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMRWithTemporalPositionSeriesDBTest()
 {
@@ -393,11 +418,12 @@ void SeriesDBReaderTest::readMRWithTemporalPositionSeriesDBTest()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readMRWithTemporalPositionSeries();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readCTSeriesDBIssue01Test()
 {
@@ -405,11 +431,12 @@ void SeriesDBReaderTest::readCTSeriesDBIssue01Test()
     {
         return;
     }
+
     core::memory::BufferManager::getDefault()->setLoadingMode(core::memory::BufferManager::DIRECT);
     this->readCTSeriesDBIssue01();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readJMSSeries()
 {
@@ -417,8 +444,9 @@ void SeriesDBReaderTest::readJMSSeries()
 
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/JMSGenou";
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -427,18 +455,17 @@ void SeriesDBReaderTest::readJMSSeries()
 
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
 
     // Check trimmed values
-    CPPUNIT_ASSERT( utestData::DicomReaderTest::checkSeriesJMSGenouTrimmed( series ) );
+    CPPUNIT_ASSERT(utestData::DicomReaderTest::checkSeriesJMSGenouTrimmed(series));
 
     // Read image in lazy mode
     const auto dumpLock = series->getImage()->lock();
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readCTSeries()
 {
@@ -447,8 +474,9 @@ void SeriesDBReaderTest::readCTSeries()
     const std::string filename       = "01-CT-DICOM_LIVER";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -461,7 +489,7 @@ void SeriesDBReaderTest::readCTSeries()
     const double delta = 0.00001;
 
     // Check number of series
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 
     // Read image buffer
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
@@ -469,31 +497,31 @@ void SeriesDBReaderTest::readCTSeries()
     const auto dumpLock            = image->lock();
 
     // Check number of dimensions
-    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), image->getNumberOfDimensions());
+    CPPUNIT_ASSERT_EQUAL(size_t(3), image->getNumberOfDimensions());
 
     // Check size
     const data::Image::Size size = image->getSize2();
-    CPPUNIT_ASSERT_EQUAL( size_t( 512 ), size[0]);
-    CPPUNIT_ASSERT_EQUAL( size_t( 512 ), size[1]);
-    CPPUNIT_ASSERT_EQUAL( size_t( 129 ), size[2]);
+    CPPUNIT_ASSERT_EQUAL(size_t(512), size[0]);
+    CPPUNIT_ASSERT_EQUAL(size_t(512), size[1]);
+    CPPUNIT_ASSERT_EQUAL(size_t(129), size[2]);
 
     // Check spacing
     const data::Image::Spacing spacing = image->getSpacing2();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.57 ), spacing[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.57 ), spacing[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 1.6 ), spacing[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.57), spacing[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.57), spacing[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(1.6), spacing[2], delta);
 
     // Check origin
     const data::Image::Origin origin = image->getOrigin2();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), origin[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), origin[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), origin[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), origin[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), origin[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), origin[2], delta);
 
     // Check window center
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), image->getWindowCenter(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), image->getWindowCenter(), delta);
 
     // Check window width
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), image->getWindowWidth(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), image->getWindowWidth(), delta);
 
     // Check image type
     CPPUNIT_ASSERT_EQUAL(core::tools::Type::s_INT16, image->getType());
@@ -502,7 +530,7 @@ void SeriesDBReaderTest::readCTSeries()
     verifyTagValues(filename, seriesDB);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMRSeries()
 {
@@ -511,8 +539,9 @@ void SeriesDBReaderTest::readMRSeries()
     const std::string filename       = "46-MR-BARRE-MONO2-12-shoulder";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -525,7 +554,7 @@ void SeriesDBReaderTest::readMRSeries()
     const double delta = 0.01;
 
     // Check number of series
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 
     // Read image buffer
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
@@ -534,42 +563,41 @@ void SeriesDBReaderTest::readMRSeries()
 
     // Check number of dimensions - FIXME Should be 2 but when creating an image with 2D size, the visualization
     // crashes...
-    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), image->getNumberOfDimensions());
+    CPPUNIT_ASSERT_EQUAL(size_t(3), image->getNumberOfDimensions());
 
     // Check size
     const data::Image::Size size = image->getSize2();
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), size[0]);
-    CPPUNIT_ASSERT_EQUAL( size_t( 1024 ), size[1]);
-    CPPUNIT_ASSERT_EQUAL( size_t( 1024 ), size[2]);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), size[0]);
+    CPPUNIT_ASSERT_EQUAL(size_t(1024), size[1]);
+    CPPUNIT_ASSERT_EQUAL(size_t(1024), size[2]);
 
     // Check spacing
     const data::Image::Spacing spacing = image->getSpacing2();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 6 ), spacing[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.2 ), spacing[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.2 ), spacing[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(6), spacing[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.2), spacing[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.2), spacing[2], delta);
 
     // Check origin
     const data::Image::Origin origin = image->getOrigin2();
     SIGHT_WARN("ORIGIN : " << origin[0] << " " << origin[1] << " " << origin[2]);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( -112.828 ), origin[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( -180.058 ), origin[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 97.1478 ), origin[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(-112.828), origin[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(-180.058), origin[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(97.1478), origin[2], delta);
 
     // Check window center
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 1000 ), image->getWindowCenter(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(1000), image->getWindowCenter(), delta);
 
     // Check window width
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 2000 ), image->getWindowWidth(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(2000), image->getWindowWidth(), delta);
 
     // Check image type
     CPPUNIT_ASSERT_EQUAL(core::tools::Type::s_DOUBLE, image->getType());
 
     // Verify tag values according to json file
     verifyTagValues(filename, seriesDB);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readOTSeries()
 {
@@ -578,8 +606,9 @@ void SeriesDBReaderTest::readOTSeries()
     const std::string filename       = "42-OT-BARRE-MONO2-8-colon";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -592,7 +621,7 @@ void SeriesDBReaderTest::readOTSeries()
     const double delta = 0.01;
 
     // Check number of series
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 
     // Read image buffer
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
@@ -601,41 +630,40 @@ void SeriesDBReaderTest::readOTSeries()
 
     // Check number of dimensions - FIXME Should be 2 but when creating an image with 2D size, the visualization
     // crashes...
-    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), image->getNumberOfDimensions());
+    CPPUNIT_ASSERT_EQUAL(size_t(3), image->getNumberOfDimensions());
 
     // Check size
     data::Image::Size size = image->getSize2();
-    CPPUNIT_ASSERT_EQUAL( size_t( 512 ), size[0]);
-    CPPUNIT_ASSERT_EQUAL( size_t( 512 ), size[1]);
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), size[2]);
+    CPPUNIT_ASSERT_EQUAL(size_t(512), size[0]);
+    CPPUNIT_ASSERT_EQUAL(size_t(512), size[1]);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), size[2]);
 
     // Check spacing
     data::Image::Spacing spacing = image->getSpacing2();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 1 ), spacing[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 1 ), spacing[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 1 ), spacing[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(1), spacing[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(1), spacing[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(1), spacing[2], delta);
 
     // Check origin
     data::Image::Origin origin = image->getOrigin2();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), origin[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), origin[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), origin[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), origin[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), origin[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), origin[2], delta);
 
     // Check window center
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), image->getWindowCenter(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), image->getWindowCenter(), delta);
 
     // Check window width
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0 ), image->getWindowWidth(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0), image->getWindowWidth(), delta);
 
     // Check image type
     CPPUNIT_ASSERT_EQUAL(core::tools::Type::s_UINT8, image->getType());
 
     // Verify tag values according to json file
     verifyTagValues(filename, seriesDB);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readSEGSeries()
 {
@@ -644,8 +672,9 @@ void SeriesDBReaderTest::readSEGSeries()
     const std::string filename       = "71-CT-DICOM_SEG";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -657,35 +686,35 @@ void SeriesDBReaderTest::readSEGSeries()
 
     const double delta = 0.01;
 
-    CPPUNIT_ASSERT_EQUAL( size_t( 2 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(2), seriesDB->size());
 
-    //Retrieve ImageSeries
+    // Retrieve ImageSeries
     data::ModelSeries::sptr series = data::ModelSeries::dynamicCast((*seriesDB)[1]);
     CPPUNIT_ASSERT(series);
 
     data::ModelSeries::ReconstructionVectorType reconstructionDB = series->getReconstructionDB();
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), reconstructionDB.size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), reconstructionDB.size());
 
     // Check reconstruction
     data::Reconstruction::sptr reconstruction = reconstructionDB[0];
-    CPPUNIT_ASSERT_EQUAL( std::string("Liver"), reconstruction->getOrganName());
+    CPPUNIT_ASSERT_EQUAL(std::string("Liver"), reconstruction->getOrganName());
 
     // Check mesh
     data::Mesh::sptr mesh = reconstruction->getMesh();
-    CPPUNIT_ASSERT_EQUAL( data::Mesh::Size( 2498 ), mesh->getNumberOfPoints());
-    CPPUNIT_ASSERT_EQUAL( data::Mesh::Size( 5000 ), mesh->getNumberOfCells());
-    CPPUNIT_ASSERT_EQUAL( data::Mesh::Size( 15000 ), mesh->getCellDataSize());
+    CPPUNIT_ASSERT_EQUAL(data::Mesh::Size(2498), mesh->getNumberOfPoints());
+    CPPUNIT_ASSERT_EQUAL(data::Mesh::Size(5000), mesh->getNumberOfCells());
+    CPPUNIT_ASSERT_EQUAL(data::Mesh::Size(15000), mesh->getCellDataSize());
 
     // Check material
     data::Material::sptr material = reconstruction->getMaterial();
     data::Color::sptr color       = material->diffuse();
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.8 ), color->red(), delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.2 ), color->green(), delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 0.2 ), color->blue(), delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 1 ), color->alpha(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.8), color->red(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.2), color->green(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(0.2), color->blue(), delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(1), color->alpha(), delta);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readSFSeries()
 {
@@ -694,8 +723,9 @@ void SeriesDBReaderTest::readSFSeries()
     const std::string filename       = "71-CT-DICOM_SF";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -707,7 +737,7 @@ void SeriesDBReaderTest::readSFSeries()
 
     const double delta = 0.01;
 
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 
     // Retrieve ImageSeries
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
@@ -715,29 +745,29 @@ void SeriesDBReaderTest::readSFSeries()
     const auto dumpLock            = image->lock();
 
     // Retrieve landmarks
-    data::PointList::sptr pointList =
-        image->getField< data::PointList >(data::fieldHelper::Image::m_imageLandmarksId);
+    data::PointList::sptr pointList
+        = image->getField<data::PointList>(data::fieldHelper::Image::m_imageLandmarksId);
 
     // Verify first landmark
     const data::Point::sptr& pointA = pointList->getPoints()[0];
-    const std::string labelA        =
-        pointA->getField< data::String >(data::fieldHelper::Image::m_labelId)->value();
+    const std::string labelA
+        = pointA->getField<data::String>(data::fieldHelper::Image::m_labelId)->value();
     CPPUNIT_ASSERT_EQUAL(std::string("Label1"), labelA);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 80.89 ), pointA->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 102.16 ), pointA->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 153 ), pointA->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(80.89), pointA->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(102.16), pointA->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(153), pointA->getCoord()[2], delta);
 
     // Verify second landmark
     const data::Point::sptr& pointB = pointList->getPoints()[1];
-    const std::string labelB        =
-        pointB->getField< data::String >(data::fieldHelper::Image::m_labelId)->value();
+    const std::string labelB
+        = pointB->getField<data::String>(data::fieldHelper::Image::m_labelId)->value();
     CPPUNIT_ASSERT_EQUAL(std::string("Label2"), labelB);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 281.63 ), pointB->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 326.52 ), pointB->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 276 ), pointB->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(281.63), pointB->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(326.52), pointB->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(276), pointB->getCoord()[2], delta);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readSRSeries()
 {
@@ -746,8 +776,9 @@ void SeriesDBReaderTest::readSRSeries()
     const std::string filename       = "71-CT-DICOM_SR";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -759,7 +790,7 @@ void SeriesDBReaderTest::readSRSeries()
 
     const double delta = 0.01;
 
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 
     // Retrieve ImageSeries
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
@@ -768,44 +799,44 @@ void SeriesDBReaderTest::readSRSeries()
     const auto dumpLock     = image->lock();
 
     // Retrieve landmarks
-    data::PointList::sptr landmarkPointList =
-        image->getField< data::PointList >(data::fieldHelper::Image::m_imageLandmarksId);
+    data::PointList::sptr landmarkPointList
+        = image->getField<data::PointList>(data::fieldHelper::Image::m_imageLandmarksId);
 
     // Verify first landmark
     const data::Point::sptr& pointA = landmarkPointList->getPoints()[0];
-    const std::string labelA        =
-        pointA->getField< data::String >(data::fieldHelper::Image::m_labelId)->value();
+    const std::string labelA
+        = pointA->getField<data::String>(data::fieldHelper::Image::m_labelId)->value();
     CPPUNIT_ASSERT_EQUAL(std::string("Label1"), labelA);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 80.89 ), pointA->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 102.16 ), pointA->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 153 ), pointA->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(80.89), pointA->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(102.16), pointA->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(153), pointA->getCoord()[2], delta);
 
     // Verify second landmark
     const data::Point::sptr& pointB = landmarkPointList->getPoints()[1];
-    const std::string labelB        =
-        pointB->getField< data::String >(data::fieldHelper::Image::m_labelId)->value();
+    const std::string labelB
+        = pointB->getField<data::String>(data::fieldHelper::Image::m_labelId)->value();
     CPPUNIT_ASSERT_EQUAL(std::string("Label2"), labelB);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 281.63 ), pointB->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 326.52 ), pointB->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 276 ), pointB->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(281.63), pointB->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(326.52), pointB->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(276), pointB->getCoord()[2], delta);
 
     // Retrieve distances
-    data::Vector::sptr distanceVector =
-        image->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
+    data::Vector::sptr distanceVector
+        = image->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
 
     // Verify first distance
     data::PointList::sptr distancePointList = data::PointList::dynamicCast(distanceVector->getContainer()[0]);
     const data::Point::sptr& pointC         = distancePointList->getPoints()[0];
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 38.34 ), pointC->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 116.67 ), pointC->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 276 ), pointC->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(38.34), pointC->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(116.67), pointC->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(276), pointC->getCoord()[2], delta);
     const data::Point::sptr& pointD = distancePointList->getPoints()[1];
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 329.41 ), pointD->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 302.33 ), pointD->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 276 ), pointD->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(329.41), pointD->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(302.33), pointD->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(276), pointD->getCoord()[2], delta);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::read3DSRSeries()
 {
@@ -814,8 +845,9 @@ void SeriesDBReaderTest::read3DSRSeries()
     const std::string filename       = "71-CT-DICOM_3DSR";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -827,7 +859,7 @@ void SeriesDBReaderTest::read3DSRSeries()
 
     const double delta = 0.01;
 
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
 
     // Retrieve ImageSeries
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
@@ -835,44 +867,44 @@ void SeriesDBReaderTest::read3DSRSeries()
     const auto dumpLock            = image->lock();
 
     // Retrieve landmarks
-    data::PointList::sptr landmarkPointList =
-        image->getField< data::PointList >(data::fieldHelper::Image::m_imageLandmarksId);
+    data::PointList::sptr landmarkPointList
+        = image->getField<data::PointList>(data::fieldHelper::Image::m_imageLandmarksId);
 
     // Verify first landmark
     const data::Point::sptr& pointA = landmarkPointList->getPoints()[0];
-    const std::string labelA        =
-        pointA->getField< data::String >(data::fieldHelper::Image::m_labelId)->value();
+    const std::string labelA
+        = pointA->getField<data::String>(data::fieldHelper::Image::m_labelId)->value();
     CPPUNIT_ASSERT_EQUAL(std::string("Label1"), labelA);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 80.89 ), pointA->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 102.16 ), pointA->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 153 ), pointA->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(80.89), pointA->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(102.16), pointA->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(153), pointA->getCoord()[2], delta);
 
     // Verify second landmark
     const data::Point::sptr& pointB = landmarkPointList->getPoints()[1];
-    const std::string labelB        =
-        pointB->getField< data::String >(data::fieldHelper::Image::m_labelId)->value();
+    const std::string labelB
+        = pointB->getField<data::String>(data::fieldHelper::Image::m_labelId)->value();
     CPPUNIT_ASSERT_EQUAL(std::string("Label2"), labelB);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 281.63 ), pointB->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 326.52 ), pointB->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 276 ), pointB->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(281.63), pointB->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(326.52), pointB->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(276), pointB->getCoord()[2], delta);
 
     // Retrieve distances
-    data::Vector::sptr distanceVector =
-        image->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
+    data::Vector::sptr distanceVector
+        = image->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
 
     // Verify first distance
     data::PointList::sptr distancePointList = data::PointList::dynamicCast(distanceVector->getContainer()[0]);
     const data::Point::sptr& pointC         = distancePointList->getPoints()[0];
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 281.63 ), pointC->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 99.30 ), pointC->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 87.26 ), pointC->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(281.63), pointC->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(99.30), pointC->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(87.26), pointC->getCoord()[2], delta);
     const data::Point::sptr& pointD = distancePointList->getPoints()[1];
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 329.41 ), pointD->getCoord()[0], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 302.33 ), pointD->getCoord()[1], delta);
-    CPPUNIT_ASSERT_DOUBLES_EQUAL( double( 276 ), pointD->getCoord()[2], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(329.41), pointD->getCoord()[0], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(302.33), pointD->getCoord()[1], delta);
+    CPPUNIT_ASSERT_DOUBLES_EQUAL(double(276), pointD->getCoord()[2], delta);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readDisabledSeries()
 {
@@ -881,11 +913,12 @@ void SeriesDBReaderTest::readDisabledSeries()
     const std::string filename       = "46-MR-BARRE-MONO2-12-shoulder";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
-    std::vector< std::string > supportedSOPClassContainer;
-    supportedSOPClassContainer.push_back("1.2.840.10008.5.1.4.1.1.2");   // CT Image Storage
+    std::vector<std::string> supportedSOPClassContainer;
+    supportedSOPClassContainer.push_back("1.2.840.10008.5.1.4.1.1.2"); // CT Image Storage
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -897,11 +930,11 @@ void SeriesDBReaderTest::readDisabledSeries()
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
     // Verify that the reading has failed
-    CPPUNIT_ASSERT_EQUAL( size_t( 0 ), seriesDB->size());
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
+    CPPUNIT_ASSERT_EQUAL(size_t(0), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMRSeriesWithDicomDir()
 {
@@ -910,8 +943,9 @@ void SeriesDBReaderTest::readMRSeriesWithDicomDir()
     const std::string filename       = "82-MR-SAGITTAL-KNEE-DICOMDIR";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -923,11 +957,11 @@ void SeriesDBReaderTest::readMRSeriesWithDicomDir()
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
     // Verify that the reading has succeed
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
-    CPPUNIT_ASSERT_EQUAL( size_t( 0 ), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(0), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMultipleRescaleSeries()
 {
@@ -936,8 +970,9 @@ void SeriesDBReaderTest::readMultipleRescaleSeries()
     const std::string filename       = "83-CT-MultipleRescale";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -948,7 +983,7 @@ void SeriesDBReaderTest::readMultipleRescaleSeries()
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
     // Retrieve ImageSeries
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
     data::ImageSeries::sptr series = data::ImageSeries::dynamicCast(seriesDB->front());
     data::Image::sptr image        = series->getImage();
     const auto dumpLock            = image->lock();
@@ -961,7 +996,7 @@ void SeriesDBReaderTest::readMultipleRescaleSeries()
 
     // Compute sha1 digest
     ::boost::uuids::detail::sha1 sha1;
-    sha1.process_bytes(static_cast< char* >(dumpLock.getBuffer()), image->getSizeInBytes());
+    sha1.process_bytes(static_cast<char*>(dumpLock.getBuffer()), image->getSizeInBytes());
     ::boost::uuids::detail::sha1::digest_type digest = {0};
     sha1.get_digest(digest);
 
@@ -973,7 +1008,7 @@ void SeriesDBReaderTest::readMultipleRescaleSeries()
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Multiple rescale image hash comparison failed ", 2226307254u, digest[4]);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readCTWithSurviewSeries()
 {
@@ -982,8 +1017,9 @@ void SeriesDBReaderTest::readCTWithSurviewSeries()
     const std::string filename       = "84-CT-Surview";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -994,11 +1030,11 @@ void SeriesDBReaderTest::readCTWithSurviewSeries()
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
     // Verify that the reading has failed
-    CPPUNIT_ASSERT_EQUAL( size_t( 3 ), seriesDB->size());
-    CPPUNIT_ASSERT_EQUAL( size_t( 0 ), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
+    CPPUNIT_ASSERT_EQUAL(size_t(3), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(0), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readMRWithTemporalPositionSeries()
 {
@@ -1007,8 +1043,9 @@ void SeriesDBReaderTest::readMRWithTemporalPositionSeries()
     const std::string filename       = "85-MR-TemporalPosition";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -1019,11 +1056,11 @@ void SeriesDBReaderTest::readMRWithTemporalPositionSeries()
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
     // Verify that the reading has failed
-    CPPUNIT_ASSERT_EQUAL( size_t( 4 ), seriesDB->size());
-    CPPUNIT_ASSERT_EQUAL( size_t( 0 ), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
+    CPPUNIT_ASSERT_EQUAL(size_t(4), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(0), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBReaderTest::readCTSeriesDBIssue01()
 {
@@ -1032,8 +1069,9 @@ void SeriesDBReaderTest::readCTSeriesDBIssue01()
     const std::string filename       = "86-CT-Skull";
     const std::filesystem::path path = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB" / filename;
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
     io::dicom::reader::SeriesDB::sptr reader = io::dicom::reader::SeriesDB::New();
     reader->setObject(seriesDB);
@@ -1044,8 +1082,8 @@ void SeriesDBReaderTest::readCTSeriesDBIssue01()
     CPPUNIT_ASSERT_NO_THROW(reader->read());
 
     // Verify that the reading has failed
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB->size());
-    CPPUNIT_ASSERT_EQUAL( size_t( 0 ), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB->size());
+    CPPUNIT_ASSERT_EQUAL(size_t(0), size_t(reader->getLogger()->count(core::log::Log::CRITICAL)));
 }
 
 } // namespace ut

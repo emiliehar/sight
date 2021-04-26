@@ -30,7 +30,9 @@
 
 namespace sight::core::runtime
 {
+
 class IExecutable;
+
 }
 
 namespace sight::core::runtime
@@ -48,7 +50,7 @@ public:
      *
      * @param[in]   type    a string containing a type identifier
      */
-    CORE_API ExecutableFactory( const std::string& type );
+    CORE_API ExecutableFactory(const std::string& type);
 
     /**
      * @brief   Destructor : does nothing
@@ -70,9 +72,7 @@ public:
     CORE_API const std::string getType() const;
 
 private:
-
-    std::string m_type;     ///< a string containing the type identifier managed by the factory
-
+    std::string m_type; ///< a string containing the type identifier managed by the factory
 };
 
 } // namespace sight::core::runtime

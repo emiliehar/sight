@@ -33,28 +33,29 @@
 #include <utest/Exception.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::service::ut::SigSlotConnectionTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::service::ut::SigSlotConnectionTest);
 
 namespace sight::service
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SigSlotConnectionTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SigSlotConnectionTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SigSlotConnectionTest::basicTest()
 {
@@ -68,8 +69,8 @@ void SigSlotConnectionTest::basicTest()
     showTestSrv->registerInOut(buffer, "buffer", true);
     showTestSrv->setWorker(activeWorkers->getWorker(core::thread::ActiveWorkers::s_DEFAULT_WORKER));
 
-    data::Object::ModifiedSignalType::sptr sig =
-        buffer->signal< data::Object::ModifiedSignalType >( data::Object::s_MODIFIED_SIG );
+    data::Object::ModifiedSignalType::sptr sig
+        = buffer->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     sig->asyncEmit();
     CPPUNIT_ASSERT_EQUAL(0, showTestSrv->m_receiveCount);
 
@@ -85,7 +86,8 @@ void SigSlotConnectionTest::basicTest()
     activeWorkers->clearRegistry();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

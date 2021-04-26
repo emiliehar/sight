@@ -32,7 +32,7 @@ namespace sight::core::com
 namespace exception
 {
 
-WorkerChanged::WorkerChanged ( const std::string& err ) :
+WorkerChanged::WorkerChanged(const std::string& err) :
     core::Exception(err)
 {
 }

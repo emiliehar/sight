@@ -28,30 +28,30 @@
 
 namespace sight::io::dicom
 {
+
 namespace ut
 {
 
 class SeriesDBReaderTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SeriesDBReaderTest );
-CPPUNIT_TEST( readJMSSeriesDBTest );
-CPPUNIT_TEST( readCTSeriesDBTest );
-CPPUNIT_TEST( readMRSeriesDBTest );
-CPPUNIT_TEST( readOTSeriesDBTest );
-CPPUNIT_TEST( readSEGSeriesDBTest );
-CPPUNIT_TEST( readSFSeriesDBTest );
-CPPUNIT_TEST( readSRSeriesDBTest );
-CPPUNIT_TEST( read3DSRSeriesDBTest );
-CPPUNIT_TEST( readDisabledSeriesDBTest );
-CPPUNIT_TEST( readMRSeriesWithDicomDirDBTest );
-CPPUNIT_TEST( readMultipleRescaleSeriesDBTest );
-CPPUNIT_TEST( readCTWithSurviewSeriesDBTest );
-CPPUNIT_TEST( readMRWithTemporalPositionSeriesDBTest );
-CPPUNIT_TEST( readCTSeriesDBIssue01Test );
+CPPUNIT_TEST_SUITE(SeriesDBReaderTest);
+CPPUNIT_TEST(readJMSSeriesDBTest);
+CPPUNIT_TEST(readCTSeriesDBTest);
+CPPUNIT_TEST(readMRSeriesDBTest);
+CPPUNIT_TEST(readOTSeriesDBTest);
+CPPUNIT_TEST(readSEGSeriesDBTest);
+CPPUNIT_TEST(readSFSeriesDBTest);
+CPPUNIT_TEST(readSRSeriesDBTest);
+CPPUNIT_TEST(read3DSRSeriesDBTest);
+CPPUNIT_TEST(readDisabledSeriesDBTest);
+CPPUNIT_TEST(readMRSeriesWithDicomDirDBTest);
+CPPUNIT_TEST(readMultipleRescaleSeriesDBTest);
+CPPUNIT_TEST(readCTWithSurviewSeriesDBTest);
+CPPUNIT_TEST(readMRWithTemporalPositionSeriesDBTest);
+CPPUNIT_TEST(readCTSeriesDBIssue01Test);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     void setUp();
     void tearDown();
 
@@ -142,4 +142,5 @@ protected:
 };
 
 } // namespace ut
+
 } // namespace sight::io::dicom

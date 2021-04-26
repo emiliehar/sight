@@ -33,13 +33,17 @@
 
 namespace sight::data
 {
+
 class Point;
+
 }
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace ie
 {
 
@@ -49,9 +53,8 @@ namespace ie
  * Currently, the template is TID 1400 (taken from PS 3.16) for distances
  * and based on TID 320 (taken from PS 3.16) for landmarks.
  */
-class IO_DICOM_CLASS_API Document : public io::dicom::reader::ie::InformationEntity< data::Image >
+class IO_DICOM_CLASS_API Document : public io::dicom::reader::ie::InformationEntity<data::Image>
 {
-
 public:
     /**
      * @brief Constructor
@@ -63,13 +66,14 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API Document(const CSPTR(data::DicomSeries)& dicomSeries,
-                          const SPTR(::gdcm::Reader)& reader,
-                          const SPTR(io::dicom::container::DicomInstance)& instance,
-                          const data::Image::sptr& image,
-                          const core::log::Logger::sptr& logger = nullptr,
-                          ProgressCallback progress             = nullptr,
-                          CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API Document(
+        const CSPTR(data::DicomSeries)& dicomSeries,
+        const SPTR(::gdcm::Reader)& reader,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const data::Image::sptr& image,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~Document();
@@ -79,9 +83,10 @@ public:
      * @throw io::dicom::exception::Failed
      */
     IO_DICOM_API void readSR();
-
 };
 
 } // namespace ie
+
 } // namespace reader
+
 } // namespace sight::io::dicom

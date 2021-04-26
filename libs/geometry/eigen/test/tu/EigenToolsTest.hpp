@@ -29,13 +29,14 @@
 
 namespace sight::geometry::eigen
 {
+
 namespace ut
 {
 
 class EigenToolsTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( EigenToolsTest );
+    CPPUNIT_TEST_SUITE(EigenToolsTest);
     CPPUNIT_TEST(f4sToEigen);
     CPPUNIT_TEST(eigenToF4s);
     CPPUNIT_TEST(float16ToEigen);
@@ -56,7 +57,7 @@ public:
     void eigenMatToRvecTvec();
     void f4sMatToRvecTvec();
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<class T>
     static const T random(const T& a, const T& b)
@@ -65,5 +66,6 @@ public:
     }
 };
 
-} //namespace ut
-} //namespace sight::geometry::eigen
+} // namespace ut
+
+} // namespace sight::geometry::eigen

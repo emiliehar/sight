@@ -39,8 +39,8 @@ namespace Tuto05EditorQml
 class TUTO05EDITORQML_CLASS_API AppManager : public QObject,
                                              public sight::service::AppManager
 {
-
 Q_OBJECT;
+
 public:
     /// Constructor.
     TUTO05EDITORQML_API AppManager() noexcept;
@@ -49,7 +49,6 @@ public:
     TUTO05EDITORQML_API ~AppManager() noexcept;
 
 public Q_SLOTS:
-
     /// Initialize the manager
     void initialize();
 
@@ -60,7 +59,6 @@ public Q_SLOTS:
     void onServiceCreated(const QVariant& obj);
 
 private:
-
     sight::data::String::sptr m_string;
 };
 

@@ -35,51 +35,54 @@
 #include <vtkMetaImageWriter.h>
 #include <vtkSmartPointer.h>
 
-SIGHT_REGISTER_IO_WRITER( ::sight::io::vtk::MetaImageWriter );
+SIGHT_REGISTER_IO_WRITER(::sight::io::vtk::MetaImageWriter);
 
 namespace sight::io::vtk
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 MetaImageWriter::MetaImageWriter(io::base::writer::IObjectWriter::Key) :
     m_job(core::jobs::Observer::New("MetaImage writer"))
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MetaImageWriter::~MetaImageWriter()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MetaImageWriter::write()
 {
     using namespace sight::io::vtk::helper;
 
-    assert( !m_object.expired() );
-    assert( m_object.lock() );
+    assert(!m_object.expired());
+    assert(m_object.lock());
 
     data::Image::csptr pImage = getConcreteObject();
 
-    vtkSmartPointer< vtkMetaImageWriter > writer = vtkSmartPointer< vtkMetaImageWriter >::New();
-    vtkSmartPointer< vtkImageData > vtkImage     = vtkSmartPointer< vtkImageData >::New();
-    io::vtk::toVTKImage( pImage, vtkImage );
-    writer->SetInputData( vtkImage );
-    writer->SetFileName( this->getFile().string().c_str() );
+    vtkSmartPointer<vtkMetaImageWriter> writer = vtkSmartPointer<vtkMetaImageWriter>::New();
+    vtkSmartPointer<vtkImageData> vtkImage     = vtkSmartPointer<vtkImageData>::New();
+    io::vtk::toVTKImage(pImage, vtkImage);
+    writer->SetInputData(vtkImage);
+    writer->SetFileName(this->getFile().string().c_str());
     writer->SetCompression(true);
 
     vtkSmartPointer<vtkLambdaCommand> progressCallback;
     progressCallback = vtkSmartPointer<vtkLambdaCommand>::New();
-    progressCallback->SetCallback([this](vtkObject* caller, long unsigned int, void* )
+    progressCallback->SetCallback(
+        [this](vtkObject* caller, long unsigned int, void*)
         {
             auto filter = static_cast<vtkMetaImageWriter*>(caller);
             m_job->doneWork(static_cast<std::uint64_t>(filter->GetProgress() * 100.));
         });
 
     writer->AddObserver(vtkCommand::ProgressEvent, progressCallback);
-    m_job->addSimpleCancelHook( [&]()
+    m_job->addSimpleCancelHook(
+        [&]()
         {
             writer->AbortExecuteOn();
         });
@@ -87,14 +90,14 @@ void MetaImageWriter::write()
     m_job->finish();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string MetaImageWriter::extension()
 {
     return ".mhd";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::jobs::IJob::sptr MetaImageWriter::getJob() const
 {

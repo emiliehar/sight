@@ -34,6 +34,7 @@
 
 namespace sight::core::com
 {
+
 namespace helper
 {
 
@@ -42,14 +43,12 @@ namespace helper
  */
 class CORE_CLASS_API SigSlotConnection
 {
-
 public:
+    typedef std::list<core::com::Connection> ConnectionContainerType;
 
-    typedef std::list< core::com::Connection > ConnectionContainerType;
+    typedef std::pair<core::com::Signals::SignalKeyType, core::com::Slots::SlotKeyType> KeyConnectionType;
 
-    typedef std::pair< core::com::Signals::SignalKeyType, core::com::Slots::SlotKeyType > KeyConnectionType;
-
-    typedef std::vector< KeyConnectionType > KeyConnectionsType;
+    typedef std::vector<KeyConnectionType> KeyConnectionsType;
 
     /// Constructor, do nothing
     CORE_API SigSlotConnection();
@@ -58,24 +57,29 @@ public:
     CORE_API virtual ~SigSlotConnection();
 
     /// Connect signal to slot, and register this new connection in  m_connections
-    CORE_API void connect(const core::com::HasSignals::csptr& hasSignals, core::com::Signals::SignalKeyType signalKey,
-                          const core::com::HasSlots::csptr& hasSlots, core::com::Slots::SlotKeyType slotKey );
+    CORE_API void connect(
+        const core::com::HasSignals::csptr& hasSignals,
+        core::com::Signals::SignalKeyType signalKey,
+        const core::com::HasSlots::csptr& hasSlots,
+        core::com::Slots::SlotKeyType slotKey);
 
     /// Connect signals to slots, and register these new connections in  m_connections
-    CORE_API void connect(const core::com::HasSignals::csptr& hasSignals, const core::com::HasSlots::csptr& hasSlots,
-                          const KeyConnectionsType& keyConnections );
+    CORE_API void connect(
+        const core::com::HasSignals::csptr& hasSignals,
+        const core::com::HasSlots::csptr& hasSlots,
+        const KeyConnectionsType& keyConnections);
 
     /// Add a connection
-    CORE_API void addConnection( core::com::Connection connection );
+    CORE_API void addConnection(core::com::Connection connection);
 
     /// Disconnect all registered connections and clear m_connections
     CORE_API void disconnect();
 
 protected:
-
     /// Connections storage
     ConnectionContainerType m_connections;
 };
 
 } // end namespace helper
+
 } // end namespace sight::core::com

@@ -33,12 +33,13 @@ namespace sight::utestData
 
 const std::string Data::s_TEST_DATA_DIR_ENV_VAR("FWTEST_DATA_DIR");
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::filesystem::path Data::dir()
 {
     char* val = std::getenv(s_TEST_DATA_DIR_ENV_VAR.c_str());
-    if (val == 0)
+
+    if(val == 0)
     {
         std::stringstream msg;
         msg << "The '" << s_TEST_DATA_DIR_ENV_VAR
@@ -48,7 +49,7 @@ std::filesystem::path Data::dir()
 
     std::filesystem::path datadir(val);
 
-    if (!std::filesystem::exists(datadir))
+    if(!std::filesystem::exists(datadir))
     {
         std::stringstream msg;
         msg << "The path'" << datadir

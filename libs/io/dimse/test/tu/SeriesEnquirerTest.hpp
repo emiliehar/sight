@@ -31,12 +31,13 @@
 
 namespace sight::io::dimse
 {
+
 namespace ut
 {
 
 class SeriesEnquirerTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SeriesEnquirerTest );
+CPPUNIT_TEST_SUITE(SeriesEnquirerTest);
 // Disabled until PACS available
 // CPPUNIT_TEST( initializeConnection );
 // CPPUNIT_TEST( pushSeries );
@@ -47,7 +48,6 @@ CPPUNIT_TEST_SUITE( SeriesEnquirerTest );
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     // Interface
     void setUp();
     void tearDown();
@@ -81,8 +81,8 @@ protected:
 
     /// Move application port
     unsigned short m_moveApplicationPort;
-
 };
 
 } // namespace ut
+
 } // namespace sight::io::dimse

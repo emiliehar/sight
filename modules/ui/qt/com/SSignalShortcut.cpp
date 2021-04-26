@@ -43,7 +43,7 @@ namespace sight::module::ui::qt::com
 
 static const core::com::Signals::SignalKeyType s_ACTIVATED_SIG = "activated";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSignalShortcut::SSignalShortcut() noexcept :
     m_shortcut(""),
@@ -51,16 +51,16 @@ SSignalShortcut::SSignalShortcut() noexcept :
     m_wid(""),
     m_shortcutObject(nullptr)
 {
-    newSignal< ActivatedShortcutSignalType >(s_ACTIVATED_SIG);
+    newSignal<ActivatedShortcutSignalType>(s_ACTIVATED_SIG);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSignalShortcut::~SSignalShortcut() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalShortcut::configuring()
 {
@@ -74,7 +74,7 @@ void SSignalShortcut::configuring()
     SIGHT_ASSERT("Either The wid or sid attribute must be specified for SSignalShortcut", m_wid != "" || m_sid != "");
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalShortcut::starting()
 {
@@ -87,7 +87,7 @@ void SSignalShortcut::starting()
 
         if(sidExists)
         {
-            service::IService::sptr service = service::get( m_sid );
+            service::IService::sptr service = service::get(m_sid);
             auto containerSrv               = sight::ui::base::IGuiContainer::dynamicCast(service);
             fwc = containerSrv->getContainer();
         }
@@ -100,6 +100,7 @@ void SSignalShortcut::starting()
     else if(m_wid != "")
     {
         fwc = ::sight::ui::base::GuiRegistry::getWIDContainer(m_wid);
+
         if(!fwc)
         {
             SIGHT_ERROR("Invalid window id " << m_wid);
@@ -108,10 +109,10 @@ void SSignalShortcut::starting()
 
     if(fwc != nullptr)
     {
-        auto qtc = std::dynamic_pointer_cast< ::sight::ui::qt::container::QtContainer >(fwc);
+        auto qtc = std::dynamic_pointer_cast< ::sight::ui::qt::container::QtContainer>(fwc);
+
         if(qtc != nullptr)
         {
-
             if(!m_shortcutObject)
             {
                 // Get the associated widget to use as parent for the shortcut
@@ -127,12 +128,13 @@ void SSignalShortcut::starting()
     }
     else
     {
-        SIGHT_ERROR("Cannot setup shortcut " << m_shortcut << " on invalid "
-                                             << (m_wid != "" ? "wid " + m_wid : "sid " + m_sid));
+        SIGHT_ERROR(
+            "Cannot setup shortcut " << m_shortcut << " on invalid "
+                                     << (m_wid != "" ? "wid " + m_wid : "sid " + m_sid));
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalShortcut::stopping()
 {
@@ -143,13 +145,12 @@ void SSignalShortcut::stopping()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 void SSignalShortcut::updating()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSignalShortcut::onActivation()
 {

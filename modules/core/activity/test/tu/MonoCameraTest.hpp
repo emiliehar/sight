@@ -26,14 +26,15 @@
 
 namespace sight::module::activity::validator
 {
+
 namespace ut
 {
 
 /// Test the MonoCamera validator
 class MonoCameraTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( MonoCameraTest );
-CPPUNIT_TEST( testValidator );
+CPPUNIT_TEST_SUITE(MonoCameraTest);
+CPPUNIT_TEST(testValidator);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -42,8 +43,8 @@ public:
     void tearDown();
 
     void testValidator();
-
 };
 
-} //namespace ut
-} //namespace sight::module::activity::validator
+} // namespace ut
+
+} // namespace sight::module::activity::validator

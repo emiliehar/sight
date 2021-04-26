@@ -31,12 +31,16 @@
 
 namespace sight::data
 {
+
 class Image;
+
 }
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::module::io::vtk
@@ -67,10 +71,8 @@ namespace sight::module::io::vtk
  */
 class MODULE_IO_VTK_CLASS_API SImageSeriesWriter : public sight::io::base::service::IWriter
 {
-
 public:
-
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignalType;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignalType;
 
     /**
      * @brief Constructor. Do nothing.
@@ -96,7 +98,6 @@ public:
     MODULE_IO_VTK_API void openLocationDialog() override;
 
 protected:
-
     MODULE_IO_VTK_API sight::io::base::service::IOPathType getIOPathType() const override;
 
     /**
@@ -133,10 +134,9 @@ protected:
      *
      * This method is used to give informations about the service.
      */
-    MODULE_IO_VTK_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_VTK_API void info(std::ostream& _sstream) override;
 
 private:
-
     /**
      * @brief the m_bServiceIsConfigured value is \b true
      * if the image path is known.
@@ -149,7 +149,6 @@ private:
     std::filesystem::path m_fsImgPath;
 
     SPTR(JobCreatedSignalType) m_sigJobCreated;
-
 };
 
 } // namespace sight::module::io::vtk

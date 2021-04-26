@@ -25,27 +25,29 @@
 #include <geometry/data/PlaneFunctions.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::geometry::data::ut::PlaneFunctionsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::geometry::data::ut::PlaneFunctionsTest);
 
 namespace sight::geometry::data
 {
+
 namespace ut
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkGetPlane()
 {
@@ -76,7 +78,7 @@ void PlaneFunctionsTest::checkGetPlane()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(plane1[3], plane2[3], 0.00001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkSetValues()
 {
@@ -108,7 +110,7 @@ void PlaneFunctionsTest::checkSetValues()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(plane[3], distance, 0.00001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkDistance()
 {
@@ -119,7 +121,7 @@ void PlaneFunctionsTest::checkDistance()
     CPPUNIT_ASSERT_EQUAL(geometry::data::getDistance(plane), DISTANCE);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkNormal()
 {
@@ -159,7 +161,7 @@ void PlaneFunctionsTest::checkNormal()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(planeNormal2[2], normal2[2], 0.001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkIntersect()
 {
@@ -168,9 +170,9 @@ void PlaneFunctionsTest::checkIntersect()
     fwVec3d point;
     fwLine line;
     const fwVec3d linePos = {{1.0, 2.0, 4.0}};
-//  const fwVec3d lineDirection = {{1.0, 0.0, 0.0}};  // ==> pas d'intercestion
-//  const fwVec3d lineDirection = {{3.0, 0.0, 4.0}};  // ==> intercestion
-    const fwVec3d lineDirection = {{0.0, 0.0, 4.0}};  // ==> intersection en (0.0, 0.0, 0.0)
+// const fwVec3d lineDirection = {{1.0, 0.0, 0.0}};  // ==> pas d'intercestion
+// const fwVec3d lineDirection = {{3.0, 0.0, 4.0}};  // ==> intercestion
+    const fwVec3d lineDirection = {{0.0, 0.0, 4.0}}; // ==> intersection en (0.0, 0.0, 0.0)
 
     line = std::make_pair(linePos, lineDirection);
 
@@ -179,7 +181,7 @@ void PlaneFunctionsTest::checkIntersect()
     const fwVec3d planPt3 = {{0.0, 2.0, 0.0}};
     fwPlane plane;
     geometry::data::setValues(plane, planPt1, planPt2, planPt3);
-    bool intersect = geometry::data::intersect( plane, line,  point);
+    bool intersect = geometry::data::intersect(plane, line, point);
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL(point[0], 1.0, 0.001);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(point[1], 2.5, 0.001);
@@ -188,7 +190,7 @@ void PlaneFunctionsTest::checkIntersect()
     CPPUNIT_ASSERT_EQUAL(intersect, INTERSECT);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkIsInHalfSpace()
 {
@@ -219,7 +221,7 @@ void PlaneFunctionsTest::checkIsInHalfSpace()
     CPPUNIT_ASSERT_EQUAL(false, result);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkOffset()
 {
@@ -243,13 +245,13 @@ void PlaneFunctionsTest::checkOffset()
     fwPlane plane;
     geometry::data::setValues(plane, planPt1, planPt2, planPt3);
 
-    geometry::data::offset(plane, OFFSET );
+    geometry::data::offset(plane, OFFSET);
     double offset = geometry::data::getDistance(plane);
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL(1.320620, offset, 0.001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkTransform()
 {
@@ -261,8 +263,8 @@ void PlaneFunctionsTest::checkTransform()
 
     fwPlane plane = geometry::data::getPlane(normal, point);
 
-    const fwMatrix4x4 matrice = {{ {{1.0, 0.0, 1.0, 3.0}}, {{-1.0, 0.0, 0.0, 5.0}},
-                                   {{0.0, 0.0, 0.0, 2.0}}, {{0.0, 0.0, 0.0, 1.0 }} }};
+    const fwMatrix4x4 matrice = {{{{1.0, 0.0, 1.0, 3.0}}, {{-1.0, 0.0, 0.0, 5.0}},
+        {{0.0, 0.0, 0.0, 2.0}}, {{0.0, 0.0, 0.0, 1.0}}}};
 
     geometry::data::transform(plane, matrice);
 
@@ -272,7 +274,7 @@ void PlaneFunctionsTest::checkTransform()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(plane[3], distanceRes, 0.001);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PlaneFunctionsTest::checkOperator()
 {
@@ -283,7 +285,8 @@ void PlaneFunctionsTest::checkOperator()
     CPPUNIT_ASSERT_EQUAL(test, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::geometry::data
+} // namespace ut
+
+} // namespace sight::geometry::data

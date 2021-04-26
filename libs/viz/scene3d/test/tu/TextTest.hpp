@@ -28,18 +28,17 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace ut
 {
 
 class TextTest : public CPPUNIT_NS::TestFixture
 {
-
-CPPUNIT_TEST_SUITE( TextTest );
-CPPUNIT_TEST( factoryTest );
+CPPUNIT_TEST_SUITE(TextTest);
+CPPUNIT_TEST(factoryTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     TextTest();
     virtual ~TextTest();
 
@@ -50,9 +49,9 @@ public:
 
 private:
     /// Ogre root to setup the scene and instantiate 'Text' objects.
-    ::Ogre::Root* m_ogreRoot {nullptr};
-
+    ::Ogre::Root* m_ogreRoot{nullptr};
 };
 
-} //namespace ut
-} //namespace sight::viz::scene3d
+} // namespace ut
+
+} // namespace sight::viz::scene3d

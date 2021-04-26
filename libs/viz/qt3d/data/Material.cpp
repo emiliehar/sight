@@ -63,41 +63,41 @@ Material::Material(Qt3DCore::QNode* _parent) :
     this->addTechnique(phongTechnique);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Material::~Material()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QColor Material::getAmbient()
 {
     return qvariant_cast<QColor>(m_ambientColor->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QColor Material::getDiffuse()
 {
     return qvariant_cast<QColor>(m_diffuseColor->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QVector3D Material::getSpecular()
 {
     return qvariant_cast<QVector3D>(m_specularColor->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 float Material::getShininess()
 {
     return qvariant_cast<float>(m_shininess->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::setAmbient(QColor _ambient)
 {
@@ -105,61 +105,61 @@ void Material::setAmbient(QColor _ambient)
     m_ambientColorCopy->setValue(_ambient);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::setDiffuse(QColor _diffuse)
 {
     m_diffuseColor->setValue(_diffuse);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::setSpecular(QVector3D _specular)
 {
     m_specularColor->setValue(_specular);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::setShininess(float _shininess)
 {
     m_shininess->setValue(_shininess);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::addTechnique(Qt3DRender::QTechnique* _technique)
 {
     this->effect()->addTechnique(_technique);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::removeTechnique(Qt3DRender::QTechnique* _technique)
 {
     this->effect()->removeTechnique(_technique);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::addParameter(Qt3DRender::QParameter* _parameter)
 {
     this->effect()->addParameter(_parameter);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::removeParameter(Qt3DRender::QParameter* _parameter)
 {
     this->effect()->removeParameter(_parameter);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::updateOptionsMode(int _optionsMode)
 {
-    viz::qt3d::techniques::Lighting* const tech =
-        (viz::qt3d::techniques::Lighting*)this->effect()->techniques()[0];
+    viz::qt3d::techniques::Lighting* const tech
+        = (viz::qt3d::techniques::Lighting*) this->effect()->techniques()[0];
 
     if(_optionsMode == 1)
     {
@@ -177,38 +177,38 @@ void Material::updateOptionsMode(int _optionsMode)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::updatePolygonMode(int _polygonMode)
 {
-    viz::qt3d::techniques::Lighting* const tech =
-        (viz::qt3d::techniques::Lighting*)this->effect()->techniques()[0];
+    viz::qt3d::techniques::Lighting* const tech
+        = (viz::qt3d::techniques::Lighting*) this->effect()->techniques()[0];
     tech->updateRasterMode(_polygonMode);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::updateShadingMode(int _shadingMode)
 {
-    viz::qt3d::techniques::Lighting* const tech =
-        (viz::qt3d::techniques::Lighting*)this->effect()->techniques()[0];
-    tech->setLightingMode(static_cast< viz::qt3d::techniques::Lighting::LightingMode >(_shadingMode));
+    viz::qt3d::techniques::Lighting* const tech
+        = (viz::qt3d::techniques::Lighting*) this->effect()->techniques()[0];
+    tech->setLightingMode(static_cast<viz::qt3d::techniques::Lighting::LightingMode>(_shadingMode));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Material::updateRGBAMode(sight::data::Material::sptr _sightMaterial)
 {
-    //Sets up Material colors.
+    // Sets up Material colors.
     sight::data::Color::csptr sightAmbient = _sightMaterial->ambient();
     sight::data::Color::csptr sightDiffuse = _sightMaterial->diffuse();
 
-    const QColor ambient(static_cast<int>(sightAmbient->red()*255), static_cast<int>(sightAmbient->green()*255),
-                         static_cast<int>(sightAmbient->blue()*255), static_cast<int>(sightAmbient->alpha()*255));
+    const QColor ambient(static_cast<int>(sightAmbient->red() * 255), static_cast<int>(sightAmbient->green() * 255),
+                         static_cast<int>(sightAmbient->blue() * 255), static_cast<int>(sightAmbient->alpha() * 255));
     this->setAmbient(ambient);
 
-    const QColor diffuse(static_cast<int>(sightDiffuse->red()*255), static_cast<int>(sightDiffuse->green()*255),
-                         static_cast<int>(sightDiffuse->blue()*255), static_cast<int>(sightDiffuse->alpha()*255));
+    const QColor diffuse(static_cast<int>(sightDiffuse->red() * 255), static_cast<int>(sightDiffuse->green() * 255),
+                         static_cast<int>(sightDiffuse->blue() * 255), static_cast<int>(sightDiffuse->alpha() * 255));
     this->setDiffuse(diffuse);
 
     const QVector3D specular(.2f, .2f, .2f);
@@ -219,4 +219,4 @@ void Material::updateRGBAMode(sight::data::Material::sptr _sightMaterial)
 
 } // namespace data.
 
-} //namespace sight::viz::qt3d.
+} // namespace sight::viz::qt3d.

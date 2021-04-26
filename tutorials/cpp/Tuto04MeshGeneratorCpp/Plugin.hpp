@@ -32,9 +32,7 @@ namespace Tuto04MeshGeneratorCpp
 /// This class is started when the module is loaded.
 class TUTO04MESHGENERATORCPP_CLASS_API Plugin final : public sight::core::runtime::Plugin
 {
-
 public:
-
     /// Destroys the plugin.
     TUTO04MESHGENERATORCPP_API ~Plugin() noexcept override;
 
@@ -43,7 +41,6 @@ public:
 
     /// Stops the plugin, does nothing here.
     TUTO04MESHGENERATORCPP_API void stop() noexcept override;
-
 };
 
 } // namespace Tuto04MeshGeneratorCpp.

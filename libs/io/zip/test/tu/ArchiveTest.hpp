@@ -26,6 +26,7 @@
 
 namespace sight::io::zip
 {
+
 namespace ut
 {
 
@@ -48,4 +49,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::io::zip

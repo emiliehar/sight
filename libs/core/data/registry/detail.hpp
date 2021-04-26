@@ -39,7 +39,7 @@ namespace registry
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(data::Object) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(data::Object)(), KeyType> Type;
 
 DATA_API SPTR(Type) get();
 

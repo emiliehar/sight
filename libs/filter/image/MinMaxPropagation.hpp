@@ -41,7 +41,6 @@ namespace sight::filter::image
 class FILTER_IMAGE_CLASS_API MinMaxPropagation
 {
 public:
-
     enum Mode
     {
         MIN,
@@ -53,7 +52,7 @@ public:
 
     typedef data::helper::MedicalImage::Orientation OrientationType;
 
-    typedef std::vector< CoordinatesType > SeedsType;
+    typedef std::vector<CoordinatesType> SeedsType;
 
     /**
      * @brief Constructor.
@@ -61,8 +60,10 @@ public:
      * @param[in,out] outImage mask image containing the written values.
      * @param[in] roi region of interest.
      */
-    FILTER_IMAGE_API MinMaxPropagation(const data::Image::csptr& inImage, const data::Image::sptr& outImage,
-                                       const data::Image::csptr& roi);
+    FILTER_IMAGE_API MinMaxPropagation(
+        const data::Image::csptr& inImage,
+        const data::Image::sptr& outImage,
+        const data::Image::csptr& roi);
 
     /**
      * @brief propagates through the image starting from each seed as along as the encountered voxel value
@@ -74,11 +75,14 @@ public:
      * @param[in] mode propagation mode (min, max, or minmax).
      * @return the differences in the image before and after propagation.
      */
-    FILTER_IMAGE_API ImageDiff propagate(SeedsType& seeds, data::Image::BufferType* value,
-                                         const double radius, const bool overwrite, const Mode mode);
+    FILTER_IMAGE_API ImageDiff propagate(
+        SeedsType& seeds,
+        data::Image::BufferType* value,
+        const double radius,
+        const bool overwrite,
+        const Mode mode);
 
 private:
-
     /// Seed list.
     SeedsType m_seeds;
 
@@ -90,7 +94,6 @@ private:
 
     /// Output image. Where we write the flooded voxels.
     data::Image::sptr m_outImage;
-
 };
 
 } // namespace sight::filter::image.

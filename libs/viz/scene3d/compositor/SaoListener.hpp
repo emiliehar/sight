@@ -30,20 +30,21 @@
 
 namespace Ogre
 {
+
 class Viewport;
+
 }
 
 namespace sight::viz::scene3d
 {
+
 namespace compositor
 {
 
 // Here we add the class derivated from the Ogre Listener
 class VIZ_SCENE3D_CLASS_API SaoListener : public ::Ogre::CompositorInstance::Listener
 {
-
 public:
-
     VIZ_SCENE3D_API SaoListener() = delete;
 
     VIZ_SCENE3D_API SaoListener(::Ogre::Viewport* vp) :
@@ -55,9 +56,7 @@ public:
     VIZ_SCENE3D_API void notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialPtr& mat);
 
 private:
-
     ::Ogre::Viewport* m_viewport;
-
 };
 
 } // namespace compositor.

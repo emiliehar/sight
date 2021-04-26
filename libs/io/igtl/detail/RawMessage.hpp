@@ -31,6 +31,7 @@
 
 namespace sight::io::igtl::detail
 {
+
 /**
  *
  * @brief a OpenIGTLink message which you can store raw data
@@ -38,12 +39,11 @@ namespace sight::io::igtl::detail
 class IO_IGTL_CLASS_API RawMessage : public ::igtl::MessageBase
 {
 public:
-
     typedef RawMessage Self;
     typedef ::igtl::MessageBase Superclass;
     typedef ::igtl::SmartPointer<Self> Pointer;
     typedef ::igtl::SmartPointer<const Self> ConstPointer;
-    typedef std::vector< char > RawDataType;
+    typedef std::vector<char> RawDataType;
 
     igtlTypeMacro(RawMessage, ::igtl::MessageBase);
 
@@ -95,8 +95,8 @@ private:
     int UnpackBody();
 
 private:
-
     /// raw data
     RawDataType m_msg;
 };
-}//namespace sight::io::igtl::detail
+
+} // namespace sight::io::igtl::detail

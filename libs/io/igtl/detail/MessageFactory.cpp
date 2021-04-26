@@ -37,41 +37,43 @@ namespace sight::io::igtl::detail
 
 MessageFactory::CreatorContainer MessageFactory::s_creators = MessageFactory::initFactory();
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MessageFactory::CreatorContainer MessageFactory::initFactory()
 {
     MessageFactory::CreatorContainer container;
 
     // Create messages without parameters.
-    container["TRANSFORM"] = &MessageMaker< ::igtl::TransformMessage, false >::createMessage;
-    container["IMAGE"]     = &MessageMaker< ::igtl::ImageMessage, false >::createMessage;
-    container["POINT"]     = &MessageMaker< ::igtl::PointMessage, false >::createMessage;
-    container["STRING"]    = &MessageMaker< ::igtl::StringMessage, false >::createMessage;
-    container["POSITION"]  = &MessageMaker< ::igtl::PositionMessage, false >::createMessage;
+    container["TRANSFORM"] = &MessageMaker< ::igtl::TransformMessage, false>::createMessage;
+    container["IMAGE"]     = &MessageMaker< ::igtl::ImageMessage, false>::createMessage;
+    container["POINT"]     = &MessageMaker< ::igtl::PointMessage, false>::createMessage;
+    container["STRING"]    = &MessageMaker< ::igtl::StringMessage, false>::createMessage;
+    container["POSITION"]  = &MessageMaker< ::igtl::PositionMessage, false>::createMessage;
     container["POLYDATA"]  = &MessageMaker< ::igtl::PolyDataMessage, false>::createMessage;
     container["TDATA"]     = &MessageMaker< ::igtl::TrackingDataMessage, false>::createMessage;
     container["STT_TDATA"] = &MessageMaker< ::igtl::StartTrackingDataMessage, false>::createMessage;
     container["STP_TDATA"] = &MessageMaker< ::igtl::StopTrackingDataMessage, false>::createMessage;
 
     // Messages with parameters (custom igtl message from sight).
-    container["ATOMS"]   = std::bind(&MessageMaker< RawMessage, true >::createMessage, "ATOMS");
-    container["INTEGER"] = std::bind(&MessageMaker< RawMessage, true >::createMessage, "INTEGER");
-    container["FLOAT"]   = std::bind(&MessageMaker< RawMessage, true >::createMessage, "FLOAT");
+    container["ATOMS"]   = std::bind(&MessageMaker<RawMessage, true>::createMessage, "ATOMS");
+    container["INTEGER"] = std::bind(&MessageMaker<RawMessage, true>::createMessage, "INTEGER");
+    container["FLOAT"]   = std::bind(&MessageMaker<RawMessage, true>::createMessage, "FLOAT");
+
     return container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer MessageFactory::create(const std::string& type)
 {
     CreatorContainer::const_iterator it;
 
-    if ((it = MessageFactory::s_creators.find(type)) != MessageFactory::s_creators.end())
+    if((it = MessageFactory::s_creators.find(type)) != MessageFactory::s_creators.end())
     {
         return it->second();
     }
+
     throw io::igtl::detail::exception::Conversion("Cannot find a creator for type " + type);
 }
 
-}//namespace sight::io::igtl::detail
+} // namespace sight::io::igtl::detail

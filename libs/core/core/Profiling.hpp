@@ -71,24 +71,26 @@ public:
         m_timer.start();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     bool tick()
     {
         m_average = m_timer.getElapsedTimeInMilliSec() / ++m_count;
+
         return m_timer.getElapsedTimeInMilliSec() >= m_interval * 1000;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     bool tick(core::HiResClock::HiResClockType time)
     {
         m_average = (m_average * m_count + time) / (m_count + 1);
         ++m_count;
+
         return m_timer.getElapsedTimeInMilliSec() >= m_interval * 1000;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void reset()
     {
@@ -124,11 +126,11 @@ public:
     {
         m_timer.stop();
 
-        if( m_frameTimer.tick(m_timer.getElapsedTimeInMilliSec()) )
+        if(m_frameTimer.tick(m_timer.getElapsedTimeInMilliSec()))
         {
             std::stringstream log;
-            log << "TIMER (avg over " << m_frameTimer.m_interval << "s) : " << m_label <<
-                " = " << m_frameTimer.m_average << " ms.";
+            log << "TIMER (avg over " << m_frameTimer.m_interval << "s) : " << m_label
+                << " = " << m_frameTimer.m_average << " ms.";
             core::log::SpyLogger::getSpyLogger().info(log.str(), __FILE__, __LINE__);
             m_frameTimer.reset();
         }
@@ -178,11 +180,11 @@ public:
         m_label(label),
         m_frameTimer(frameTimer)
     {
-        if( m_frameTimer.tick() )
+        if(m_frameTimer.tick())
         {
             std::stringstream log;
-            log << "FRAME (avg over " << m_frameTimer.m_interval << "s) : " << m_label <<
-                " = " << m_frameTimer.m_average << " ms.";
+            log << "FRAME (avg over " << m_frameTimer.m_interval << "s) : " << m_label
+                << " = " << m_frameTimer.m_average << " ms.";
             core::log::SpyLogger::getSpyLogger().info(log.str(), __FILE__, __LINE__);
             m_frameTimer.reset();
         }
@@ -199,33 +201,29 @@ public:
 };
 
 #ifndef FW_PROFILING_DISABLED
-
 /// Display the elapsed time inside a code block
 #define FW_PROFILE(_label) \
-    core::fwProfileScope BOOST_PP_CAT( profiler, __LINE__ ) (_label);
+    core::fwProfileScope BOOST_PP_CAT(profiler, __LINE__)(_label);
 
 /// Display the elapsed time inside a code block, every N seconds
 #define FW_PROFILE_AVG(_label, interval) \
-    static core::fwProfileFrameTimer BOOST_PP_CAT( frameTimer, __LINE__ ) (interval); \
-    core::fwProfileScopeAvg BOOST_PP_CAT( profiler, __LINE__ ) (_label, BOOST_PP_CAT( frameTimer, __LINE__ ));
+    static core::fwProfileFrameTimer BOOST_PP_CAT(frameTimer, __LINE__)(interval); \
+    core::fwProfileScopeAvg BOOST_PP_CAT(profiler, __LINE__)(_label, BOOST_PP_CAT(frameTimer, __LINE__));
 
 /// Display the elapsed time between two calls of a code block
 #define FW_PROFILE_FRAME(_label) \
-    static core::fwProfileFrameTimer BOOST_PP_CAT( frameTimer, __LINE__ ) (0); \
-    core::fwProfileFrame BOOST_PP_CAT( profiler, __LINE__ ) (_label, BOOST_PP_CAT( frameTimer, __LINE__ ));
+    static core::fwProfileFrameTimer BOOST_PP_CAT(frameTimer, __LINE__)(0); \
+    core::fwProfileFrame BOOST_PP_CAT(profiler, __LINE__)(_label, BOOST_PP_CAT(frameTimer, __LINE__));
 
 /// Display the elapsed time between two calls of a code block, every N seconds
 #define FW_PROFILE_FRAME_AVG(_label, interval) \
-    static core::fwProfileFrameTimer BOOST_PP_CAT( frameTimer, __LINE__ ) (interval); \
-    core::fwProfileFrameAvg BOOST_PP_CAT( profiler, __LINE__ ) (_label, BOOST_PP_CAT( frameTimer, __LINE__ ));
-
+    static core::fwProfileFrameTimer BOOST_PP_CAT(frameTimer, __LINE__)(interval); \
+    core::fwProfileFrameAvg BOOST_PP_CAT(profiler, __LINE__)(_label, BOOST_PP_CAT(frameTimer, __LINE__));
 #else // FW_PROFILING_DISABLED
-
 #define FW_PROFILE(_label)
 #define FW_PROFILE_AVG(_label, interval)
 #define FW_PROFILE_FRAME(_label)
 #define FW_PROFILE_FRAME_AVG(_label, interval)
-
 #endif // FW_PROFILING_DISABLED
 
-} //namespace sight::core
+} // namespace sight::core

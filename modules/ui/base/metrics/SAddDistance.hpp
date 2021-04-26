@@ -46,9 +46,7 @@ namespace sight::module::ui::base::metrics
  */
 class MODULE_UI_BASE_CLASS_API SAddDistance final : public ::sight::ui::base::IAction
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SAddDistance, sight::ui::base::IAction)
 
@@ -59,7 +57,6 @@ public:
     MODULE_UI_BASE_API ~SAddDistance() noexcept override;
 
 protected:
-
     /// Configures the action.
     MODULE_UI_BASE_API void configuring() override;
 
@@ -71,7 +68,6 @@ protected:
 
     /// Stops the action.
     MODULE_UI_BASE_API void stopping() override;
-
 };
 
 } // namespace sight::module::ui::base::metrics

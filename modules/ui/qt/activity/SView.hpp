@@ -36,6 +36,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
@@ -79,9 +80,7 @@ namespace activity
  */
 class MODULE_UI_QT_CLASS_API SView : public sight::ui::base::view::IActivityView
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SView, sight::ui::base::view::IActivityView)
 
     /// Constructor. Do nothing.
@@ -95,13 +94,12 @@ public:
      * @name Signal API
      * @{
      */
-    typedef core::com::Signal< void (data::ActivitySeries::sptr ) > ActivityLaunchedSignalType;
-    /**
-     * @}
-     */
+    typedef core::com::Signal<void (data::ActivitySeries::sptr)> ActivityLaunchedSignalType;
+/**
+ * @}
+ */
 
 protected:
-
     /// Configures the service.
     void configuring() final;
 
@@ -115,7 +113,6 @@ protected:
     void updating() override;
 
 private:
-
     /**
      * @brief Slot: Launch the given activity in the current view (stop and destroy the previous one).
      */
@@ -130,8 +127,9 @@ private:
     ActivityLaunchedSignalType::sptr m_sigActivityLaunched;
 
     /// Contents margins of the layout.
-    int m_border {-1};
+    int m_border{-1};
 };
 
-} //namespace activity
+} // namespace activity
+
 } // guiQt

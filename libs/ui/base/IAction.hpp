@@ -38,9 +38,7 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API IAction : public ::sight::service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IAction, service::IService)
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
@@ -49,19 +47,19 @@ public:
      * @{
      */
     /// Signal emitted when action is enabled
-    typedef core::com::Signal< void ()> EnabledSignalType;
+    typedef core::com::Signal<void ()> EnabledSignalType;
     static const core::com::Signals::SignalKeyType s_ENABLED_SIG;
 
     /// Signal emitted when action is disabled
-    typedef core::com::Signal< void ()> DisabledSignalType;
+    typedef core::com::Signal<void ()> DisabledSignalType;
     static const core::com::Signals::SignalKeyType s_DISABLED_SIG;
 
     /// Signal emitted when action is checked
-    typedef core::com::Signal< void ()> CheckedSignalType;
+    typedef core::com::Signal<void ()> CheckedSignalType;
     static const core::com::Signals::SignalKeyType s_CHECKED_SIG;
 
     /// Signal emitted when action is unchecked
-    typedef core::com::Signal< void ()> UncheckedSignalType;
+    typedef core::com::Signal<void ()> UncheckedSignalType;
     static const core::com::Signals::SignalKeyType s_UNCHECKED_SIG;
     /**
      * @}
@@ -161,7 +159,6 @@ public:
     UI_BASE_API bool confirmAction();
 
 protected:
-
     UI_BASE_API IAction();
 
     UI_BASE_API virtual ~IAction();
@@ -196,7 +193,6 @@ protected:
     UI_BASE_API void initialize();
 
 private:
-
     ui::base::registry::Action::sptr m_registry;
 
     /// Handle the information of the action state inversion.
@@ -218,7 +214,7 @@ private:
     UncheckedSignalType::sptr m_sigUnchecked;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 class LockAction
 {
@@ -228,14 +224,16 @@ public:
     {
         m_action.lock()->setIsExecutable(false);
     }
+
     ~LockAction()
     {
         m_action.lock()->setIsExecutable(true);
     }
+
 private:
     IAction::wptr m_action;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::ui::base

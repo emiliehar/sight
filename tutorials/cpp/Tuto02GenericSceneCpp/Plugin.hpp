@@ -34,9 +34,7 @@ namespace Tuto02GenericSceneCpp
 /// This class is started when the module is loaded.
 class TUTO02GENERICSCENECPP_CLASS_API Plugin final : public sight::core::runtime::Plugin
 {
-
 public:
-
     /// Destroys the plugin.
     TUTO02GENERICSCENECPP_API ~Plugin() noexcept override;
 
@@ -53,9 +51,7 @@ public:
     TUTO02GENERICSCENECPP_API void uninitialize() override;
 
 private:
-
-    std::unique_ptr< sight::service::AppManager > m_appManager;
-
+    std::unique_ptr<sight::service::AppManager> m_appManager;
 };
 
 } // namespace Tuto02GenericSceneCpp.

@@ -44,14 +44,14 @@ namespace reader
  * Ircad reader to read a data::Image on filesystem which the file format
  * is .raw.gz. This format is basic. The buffer is writen in a file with zlib.
  */
-class IO_BASE_CLASS_API GzBufferImageReader :  public GenericObjectReader< data::Image >,
-                                               public core::location::SingleFile
+class IO_BASE_CLASS_API GzBufferImageReader : public GenericObjectReader<data::Image>,
+                                              public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(GzBufferImageReader, GenericObjectReader< data::Image>,
-                        io::base::reader::factory::New< GzBufferImageReader >)
+    SIGHT_DECLARE_CLASS(
+        GzBufferImageReader,
+        GenericObjectReader<data::Image>,
+        io::base::reader::factory::New<GzBufferImageReader>)
 
     /// Constructor. Do nothing.
     IO_BASE_API GzBufferImageReader(io::base::reader::IObjectReader::Key key);
@@ -64,7 +64,6 @@ public:
 
     /// Defines extension supported by this reader ".raw.gz"
     IO_BASE_API std::string extension() override;
-
 };
 
 } // namespace reader

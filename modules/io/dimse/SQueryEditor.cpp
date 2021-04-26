@@ -57,18 +57,19 @@ static const service::IService::KeyType s_PACS_INPUT = "pacsConfig";
 
 static const service::IService::KeyType s_SERIESDB_INOUT = "seriesDB";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SQueryEditor::SQueryEditor() noexcept
 {
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 SQueryEditor::~SQueryEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::configuring()
 {
@@ -76,9 +77,11 @@ void SQueryEditor::configuring()
 
     const auto configTree = this->getConfigTree();
     const auto config     = configTree.get_child_optional("config.<xmlattr>");
+
     if(config)
     {
         const auto iconPath = config->get_optional<std::string>(s_ICON_PATH_CONFIG);
+
         if(iconPath)
         {
             m_iconPath = core::runtime::getModuleResourceFilePath(iconPath.value());
@@ -90,7 +93,7 @@ void SQueryEditor::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::starting()
 {
@@ -111,6 +114,7 @@ void SQueryEditor::starting()
     {
         m_searchButton->setText("");
         m_searchButton->setIcon(QIcon(QString::fromStdString(m_iconPath.string())));
+
         if(m_iconWidth > 0 && m_iconHeight > 0)
         {
             m_searchButton->setIconSize(QSize(m_iconWidth, m_iconHeight));
@@ -232,14 +236,14 @@ void SQueryEditor::starting()
     qtContainer->setLayout(mainLayout);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::updating()
 {
     this->executeQueryAsync();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::stopping()
 {
@@ -258,7 +262,7 @@ void SQueryEditor::stopping()
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::executeQueryAsync()
 {
@@ -268,14 +272,15 @@ void SQueryEditor::executeQueryAsync()
     }
     else
     {
-        const auto notif = this->signal< service::IService::InfoNotifiedSignalType >(
+        const auto notif = this->signal<service::IService::InfoNotifiedSignalType>(
             service::IService::s_INFO_NOTIFIED_SIG);
         notif->asyncEmit("Already querying");
+
         return;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::executeQuery()
 {
@@ -286,7 +291,7 @@ void SQueryEditor::executeQuery()
     // Initialize connection.
     try
     {
-        const auto pacsConfiguration = this->getLockedInput< const sight::io::dimse::data::PacsConfiguration >(
+        const auto pacsConfiguration = this->getLockedInput<const sight::io::dimse::data::PacsConfiguration>(
             s_PACS_INPUT);
 
         seriesEnquirer->initialize(
@@ -299,21 +304,27 @@ void SQueryEditor::executeQuery()
     catch(const sight::io::dimse::exceptions::Base& _e)
     {
         SIGHT_ERROR("Can't establish a connection with the PACS: " + std::string(_e.what()));
-        const auto notif = this->signal< service::IService::FailureNotifiedSignalType >(
+        const auto notif = this->signal<service::IService::FailureNotifiedSignalType>(
             service::IService::s_FAILURE_NOTIFIED_SIG);
         notif->asyncEmit("Can't connect to the PACS");
         m_isQuerying = false;
+
         return;
     }
 
-    const std::function< std::string(std::string) > standardise
+    const std::function<std::string(std::string)> standardise
         = [](std::string _s)
           {
               std::string res = _s;
-              std::transform(_s.begin(), _s.end(), res.begin(), [](unsigned char _c)
+              std::transform(
+                  _s.begin(),
+                  _s.end(),
+                  res.begin(),
+                  [](unsigned char _c)
             {
                 return std::tolower(_c);
             });
+
               return res;
           };
 
@@ -335,17 +346,19 @@ void SQueryEditor::executeQuery()
             beginDataSearchValue = m_beginStudyDateEdit->date().toString("yyyyMMdd").toStdString();
             endDateSearchValue   = m_endStudyDateEdit->date().toString("yyyyMMdd").toStdString();
             nameSearchValue      = standardise(m_patientNameEdit->text().toStdString());
+
             if(m_birthDateEdit->isEnabled())
             {
                 birthDateSearchValue = m_birthDateEdit->date().toString("yyyyMMdd").toStdString();
             }
+
             patientUIDSearchValue  = standardise(m_patientUIDEdit->text().toStdString());
             seriesUIDSearchValue   = standardise(m_seriesUIDEdit->text().toStdString());
             descriptionSearchValue = standardise(m_seriesDescriptionEdit->text().toStdString());
             modalitySearchValue    = standardise(m_seriesModalityEdit->text().toStdString());
         }
 
-        OFList< QRResponse* > responses;
+        OFList<QRResponse*> responses;
 
         // If one of the advanced editor is filled, with find series with it's field to improve the research.
         if(!nameSearchValue.empty())
@@ -384,7 +397,8 @@ void SQueryEditor::executeQuery()
         }
 
         // Filter all results.
-        std::vector< QRResponse* > seriesResponse;
+        std::vector<QRResponse*> seriesResponse;
+
         for(QRResponse* response : responses)
         {
             // Be sure we are not in the last response which does not have a dataset.
@@ -393,18 +407,22 @@ void SQueryEditor::executeQuery()
                 OFString seriesUID;
                 response->m_dataset->findAndGetOFStringArray(DCM_SeriesInstanceUID, seriesUID);
 
-                const auto findedIt = std::find_if(seriesResponse.begin(), seriesResponse.end(),
-                                                   [&](const QRResponse* _res) -> bool
+                const auto findedIt = std::find_if(
+                    seriesResponse.begin(),
+                    seriesResponse.end(),
+                    [&](const QRResponse* _res) -> bool
                     {
-
                         OFString data;
                         _res->m_dataset->findAndGetOFStringArray(DCM_SeriesInstanceUID, data);
+
                         if(data.compare(seriesUID) == 0)
                         {
                             return true;
                         }
+
                         return false;
                     });
+
                 // If it's not already added, we check if the series match advanced request.
                 if(findedIt == seriesResponse.end())
                 {
@@ -413,6 +431,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_StudyDate, ofValue);
                     QDate studyDate = QDate::fromString(ofValue.c_str(), "yyyyMMdd");
+
                     // Check date if the advanced mode is enabled.
                     if(m_advanced)
                     {
@@ -424,6 +443,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_PatientBirthDate, ofValue);
                     const std::string patientBirthDate = ofValue.c_str();
+
                     if(!birthDateSearchValue.empty())
                     {
                         if(patientBirthDate.find(birthDateSearchValue) == std::string::npos)
@@ -434,6 +454,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_PatientName, ofValue);
                     const std::string patientName = standardise(ofValue.c_str());
+
                     if(!nameSearchValue.empty())
                     {
                         if(patientName.find(nameSearchValue) == std::string::npos)
@@ -444,6 +465,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_PatientID, ofValue);
                     const std::string patientID = standardise(ofValue.c_str());
+
                     if(!patientUIDSearchValue.empty())
                     {
                         if(patientID.find(patientUIDSearchValue) == std::string::npos)
@@ -454,6 +476,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_SeriesInstanceUID, ofValue);
                     const std::string seriesInstanceUID = standardise(ofValue.c_str());
+
                     if(!seriesUIDSearchValue.empty())
                     {
                         if(seriesInstanceUID.find(seriesUIDSearchValue) == std::string::npos)
@@ -464,6 +487,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_SeriesDescription, ofValue);
                     const std::string seriesDescription = standardise(ofValue.c_str());
+
                     if(!descriptionSearchValue.empty())
                     {
                         if(seriesDescription.find(descriptionSearchValue) == std::string::npos)
@@ -474,6 +498,7 @@ void SQueryEditor::executeQuery()
 
                     response->m_dataset->findAndGetOFStringArray(DCM_Modality, ofValue);
                     const std::string modality = standardise(ofValue.c_str());
+
                     if(!modalitySearchValue.empty())
                     {
                         if(modality.find(modalitySearchValue) == std::string::npos)
@@ -483,13 +508,13 @@ void SQueryEditor::executeQuery()
                     }
 
                     // Check if each tag match at least the main research value.
-                    if(studyDate.toString("MM/dd/yyyy").toStdString().find(searchValue) != std::string::npos ||
-                       patientName.find(searchValue) != std::string::npos ||
-                       patientBirthDate.find(searchValue) != std::string::npos ||
-                       patientID.find(searchValue) != std::string::npos ||
-                       seriesInstanceUID.find(searchValue) != std::string::npos ||
-                       seriesDescription.find(searchValue) != std::string::npos ||
-                       modality.find(searchValue) != std::string::npos)
+                    if(studyDate.toString("MM/dd/yyyy").toStdString().find(searchValue) != std::string::npos
+                       || patientName.find(searchValue) != std::string::npos
+                       || patientBirthDate.find(searchValue) != std::string::npos
+                       || patientID.find(searchValue) != std::string::npos
+                       || seriesInstanceUID.find(searchValue) != std::string::npos
+                       || seriesDescription.find(searchValue) != std::string::npos
+                       || modality.find(searchValue) != std::string::npos)
                     {
                         seriesResponse.push_back(response);
                     }
@@ -498,18 +523,20 @@ void SQueryEditor::executeQuery()
         }
 
         // Convert response to DicomSeries.
-        OFList< QRResponse* > ofSeriesResponse;
+        OFList<QRResponse*> ofSeriesResponse;
+
         for(QRResponse* res : seriesResponse)
         {
             ofSeriesResponse.push_back(res);
         }
+
         data::SeriesDB::ContainerType series = sight::io::dimse::helper::Series::toFwMedData(ofSeriesResponse);
 
         // Clean memory.
         sight::io::dimse::helper::Series::releaseResponses(responses);
 
         // Check whether the instance number start at 1 or 0.
-        for(data::Series::sptr s: series)
+        for(data::Series::sptr s : series)
         {
             data::DicomSeries::sptr dicomSeries = data::DicomSeries::dynamicCast(s);
             SIGHT_ASSERT("The PACS response should contain only DicomSeries", dicomSeries);
@@ -522,7 +549,7 @@ void SQueryEditor::executeQuery()
     catch(const sight::io::dimse::exceptions::Base& _e)
     {
         SIGHT_ERROR("Can't execute query to the PACS: " + std::string(_e.what()));
-        const auto notif = this->signal< service::IService::FailureNotifiedSignalType >(
+        const auto notif = this->signal<service::IService::FailureNotifiedSignalType>(
             service::IService::s_FAILURE_NOTIFIED_SIG);
         notif->asyncEmit("Can't execture query");
     }
@@ -535,11 +562,11 @@ void SQueryEditor::executeQuery()
     m_isQuerying = false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::updateSeriesDB(const data::SeriesDB::ContainerType& _series)
 {
-    const auto seriesDB = this->getLockedInOut< data::SeriesDB >(s_SERIESDB_INOUT);
+    const auto seriesDB = this->getLockedInOut<data::SeriesDB>(s_SERIESDB_INOUT);
 
     data::helper::SeriesDB seriesDBHelper(seriesDB.get_shared());
 
@@ -547,7 +574,7 @@ void SQueryEditor::updateSeriesDB(const data::SeriesDB::ContainerType& _series)
     seriesDBHelper.clear();
 
     // Push new series in the SeriesDB.
-    for(const data::Series::sptr& s: _series)
+    for(const data::Series::sptr& s : _series)
     {
         data::DicomSeries::sptr dicomSeries = data::DicomSeries::dynamicCast(s);
         seriesDBHelper.add(dicomSeries);
@@ -557,7 +584,7 @@ void SQueryEditor::updateSeriesDB(const data::SeriesDB::ContainerType& _series)
     seriesDBHelper.notify();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SQueryEditor::enableBirthDateEdit(int _enable)
 {

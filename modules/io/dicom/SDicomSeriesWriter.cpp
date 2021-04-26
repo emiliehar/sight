@@ -48,7 +48,7 @@ namespace sight::module::io::dicom
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SDicomSeriesWriter::SDicomSeriesWriter() noexcept :
     m_cancelled(false)
@@ -56,19 +56,20 @@ SDicomSeriesWriter::SDicomSeriesWriter() noexcept :
     m_sigJobCreated = newSignal<JobCreatedSignal>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SDicomSeriesWriter::~SDicomSeriesWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDicomSeriesWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void SDicomSeriesWriter::openLocationDialog()
 {
@@ -81,7 +82,8 @@ void SDicomSeriesWriter::openLocationDialog()
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFolder());
         this->setFolder(result->getFolder());
@@ -93,48 +95,51 @@ void SDicomSeriesWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDicomSeriesWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDicomSeriesWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDicomSeriesWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDicomSeriesWriter::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::DicomSeries::csptr series =
-            this->getInput< data::DicomSeries >(sight::io::base::service::s_DATA_KEY);
+        data::DicomSeries::csptr series
+            = this->getInput<data::DicomSeries>(sight::io::base::service::s_DATA_KEY);
         const std::filesystem::path& folder = this->getFolder();
+
         if(!std::filesystem::is_empty(folder))
         {
             sight::ui::base::dialog::MessageDialog dialog;
-            dialog.setMessage("Folder '"+folder.string()+"' isn't empty, files can be overwritten."
-                              "\nDo you want to continue ?");
+            dialog.setMessage(
+                "Folder '" + folder.string() + "' isn't empty, files can be overwritten."
+                                               "\nDo you want to continue ?");
             dialog.setTitle("Folder not empty.");
             dialog.setIcon(ui::base::dialog::MessageDialog::QUESTION);
-            dialog.addButton( sight::ui::base::dialog::MessageDialog::YES_NO );
+            dialog.addButton(sight::ui::base::dialog::MessageDialog::YES_NO);
             sight::ui::base::dialog::MessageDialog::Buttons button = dialog.show();
 
             if(button == sight::ui::base::dialog::MessageDialog::NO)
             {
                 m_writeFailed = true;
+
                 return;
             }
         }
@@ -143,22 +148,25 @@ void SDicomSeriesWriter::updating()
             m_writeFailed = true;
         }
 
-        if (series->getModality() == "OT")
+        if(series->getModality() == "OT")
         {
             sight::ui::base::dialog::MessageDialog dialog;
-            dialog.setMessage("Series modality is '" + series->getModality() + "' some information can be lost."
-                              "\nDo you want to continue ?");
+            dialog.setMessage(
+                "Series modality is '" + series->getModality() + "' some information can be lost."
+                                                                 "\nDo you want to continue ?");
             dialog.setTitle("Series modality.");
             dialog.setIcon(ui::base::dialog::MessageDialog::QUESTION);
-            dialog.addButton( sight::ui::base::dialog::MessageDialog::YES_NO );
+            dialog.addButton(sight::ui::base::dialog::MessageDialog::YES_NO);
             sight::ui::base::dialog::MessageDialog::Buttons button = dialog.show();
 
             if(button == sight::ui::base::dialog::MessageDialog::NO)
             {
                 m_writeFailed = true;
+
                 return;
             }
         }
+
         sight::ui::base::Cursor cursor;
         cursor.setCursor(ui::base::ICursor::BUSY);
         this->saveDicomSeries(folder, series);
@@ -170,10 +178,11 @@ void SDicomSeriesWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SDicomSeriesWriter::saveDicomSeries( const std::filesystem::path folder,
-                                          const data::DicomSeries::csptr& series ) const
+void SDicomSeriesWriter::saveDicomSeries(
+    const std::filesystem::path folder,
+    const data::DicomSeries::csptr& series) const
 {
     auto writer = sight::io::dicom::helper::DicomSeriesWriter::New();
 
@@ -186,27 +195,31 @@ void SDicomSeriesWriter::saveDicomSeries( const std::filesystem::path folder,
         sight::ui::base::dialog::ProgressDialog progressMeterGUI("Saving series ");
         writer->write();
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         std::stringstream ss;
         ss << "Warning during saving : " << e.what();
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", ss.str(), sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", "Warning during saving", sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            "Warning during saving",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SDicomSeriesWriter::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::dicom

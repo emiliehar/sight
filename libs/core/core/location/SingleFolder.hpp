@@ -28,6 +28,7 @@
 
 namespace sight::core::location
 {
+
 /// Class to define a location that holds a single directory path
 class CORE_CLASS_API SingleFolder : public ILocation
 {
@@ -47,7 +48,6 @@ public:
     inline std::filesystem::path getFolder() const;
 
 protected:
-
     /// Constructor
     CORE_API SingleFolder() = default;
 
@@ -55,7 +55,6 @@ protected:
     CORE_API virtual ~SingleFolder() = default;
 
 private:
-
     /// The directory as filesystem path
     std::filesystem::path m_folder;
 };
@@ -64,24 +63,25 @@ private:
 inline SingleFolder::sptr SingleFolder::New()
 {
     struct MakeSharedEnabler : public SingleFolder {};
+
     return std::make_shared<MakeSharedEnabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::string SingleFolder::toString() const
 {
     return m_folder.string();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SingleFolder::setFolder(const std::filesystem::path& folder)
 {
     m_folder = folder;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::filesystem::path SingleFolder::getFolder() const
 {

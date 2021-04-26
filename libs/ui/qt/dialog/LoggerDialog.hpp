@@ -34,9 +34,11 @@
 
 namespace sight::ui::qt
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief   LoggerDialog allowing the choice of an element among severals (_selections)
@@ -47,8 +49,7 @@ class UI_QT_CLASS_API LoggerDialog : public QDialog,
 Q_OBJECT
 
 public:
-
-    SIGHT_DECLARE_CLASS(LoggerDialog, ui::base::dialog::ILoggerDialog, ui::base::factory::New< LoggerDialog >)
+    SIGHT_DECLARE_CLASS(LoggerDialog, ui::base::dialog::ILoggerDialog, ui::base::factory::New<LoggerDialog>)
 
     /// Constructor
     UI_QT_API LoggerDialog(ui::base::GuiBaseObject::Key key);
@@ -80,7 +81,6 @@ public:
     UI_QT_API bool show() override;
 
 protected Q_SLOTS:
-
     /**
      * @brief Slot called when the user wants to display the logs
      * @param[in] state Checkbox state
@@ -105,4 +105,5 @@ private:
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::qt

@@ -28,16 +28,15 @@
 
 namespace sight::module::debug
 {
+
 namespace action
 {
 
 /// Increase or decrease the memory consumption by storing a new image, use to experiment dump process
 class MODULE_DEBUG_CLASS_API MemoryConsumption : public ::sight::ui::base::IAction
 {
-
 public:
-
-    SIGHT_DECLARE_SERVICE(MemoryConsumption,   sight::ui::base::IAction )
+    SIGHT_DECLARE_SERVICE(MemoryConsumption, sight::ui::base::IAction)
 
     /// Does nothing
     MODULE_DEBUG_API MemoryConsumption() noexcept;
@@ -46,7 +45,6 @@ public:
     MODULE_DEBUG_API virtual ~MemoryConsumption() noexcept;
 
 protected:
-
     /**
      * @brief Implements configuring method derived from IService. .
      *
@@ -74,7 +72,6 @@ protected:
     void stopping() override;
 
 private:
-
     /// Intern method to create a new array
     void pushNewArray(size_t memorySizeInBytes);
 
@@ -83,8 +80,8 @@ private:
 
     /// Memory allocated in "increase" mode
     size_t m_memorySizeInBytes;
-
 };
 
 } // namespace action
+
 } // namespace sight::module::debug

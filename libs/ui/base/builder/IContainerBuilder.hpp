@@ -30,6 +30,7 @@
 
 namespace sight::ui::base
 {
+
 namespace builder
 {
 
@@ -59,14 +60,14 @@ public:
     /**
      * @brief Configure the layout before creation. Does nothing.
      */
-    UI_BASE_API virtual void initialize( core::runtime::ConfigurationElement::sptr configuration);
+    UI_BASE_API virtual void initialize(core::runtime::ConfigurationElement::sptr configuration);
 
     /**
      * @brief Instantiate layout with parent container.
      * @pre LayoutManager must be initialized before.
      * @pre parent container must be instanced.
      */
-    UI_BASE_API virtual void createContainer( ui::base::container::fwContainer::sptr parent ) = 0;
+    UI_BASE_API virtual void createContainer(ui::base::container::fwContainer::sptr parent) = 0;
 
     /**
      * @brief Destroy local layout with sub containers.
@@ -78,11 +79,10 @@ public:
     UI_BASE_API virtual void setParent(ui::base::container::fwContainer::sptr parent) = 0;
 
 protected:
-
     /// Container.
     ui::base::container::fwContainer::sptr m_container;
-
 };
 
 } // namespace builder
+
 } // namespace sight::ui::base

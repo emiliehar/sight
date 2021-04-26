@@ -39,24 +39,25 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-fwRenderOgreRegisterMacro( sight::module::viz::scene3dQt::WindowInteractor,
-                           sight::viz::scene3d::IWindowInteractor::REGISTRY_KEY );
+fwRenderOgreRegisterMacro(
+    sight::module::viz::scene3dQt::WindowInteractor,
+    sight::viz::scene3d::IWindowInteractor::REGISTRY_KEY);
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 namespace sight::module::viz::scene3dQt
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 WindowInteractor::WindowInteractor(
     sight::viz::scene3d::IWindowInteractor::Key)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 WindowInteractor::~WindowInteractor()
 {
@@ -68,28 +69,29 @@ WindowInteractor::~WindowInteractor()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::renderNow()
 {
     m_qOgreWidget->renderNow();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::requestRender()
 {
     m_qOgreWidget->requestRender();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void WindowInteractor::createContainer( sight::ui::base::container::fwContainer::sptr _parent,
-                                        bool _renderOnDemand,
-                                        bool _fullscreen)
+void WindowInteractor::createContainer(
+    sight::ui::base::container::fwContainer::sptr _parent,
+    bool _renderOnDemand,
+    bool _fullscreen)
 {
-    SIGHT_ASSERT("Invalid parent.", _parent );
-    m_parentContainer = ui::qt::container::QtContainer::dynamicCast( _parent );
+    SIGHT_ASSERT("Invalid parent.", _parent);
+    m_parentContainer = ui::qt::container::QtContainer::dynamicCast(_parent);
 
     QVBoxLayout* layout = new QVBoxLayout();
     m_parentContainer->setLayout(layout);
@@ -105,126 +107,135 @@ void WindowInteractor::createContainer( sight::ui::base::container::fwContainer:
     //
     // This is not required for Windows and macOS and will actually break the app on these platforms.
     // (see https://developer.apple.com/documentation/appkit/nsopenglcontext/1436212-makecurrentcontext
-    //  and https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-wglmakecurrent).
+    // and https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-wglmakecurrent).
     m_qOgreWidget->create();
 #endif
 
     m_windowContainer = QWidget::createWindowContainer(m_qOgreWidget);
     layout->addWidget(m_windowContainer);
-    m_windowContainer->setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding));
+    m_windowContainer->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     m_windowContainer->setMouseTracking(true);
 
     this->setFullscreen(_fullscreen, -1);
 
-    auto disableFullscreen = [this] { this->disableFullscreen(); };
+    auto disableFullscreen = [this]{this->disableFullscreen();};
     auto* disableShortcut  = new QShortcut(QString("Escape"), m_windowContainer);
     QObject::connect(disableShortcut, &QShortcut::activated, disableFullscreen);
 
     m_qOgreWidget->initialize();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::connectToContainer()
 {
     // Connect widget window render to render service start adaptors
     service::IService::sptr renderService                = m_renderService.lock();
-    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast( renderService );
+    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast(renderService);
 
-    if( !ogreRenderService )
+    if(!ogreRenderService)
     {
         SIGHT_ERROR("RenderService wrongly instantiated. ");
     }
 
     QObject::connect(m_qOgreWidget, SIGNAL(cameraClippingComputation()), this, SLOT(onCameraClippingComputation()));
-    QObject::connect(m_qOgreWidget, SIGNAL(interacted(
-                                               sight::viz::scene3d::IWindowInteractor::InteractionInfo)), this,
-                     SLOT(onInteracted(sight::viz::scene3d::IWindowInteractor::InteractionInfo)));
+    QObject::connect(
+        m_qOgreWidget,
+        SIGNAL(
+            interacted(
+                sight::viz::scene3d::IWindowInteractor::InteractionInfo)),
+        this,
+        SLOT(onInteracted(sight::viz::scene3d::IWindowInteractor::InteractionInfo)));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::disconnectInteractor()
 {
     QObject::disconnect(m_qOgreWidget, SIGNAL(cameraClippingComputation()), this, SLOT(onCameraClippingComputation()));
-    QObject::disconnect(m_qOgreWidget, SIGNAL(interacted(
-                                                  sight::viz::scene3d::IWindowInteractor::InteractionInfo)), this,
-                        SLOT(onInteracted(sight::viz::scene3d::IWindowInteractor::InteractionInfo)));
+    QObject::disconnect(
+        m_qOgreWidget,
+        SIGNAL(
+            interacted(
+                sight::viz::scene3d::IWindowInteractor::InteractionInfo)),
+        this,
+        SLOT(onInteracted(sight::viz::scene3d::IWindowInteractor::InteractionInfo)));
 
     m_qOgreWidget->destroyWindow();
     m_qOgreWidget = nullptr;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::makeCurrent()
 {
     m_qOgreWidget->makeCurrent();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int WindowInteractor::getWidgetId() const
 {
     return m_qOgreWidget->getId();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int WindowInteractor::getFrameId() const
 {
     return m_qOgreWidget->getFrameId();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::Ogre::RenderTarget* WindowInteractor::getRenderTarget()
 {
     return m_qOgreWidget->getOgreRenderWindow();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 float WindowInteractor::getLogicalDotsPerInch() const
 {
     SIGHT_ASSERT("Trying to query dots per inch on a non-existing windows.", m_qOgreWidget);
+
     return static_cast<float>(m_qOgreWidget->screen()->logicalDotsPerInchY());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::onInteracted(sight::viz::scene3d::IWindowInteractor::InteractionInfo _info)
 {
     service::IService::sptr renderService                = m_renderService.lock();
-    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast( renderService );
+    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast(renderService);
 
     for(auto layerMap : ogreRenderService->getLayers())
     {
         sight::viz::scene3d::Layer::sptr layer = layerMap.second;
-        layer->slot< sight::viz::scene3d::Layer::InteractionSlotType>(sight::viz::scene3d::Layer::s_INTERACTION_SLOT)->
+        layer->slot<sight::viz::scene3d::Layer::InteractionSlotType>(sight::viz::scene3d::Layer::s_INTERACTION_SLOT)->
         asyncRun(
             _info);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::onCameraClippingComputation()
 {
     service::IService::sptr renderService                = m_renderService.lock();
-    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast( renderService );
+    sight::viz::scene3d::SRender::sptr ogreRenderService = sight::viz::scene3d::SRender::dynamicCast(renderService);
 
     ogreRenderService->slot(sight::viz::scene3d::SRender::s_COMPUTE_CAMERA_CLIPPING_SLOT)->asyncRun();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 sight::viz::scene3d::IGraphicsWorker* WindowInteractor::createGraphicsWorker()
 {
     return new OpenGLWorker(m_qOgreWidget);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::setFullscreen(bool _fullscreen, int _screenNumber)
 {
@@ -258,7 +269,7 @@ void WindowInteractor::setFullscreen(bool _fullscreen, int _screenNumber)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void WindowInteractor::disableFullscreen()
 {
@@ -266,15 +277,15 @@ void WindowInteractor::disableFullscreen()
 
     if(container->layout()->isEmpty())
     {
-        service::IService::sptr renderService                = m_renderService.lock();
-        sight::viz::scene3d::SRender::sptr ogreRenderService =
-            sight::viz::scene3d::SRender::dynamicCast( renderService );
+        service::IService::sptr renderService = m_renderService.lock();
+        sight::viz::scene3d::SRender::sptr ogreRenderService
+            = sight::viz::scene3d::SRender::dynamicCast(renderService);
 
         auto toggleSlot = ogreRenderService->slot(sight::viz::scene3d::SRender::s_DISABLE_FULLSCREEN);
         toggleSlot->run();
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3dQt

@@ -41,48 +41,48 @@ inline void cleanse(void* p, std::size_t n) noexcept
 
 /// This class is an implementation of basic_string Allocator. Its main feature is secure deletion of allocated data
 /// See https://en.cppreference.com/w/cpp/named_req/Allocator
-template <typename T>
+template<typename T>
 struct allocator
 {
-    using value_type                             = T;
-    using propagate_on_container_move_assignment =
-        typename std::allocator_traits<std::allocator<T> >::propagate_on_container_move_assignment;
+    using value_type = T;
+    using propagate_on_container_move_assignment
+        = typename std::allocator_traits<std::allocator<T> >::propagate_on_container_move_assignment;
 
     inline constexpr allocator()                 = default;
     inline constexpr allocator(const allocator&) = default;
 
-    template <class U>
+    template<class U>
     inline constexpr allocator(const allocator<U>&) noexcept
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     inline constexpr static T* allocate(std::size_t n)
     {
-        return std::allocator<T>{}.allocate(n);
+        return std::allocator<T> {}.allocate(n);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     inline static void deallocate(T* p, std::size_t n) noexcept
     {
         cleanse(p, n * sizeof(T));
-        std::allocator<T>{}.deallocate(p, n);
+        std::allocator<T> {}.deallocate(p, n);
     }
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template <typename T, typename U>
+template<typename T, typename U>
 inline constexpr bool operator==(allocator<T>, allocator<U>) noexcept
 {
     return true;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template <typename T, typename U>
+template<typename T, typename U>
 inline constexpr bool operator!=(allocator<T>, allocator<U>) noexcept
 {
     return false;
@@ -93,7 +93,8 @@ using secure_string = std::basic_string<char, std::char_traits<char>, allocator<
 } // sight::core::crypto
 
 // Zeroes the strings own memory on destruction
-template<> inline ::sight::core::crypto::secure_string::~basic_string()
+template<>
+inline ::sight::core::crypto::secure_string::~basic_string()
 {
     clear();
     shrink_to_fit();

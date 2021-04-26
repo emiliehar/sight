@@ -28,35 +28,37 @@
 #include <data/String.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::reflection::ut::LandmarksTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::reflection::ut::LandmarksTest);
 
 namespace sight::data
 {
+
 namespace reflection
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::propertiesTest()
 {
-    const std::string VALUE_NAME = "myValueName";
-    const std::string VALUE      = "myValue";
-    ::DataCampHelper::PropertiesNameType dataProperties = { "fields" };
+    const std::string VALUE_NAME                        = "myValueName";
+    const std::string VALUE                             = "myValue";
+    ::DataCampHelper::PropertiesNameType dataProperties = {"fields"};
 
     data::Landmarks::sptr obj = data::Landmarks::New();
     data::String::sptr str    = data::String::New(VALUE);
@@ -66,8 +68,10 @@ void LandmarksTest::propertiesTest()
     ::DataCampHelper::compareSimplePropertyValue(obj, "@fields.myValueName", VALUE);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace reflection
-} //namespace sight::dataCamp
+} // namespace ut
+
+} // namespace reflection
+
+} // namespace sight::dataCamp

@@ -29,14 +29,15 @@
 #include <functional>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::MTLockTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::MTLockTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MTLockTest::setUp()
 {
@@ -44,14 +45,14 @@ void MTLockTest::setUp()
     m_string = data::String::New("tata");
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MTLockTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MTLockTest::lockTest()
 {
@@ -60,10 +61,9 @@ void MTLockTest::lockTest()
     const std::future_status status = future.wait_for(std::chrono::seconds(2));
     CPPUNIT_ASSERT(status == std::future_status::ready);
     future.get(); // Trigger exceptions
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MTLockTest::runLock()
 {
@@ -99,7 +99,7 @@ void MTLockTest::runLock()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MTLockTest::multipleLockTest()
 {
@@ -107,72 +107,75 @@ void MTLockTest::multipleLockTest()
     auto future2 = std::async(std::launch::async, std::bind(&MTLockTest::runMultipleLock, this, 99, "lili"));
 
     // read the last four letters and check that it is "tata" or "lili"
-    for (size_t i = 0; i < 40; i += 4)
+    for(size_t i = 0 ; i < 40 ; i += 4)
     {
-        std::this_thread::sleep_for( std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         data::mt::ObjectReadLock readLock(m_string);
         const std::string str = m_string->value();
 
-        const std::string substr = str.substr(str.size()-4, 4);
-        CPPUNIT_ASSERT_MESSAGE(substr, substr == "lili" ||  substr == "tata");
+        const std::string substr = str.substr(str.size() - 4, 4);
+        CPPUNIT_ASSERT_MESSAGE(substr, substr == "lili" || substr == "tata");
     }
 
     // read the last four letters and replace by something else
-    for (size_t i = 0; i < 40; i += 4)
+    for(size_t i = 0 ; i < 40 ; i += 4)
     {
-        std::this_thread::sleep_for( std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         data::mt::ObjectReadToWriteLock lock(m_string);
         std::string& str         = m_string->value();
-        const std::string substr = str.substr(str.size()-4, 4);
-        if (substr == "tata")
+        const std::string substr = str.substr(str.size() - 4, 4);
+
+        if(substr == "tata")
         {
             lock.upgrade();
-            str.replace(str.size()-4, 4, "lili");
+            str.replace(str.size() - 4, 4, "lili");
         }
-        else if (substr == "lili")
+        else if(substr == "lili")
         {
             lock.upgrade();
-            str.replace(str.size()-4, 4, "tata");
+            str.replace(str.size() - 4, 4, "tata");
         }
     }
 
     CPPUNIT_ASSERT_NO_THROW(future1.get()); // Trigger exceptions
     CPPUNIT_ASSERT_NO_THROW(future2.get()); // Trigger exceptions
 
-    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(200*4), m_string->value().size());
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(200 * 4), m_string->value().size());
 
     // check that the letters from "lili" and "tata" are not mixed
     const std::string str = m_string->value();
-    for (size_t i = 0; i < str.size(); i += 4)
+
+    for(size_t i = 0 ; i < str.size() ; i += 4)
     {
         const std::string substr = str.substr(i, 4);
-        CPPUNIT_ASSERT_MESSAGE(m_string->value(), substr == "lili" ||  substr == "tata");
+        CPPUNIT_ASSERT_MESSAGE(m_string->value(), substr == "lili" || substr == "tata");
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MTLockTest::runMultipleLock(size_t nb, const char value[4])
 {
-    for (size_t i = 0; i < nb; ++i)
+    for(size_t i = 0 ; i < nb ; ++i)
     {
         {
             data::mt::ObjectWriteLock writeLock(m_string);
             std::string& str = m_string->value();
-            std::this_thread::sleep_for( std::chrono::milliseconds(2));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2));
             str += value[0];
-            std::this_thread::sleep_for( std::chrono::milliseconds(2));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2));
             str += value[1];
-            std::this_thread::sleep_for( std::chrono::milliseconds(2));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2));
             str += value[2];
-            std::this_thread::sleep_for( std::chrono::milliseconds(2));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2));
             str += value[3];
         }
-        std::this_thread::sleep_for( std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

@@ -37,6 +37,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace video
 {
 
@@ -92,11 +93,9 @@ namespace video
 class MODULE_UI_QT_CLASS_API SCamera final : public QObject,
                                              public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SCamera, sight::ui::base::IEditor)
 
     /// Initialize signals and slots.
@@ -106,7 +105,6 @@ public:
     MODULE_UI_QT_API virtual ~SCamera() noexcept;
 
 protected Q_SLOTS:
-
     /**
      * @brief Calls when user select another device.
      * @param _index the index of the selected device.
@@ -114,7 +112,6 @@ protected Q_SLOTS:
     void onApply(int _index);
 
 private:
-
     /// Type of the 'configured' signal.
     typedef core::com::Signal<void ()> ConfiguredSignalType;
 
@@ -140,24 +137,24 @@ private:
     void onChooseDevice();
 
     /// Retrieves camera objects according to the XML configuration.
-    std::vector< data::Camera::sptr > getCameras() const;
+    std::vector<data::Camera::sptr> getCameras() const;
 
     /// Combobox for camera selection.
     QPointer<QComboBox> m_devicesComboBox;
 
     /// Offer the possibility to select a video file.
-    bool m_bVideoSupport {false};
+    bool m_bVideoSupport{false};
 
     /// Number of cameras to create when using a camera series as input.
-    size_t m_numCreateCameras {0};
+    size_t m_numCreateCameras{0};
 
     /// Signal emitted when the cameraSeries has been configured.
     ConfiguredSignalType::sptr m_sigConfiguredCameras;
 
     /// Label of the selector.
-    std::string m_label {"Video source: "};
-
+    std::string m_label{"Video source: "};
 };
 
 } // video
+
 } // sight::module::ui::qt

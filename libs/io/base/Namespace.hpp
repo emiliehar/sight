@@ -29,14 +29,17 @@ namespace sight::io::base
 /// This namespace sight::io::base::reader contains reader for several framework's data.
 namespace reader
 {
+
 /// Contains io::base::reader::factory utilities
 namespace factory
 {
+
 } // namespace factory
 
 /// Contains io::base::reader::registry details
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace reader
@@ -48,11 +51,15 @@ namespace writer
 /// Contains io::base::writer::factory utilities
 namespace factory
 {
+
 } // namespace factory
 
 /// Contains io::base::writer::registry details
 namespace registry
 {
+
 } // namespace registry
+
 } // namespace writer
+
 } // namespace sight::io::base

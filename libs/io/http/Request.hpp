@@ -36,7 +36,6 @@ namespace sight::io::http
  */
 class IO_HTTP_CLASS_API Request : public core::BaseObject
 {
-
 public:
     SIGHT_ALLOW_SHARED_FROM_THIS();
     SIGHT_DECLARE_CLASS(Request, core::BaseObject, new Request)
@@ -57,6 +56,7 @@ public:
     virtual ~Request()
     {
     }
+
     /**  @} */
 
     /**
@@ -94,7 +94,6 @@ public:
     IO_HTTP_API void setUrl(const std::string& url);
 
 private:
-
     HeadersType m_headers;
 
     std::string m_url;

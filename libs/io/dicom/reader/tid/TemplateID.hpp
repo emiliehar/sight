@@ -33,18 +33,19 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace tid
 {
 
 /**
  * @brief TemplateID base class used to write templates
  */
-template< class DATATYPE >
+template<class DATATYPE>
 class IO_DICOM_CLASS_API TemplateID
 {
-
 public:
     /**
      * @brief Constructor
@@ -54,17 +55,17 @@ public:
      * @param[in] object Sight data object
      * @param[in] logger Logger
      */
-    IO_DICOM_API TemplateID(const CSPTR(data::DicomSeries)& dicomSeries,
-                            const SPTR(::gdcm::Reader)& reader,
-                            const SPTR(io::dicom::container::DicomInstance)& instance,
-                            const SPTR(DATATYPE)& object,
-                            const core::log::Logger::sptr& logger);
+    IO_DICOM_API TemplateID(
+        const CSPTR(data::DicomSeries)& dicomSeries,
+        const SPTR(::gdcm::Reader)& reader,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const SPTR(DATATYPE)& object,
+        const core::log::Logger::sptr& logger);
 
     /// Destructor
     IO_DICOM_API virtual ~TemplateID();
 
 protected:
-
     /// Dicom Series
     CSPTR(data::DicomSeries) m_dicomSeries;
 
@@ -77,18 +78,19 @@ protected:
     /// Sight Object
     SPTR(DATATYPE) m_object;
 
-    ///Logger
+    /// Logger
     core::log::Logger::sptr m_logger;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< class DATATYPE >
-TemplateID<DATATYPE>::TemplateID(const CSPTR(data::DicomSeries)& dicomSeries,
-                                 const SPTR(::gdcm::Reader)& reader,
-                                 const SPTR(io::dicom::container::DicomInstance)& instance,
-                                 const SPTR(DATATYPE)& object,
-                                 const core::log::Logger::sptr& logger) :
+template<class DATATYPE>
+TemplateID<DATATYPE>::TemplateID(
+    const CSPTR(data::DicomSeries)& dicomSeries,
+    const SPTR(::gdcm::Reader)& reader,
+    const SPTR(io::dicom::container::DicomInstance)& instance,
+    const SPTR(DATATYPE)& object,
+    const core::log::Logger::sptr& logger) :
     m_dicomSeries(dicomSeries),
     m_reader(reader),
     m_instance(instance),
@@ -102,15 +104,17 @@ TemplateID<DATATYPE>::TemplateID(const CSPTR(data::DicomSeries)& dicomSeries,
     SIGHT_ASSERT("Logger should not be null.", logger);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< class DATATYPE >
+template<class DATATYPE>
 TemplateID<DATATYPE>::~TemplateID()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace tid
+
 } // namespace reader
+
 } // namespace sight::io::dicom

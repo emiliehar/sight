@@ -81,7 +81,6 @@ public:
     service::IService::KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// Does nothing
     MODULE_FILTER_VISION_CLASS_API void configuring() override;
 
@@ -95,7 +94,6 @@ protected:
     MODULE_FILTER_VISION_CLASS_API void updating() override;
 
 private:
-
     /// Slot: Sets background depth image on which the difference will be performed to compute what pixels of a new
     /// depth.
     /// image are in front of this learned background image.

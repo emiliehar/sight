@@ -38,19 +38,18 @@ namespace sight::io::zip
  */
 class IO_ZIP_CLASS_API ReadDirArchive : public IReadArchive
 {
-
 public:
     SIGHT_DECLARE_CLASS(ReadDirArchive, IReadArchive)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::filesystem::path& archive)
     {
-        return std::make_shared< ReadDirArchive >(archive);
+        return std::make_shared<ReadDirArchive>(archive);
     }
 
     /// Constructors. Initializes archive path.
-    IO_ZIP_API ReadDirArchive( const std::filesystem::path& archive );
+    IO_ZIP_API ReadDirArchive(const std::filesystem::path& archive);
 
     /// Destructor. Close automatically last input file stream.
     IO_ZIP_API ~ReadDirArchive();
@@ -69,7 +68,7 @@ public:
      */
     IO_ZIP_API const std::filesystem::path getArchivePath() const override;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     IReadArchive::sptr clone() const override
     {
@@ -77,7 +76,6 @@ public:
     }
 
 protected:
-
     std::filesystem::path m_archive;
 };
 

@@ -35,14 +35,15 @@
 
 #include <io/dicom/helper/DicomDir.hpp>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::dicom::ut::DicomDirTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::dicom::ut::DicomDirTest);
 
 namespace sight::io::dicom
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomDirTest::setUp()
 {
@@ -57,14 +58,14 @@ void DicomDirTest::setUp()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomDirTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomDirTest::readDicomDir()
 {
@@ -72,27 +73,29 @@ void DicomDirTest::readDicomDir()
     {
         return;
     }
-    const std::filesystem::path path = utestData::Data::dir() /
-                                       "sight/Patient/Dicom/DicomDB/82-MR-SAGITTAL-KNEE-DICOMDIR";
+
+    const std::filesystem::path path = utestData::Data::dir()
+                                       / "sight/Patient/Dicom/DicomDB/82-MR-SAGITTAL-KNEE-DICOMDIR";
     const std::string pathStr = ::boost::algorithm::replace_all_copy(path.string(), "\\", "/");
 
-    CPPUNIT_ASSERT_MESSAGE("The dicom directory '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The dicom directory '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
-    std::vector< data::DicomSeries::sptr > seriesDB;
+    std::vector<data::DicomSeries::sptr> seriesDB;
 
     core::log::Logger::sptr logger = core::log::Logger::New();
 
     // Read DICOMDIR file
     io::dicom::helper::DicomDir::retrieveDicomSeries(path / "DICOMDIR", seriesDB, logger);
-    CPPUNIT_ASSERT_EQUAL( size_t( 1 ), seriesDB.size());
-    CPPUNIT_ASSERT( logger->empty() );
+    CPPUNIT_ASSERT_EQUAL(size_t(1), seriesDB.size());
+    CPPUNIT_ASSERT(logger->empty());
 
     auto series = *seriesDB.begin();
-    CPPUNIT_ASSERT_EQUAL( size_t( 84 ), series->getDicomContainer().size());
+    CPPUNIT_ASSERT_EQUAL(size_t(84), series->getDicomContainer().size());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
 

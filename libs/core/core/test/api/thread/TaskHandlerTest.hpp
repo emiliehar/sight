@@ -26,14 +26,15 @@
 
 namespace sight::core::thread
 {
+
 namespace ut
 {
 
 class TaskHandlerTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( TaskHandlerTest );
-CPPUNIT_TEST( basicTest );
-CPPUNIT_TEST( exceptionTest );
+CPPUNIT_TEST_SUITE(TaskHandlerTest);
+CPPUNIT_TEST(basicTest);
+CPPUNIT_TEST(exceptionTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,8 +44,8 @@ public:
 
     void basicTest();
     void exceptionTest();
-
 };
 
-} //namespace ut
-} //namespace sight::core::thread
+} // namespace ut
+
+} // namespace sight::core::thread

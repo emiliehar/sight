@@ -27,4 +27,5 @@
 
 namespace sight::module::filter::vision
 {
+
 } // namespace sight::module::filter::vision

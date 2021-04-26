@@ -30,6 +30,7 @@
 
 namespace sight::ui::dicom
 {
+
 namespace widget
 {
 
@@ -55,8 +56,8 @@ protected:
     QString textFromValue(int value) const;
 
     QRegExpValidator* m_validator;
-
 };
 
 } // namespace widget
+
 } // namespace sight::ui::dicom

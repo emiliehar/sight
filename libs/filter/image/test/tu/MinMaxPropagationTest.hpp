@@ -26,12 +26,13 @@
 
 namespace sight::filter::image
 {
+
 namespace ut
 {
 
 class MinMaxPropagationTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( MinMaxPropagationTest );
+CPPUNIT_TEST_SUITE(MinMaxPropagationTest);
 CPPUNIT_TEST(minPropagTest);
 CPPUNIT_TEST(maxPropagTest);
 CPPUNIT_TEST(radiusTest);
@@ -47,5 +48,6 @@ public:
     void radiusTest();
 };
 
-} //namespace ut.
-} //namespace sight::filter::image.
+} // namespace ut.
+
+} // namespace sight::filter::image.

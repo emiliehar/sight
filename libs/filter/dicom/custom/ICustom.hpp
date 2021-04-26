@@ -29,6 +29,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace custom
 {
 
@@ -49,8 +50,8 @@ public:
 protected:
     /// Constructor
     FILTER_DICOM_API ICustom();
-
 };
 
 } // namespace custom
+
 } // namespace sight::filter::dicom

@@ -26,13 +26,14 @@
 
 namespace sight::log
 {
+
 namespace ut
 {
 
 class LoggerTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( LoggerTest );
-CPPUNIT_TEST( simpleLoggerTest );
+CPPUNIT_TEST_SUITE(LoggerTest);
+CPPUNIT_TEST(simpleLoggerTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -41,8 +42,8 @@ public:
     void tearDown();
 
     void simpleLoggerTest();
-
 };
 
 } // namespace ut
+
 } // namespace sight::log

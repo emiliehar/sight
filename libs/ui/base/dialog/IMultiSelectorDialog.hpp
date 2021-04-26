@@ -31,21 +31,21 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief   IMultiSelectorDialog allows the choice of some elements among several (_selections)
  */
 class UI_BASE_CLASS_API IMultiSelectorDialog : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IMultiSelectorDialog, ui::base::GuiBaseObject)
 
-    typedef std::map< std::string, bool > Selections;
+    typedef std::map<std::string, bool> Selections;
     typedef std::string FactoryRegistryKeyType;
 
     /// this *unique* key should  be used *for all* factory for specific Selector(qt,wx,...)
@@ -78,5 +78,6 @@ public:
     UI_BASE_API virtual void setMessage(const std::string& msg) = 0;
 };
 
-} //namespace dialog
-} //namespace sight::ui::base
+} // namespace dialog
+
+} // namespace sight::ui::base

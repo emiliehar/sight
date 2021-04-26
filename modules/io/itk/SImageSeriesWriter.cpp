@@ -44,40 +44,40 @@
 namespace sight::module::io::itk
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageSeriesWriter::SImageSeriesWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageSeriesWriter::~SImageSeriesWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SImageSeriesWriter::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesWriter::openLocationDialog()
 {
@@ -89,8 +89,9 @@ void SImageSeriesWriter::openLocationDialog()
     dialogFile.addFilter("Inrimage", "*.inr.gz");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
-    auto result = core::location::SingleFile::dynamicCast( dialogFile.show() );
-    if (result)
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
+
+    if(result)
     {
         this->setFile(result->getFile());
         defaultDirectory->setFolder(result->getFile().parent_path());
@@ -102,35 +103,34 @@ void SImageSeriesWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SImageSeriesWriter::info(std::ostream& _sstream )
+void SImageSeriesWriter::info(std::ostream& _sstream)
 {
     _sstream << "SImageSeriesWriter::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageSeriesWriter::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
 
-        data::ImageSeries::csptr iseries = this->getInput< data::ImageSeries >(sight::io::base::service::s_DATA_KEY);
+        data::ImageSeries::csptr iseries = this->getInput<data::ImageSeries>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", iseries);
 
         const data::Image::csptr& associatedImage = iseries->getImage();
@@ -147,6 +147,6 @@ void SImageSeriesWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::itk

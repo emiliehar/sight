@@ -36,6 +36,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
@@ -44,15 +45,13 @@ namespace activity
  */
 class MODULE_UI_QT_CLASS_API DataView : public QTabWidget
 {
-
 Q_OBJECT;
 
 public:
-
     /// Identifier of the role UID in the series tree item.
     MODULE_UI_QT_API static const int s_UID_ROLE;
 
-    typedef std::map< std::string, std::string > ObjectIconMapType;
+    typedef std::map<std::string, std::string> ObjectIconMapType;
 
     /// Defines comun header columns used in the tree widget of all created tabs.
     enum class ColumnCommunType : int
@@ -63,7 +62,7 @@ public:
     /// Defines header columns used in the tree widget of all data.
     enum class ColumnObjectType : int
     {
-        DESC = 1,
+        DESC = 1
     };
 
     /// Defines header columns used in the tree widget of all series.
@@ -72,14 +71,11 @@ public:
         NAME = 1,
         SEX,
         BIRTHDATE,
-
         MODALITY,
         MODALITY_DESC,
-
         STUDY_DESC,
         DATE,
         TIME,
-
         PATIENT_AGE
     };
 
@@ -129,8 +125,9 @@ public:
      * @param _actSeries activitySeries to fill with the selected data.
      * @param[out] _errorMsg it will contain the error information if the data are not correct.
      */
-    MODULE_UI_QT_API bool checkAndComputeData(const data::ActivitySeries::sptr& _actSeries,
-                                              std::string& _errorMsg);
+    MODULE_UI_QT_API bool checkAndComputeData(
+        const data::ActivitySeries::sptr& _actSeries,
+        std::string& _errorMsg);
 
     /**
      * @brief Checks if the current required data are selected And return this data.
@@ -171,13 +168,11 @@ public:
     }
 
 protected:
-
     /// Catch KeyEvent and DropEvent from tree widgets
     bool eventFilter(QObject* _obj, QEvent* _event) override;
 
 private:
-
-    typedef std::vector< data::Object::csptr > ImportedObjectType;
+    typedef std::vector<data::Object::csptr> ImportedObjectType;
     typedef std::vector<QPointer<QTreeWidget> > TreeContainerType;
 
     /// Imports an object required for the selected tab.
@@ -238,4 +233,5 @@ private:
 };
 
 } // namespace activity
+
 } // namespace sight::module::ui::qt

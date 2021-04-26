@@ -35,7 +35,6 @@ class IO_SESSION_CLASS_API PasswordKeeper
 {
 public:
     SIGHT_DECLARE_CLASS(PasswordKeeper)
-
     /// Delete default copy constructors and assignment operators
     PasswordKeeper(const PasswordKeeper&)            = delete;
     PasswordKeeper(PasswordKeeper&&)                 = delete;
@@ -78,7 +77,6 @@ public:
     IO_SESSION_API virtual bool checkPassword(const core::crypto::secure_string& password) const = 0;
 
 protected:
-
     /// Default constructor
     PasswordKeeper() = default;
 };

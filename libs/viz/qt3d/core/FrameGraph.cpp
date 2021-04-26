@@ -50,12 +50,12 @@ FrameGraph::FrameGraph(Qt3DCore::QNode* _parent) :
                     m_renderStateSet = new Qt3DRender::QRenderStateSet(m_clearBuffers);
 
                     // Adds a render state to avoid culling.
-                    QPointer< Qt3DRender::QCullFace > const culling = new Qt3DRender::QCullFace();
+                    QPointer<Qt3DRender::QCullFace> const culling = new Qt3DRender::QCullFace();
                     culling->setMode(Qt3DRender::QCullFace::NoCulling);
                     m_renderStateSet->addRenderState(culling);
 
                     // Adds a render state to add depth test.
-                    QPointer< Qt3DRender::QDepthTest > const depthTest = new Qt3DRender::QDepthTest();
+                    QPointer<Qt3DRender::QDepthTest> const depthTest = new Qt3DRender::QDepthTest();
                     depthTest->setDepthFunction(Qt3DRender::QDepthTest::Less);
                     m_renderStateSet->addRenderState(depthTest);
                 }
@@ -64,48 +64,48 @@ FrameGraph::FrameGraph(Qt3DCore::QNode* _parent) :
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 FrameGraph::~FrameGraph()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Qt3DCore::QEntity* const FrameGraph::getCamera() const
 {
     return m_cameraSelector->camera();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QColor FrameGraph::getClearColor() const
 {
     return m_clearBuffers->clearColor();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Qt3DRender::QClearBuffers::BufferType FrameGraph::getBuffersToClear() const
 {
     return m_clearBuffers->buffers();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FrameGraph::setCamera(Qt3DCore::QEntity* _camera)
 {
     m_cameraSelector->setCamera(_camera);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FrameGraph::setClearColor(const QColor& _color)
 {
     m_clearBuffers->setClearColor(_color);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FrameGraph::setBuffersToClear(Qt3DRender::QClearBuffers::BufferType _buffers)
 {

@@ -85,9 +85,7 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API IFrame : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IFrame, service::IService)
 
     /// Get widget defined for progress bar
@@ -99,7 +97,7 @@ public:
      */
     /// Signal emitted when frame is closed and onclose policy is notify
     static const core::com::Signals::SignalKeyType s_CLOSED_SIG;
-    typedef core::com::Signal< void ()> ClosedSignalType;
+    typedef core::com::Signal<void ()> ClosedSignalType;
     /**
      * @}
      */
@@ -117,12 +115,11 @@ public:
 
     /// Slot to hide the container
     static const core::com::Slots::SlotKeyType s_HIDE_SLOT;
-    /**
-     * @}
-     */
+/**
+ * @}
+ */
 
 protected:
-
     UI_BASE_API IFrame();
 
     UI_BASE_API virtual ~IFrame();
@@ -151,7 +148,6 @@ protected:
     UI_BASE_API static ui::base::container::fwContainer::wptr m_progressWidget;
 
 private:
-
     /// SLOT: show/hide the container
     void setVisible(bool isVisible);
     /// SLOT: show the container
@@ -162,9 +158,9 @@ private:
     void onCloseExit();
     void onCloseNotify();
     void onCloseMessage();
-    void initializeLayoutManager( core::runtime::ConfigurationElement::sptr layoutConfig );
-    void initializeMenuBarBuilder( core::runtime::ConfigurationElement::sptr menuBarConfig );
-    void initializeToolBarBuilder( core::runtime::ConfigurationElement::sptr toolBarConfig );
+    void initializeLayoutManager(core::runtime::ConfigurationElement::sptr layoutConfig);
+    void initializeMenuBarBuilder(core::runtime::ConfigurationElement::sptr menuBarConfig);
+    void initializeToolBarBuilder(core::runtime::ConfigurationElement::sptr toolBarConfig);
 
     ui::base::layoutManager::IFrameLayoutManager::sptr m_frameLayoutManager;
     ui::base::registry::View::sptr m_viewRegistry;

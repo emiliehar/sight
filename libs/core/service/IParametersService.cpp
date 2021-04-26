@@ -27,7 +27,7 @@
 namespace sight::service
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const core::com::Slots::SlotKeyType IParametersService::s_SET_BOOL_PARAMETER_SLOT    = "setBoolParameter";
 const core::com::Slots::SlotKeyType IParametersService::s_SET_COLOR_PARAMETER_SLOT   = "setColorParameter";
@@ -39,7 +39,7 @@ const core::com::Slots::SlotKeyType IParametersService::s_SET_INT2_PARAMETER_SLO
 const core::com::Slots::SlotKeyType IParametersService::s_SET_INT3_PARAMETER_SLOT    = "setInt3Parameter";
 const core::com::Slots::SlotKeyType IParametersService::s_SET_ENUM_PARAMETER_SLOT    = "setEnumParameter";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IParametersService::IParametersService()
 {
@@ -54,73 +54,66 @@ IParametersService::IParametersService()
     newSlot(s_SET_ENUM_PARAMETER_SLOT, &IParametersService::setEnumParameter, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IParametersService::~IParametersService()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setBoolParameter(bool, std::string)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setColorParameter(std::array<std::uint8_t, 4>, std::string)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setDoubleParameter(double, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setDouble2Parameter(double, double, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setDouble3Parameter(double, double, double, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setIntParameter(int, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setInt2Parameter(int, int, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setInt3Parameter(int, int, int, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IParametersService::setEnumParameter(std::string, std::string)
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::service

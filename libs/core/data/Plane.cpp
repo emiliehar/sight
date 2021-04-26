@@ -29,58 +29,62 @@
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
 
-SIGHT_REGISTER_DATA( sight::data::Plane );
+SIGHT_REGISTER_DATA(sight::data::Plane);
 
 namespace sight::data
 {
 
 const core::com::Signals::SignalKeyType Plane::s_SELECTED_SIG = "selected";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Plane::Plane (data::Object::Key) :
+Plane::Plane(data::Object::Key) :
     m_isIntersection(true)
 {
     m_vPoints[0] = data::Point::New();
     m_vPoints[1] = data::Point::New();
     m_vPoints[2] = data::Point::New();
 
-    newSignal< SelectedSignalType >(s_SELECTED_SIG);
+    newSignal<SelectedSignalType>(s_SELECTED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Plane::~Plane ()
+Plane::~Plane()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Plane::shallowCopy(const Object::csptr& _source )
+void Plane::shallowCopy(const Object::csptr& _source)
 {
     Plane::csptr other = Plane::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldShallowCopy( _source );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldShallowCopy(_source);
     m_vPoints = other->m_vPoints;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plane::cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Plane::csptr other = Plane::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( _source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(_source, cache);
     m_vPoints[0] = data::Object::copy(other->m_vPoints[0], cache);
     m_vPoints[1] = data::Object::copy(other->m_vPoints[1], cache);
     m_vPoints[2] = data::Object::copy(other->m_vPoints[2], cache);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plane::setValue(data::Point::sptr _point1, data::Point::sptr _point2, data::Point::sptr _point3)
 {
@@ -89,6 +93,6 @@ void Plane::setValue(data::Point::sptr _point1, data::Point::sptr _point2, data:
     m_vPoints[2] = _point3;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

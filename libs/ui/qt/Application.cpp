@@ -28,12 +28,12 @@
 #include <ui/base/dialog/MessageDialog.hpp>
 #include <ui/base/registry/macros.hpp>
 
-fwGuiRegisterMacro( ::sight::ui::qt::Application, ::sight::ui::base::IApplication::REGISTRY_KEY );
+fwGuiRegisterMacro(::sight::ui::qt::Application, ::sight::ui::base::IApplication::REGISTRY_KEY);
 
 namespace sight::ui::qt
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Application::exit(int returncode)
 {
@@ -49,7 +49,7 @@ void Application::exit(int returncode)
 
         if(res == ui::base::dialog::IMessageDialog::YES)
         {
-            if (QCoreApplication::instance())
+            if(QCoreApplication::instance())
             {
                 QCoreApplication::instance()->exit(returncode);
             }
@@ -57,13 +57,13 @@ void Application::exit(int returncode)
     }
     else
     {
-        if (QCoreApplication::instance())
+        if(QCoreApplication::instance())
         {
             QCoreApplication::instance()->exit(returncode);
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::ui::qt

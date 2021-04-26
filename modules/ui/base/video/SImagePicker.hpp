@@ -36,6 +36,7 @@
 
 namespace sight::module::ui::base::video
 {
+
 /**
  * @brief This service listens to a picking interaction and fills the clicked point list.
  *
@@ -82,7 +83,6 @@ namespace sight::module::ui::base::video
 class MODULE_UI_BASE_CLASS_API SImagePicker : public service::IController
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SImagePicker, service::IController)
 
     /// Creates the video reference map..
@@ -92,7 +92,6 @@ public:
     MODULE_UI_BASE_API virtual ~SImagePicker() noexcept;
 
 protected:
-
     /// Does nothing.
     MODULE_UI_BASE_API void configuring() override;
 
@@ -106,12 +105,11 @@ protected:
     MODULE_UI_BASE_API void stopping() override;
 
 private:
-
     /// Manages several video coordinate system.
     typedef enum VideoReference
     {
         TOP_LEFT = 0,
-        CENTER,
+        CENTER
     } VideoReferenceType;
 
     /// Adds a point in both pointlists.
@@ -124,11 +122,10 @@ private:
     void getInteraction(data::tools::PickingInfo info);
 
     /// Map that handles conversion between xml configuration string and VideoReferenceType
-    std::map<std::string, VideoReferenceType > m_videoRefMap;
+    std::map<std::string, VideoReferenceType> m_videoRefMap;
 
     /// Manages video coordinate system
-    VideoReferenceType m_videoRef { VideoReferenceType::CENTER };
-
+    VideoReferenceType m_videoRef{VideoReferenceType::CENTER};
 };
 
-} //namespace sight::module::ui::base::video
+} // namespace sight::module::ui::base::video

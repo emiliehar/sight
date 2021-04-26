@@ -41,19 +41,19 @@ static const service::IService::KeyType s_MESH_INOUT = "mesh";
 
 static const std::string s_FUNCTOR_CONFIG = "functor";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SMeshModifier::SMeshModifier() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SMeshModifier::~SMeshModifier() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshModifier::configuring()
 {
@@ -63,19 +63,20 @@ void SMeshModifier::configuring()
     const ConfigType config     = configType.get_child("config.<xmlattr>");
 
     m_functor = config.get<std::string>(s_FUNCTOR_CONFIG);
-    OSIGHT_ASSERT("Wrong functor name",
-                  m_functor == "ShakeMeshPoint"
-                  || m_functor == "ColorizeMeshPoints"
-                  || m_functor == "ColorizeMeshCells"
-                  || m_functor == "ComputePointNormals"
-                  || m_functor == "ComputeCellNormals"
-                  || m_functor == "ShakePointNormals"
-                  || m_functor == "ShakeCellNormals"
-                  || m_functor == "MeshDeformation"
-                  );
+    OSIGHT_ASSERT(
+        "Wrong functor name",
+        m_functor == "ShakeMeshPoint"
+        || m_functor == "ColorizeMeshPoints"
+        || m_functor == "ColorizeMeshCells"
+        || m_functor == "ComputePointNormals"
+        || m_functor == "ComputeCellNormals"
+        || m_functor == "ShakePointNormals"
+        || m_functor == "ShakeCellNormals"
+        || m_functor == "MeshDeformation"
+        );
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshModifier::starting()
 {
@@ -83,11 +84,11 @@ void SMeshModifier::starting()
     geometry::data::Mesh::initRand();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SMeshModifier::updating()
 {
-    const auto mesh = this->getLockedInOut< data::Mesh >(s_MESH_INOUT);
+    const auto mesh = this->getLockedInOut<data::Mesh>(s_MESH_INOUT);
 
     try
     {
@@ -96,7 +97,7 @@ void SMeshModifier::updating()
             geometry::data::Mesh::shakePoint(mesh.get_shared());
 
             data::Mesh::VertexModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::VertexModifiedSignalType >(data::Mesh::s_VERTEX_MODIFIED_SIG);
+            sig = mesh->signal<data::Mesh::VertexModifiedSignalType>(data::Mesh::s_VERTEX_MODIFIED_SIG);
             sig->asyncEmit();
         }
         else if(m_functor == "ColorizeMeshCells")
@@ -104,7 +105,7 @@ void SMeshModifier::updating()
             geometry::data::Mesh::colorizeMeshCells(mesh.get_shared());
 
             data::Mesh::CellColorsModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::CellColorsModifiedSignalType >(
+            sig = mesh->signal<data::Mesh::CellColorsModifiedSignalType>(
                 data::Mesh::s_CELL_COLORS_MODIFIED_SIG);
             sig->asyncEmit();
         }
@@ -113,7 +114,7 @@ void SMeshModifier::updating()
             geometry::data::Mesh::colorizeMeshPoints(mesh.get_shared());
 
             data::Mesh::PointColorsModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::PointColorsModifiedSignalType >(
+            sig = mesh->signal<data::Mesh::PointColorsModifiedSignalType>(
                 data::Mesh::s_POINT_COLORS_MODIFIED_SIG);
             sig->asyncEmit();
         }
@@ -122,7 +123,7 @@ void SMeshModifier::updating()
             geometry::data::Mesh::generateCellNormals(mesh.get_shared());
 
             data::Mesh::CellNormalsModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::CellNormalsModifiedSignalType >(
+            sig = mesh->signal<data::Mesh::CellNormalsModifiedSignalType>(
                 data::Mesh::s_CELL_NORMALS_MODIFIED_SIG);
             sig->asyncEmit();
         }
@@ -131,7 +132,7 @@ void SMeshModifier::updating()
             geometry::data::Mesh::generatePointNormals(mesh.get_shared());
 
             data::Mesh::PointNormalsModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::PointNormalsModifiedSignalType >(
+            sig = mesh->signal<data::Mesh::PointNormalsModifiedSignalType>(
                 data::Mesh::s_POINT_NORMALS_MODIFIED_SIG);
             sig->asyncEmit();
         }
@@ -140,7 +141,7 @@ void SMeshModifier::updating()
             geometry::data::Mesh::shakeCellNormals(mesh.get_shared());
 
             data::Mesh::CellNormalsModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::CellNormalsModifiedSignalType >(
+            sig = mesh->signal<data::Mesh::CellNormalsModifiedSignalType>(
                 data::Mesh::s_CELL_NORMALS_MODIFIED_SIG);
             sig->asyncEmit();
         }
@@ -149,21 +150,21 @@ void SMeshModifier::updating()
             geometry::data::Mesh::shakePointNormals(mesh.get_shared());
 
             data::Mesh::PointNormalsModifiedSignalType::sptr sig;
-            sig = mesh->signal< data::Mesh::PointNormalsModifiedSignalType >(
+            sig = mesh->signal<data::Mesh::PointNormalsModifiedSignalType>(
                 data::Mesh::s_POINT_NORMALS_MODIFIED_SIG);
             sig->asyncEmit();
         }
         else if(m_functor == "MeshDeformation")
         {
             m_animator.computeDeformation(mesh.get_shared(), 100, 50);
-            const auto sig = mesh->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+            const auto sig = mesh->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
             {
                 core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
                 sig->asyncEmit();
             }
         }
     }
-    catch (const std::exception& _e)
+    catch(const std::exception& _e)
     {
         std::stringstream ss;
         ss << "Warning during generating : " << _e.what();
@@ -175,13 +176,13 @@ void SMeshModifier::updating()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SMeshModifier::stopping()
 {
     this->actionServiceStopping();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace Tuto04MeshGeneratorCpp.

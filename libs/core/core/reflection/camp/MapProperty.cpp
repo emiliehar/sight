@@ -38,18 +38,19 @@ MapProperty::MapProperty(const std::string& name, Type elementType) :
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MapProperty::~MapProperty()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MapProperty::accept(ClassVisitor& visitor) const
 {
-    ExtendedClassVisitor* mapVisitor = dynamic_cast< ExtendedClassVisitor*>(&visitor);
-    if (mapVisitor)
+    ExtendedClassVisitor* mapVisitor = dynamic_cast<ExtendedClassVisitor*>(&visitor);
+
+    if(mapVisitor)
     {
         mapVisitor->visit(*this);
     }
@@ -59,25 +60,25 @@ void MapProperty::accept(ClassVisitor& visitor) const
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Value MapProperty::getValue(const UserObject& object) const
 {
     return getElement(object, 0);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void MapProperty::setValue(const UserObject& object, const Value& value) const
 {
-    //FIXME XXX TODO DO something
+    // FIXME XXX TODO DO something
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Type MapProperty::elementType() const
 {
     return m_elementType;
 }
 
-}  // namespace camp
+} // namespace camp

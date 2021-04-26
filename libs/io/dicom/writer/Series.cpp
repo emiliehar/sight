@@ -41,23 +41,24 @@ SIGHT_REGISTER_IO_WRITER(::sight::io::dicom::writer::Series);
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Series::Series(io::base::writer::IObjectWriter::Key ) :
+Series::Series(io::base::writer::IObjectWriter::Key) :
     m_fiducialsExportMode(SPATIAL_FIDUCIALS)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Series::~Series()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Series::write()
 {
@@ -68,14 +69,14 @@ void Series::write()
     bool multiFiles = true;
 
     // Initialization shared object
-    SPTR(io::dicom::container::DicomInstance) instance =
-        std::make_shared< io::dicom::container::DicomInstance >(series, nullptr, multiFiles);
+    SPTR(io::dicom::container::DicomInstance) instance
+        = std::make_shared<io::dicom::container::DicomInstance>(series, nullptr, multiFiles);
 
     // Retrieve series SOPClassUID
     const std::string& sopClassUID = instance->getSOPClassUID();
 
-    if(sopClassUID == ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::CTImageStorage) ||
-       sopClassUID == ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::MRImageStorage))
+    if(sopClassUID == ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::CTImageStorage)
+       || sopClassUID == ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::MRImageStorage))
     {
         data::ImageSeries::csptr imageSeries = data::ImageSeries::dynamicCast(series);
         SIGHT_ASSERT("::sight::data::ImageSeries not instanced", imageSeries);
@@ -86,10 +87,11 @@ void Series::write()
         io::dicom::writer::iod::CTMRImageIOD imageIOD(instance, this->getFolder() / "im");
         imageIOD.write(series);
 
-        data::PointList::sptr landmarks =
-            image->getField< data::PointList >(data::fieldHelper::Image::m_imageLandmarksId);
-        data::Vector::sptr distances =
-            image->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
+        data::PointList::sptr landmarks
+            = image->getField<data::PointList>(data::fieldHelper::Image::m_imageLandmarksId);
+        data::Vector::sptr distances
+            = image->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
+
         if((landmarks && !landmarks->getPoints().empty()) || (distances && !distances->empty()))
         {
             // Write Landmarks and Distances
@@ -119,10 +121,9 @@ void Series::write()
 
     // Push instance into container
     m_dicomInstanceMap[series->getInstanceUID()] = instance;
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Series::hasDocumentSR(const data::ImageSeries::csptr& imageSeries) const
 {
@@ -130,28 +131,31 @@ bool Series::hasDocumentSR(const data::ImageSeries::csptr& imageSeries) const
     SIGHT_ASSERT("Image not instanced", image);
 
     data::PointList::sptr pl;
-    pl = image->getField< data::PointList >(data::fieldHelper::Image::m_imageLandmarksId);
+    pl = image->getField<data::PointList>(data::fieldHelper::Image::m_imageLandmarksId);
+
     // Check if image has landmark and distance
-    return ((pl && pl->getPoints().size() > 0) ||
-            image->getField(data::fieldHelper::Image::m_imageDistancesId));
+    return (pl && pl->getPoints().size() > 0)
+           || image->getField(data::fieldHelper::Image::m_imageDistancesId);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(io::dicom::container::DicomInstance) Series::getImageInstance()
 {
     SIGHT_ASSERT("You must have created an image instance before trying to access it.", !m_dicomInstanceMap.empty());
+
     return m_dicomInstanceMap.begin()->second;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string Series::extension()
 {
     return std::string("");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}// namespace writer
+} // namespace writer
+
 } // namespace sight::io::dicom

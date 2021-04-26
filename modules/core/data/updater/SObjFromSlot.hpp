@@ -50,9 +50,7 @@ namespace updater
  */
 class MODULE_DATA_CLASS_API SObjFromSlot : public module::data::IUpdaterSrv
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SObjFromSlot, ::sight::module::data::IUpdaterSrv)
 
     /// Constructor.  Do nothing.
@@ -67,12 +65,11 @@ public:
      */
     static const core::com::Slots::SlotKeyType s_ADD_SLOT;
     static const core::com::Slots::SlotKeyType s_REMOVE_SLOT;
-    /**
-     * @}
-     */
+/**
+ * @}
+ */
 
 protected:
-
     /// Configures the service.
     MODULE_DATA_API void configuring() override;
 
@@ -86,7 +83,7 @@ protected:
     MODULE_DATA_API void updating() override;
 
     /// Implements info method derived from IService. Print classname.
-    MODULE_DATA_API void info( std::ostream& _sstream ) override;
+    MODULE_DATA_API void info(std::ostream& _sstream) override;
 
     /**
      * @name Slots
@@ -103,4 +100,5 @@ protected:
 };
 
 } // updater
+
 } // sight::module::data

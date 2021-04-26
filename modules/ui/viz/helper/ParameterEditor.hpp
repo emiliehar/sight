@@ -37,7 +37,6 @@ namespace helper
 class ParameterEditor
 {
 public:
-
     /**
      * @brief Create a config that will be used to expose an shader parameter adaptor in a SParameters.
      *
@@ -45,10 +44,10 @@ public:
      * @param[in] _paramSrv editor service.
      * @param[inout] _connections helper that stores connections between the editor and the adaptors.
      */
-    MODULE_UI_VIZ_API static service::IService::ConfigType
-    createConfig(const sight::viz::scene3d::IParameter::csptr& _adaptor,
-                 const service::IService::csptr& _paramSrv,
-                 core::com::helper::SigSlotConnection& _connections);
+    MODULE_UI_VIZ_API static service::IService::ConfigType createConfig(
+        const sight::viz::scene3d::IParameter::csptr& _adaptor,
+        const service::IService::csptr& _paramSrv,
+        core::com::helper::SigSlotConnection& _connections);
 };
 
 } // namespace helper

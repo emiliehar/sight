@@ -28,6 +28,7 @@
 
 namespace sight::module::io::vision
 {
+
 /**
  * @brief SOpenCVWriter class exports data::CameraSeries in xml/yaml files using openCV
  *
@@ -80,14 +81,13 @@ class MODULE_IO_VISION_CLASS_API SOpenCVWriter : public sight::io::base::service
 public:
     SIGHT_DECLARE_SERVICE(SOpenCVWriter, sight::io::base::service::IWriter)
 
-    ///Constructor
+    /// Constructor
     MODULE_IO_VISION_API SOpenCVWriter();
 
-    //Destructor
+    // Destructor
     MODULE_IO_VISION_API ~SOpenCVWriter();
 
 protected:
-
     /**
      * @brief configure the service using GUI.
      * @deprecated Will be removed in sight 22.0. Use openLocationDialog() instead.
@@ -123,7 +123,6 @@ protected:
 
     /// Returns managed path type, here service manages only single file
     MODULE_IO_VISION_API sight::io::base::service::IOPathType getIOPathType() const override;
-
 };
 
-} //namespace sight::module::io::vision
+} // namespace sight::module::io::vision

@@ -45,7 +45,9 @@
 
 namespace sight::data
 {
+
 class Material;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
@@ -88,9 +90,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API SMaterial final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SMaterial, ::sight::viz::scene3d::IAdaptor)
 
@@ -148,7 +148,6 @@ public:
     MODULE_VIZ_SCENE3D_API sight::viz::scene3d::Material* getMaterialFw() const;
 
 protected:
-
     /// Configures the adaptor.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -174,7 +173,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     /**
      * @brief SLOT: updates the material from the input data fields.
      * @param _fields fields to update, only "ogreMaterial" is taken into account.
@@ -200,16 +198,16 @@ private:
 
     /// Defines the default template name, given by xml configuration.
     /// It must refer an existing Ogre material which will be used in order to instanciate m_material
-    std::string m_materialTemplateName { sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME };
+    std::string m_materialTemplateName{sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
 
     /// Contains the texture adaptor the material adaptor is listening to.
-    module::viz::scene3d::adaptor::STexture::sptr m_texAdaptor { nullptr };
+    module::viz::scene3d::adaptor::STexture::sptr m_texAdaptor{nullptr};
 
     /// Defines the texture name.
     std::string m_textureName;
 
     /// Stores supported schemes.
-    std::vector< Ogre::String > m_schemesSupported;
+    std::vector<Ogre::String> m_schemesSupported;
 
     /// Handles connections with texture adaptor.
     core::com::helper::SigSlotConnection m_textureConnection;
@@ -218,81 +216,81 @@ private:
     std::string m_shadingMode;
 
     /// Defines the configured representation mode.
-    std::string m_representationMode { "SURFACE" };
+    std::string m_representationMode{"SURFACE"};
 
     /// Stores a map to convert from string to data::Material::RepresentationType (ex: "SURFACE" = SURFACE).
-    std::map< std::string, data::Material::RepresentationType > m_representationDict;
+    std::map<std::string, data::Material::RepresentationType> m_representationDict;
 
     /// Contains the Ogre material.
     sight::viz::scene3d::Material::uptr m_materialFw;
 
     /// Contains the renderable object.
-    sight::viz::scene3d::R2VBRenderable* m_r2vbObject { nullptr };
+    sight::viz::scene3d::R2VBRenderable* m_r2vbObject{nullptr};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::MaterialPtr SMaterial::getMaterial()
 {
     return ::Ogre::MaterialManager::getSingleton().getByName(m_materialName, sight::viz::scene3d::RESOURCE_GROUP);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMaterial::setMaterialTemplateName(const std::string& _materialName)
 {
     m_materialTemplateName = _materialName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMaterial::setMaterialName(const std::string& _materialName)
 {
     m_materialName = _materialName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::string SMaterial::getMaterialName() const
 {
     return m_materialName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool SMaterial::hasDiffuseTexture() const
 {
-    return (m_texAdaptor && m_texAdaptor->isValid());
+    return m_texAdaptor && m_texAdaptor->isValid();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline const std::string& SMaterial::getShadingMode() const
 {
     return m_shadingMode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMaterial::setShadingMode(const std::string& _shadingMode)
 {
     m_shadingMode = _shadingMode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SMaterial::setR2VBObject(sight::viz::scene3d::R2VBRenderable* _r2vbObject)
 {
     m_r2vbObject = _r2vbObject;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline sight::viz::scene3d::Material* SMaterial::getMaterialFw() const
 {
     return m_materialFw.get();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

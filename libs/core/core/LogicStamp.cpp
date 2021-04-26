@@ -27,7 +27,7 @@
 namespace sight::core
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LogicStamp::modified()
 {
@@ -41,4 +41,4 @@ void LogicStamp::modified()
     SIGHT_ASSERT("globalLogicStamp not instanced", globalLogicStamp); // detects overflow
 }
 
-} //namespace sight::core
+} // namespace sight::core

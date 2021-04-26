@@ -31,6 +31,7 @@
 
 namespace sight::ui::base
 {
+
 namespace layoutManager
 {
 
@@ -39,9 +40,7 @@ namespace layoutManager
  */
 class UI_BASE_CLASS_API LineLayoutManagerBase : public IViewLayoutManager
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(LineLayoutManagerBase, ui::base::layoutManager::IViewLayoutManager)
 
     /// Defines all possible orientation for a LineLayout
@@ -56,7 +55,6 @@ public:
     class ViewInfo
     {
     public:
-
         ViewInfo() :
             m_proportion(1),
             m_border(0),
@@ -70,13 +68,13 @@ public:
 
         int m_proportion;
         int m_border;
-        int m_leftBorder {0};
-        int m_topBorder {0};
-        int m_rightBorder {0};
-        int m_bottomBorder {0};
-        int m_spacing {-1};
-        std::pair< int, int >          m_minSize;
-        std::pair< bool, std::string > m_caption;
+        int m_leftBorder{0};
+        int m_topBorder{0};
+        int m_rightBorder{0};
+        int m_bottomBorder{0};
+        int m_spacing{-1};
+        std::pair<int, int> m_minSize;
+        std::pair<bool, std::string> m_caption;
         bool m_visible;
         bool m_isSpacer;
         bool m_useScrollBar;
@@ -132,11 +130,11 @@ public:
      *   - \b backgroundColor (optional) : (hexa) background color.
      */
 
-    UI_BASE_API void initialize( ConfigurationType configuration) override;
+    UI_BASE_API void initialize(ConfigurationType configuration) override;
 
     UI_BASE_API static const RegistryKeyType REGISTRY_KEY;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     Orientation getOrientation()
     {
@@ -144,21 +142,20 @@ public:
     }
 
 protected:
+    // ------------------------------------------------------------------------------
 
-    //------------------------------------------------------------------------------
-
-    std::list< ViewInfo> getViewsInfo()
+    std::list<ViewInfo> getViewsInfo()
     {
         return m_views;
     }
 
 private:
-
     /// Save layout configuration definition
-    std::list< ViewInfo>  m_views;
+    std::list<ViewInfo> m_views;
 
     Orientation m_orientation;
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::base

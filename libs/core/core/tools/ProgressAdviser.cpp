@@ -33,7 +33,7 @@ ProgressAdviser::~ProgressAdviser()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProgressAdviser::addHandler(const ProgessHandler& handler)
 {
@@ -41,7 +41,7 @@ void ProgressAdviser::addHandler(const ProgessHandler& handler)
     m_progressSignal.connect(handler);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProgressAdviser::notifyProgress(float percent, const std::string& msg) const
 {

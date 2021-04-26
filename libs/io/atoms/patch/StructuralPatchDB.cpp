@@ -27,7 +27,7 @@ namespace sight::io::atoms::patch
 
 StructuralPatchDB::sptr StructuralPatchDB::s_default = std::make_shared<StructuralPatchDB>();
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StructuralPatchDB::registerPatch(io::atoms::patch::IStructuralPatch::sptr patch)
 {
@@ -40,10 +40,11 @@ void StructuralPatchDB::registerPatch(io::atoms::patch::IStructuralPatch::sptr p
 
 // ----------------------------------------------------------------------------
 
-io::atoms::patch::IStructuralPatch::sptr StructuralPatchDB::getPatch(const std::string& originClassname,
-                                                                     const std::string& originVersion,
-                                                                     const std::string& targetClassname,
-                                                                     const std::string& targetVersion) const
+io::atoms::patch::IStructuralPatch::sptr StructuralPatchDB::getPatch(
+    const std::string& originClassname,
+    const std::string& originVersion,
+    const std::string& targetClassname,
+    const std::string& targetVersion) const
 {
     const VersionIDType source = std::make_pair(originClassname, originVersion);
     const VersionIDType target = std::make_pair(targetClassname, targetVersion);
@@ -51,6 +52,7 @@ io::atoms::patch::IStructuralPatch::sptr StructuralPatchDB::getPatch(const std::
 
     core::mt::ReadLock lock(m_mutex);
     PatchesType::const_iterator it = m_patches.find(key);
+
     if(it != m_patches.end())
     {
         return it->second;
@@ -66,7 +68,8 @@ io::atoms::patch::IStructuralPatch::sptr StructuralPatchDB::getPatch(const std::
 size_t StructuralPatchDB::size() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_patches.size();
 }
 
-} //fwAtomsPatch
+} // fwAtomsPatch

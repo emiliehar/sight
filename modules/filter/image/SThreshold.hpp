@@ -59,9 +59,7 @@ namespace sight::module::filter::image
  */
 class MODULE_FILTER_IMAGE_CLASS_API SThreshold : public service::IOperator
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SThreshold, ::sight::service::IOperator)
 
     MODULE_FILTER_IMAGE_API SThreshold() noexcept;
@@ -69,7 +67,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SThreshold() noexcept override;
 
 protected:
-
     MODULE_FILTER_IMAGE_API void starting() override;
 
     MODULE_FILTER_IMAGE_API void stopping() override;
@@ -81,7 +78,6 @@ protected:
     MODULE_FILTER_IMAGE_API void updating() override;
 
 private:
-
     /// Threshold value used in filter
     double m_threshold;
 };

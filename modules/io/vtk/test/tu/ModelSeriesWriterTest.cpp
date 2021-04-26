@@ -46,31 +46,32 @@
 #include <vector>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::module::io::vtk::ut::ModelSeriesWriterTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::module::io::vtk::ut::ModelSeriesWriterTest);
 
 namespace sight::module::io::vtk
 {
+
 namespace ut
 {
 
 namespace fs = std::filesystem;
-typedef std::vector< std::string >  FileContainerType;
+typedef std::vector<std::string> FileContainerType;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesWriterTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesWriterTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void runModelSeriesSrv(
     const std::string& impl,
@@ -81,7 +82,7 @@ void runModelSeriesSrv(
 
     CPPUNIT_ASSERT_MESSAGE(std::string("Failed to create service ") + impl, srv);
 
-    if (srv->isA("sight::io::base::service::IReader"))
+    if(srv->isA("sight::io::base::service::IReader"))
     {
         srv->registerInOut(obj, "data");
     }
@@ -90,15 +91,15 @@ void runModelSeriesSrv(
         srv->registerInput(obj, "data");
     }
 
-    CPPUNIT_ASSERT_NO_THROW( srv->setConfiguration( cfg ) );
-    CPPUNIT_ASSERT_NO_THROW( srv->configure() );
-    CPPUNIT_ASSERT_NO_THROW( srv->start().wait() );
-    CPPUNIT_ASSERT_NO_THROW( srv->update().wait() );
-    CPPUNIT_ASSERT_NO_THROW( srv->stop().wait() );
-    service::OSR::unregisterService( srv );
+    CPPUNIT_ASSERT_NO_THROW(srv->setConfiguration(cfg));
+    CPPUNIT_ASSERT_NO_THROW(srv->configure());
+    CPPUNIT_ASSERT_NO_THROW(srv->start().wait());
+    CPPUNIT_ASSERT_NO_THROW(srv->update().wait());
+    CPPUNIT_ASSERT_NO_THROW(srv->stop().wait());
+    service::OSR::unregisterService(srv);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::runtime::EConfigurationElement::sptr getIOCfgFromFolder(const fs::path& file)
 {
@@ -110,13 +111,13 @@ core::runtime::EConfigurationElement::sptr getIOCfgFromFolder(const fs::path& fi
     return srvCfg;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::runtime::EConfigurationElement::sptr getIOCfgFromFiles(const FileContainerType& files)
 {
     core::runtime::EConfigurationElement::sptr srvCfg = core::runtime::EConfigurationElement::New("service");
 
-    for(std::string file :  files)
+    for(std::string file : files)
     {
         core::runtime::EConfigurationElement::sptr cfg = core::runtime::EConfigurationElement::New("file");
         cfg->setValue(file);
@@ -126,20 +127,21 @@ core::runtime::EConfigurationElement::sptr getIOCfgFromFiles(const FileContainer
     return srvCfg;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesWriterTest::testWriteMeshes()
 {
     data::ModelSeries::sptr modelSeries = utestData::generator::SeriesDB::createModelSeries(5);
 
-    const std::vector< std::string > allExtensions = {"vtk", "vtp", "obj", "ply", "stl"};
+    const std::vector<std::string> allExtensions = {"vtk", "vtp", "obj", "ply", "stl"};
 
     const fs::path dir = core::tools::System::getTemporaryFolder() / "modelSeries";
 
-    if( fs::exists(dir) )
+    if(fs::exists(dir))
     {
-        CPPUNIT_ASSERT_MESSAGE(std::string("Directory ") + dir.string() + " must be empty",
-                               fs::is_empty(dir));
+        CPPUNIT_ASSERT_MESSAGE(
+            std::string("Directory ") + dir.string() + " must be empty",
+            fs::is_empty(dir));
     }
     else
     {
@@ -151,8 +153,9 @@ void ModelSeriesWriterTest::testWriteMeshes()
         // Create subfolers per extensions ("/vtk", "/vtp", ...)
         if(fs::exists(dir / ext))
         {
-            CPPUNIT_ASSERT_MESSAGE(std::string("Directory ") + dir.string() + "/" + ext + " must be empty",
-                                   fs::is_empty(dir / ext));
+            CPPUNIT_ASSERT_MESSAGE(
+                std::string("Directory ") + dir.string() + "/" + ext + " must be empty",
+                fs::is_empty(dir / ext));
         }
         else
         {
@@ -170,7 +173,8 @@ void ModelSeriesWriterTest::testWriteMeshes()
             modelSeries);
 
         FileContainerType files;
-        for(fs::directory_iterator it(dir / ext); it != fs::directory_iterator(); ++it)
+
+        for(fs::directory_iterator it(dir / ext) ; it != fs::directory_iterator() ; ++it)
         {
             if(it->path().extension() == "." + ext)
             {
@@ -181,8 +185,10 @@ void ModelSeriesWriterTest::testWriteMeshes()
         // Ensure reading order (modelSeries generator will prefix each file with a number).
         std::sort(files.begin(), files.end());
 
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of saved files",
-                                     modelSeries->getReconstructionDB().size(), files.size());
+        CPPUNIT_ASSERT_EQUAL_MESSAGE(
+            "Number of saved files",
+            modelSeries->getReconstructionDB().size(),
+            files.size());
 
         data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
 
@@ -192,7 +198,7 @@ void ModelSeriesWriterTest::testWriteMeshes()
             seriesDB);
 
         const data::SeriesDB::ContainerType& series = seriesDB->getContainer();
-        CPPUNIT_ASSERT_EQUAL_MESSAGE("SeriesDB Size", (size_t)1, series.size());
+        CPPUNIT_ASSERT_EQUAL_MESSAGE("SeriesDB Size", (size_t) 1, series.size());
 
         data::ModelSeries::sptr readSeries = data::ModelSeries::dynamicCast(series[0]);
         CPPUNIT_ASSERT_MESSAGE("A ModelSeries was expected", readSeries);
@@ -205,7 +211,7 @@ void ModelSeriesWriterTest::testWriteMeshes()
         RecVecType::const_iterator itRef  = refRecs.begin();
         RecVecType::const_iterator itRead = readRecs.begin();
 
-        for(; itRef != refRecs.end(); ++itRef, ++itRead)
+        for( ; itRef != refRecs.end() ; ++itRef, ++itRead)
         {
             data::Mesh::csptr refMesh  = (*itRef)->getMesh();
             data::Mesh::csptr readMesh = (*itRead)->getMesh();
@@ -213,64 +219,99 @@ void ModelSeriesWriterTest::testWriteMeshes()
             const auto reflock      = refMesh->lock();
             const auto readMeshLock = readMesh->lock();
 
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of Points.",
-                                         refMesh->getNumberOfPoints(), readMesh->getNumberOfPoints());
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("Number of Cells.",
-                                         refMesh->getNumberOfCells(), readMesh->getNumberOfCells());
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("Cell Data size.", refMesh->getCellDataSize(),
-                                         readMesh->getCellDataSize());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(
+                "Number of Points.",
+                refMesh->getNumberOfPoints(),
+                readMesh->getNumberOfPoints());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(
+                "Number of Cells.",
+                refMesh->getNumberOfCells(),
+                readMesh->getNumberOfCells());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(
+                "Cell Data size.",
+                refMesh->getCellDataSize(),
+                readMesh->getCellDataSize());
 
             // Don't test internal structures for obj, ply and stl, since some of them are missing.
             if(ext != "obj" && ext != "ply" && ext != "stl")
             {
-                auto refPointsItr       = refMesh->begin< data::iterator::ConstPointIterator >();
-                auto readPointsItr      = readMesh->begin< data::iterator::ConstPointIterator >();
-                const auto refPointsEnd = refMesh->end< data::iterator::ConstPointIterator >();
+                auto refPointsItr       = refMesh->begin<data::iterator::ConstPointIterator>();
+                auto readPointsItr      = readMesh->begin<data::iterator::ConstPointIterator>();
+                const auto refPointsEnd = refMesh->end<data::iterator::ConstPointIterator>();
 
-                for(; refPointsItr != refPointsEnd; ++refPointsItr, ++readPointsItr)
+                for( ; refPointsItr != refPointsEnd ; ++refPointsItr, ++readPointsItr)
                 {
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Point.x ", refPointsItr->point->x, readPointsItr->point->x,
-                                                         0.00001);
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Point.y", refPointsItr->point->y, readPointsItr->point->y,
-                                                         0.00001);
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Point.z", refPointsItr->point->z, readPointsItr->point->z,
-                                                         0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Point.x ",
+                        refPointsItr->point->x,
+                        readPointsItr->point->x,
+                        0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Point.y",
+                        refPointsItr->point->y,
+                        readPointsItr->point->y,
+                        0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Point.z",
+                        refPointsItr->point->z,
+                        readPointsItr->point->z,
+                        0.00001);
 
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Point color R", refPointsItr->rgba->r, readPointsItr->rgba->r);
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Point color G", refPointsItr->rgba->g, readPointsItr->rgba->g);
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Point color B", refPointsItr->rgba->b, readPointsItr->rgba->b);
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Point color A", refPointsItr->rgba->a, readPointsItr->rgba->a);
 
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Point normal x", refPointsItr->normal->nx,
-                                                         readPointsItr->normal->nx, 0.00001);
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Point normal y", refPointsItr->normal->ny,
-                                                         readPointsItr->normal->ny, 0.00001);
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Point normal z", refPointsItr->normal->nz,
-                                                         readPointsItr->normal->nz, 0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Point normal x",
+                        refPointsItr->normal->nx,
+                        readPointsItr->normal->nx,
+                        0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Point normal y",
+                        refPointsItr->normal->ny,
+                        readPointsItr->normal->ny,
+                        0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Point normal z",
+                        refPointsItr->normal->nz,
+                        readPointsItr->normal->nz,
+                        0.00001);
                 }
 
-                auto refCellsItr       = refMesh->begin< data::iterator::ConstCellIterator >();
-                auto readCellsItr      = readMesh->begin< data::iterator::ConstCellIterator >();
-                const auto refCellsEnd = refMesh->end< data::iterator::ConstCellIterator >();
+                auto refCellsItr       = refMesh->begin<data::iterator::ConstCellIterator>();
+                auto readCellsItr      = readMesh->begin<data::iterator::ConstCellIterator>();
+                const auto refCellsEnd = refMesh->end<data::iterator::ConstCellIterator>();
 
-                for(; refCellsItr != refCellsEnd; ++refCellsItr, ++readCellsItr)
+                for( ; refCellsItr != refCellsEnd ; ++refCellsItr, ++readCellsItr)
                 {
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Cell type", *refCellsItr->type, *readCellsItr->type);
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Cell offset", *refCellsItr->offset, *readCellsItr->offset);
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Cell nbrPoints", refCellsItr->nbPoints, readCellsItr->nbPoints);
 
-                    for (size_t i = 0; i < refCellsItr->nbPoints; ++i)
+                    for(size_t i = 0 ; i < refCellsItr->nbPoints ; ++i)
                     {
-                        CPPUNIT_ASSERT_EQUAL_MESSAGE("Celle point index", refCellsItr->pointIdx[i],
-                                                     readCellsItr->pointIdx[i]);
+                        CPPUNIT_ASSERT_EQUAL_MESSAGE(
+                            "Celle point index",
+                            refCellsItr->pointIdx[i],
+                            readCellsItr->pointIdx[i]);
                     }
 
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Cell normal x", refCellsItr->normal->nx,
-                                                         readCellsItr->normal->nx, 0.00001);
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Cell normal y", refCellsItr->normal->ny,
-                                                         readCellsItr->normal->ny, 0.00001);
-                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Cell normal z", refCellsItr->normal->nz,
-                                                         readCellsItr->normal->nz, 0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Cell normal x",
+                        refCellsItr->normal->nx,
+                        readCellsItr->normal->nx,
+                        0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Cell normal y",
+                        refCellsItr->normal->ny,
+                        readCellsItr->normal->ny,
+                        0.00001);
+                    CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE(
+                        "Cell normal z",
+                        refCellsItr->normal->nz,
+                        readCellsItr->normal->nz,
+                        0.00001);
 
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Cell color R", refCellsItr->rgba->r, readCellsItr->rgba->r);
                     CPPUNIT_ASSERT_EQUAL_MESSAGE("Cell color G", refCellsItr->rgba->g, readCellsItr->rgba->g);
@@ -282,7 +323,7 @@ void ModelSeriesWriterTest::testWriteMeshes()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesWriterTest::testWriteReconstructions()
 {
@@ -290,10 +331,11 @@ void ModelSeriesWriterTest::testWriteReconstructions()
 
     const fs::path dir = core::tools::System::getTemporaryFolder() / "modelSeriesObj";
 
-    if( fs::exists(dir) )
+    if(fs::exists(dir))
     {
-        CPPUNIT_ASSERT_MESSAGE(std::string("Directory ") + dir.string() + " must be empty",
-                               fs::is_empty(dir));
+        CPPUNIT_ASSERT_MESSAGE(
+            std::string("Directory ") + dir.string() + " must be empty",
+            fs::is_empty(dir));
     }
     else
     {
@@ -308,7 +350,8 @@ void ModelSeriesWriterTest::testWriteReconstructions()
     data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
 
     FileContainerType files;
-    for(fs::directory_iterator it(dir); it != fs::directory_iterator(); ++it)
+
+    for(fs::directory_iterator it(dir) ; it != fs::directory_iterator() ; ++it)
     {
         files.push_back(it->path().string());
     }
@@ -317,7 +360,8 @@ void ModelSeriesWriterTest::testWriteReconstructions()
     CPPUNIT_ASSERT_EQUAL(modelSeries->getReconstructionDB().size() * 2, files.size());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::module::io::vtk
+} // namespace ut
+
+} // namespace sight::module::io::vtk

@@ -29,37 +29,39 @@
 
 namespace sight::ui::base
 {
+
 namespace builder
 {
 
 const IContainerBuilder::RegistryKeyType IContainerBuilder::REGISTRY_KEY = "::ui::base::ContainerBuilder";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IContainerBuilder::IContainerBuilder()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IContainerBuilder::~IContainerBuilder()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void IContainerBuilder::initialize( core::runtime::ConfigurationElement::sptr configuration)
+void IContainerBuilder::initialize(core::runtime::ConfigurationElement::sptr configuration)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ui::base::container::fwContainer::sptr IContainerBuilder::getContainer()
 {
     return this->m_container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace builder
+
 } // namespace sight::ui::base

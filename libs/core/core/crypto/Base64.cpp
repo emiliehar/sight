@@ -30,7 +30,7 @@
 namespace sight::core::crypto
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 template<typename T>
 inline static T from_base64(const T& message)
 {
@@ -55,11 +55,11 @@ inline static T from_base64(const T& message)
     // Compute padding to be able to remove it
     std::size_t padding = 0;
 
-    if(message[message_size-1] == '=')
+    if(message[message_size - 1] == '=')
     {
         padding++;
 
-        if(message[message_size-2] == '=')
+        if(message[message_size - 2] == '=')
         {
             padding++;
         }
@@ -70,21 +70,21 @@ inline static T from_base64(const T& message)
     return output;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string from_base64(const secure_string& message)
 {
     return from_base64<secure_string>(message);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string from_base64(const std::string& message)
 {
-    return from_base64<std::string >(message);
+    return from_base64<std::string>(message);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename T>
 T to_base64(const T& message)
@@ -107,18 +107,18 @@ T to_base64(const T& message)
     return output;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 secure_string to_base64(const secure_string& message)
 {
     return to_base64<secure_string>(message);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string to_base64(const std::string& message)
 {
-    return to_base64<std::string >(message);
+    return to_base64<std::string>(message);
 }
 
 } // namespace sight::core::crypto

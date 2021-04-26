@@ -30,10 +30,13 @@ namespace sight::data
 namespace timeline
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-Buffer::Buffer( core::HiResClock::HiResClockType timestamp,
-                BufferDataType buffer, size_t size, DeleterType d) :
+Buffer::Buffer(
+    core::HiResClock::HiResClockType timestamp,
+    BufferDataType buffer,
+    size_t size,
+    DeleterType d) :
     Object(timestamp),
     m_size(size),
     m_buffer(buffer),
@@ -41,7 +44,7 @@ Buffer::Buffer( core::HiResClock::HiResClockType timestamp,
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Buffer::~Buffer()
 {
@@ -51,7 +54,7 @@ Buffer::~Buffer()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Buffer::deepCopy(const data::timeline::Object& other)
 {

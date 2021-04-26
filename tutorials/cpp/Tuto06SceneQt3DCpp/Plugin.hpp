@@ -34,9 +34,7 @@ namespace Tuto06SceneQt3DCpp
 /// This class is started when the module is loaded.
 class TUTO06SCENEQT3DCPP_CLASS_API Plugin : public sight::core::runtime::Plugin
 {
-
 public:
-
     /// Creates the plugin.
     TUTO06SCENEQT3DCPP_API Plugin() noexcept;
 
@@ -44,7 +42,6 @@ public:
     TUTO06SCENEQT3DCPP_API ~Plugin() noexcept override;
 
 private:
-
     /// Does nothing.
     void start() override;
 
@@ -58,8 +55,7 @@ private:
     void uninitialize() noexcept override;
 
     /// Contains the AppManager used to instantiate services.
-    std::unique_ptr< sight::service::AppManager > m_appManager;
-
+    std::unique_ptr<sight::service::AppManager> m_appManager;
 };
 
 } // namespace Tuto06SceneQt3DCpp.

@@ -28,13 +28,14 @@
 
 namespace sight::core::com
 {
+
 namespace exception
 {
 
 /// No worker exception.
 struct NoWorker : core::Exception
 {
-    CORE_API NoWorker ( const std::string& err );
+    CORE_API NoWorker(const std::string& err);
 };
 
 } // namespace exception

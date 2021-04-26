@@ -39,9 +39,7 @@ namespace sight::io::zip
  */
 class IO_ZIP_CLASS_API WriteZipArchive : public IWriteArchive
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(WriteZipArchive, IWriteArchive)
 
     enum Method
@@ -58,13 +56,14 @@ public:
         BEST    = 9
     };
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    static sptr New(const std::filesystem::path& archive,
-                    const std::string& comment             = "",
-                    const core::crypto::secure_string& key = "",
-                    Method method                          = Method::ZSTD,
-                    Level level                            = Level::DEFAULT)
+    static sptr New(
+        const std::filesystem::path& archive,
+        const std::string& comment             = "",
+        const core::crypto::secure_string& key = "",
+        Method method                          = Method::ZSTD,
+        Level level                            = Level::DEFAULT)
     {
         return std::make_shared<WriteZipArchive>(archive, comment, key, method, level);
     }
@@ -73,11 +72,12 @@ public:
      * @brief Constructors. Initializes archive path, comment and key.
      *
      */
-    WriteZipArchive(const std::filesystem::path& archive,
-                    const std::string& comment             = "",
-                    const core::crypto::secure_string& key = "",
-                    Method method                          = Method::ZSTD,
-                    Level level                            = Level::DEFAULT) :
+    WriteZipArchive(
+        const std::filesystem::path& archive,
+        const std::string& comment             = "",
+        const core::crypto::secure_string& key = "",
+        Method method                          = Method::ZSTD,
+        Level level                            = Level::DEFAULT) :
         m_archive(archive),
         m_comment(comment),
         m_key(key),
@@ -105,8 +105,9 @@ public:
      *
      * @throw io::zip::exception::Read if source file cannot be opened.
      */
-    IO_ZIP_API void putFile(const std::filesystem::path& sourceFile,
-                            const std::filesystem::path& path) override;
+    IO_ZIP_API void putFile(
+        const std::filesystem::path& sourceFile,
+        const std::filesystem::path& path) override;
 
     /**
      * @brief Creates a folder in archive.
@@ -122,7 +123,6 @@ public:
     IO_ZIP_API const std::filesystem::path getArchivePath() const override;
 
 private:
-
     /// Path to the archive file
     std::filesystem::path m_archive;
 
@@ -133,10 +133,10 @@ private:
     std::string m_key;
 
     /// Compression method used globally
-    Method m_method {Method::ZSTD};
+    Method m_method{Method::ZSTD};
 
     /// Compression level used globally
-    Level m_level {Level::DEFAULT};
+    Level m_level{Level::DEFAULT};
 };
 
-}
+} // namespace sight::io

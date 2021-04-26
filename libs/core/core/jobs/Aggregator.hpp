@@ -47,22 +47,21 @@ namespace sight::core::jobs
 class CORE_CLASS_API Aggregator : public IJob
 {
 public:
-
     /**
      * @name Typedefs
      * @{ */
-    typedef SPTR (core::jobs::Aggregator) sptr;
-    typedef WPTR (core::jobs::Aggregator) wptr;
+    typedef SPTR(core::jobs::Aggregator) sptr;
+    typedef WPTR(core::jobs::Aggregator) wptr;
 
     /// Aggregator container type
-    typedef ::boost::multi_index_container< core::jobs::IJob::sptr,
-                                            ::boost::multi_index::indexed_by<
-                                                ::boost::multi_index::random_access<>,
-                                                ::boost::multi_index::hashed_unique<
-                                                    ::boost::multi_index::identity< core::jobs::IJob::sptr >
-                                                    >
-                                                >
-                                            > IJobSeq;
+    typedef ::boost::multi_index_container<core::jobs::IJob::sptr,
+                                           ::boost::multi_index::indexed_by<
+                                               ::boost::multi_index::random_access<>,
+                                               ::boost::multi_index::hashed_unique<
+                                                   ::boost::multi_index::identity<core::jobs::IJob::sptr>
+                                                   >
+                                               >
+                                           > IJobSeq;
     /**  @} */
 
     /**
@@ -102,7 +101,6 @@ public:
     CORE_API IJobSeq getSubJobs();
 
 protected:
-
     /**
      * @brief Run all the jobs of the Aggregator
      *
@@ -111,7 +109,6 @@ protected:
     CORE_API SharedFuture runImpl();
 
 private:
-
     /// The IJob container
     IJobSeq m_jobs;
 
@@ -136,26 +133,26 @@ private:
         {
         }
 
-        JobInfo( const IJob& iJob ) :
+        JobInfo(const IJob& iJob) :
             doneWork(iJob.getDoneWorkUnits()),
             totalWork(iJob.getTotalWorkUnits()),
             lastValue(0)
         {
         }
 
-        //------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------
 
         double progress() const
         {
-            return ( 0 == totalWork ) ? 1. : static_cast<double>(doneWork)/ static_cast<double>(totalWork);
+            return (0 == totalWork) ? 1. : static_cast<double>(doneWork) / static_cast<double>(totalWork);
         }
     };
 
     /// Job info map type
-    typedef std::map< core::jobs::IJob*, JobInfo > JobInfoMap;
+    typedef std::map<core::jobs::IJob*, JobInfo> JobInfoMap;
 
     /// Map containing job info
     JobInfoMap m_jobInfo;
 };
 
-} //namespace sight::core::jobs
+} // namespace sight::core::jobs

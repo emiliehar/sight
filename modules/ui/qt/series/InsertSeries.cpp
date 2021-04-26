@@ -25,7 +25,7 @@
 #include <data/Exception.hpp>
 #include <data/registry/macros.hpp>
 
-SIGHT_REGISTER_DATA( sight::module::ui::qt::series::InsertSeries );
+SIGHT_REGISTER_DATA(sight::module::ui::qt::series::InsertSeries);
 
 namespace sight::module::ui::qt::series
 {
@@ -35,36 +35,40 @@ InsertSeries::InsertSeries(data::Object::Key key) :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InsertSeries::~InsertSeries()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InsertSeries::shallowCopy(const data::Object::csptr& _source)
 {
     InsertSeries::csptr other = InsertSeries::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
     this->data::Series::shallowCopy(_source);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InsertSeries::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& cache)
 {
     InsertSeries::csptr other = InsertSeries::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
     this->data::Series::cachedDeepCopy(_source, cache);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt::series

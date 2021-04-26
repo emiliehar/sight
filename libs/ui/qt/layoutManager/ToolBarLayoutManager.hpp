@@ -33,6 +33,7 @@
 
 namespace sight::ui::qt
 {
+
 namespace layoutManager
 {
 
@@ -42,8 +43,10 @@ namespace layoutManager
 class UI_QT_CLASS_API ToolBarLayoutManager : public ui::base::layoutManager::IToolBarLayoutManager
 {
 public:
-    SIGHT_DECLARE_CLASS(ToolBarLayoutManager, ui::base::layoutManager::IToolBarLayoutManager,
-                        ui::base::factory::New< ToolBarLayoutManager >)
+    SIGHT_DECLARE_CLASS(
+        ToolBarLayoutManager,
+        ui::base::layoutManager::IToolBarLayoutManager,
+        ui::base::factory::New<ToolBarLayoutManager>)
 
     UI_QT_API ToolBarLayoutManager(ui::base::GuiBaseObject::Key key);
 
@@ -54,7 +57,7 @@ public:
      * @pre LayoutManager must be initialized before.
      * @pre parent toolBar must be instanced.
      */
-    UI_QT_API void createLayout( ui::base::container::fwToolBar::sptr parent ) override;
+    UI_QT_API void createLayout(ui::base::container::fwToolBar::sptr parent) override;
 
     /**
      * @brief Destroy local toolBars.
@@ -79,8 +82,8 @@ public:
 
 protected:
     ui::qt::container::QtToolBarContainer::sptr m_parent;
-
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::qt

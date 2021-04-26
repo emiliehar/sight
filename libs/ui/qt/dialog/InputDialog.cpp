@@ -28,41 +28,42 @@
 
 #include <ui/base/registry/macros.hpp>
 
-fwGuiRegisterMacro( ::sight::ui::qt::dialog::InputDialog, ::sight::ui::base::dialog::IInputDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(::sight::ui::qt::dialog::InputDialog, ::sight::ui::base::dialog::IInputDialog::REGISTRY_KEY);
 
 namespace sight::ui::qt
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InputDialog::InputDialog(ui::base::GuiBaseObject::Key key) :
     m_input("")
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InputDialog::~InputDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InputDialog::setTitle( const std::string& title )
+void InputDialog::setTitle(const std::string& title)
 {
     m_title = title;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InputDialog::setMessage( const std::string& msg )
+void InputDialog::setMessage(const std::string& msg)
 {
     m_message = msg;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /// Set the input text in the input field
 void InputDialog::setInput(const std::string& text)
@@ -70,7 +71,7 @@ void InputDialog::setInput(const std::string& text)
     m_input = text;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /// Get the input text in the input field
 std::string InputDialog::getInput()
@@ -80,9 +81,14 @@ std::string InputDialog::getInput()
 
     bool IsOkClicked;
     QString outputText = QInputDialog::getText(
-        qApp->activeWindow(), title, text, QLineEdit::Normal, QString::fromStdString(m_input), &IsOkClicked);
+        qApp->activeWindow(),
+        title,
+        text,
+        QLineEdit::Normal,
+        QString::fromStdString(m_input),
+        &IsOkClicked);
 
-    if ( IsOkClicked)
+    if(IsOkClicked)
     {
         m_input = outputText.toStdString();
     }
@@ -90,10 +96,12 @@ std::string InputDialog::getInput()
     {
         m_input = "";
     }
+
     return m_input;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qt

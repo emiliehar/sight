@@ -24,21 +24,22 @@
 
 #include "atoms/registry/macros.hpp"
 
-fwAtomsRegisterMacro( sight::atoms::String );
+fwAtomsRegisterMacro(sight::atoms::String);
 
 namespace sight::atoms
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 String::sptr String::New(std::string value)
 {
     String::sptr std = String::New();
     std->m_value = value;
+
     return std;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Base::sptr String::clone() const
 {

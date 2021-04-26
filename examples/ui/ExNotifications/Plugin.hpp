@@ -33,7 +33,6 @@ namespace ExNotifications
 class EXNOTIFICATIONS_CLASS_API Plugin : public sight::core::runtime::Plugin
 {
 public:
-
     /// Destroys the plugin.
     EXNOTIFICATIONS_API ~Plugin() noexcept override;
 

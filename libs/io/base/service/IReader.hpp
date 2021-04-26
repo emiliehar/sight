@@ -49,7 +49,6 @@ namespace sight::io::base::service
  */
 class IO_BASE_CLASS_API IReader : public sight::service::IService
 {
-
 public:
     SIGHT_DECLARE_SERVICE(IReader, sight::service::IService)
 
@@ -85,7 +84,7 @@ public:
     /**
      * @brief   returns  (filename) extension
      */
-    IO_BASE_API virtual std::vector< std::string > getSupportedExtensions();
+    IO_BASE_API virtual std::vector<std::string> getSupportedExtensions();
 
     /**
      * @brief   returns  the title of selector dialog box
@@ -169,7 +168,6 @@ public:
     //@}
 
 protected:
-
     IO_BASE_API IReader() noexcept;
 
     IO_BASE_API virtual ~IReader() noexcept;
@@ -238,7 +236,6 @@ protected:
     bool m_readFailed{false};
 
 private:
-
     /// Slot: temporary slot to display a deprecated message when calling 'configureWithIHM', remove this in sight 22.0.
     void deprecateConfigureWithIHM();
     /// Slot to read folder
@@ -252,4 +249,4 @@ private:
     io::base::service::LocationsType m_locations;
 };
 
-} //namespace sight::io::base::service
+} // namespace sight::io::base::service

@@ -35,9 +35,10 @@
 
 namespace sight::module::sync
 {
-//-----------------------------------------------------------------------------
 
-//  Public slot
+// -----------------------------------------------------------------------------
+
+// Public slot
 const core::com::Slots::SlotKeyType SFrameUpdater::s_UPDATE_FRAME_SLOT = "updateFrame";
 
 // Private slot
@@ -45,7 +46,7 @@ const core::com::Slots::SlotKeyType s_RESET_TIMELINE_SLOT = "reset";
 
 const core::com::Signals::SignalKeyType SFrameUpdater::s_RENDER_REQUESTED_SIG = "renderRequested";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SFrameUpdater::SFrameUpdater() noexcept :
     m_lastTimestamp(0),
@@ -57,58 +58,60 @@ SFrameUpdater::SFrameUpdater() noexcept :
     newSlot(s_RESET_TIMELINE_SLOT, &SFrameUpdater::resetTimeline, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SFrameUpdater::~SFrameUpdater() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SFrameUpdater::getAutoConnections() const
 {
     KeyConnectionsMap connections;
 
-    connections.push( "frameTL", data::TimeLine::s_OBJECT_PUSHED_SIG,
-                      module::sync::SFrameUpdater::s_UPDATE_FRAME_SLOT );
-    connections.push( "frameTL", data::TimeLine::s_CLEARED_SIG, s_RESET_TIMELINE_SLOT );
+    connections.push(
+        "frameTL",
+        data::TimeLine::s_OBJECT_PUSHED_SIG,
+        module::sync::SFrameUpdater::s_UPDATE_FRAME_SLOT);
+    connections.push("frameTL", data::TimeLine::s_CLEARED_SIG, s_RESET_TIMELINE_SLOT);
 
     return connections;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::starting()
 {
     m_imageInitialized = false;
 
-    m_frameTL = this->getInput< data::FrameTL>("frameTL");
-    m_image   = this->getInOut< data::Image>("frame");
+    m_frameTL = this->getInput<data::FrameTL>("frameTL");
+    m_image   = this->getInOut<data::Image>("frame");
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::configuring()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::updating()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void SFrameUpdater::updateFrame( core::HiResClock::HiResClockType timestamp )
+void SFrameUpdater::updateFrame(core::HiResClock::HiResClockType timestamp)
 {
-    if (timestamp > m_lastTimestamp)
+    if(timestamp > m_lastTimestamp)
     {
         data::Image::Size size;
         size[0] = m_frameTL->getWidth();
@@ -126,20 +129,25 @@ void SFrameUpdater::updateFrame( core::HiResClock::HiResClockType timestamp )
             data::mt::ObjectWriteLock destLock(m_image);
 
             data::Image::PixelFormat format;
+
             // FIXME currently, frameTL doesn't manage formats, so we assume that the frame are GrayScale, RGB or RGBA
-            switch (m_frameTL->getNumberOfComponents())
+            switch(m_frameTL->getNumberOfComponents())
             {
                 case 1:
                     format = data::Image::GRAY_SCALE;
                     break;
+
                 case 3:
                     format = data::Image::RGB;
                     break;
+
                 case 4:
                     format = data::Image::RGBA;
                     break;
+
                 default:
                     SIGHT_ERROR("Number of compenent not managed")
+
                     return;
             }
 
@@ -152,9 +160,9 @@ void SFrameUpdater::updateFrame( core::HiResClock::HiResClockType timestamp )
             m_image->setWindowCenter(0);
             m_imageInitialized = true;
 
-            //Notify (needed for instance to update the texture in ::visuVTKARAdaptor::SVideoAdapter)
-            auto sig =
-                m_image->signal< data::Object::ModifiedSignalType >( data::Object::s_MODIFIED_SIG );
+            // Notify (needed for instance to update the texture in ::visuVTKARAdaptor::SVideoAdapter)
+            auto sig
+                = m_image->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
 
             {
                 core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
@@ -167,18 +175,19 @@ void SFrameUpdater::updateFrame( core::HiResClock::HiResClockType timestamp )
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::updateImage()
 {
-    //Lock image & copy buffer
+    // Lock image & copy buffer
     data::mt::ObjectWriteLock destLock(m_image);
     const auto dumpLock = m_image->lock();
 
     const core::HiResClock::HiResClockType timestamp = m_frameTL->getNewerTimestamp();
     CSPTR(data::FrameTL::BufferType) buffer = m_frameTL->getClosestBuffer(timestamp);
 
-    SIGHT_WARN_IF("Buffer not found with timestamp "<< timestamp, !buffer );
+    SIGHT_WARN_IF("Buffer not found with timestamp " << timestamp, !buffer);
+
     if(buffer)
     {
         m_lastTimestamp = timestamp;
@@ -186,16 +195,16 @@ void SFrameUpdater::updateImage()
         const std::uint8_t* frameBuff = &buffer->getElement(0);
         auto iter                     = m_image->begin<std::uint8_t>();
 
-        std::copy( frameBuff, frameBuff+buffer->getSize(), iter);
+        std::copy(frameBuff, frameBuff + buffer->getSize(), iter);
 
-        //Notify
-        auto sig =
-            m_image->signal< data::Image::BufferModifiedSignalType >( data::Image::s_BUFFER_MODIFIED_SIG );
+        // Notify
+        auto sig
+            = m_image->signal<data::Image::BufferModifiedSignalType>(data::Image::s_BUFFER_MODIFIED_SIG);
         sig->asyncEmit();
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::requestRender()
 {
@@ -203,7 +212,7 @@ void SFrameUpdater::requestRender()
     sig->asyncEmit();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SFrameUpdater::resetTimeline()
 {
@@ -211,6 +220,6 @@ void SFrameUpdater::resetTimeline()
     m_lastTimestamp = std::numeric_limits<double>::lowest();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace sight::module::sync
+} // namespace sight::module::sync

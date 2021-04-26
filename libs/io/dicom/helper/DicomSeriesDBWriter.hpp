@@ -33,12 +33,16 @@
 
 namespace sight::data
 {
+
 class SeriesDB;
+
 }
 
 namespace sight::core::jobs
 {
+
 class Aggregator;
+
 }
 
 namespace sight::io::dicom
@@ -50,14 +54,15 @@ namespace helper
 class DicomAnonymizer;
 
 class IO_DICOM_CLASS_API DicomSeriesDBWriter :
-    public io::base::writer::GenericObjectWriter< data::SeriesDB >,
+    public io::base::writer::GenericObjectWriter<data::SeriesDB>,
     public core::location::SingleFolder,
     public core::location::SingleFile
 {
 public:
-
-    SIGHT_DECLARE_CLASS(DicomSeriesDBWriter, io::base::writer::GenericObjectWriter< data::SeriesDB>,
-                        io::base::writer::factory::New< DicomSeriesDBWriter >);
+    SIGHT_DECLARE_CLASS(
+        DicomSeriesDBWriter,
+        io::base::writer::GenericObjectWriter<data::SeriesDB>,
+        io::base::writer::factory::New<DicomSeriesDBWriter>);
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
     /**
@@ -86,7 +91,6 @@ public:
     IO_DICOM_API void setProducer(std::string producer);
 
 private:
-
     /// Job observer
     SPTR(core::jobs::Aggregator) m_aggregator;
 
@@ -98,8 +102,8 @@ private:
 
     /// Producer
     std::string m_producer;
-
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

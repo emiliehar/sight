@@ -26,6 +26,7 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace ut
 {
 
@@ -57,4 +58,5 @@ public:
 };
 
 }
+
 }

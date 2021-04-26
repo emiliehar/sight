@@ -28,6 +28,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -35,18 +36,20 @@ namespace detail::data
 PatientDeserializer::sptr PatientDeserializer::shared()
 {
     struct make_shared_enabler final : public PatientDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PatientDeserializer::uptr PatientDeserializer::unique()
 {
     struct make_unique_enabler final : public PatientDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr PatientDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -56,8 +59,8 @@ sight::data::Object::sptr PatientDeserializer::deserialize(
     const core::crypto::secure_string& password)
 {
     // Create or reuse the object
-    const auto& patient =
-        object ? sight::data::Patient::dynamicCast(object) : sight::data::Patient::New();
+    const auto& patient
+        = object ? sight::data::Patient::dynamicCast(object) : sight::data::Patient::New();
 
     SIGHT_ASSERT(
         "Object '" << patient->getClassname() << "' is not a '" << sight::data::Patient::classname() << "'",
@@ -76,7 +79,7 @@ sight::data::Object::sptr PatientDeserializer::deserialize(
     return patient;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr PatientDeserializer::create()
 {
@@ -85,4 +88,5 @@ sight::data::Object::sptr PatientDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

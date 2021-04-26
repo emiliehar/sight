@@ -34,6 +34,7 @@
 
 namespace sight::module::ui::qt::metrics
 {
+
 /**
  * @brief   Distance service is represented by a button. It allows to show distances in a generic scene.
  *
@@ -59,8 +60,8 @@ class MODULE_UI_QT_CLASS_API Distance : public QObject,
                                         public sight::ui::base::IEditor
 {
 Q_OBJECT
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(Distance, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -74,12 +75,12 @@ public:
      * @{
      */
     MODULE_UI_QT_API static const core::com::Signals::SignalKeyType s_DISTANCE_REQUESTED_SIG;
-    typedef core::com::Signal< void () > DistanceRequestedSignalType;
-    /**
-     * @}
-     */
-protected:
+    typedef core::com::Signal<void ()> DistanceRequestedSignalType;
+/**
+ * @}
+ */
 
+protected:
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /**
@@ -109,9 +110,9 @@ protected Q_SLOTS:
     void onDistanceButton();
 
 private:
-    QPointer< QPushButton > m_distButton;
+    QPointer<QPushButton> m_distButton;
 
     DistanceRequestedSignalType::sptr m_sigDistanceRequested; /// signal emitted when a distance is requested
-
 };
+
 } // uiMeasurementQt

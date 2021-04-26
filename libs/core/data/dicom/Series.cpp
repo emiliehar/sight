@@ -43,6 +43,7 @@ data::ImageSeries::sptr Series::convertToImageSeries(const data::DicomSeries::cs
     result->setTime(series->getTime());
     result->setDescription(series->getDescription());
     result->setPerformingPhysiciansName(series->getPerformingPhysiciansName());
+
     return result;
 }
 
@@ -60,9 +61,10 @@ data::ModelSeries::sptr Series::convertToModelSeries(const data::DicomSeries::cs
     result->setTime(series->getTime());
     result->setDescription(series->getDescription());
     result->setPerformingPhysiciansName(series->getPerformingPhysiciansName());
+
     return result;
 }
 
 // ----------------------------------------------------------------------------
 
-} //fwDicomTools
+} // fwDicomTools

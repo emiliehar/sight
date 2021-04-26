@@ -61,7 +61,6 @@ class MODULE_UI_QT_CLASS_API ImageTransparency : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(ImageTransparency, sight::ui::base::IEditor)
 
     MODULE_UI_QT_API ImageTransparency() noexcept;
@@ -81,7 +80,7 @@ protected:
 
     void configuring() override;
 
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
     /**
      * @brief Returns proposals to connect service slots to associated object signals,
@@ -95,7 +94,6 @@ protected:
     KeyConnectionsMap getAutoConnections() const override;
 
 protected Q_SLOTS:
-
     /**
      * @brief This method is called when the visibility value change using action shortcut.
      */
@@ -112,15 +110,13 @@ protected Q_SLOTS:
     void onModifyTransparency(int value);
 
 private:
-
     /// Notify VISIBILITY event on image
     void notifyVisibility(bool isVisible);
 
-    QPointer< QSlider >   m_valueSlider;
-    QPointer< QCheckBox > m_valueCheckBox;
-    QPointer< QAction >   m_action;
+    QPointer<QSlider> m_valueSlider;
+    QPointer<QCheckBox> m_valueCheckBox;
+    QPointer<QAction> m_action;
     std::string m_shortcut;
-
 };
 
 } // uiImageQt

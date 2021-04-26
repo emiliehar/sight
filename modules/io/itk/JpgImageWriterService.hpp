@@ -31,7 +31,9 @@
 
 namespace sight::data
 {
+
 class Image;
+
 }
 
 namespace sight::module::io::itk
@@ -56,7 +58,6 @@ namespace sight::module::io::itk
  */
 class MODULE_IO_ITK_CLASS_API JpgImageWriterService : public sight::io::base::service::IWriter
 {
-
 public:
     SIGHT_DECLARE_SERVICE(JpgImageWriterService, sight::io::base::service::IWriter)
 
@@ -69,7 +70,6 @@ public:
         const CSPTR(data::Image)& img);
 
 protected:
-
     /// Override
     MODULE_IO_ITK_API void starting() override;
 
@@ -83,7 +83,7 @@ protected:
     MODULE_IO_ITK_API void updating() override;
 
     /// Override
-    MODULE_IO_ITK_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_ITK_API void info(std::ostream& _sstream) override;
 
     /**
      * @brief Configure using GUI.
@@ -97,7 +97,6 @@ protected:
 
     /// Return managed file type, here FOLDER
     MODULE_IO_ITK_API sight::io::base::service::IOPathType getIOPathType() const override;
-
 };
 
 } // namespace sight::module::io::itk

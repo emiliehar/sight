@@ -31,18 +31,19 @@
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
+
 namespace tid
 {
 
 /**
  * @brief TemplateID base class used to write templates
  */
-template< class DATATYPE >
+template<class DATATYPE>
 class IO_DICOM_CLASS_API TemplateID
 {
-
 public:
     /**
      * @brief Constructor
@@ -50,15 +51,15 @@ public:
      * @param[in] instance DICOM instance used to share informations between modules
      * @param[in] object Sight data object
      */
-    IO_DICOM_API TemplateID(const SPTR(::gdcm::Writer)& writer,
-                            const SPTR(io::dicom::container::DicomInstance)& instance,
-                            const CSPTR(DATATYPE)& object);
+    IO_DICOM_API TemplateID(
+        const SPTR(::gdcm::Writer)& writer,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const CSPTR(DATATYPE)& object);
 
     /// Destructor
     IO_DICOM_API virtual ~TemplateID();
 
 protected:
-
     /// GDCM Writer
     SPTR(::gdcm::Writer) m_writer;
 
@@ -69,12 +70,13 @@ protected:
     CSPTR(DATATYPE) m_object;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< class DATATYPE >
-TemplateID<DATATYPE>::TemplateID(const SPTR(::gdcm::Writer)& writer,
-                                 const SPTR(io::dicom::container::DicomInstance)& instance,
-                                 const CSPTR(DATATYPE)& object) :
+template<class DATATYPE>
+TemplateID<DATATYPE>::TemplateID(
+    const SPTR(::gdcm::Writer)& writer,
+    const SPTR(io::dicom::container::DicomInstance)& instance,
+    const CSPTR(DATATYPE)& object) :
     m_writer(writer),
     m_instance(instance),
     m_object(object)
@@ -84,15 +86,17 @@ TemplateID<DATATYPE>::TemplateID(const SPTR(::gdcm::Writer)& writer,
     SIGHT_ASSERT("Object should not be null.", object);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< class DATATYPE >
+template<class DATATYPE>
 TemplateID<DATATYPE>::~TemplateID()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace tid
+
 } // namespace writer
+
 } // namespace sight::io::dicom

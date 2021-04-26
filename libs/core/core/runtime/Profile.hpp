@@ -39,9 +39,8 @@ namespace sight::core::runtime
 class Profile : public core::BaseObject
 {
 public:
-
-    typedef std::vector< std::string >  ParamsContainer;
-    typedef std::function< int () > RunCallbackType;
+    typedef std::vector<std::string> ParamsContainer;
+    typedef std::function<int ()> RunCallbackType;
 
     SIGHT_DECLARE_CLASS(Profile, BaseObject)
 
@@ -52,10 +51,10 @@ public:
 
     CORE_API ~Profile() override;
 
-    ///  Starts the profile.
+    /// Starts the profile.
     CORE_API virtual void start() = 0;
 
-    ///  Stops the profile.
+    /// Stops the profile.
     CORE_API virtual void stop() = 0;
 
     /// Setup the profile
@@ -104,7 +103,7 @@ public:
         m_sVersion = _sVersion;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     ParamsContainer getParams() const
     {
@@ -135,20 +134,18 @@ public:
     }
 
 protected:
-
     /**
      * @brief   Constructor : does nothing.
      */
     CORE_API Profile();
 
 private:
-
-    std::string m_sName;                    ///< name profile
-    std::string m_sVersion;                 ///< profile app version
+    std::string m_sName; ///< name profile
+    std::string m_sVersion; ///< profile app version
 
     ParamsContainer m_params;
     int m_argc;
-    char**          m_argv;
+    char** m_argv;
 };
 
 /**

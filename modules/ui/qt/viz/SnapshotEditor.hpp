@@ -47,11 +47,9 @@ namespace sight::module::ui::qt::viz
 class MODULE_UI_QT_CLASS_API SnapshotEditor : public QObject,
                                               public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SnapshotEditor, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -61,7 +59,6 @@ public:
     MODULE_UI_QT_API virtual ~SnapshotEditor() noexcept;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /**
@@ -91,7 +88,7 @@ protected:
     void configuring() override;
 
     /// Overrides
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 protected Q_SLOTS:
     /**
@@ -107,7 +104,7 @@ private:
      * @{
      */
     /// Type of signal to snap shot
-    typedef core::com::Signal< void (std::string) > SnappedSignalType;
+    typedef core::com::Signal<void (std::string)> SnappedSignalType;
     static const core::com::Signals::SignalKeyType s_SNAPPED_SIG;
 
     SnappedSignalType::sptr m_sigSnapped; ///< snap shot signal
@@ -115,8 +112,7 @@ private:
      * @}
      */
 
-    QPointer< QPushButton > m_snapButton;
-
+    QPointer<QPushButton> m_snapButton;
 };
 
 } // uiVisuQt

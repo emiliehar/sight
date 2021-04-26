@@ -57,29 +57,30 @@ Q_DECLARE_METATYPE(sight::activity::extension::ActivityInfo)
 
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const core::com::Signals::SignalKeyType SSelector::s_ACTIVITY_ID_SELECTED_SIG = "activityIDSelected";
 const core::com::Signals::SignalKeyType SSelector::s_LOAD_REQUESTED_SIG       = "loadRequested";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSelector::SSelector() noexcept
 {
-    newSignal< ActivityIDSelectedSignalType >(s_ACTIVITY_ID_SELECTED_SIG);
-    newSignal< LoadRequestedSignalType >(s_LOAD_REQUESTED_SIG);
+    newSignal<ActivityIDSelectedSignalType>(s_ACTIVITY_ID_SELECTED_SIG);
+    newSignal<LoadRequestedSignalType>(s_LOAD_REQUESTED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSelector::~SSelector() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSelector::configuring()
 {
@@ -87,25 +88,27 @@ void SSelector::configuring()
 
     const auto cfg = this->getConfigTree();
 
-    if(cfg.count("filter") == 1 )
+    if(cfg.count("filter") == 1)
     {
         const service::IService::ConfigType& configFilter = cfg.get_child("filter");
         SIGHT_ASSERT("A maximum of 1 <mode> tag is allowed", configFilter.count("mode") < 2);
 
-        const std::string mode = configFilter.get< std::string >("mode");
-        SIGHT_ASSERT("'" + mode + "' value for <mode> tag isn't valid. Allowed values are : 'include', 'exclude'.",
-                     mode == "include" || mode == "exclude");
+        const std::string mode = configFilter.get<std::string>("mode");
+        SIGHT_ASSERT(
+            "'" + mode + "' value for <mode> tag isn't valid. Allowed values are : 'include', 'exclude'.",
+            mode == "include" || mode == "exclude");
         m_filterMode = mode;
 
-        BOOST_FOREACH( const ConfigType::value_type& v, configFilter.equal_range("id") )
+        BOOST_FOREACH(const ConfigType::value_type& v, configFilter.equal_range("id"))
         {
             m_keys.push_back(v.second.get<std::string>(""));
         }
     }
+
     SIGHT_ASSERT("A maximum of 1 <filter> tag is allowed", cfg.count("filter") < 2);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSelector::starting()
 {
@@ -113,7 +116,7 @@ void SSelector::starting()
 
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(getContainer());
 
-    QGroupBox* groupBox = new QGroupBox(tr("Activity") );
+    QGroupBox* groupBox = new QGroupBox(tr("Activity"));
 
     QScrollArea* scrollArea = new QScrollArea();
     scrollArea->setWidget(groupBox);
@@ -130,8 +133,8 @@ void SSelector::starting()
     // Add the load button
     sight::activity::extension::ActivityInfo infoLoad;
     infoLoad.title = "Load activity";
-    infoLoad.icon  =
-        core::runtime::getModuleResourceFilePath("sight::module::ui::icons", "LoadActivity.svg").string();
+    infoLoad.icon
+                         = core::runtime::getModuleResourceFilePath("sight::module::ui::icons", "LoadActivity.svg").string();
     infoLoad.description = "Load a previously saved activity.";
 
     m_activitiesInfo.insert(m_activitiesInfo.begin(), infoLoad);
@@ -186,7 +189,8 @@ void SSelector::starting()
 
         activitiesLayout->addWidget(label, i + 1, j + 1);
         j += 2;
-        if(j == numCols - 1 )
+
+        if(j == numCols - 1)
         {
             activitiesLayout->setColumnMinimumWidth(j, 10);
             activitiesLayout->setColumnStretch(j, 5);
@@ -208,7 +212,7 @@ void SSelector::starting()
     this->connect(m_buttonGroup, SIGNAL(buttonClicked(int)), SLOT(onClicked(int)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSelector::stopping()
 {
@@ -216,13 +220,13 @@ void SSelector::stopping()
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSelector::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSelector::onClicked(int id)
 {
@@ -234,11 +238,11 @@ void SSelector::onClicked(int id)
     else
     {
         auto sig = this->signal<ActivityIDSelectedSignalType>(s_ACTIVITY_ID_SELECTED_SIG);
-        sig->asyncEmit(m_activitiesInfo[ static_cast<size_t>(id)].id);
+        sig->asyncEmit(m_activitiesInfo[static_cast<size_t>(id)].id);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSelector::ActivityInfoContainer SSelector::getEnabledActivities(const ActivityInfoContainer& infos)
 {
@@ -248,7 +252,7 @@ SSelector::ActivityInfoContainer SSelector::getEnabledActivities(const ActivityI
     {
         const bool isIncludeMode = m_filterMode == "include";
 
-        for(const auto& info: infos)
+        for(const auto& info : infos)
         {
             KeysType::iterator keyIt = std::find(m_keys.begin(), m_keys.end(), info.id);
 
@@ -270,7 +274,8 @@ SSelector::ActivityInfoContainer SSelector::getEnabledActivities(const ActivityI
     return configs;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace activity
+
 } // namespace activity

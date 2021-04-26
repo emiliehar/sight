@@ -29,9 +29,7 @@ namespace sight::module::memory
 
 class Plugin : public core::runtime::Plugin
 {
-
 public:
-
     /// PLugin destructor
     ~Plugin() noexcept;
 
@@ -40,7 +38,6 @@ public:
 
     /// This method is used by runtime to stop the module.
     void stop() noexcept;
-
 };
 
 } // namespace sight::core::memory

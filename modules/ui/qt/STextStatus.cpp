@@ -36,6 +36,7 @@
 
 namespace sight::module::ui::qt
 {
+
 static const service::IService::KeyType s_STRING_INPUT = "string";
 
 static const core::com::Slots::SlotKeyType s_SET_DOUBLE_PARAMETER_SLOT = "setDoubleParameter";
@@ -43,7 +44,7 @@ static const core::com::Slots::SlotKeyType s_SET_INT_PARAMETER_SLOT    = "setInt
 static const core::com::Slots::SlotKeyType s_SET_BOOL_PARAMETER_SLOT   = "setBoolParameter";
 static const core::com::Slots::SlotKeyType s_SET_STRING_PARAMETER_SLOT = "setStringParameter";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 STextStatus::STextStatus()
 {
@@ -58,20 +59,20 @@ STextStatus::STextStatus()
     newSlot(s_SET_STRING_PARAMETER_SLOT, &STextStatus::setStringParameter, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STextStatus::~STextStatus()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::configuring()
 {
     this->initialize();
 
     const auto txtCfg = m_configuration->findConfigurationElement("label");
+
     if(txtCfg)
     {
         const QString txt = QString::fromStdString(txtCfg->getValue());
@@ -81,9 +82,11 @@ void STextStatus::configuring()
     QString color = "red";
 
     const auto colorCfg = m_configuration->findConfigurationElement("color");
+
     if(colorCfg)
     {
         const QString txtColor = QString::fromStdString(colorCfg->getValue());
+
         if(!txtColor.isEmpty())
         {
             color = txtColor;
@@ -93,12 +96,12 @@ void STextStatus::configuring()
     m_labelStaticText->setStyleSheet(m_labelStaticText->styleSheet() + " color: " + color + ";");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::starting()
 {
     this->create();
-    auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast( this->getContainer() );
+    auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer());
 
     QHBoxLayout* const layout = new QHBoxLayout();
     layout->addWidget(m_labelStaticText);
@@ -109,17 +112,16 @@ void STextStatus::starting()
     qtContainer->setLayout(layout);
 
     // Get input data.
-    const auto stringInput     = this->getWeakInput< const data::String >(s_STRING_INPUT);
+    const auto stringInput     = this->getWeakInput<const data::String>(s_STRING_INPUT);
     const auto stringInputLock = stringInput.lock();
 
     if(stringInputLock)
     {
         m_labelValue->setText(QString::fromStdString(stringInputLock->value()));
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap STextStatus::getAutoConnections() const
 {
@@ -129,12 +131,12 @@ service::IService::KeyConnectionsMap STextStatus::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::updating()
 {
     // Get input data.
-    const auto stringInput     = this->getWeakInput< const data::String >(s_STRING_INPUT);
+    const auto stringInput     = this->getWeakInput<const data::String>(s_STRING_INPUT);
     const auto stringInputLock = stringInput.lock();
 
     if(stringInputLock)
@@ -143,14 +145,14 @@ void STextStatus::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::setIntParameter(int _val)
 {
@@ -159,7 +161,7 @@ void STextStatus::setIntParameter(int _val)
     m_labelValue->setText(str);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::setDoubleParameter(double _val)
 {
@@ -168,21 +170,21 @@ void STextStatus::setDoubleParameter(double _val)
     m_labelValue->setText(str);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::setBoolParameter(bool _val)
 {
-    QString str( _val ? "ON" : "OFF");
+    QString str(_val ? "ON" : "OFF");
     m_labelValue->setText(str);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STextStatus::setStringParameter(std::string _val)
 {
     m_labelValue->setText(QString::fromStdString(_val));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt

@@ -33,6 +33,7 @@
 
 namespace sight::io::base
 {
+
 namespace reader
 {
 
@@ -43,14 +44,14 @@ namespace reader
  * Ircad reader to read a data::Array on filesystem which the file format
  * is .raw.gz. This format is basic. The buffer is writen in a file with zlib.
  */
-class IO_BASE_CLASS_API GzArrayReader :  public GenericObjectReader< data::Array >,
-                                         public core::location::SingleFile
+class IO_BASE_CLASS_API GzArrayReader : public GenericObjectReader<data::Array>,
+                                        public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(GzArrayReader, GenericObjectReader< data::Array>,
-                        io::base::reader::factory::New< GzArrayReader >)
+    SIGHT_DECLARE_CLASS(
+        GzArrayReader,
+        GenericObjectReader<data::Array>,
+        io::base::reader::factory::New<GzArrayReader>)
 
     /// Constructor. Do nothing.
     IO_BASE_API GzArrayReader(io::base::reader::IObjectReader::Key key);
@@ -63,8 +64,8 @@ public:
 
     /// Defines extension supported by this reader ".raw.gz"
     IO_BASE_API std::string extension() override;
-
 };
 
 } // namespace reader
+
 } // namespace sight::io::base

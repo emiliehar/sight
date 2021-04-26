@@ -31,12 +31,15 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
 class Aggregator;
+
 }
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
@@ -46,10 +49,9 @@ namespace helper
 class IO_DICOM_CLASS_API DicomSeriesAnonymizer
 {
 public:
-
     SIGHT_DECLARE_CLASS(DicomSeriesAnonymizer)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New()
     {
@@ -66,14 +68,14 @@ public:
     IO_DICOM_API void anonymize(const data::DicomSeries::sptr& source);
 
     /// Anonymize the DicomSeries (doesn't modify the current object)
-    IO_DICOM_API void anonymize(const data::DicomSeries::sptr& source,
-                                const data::DicomSeries::sptr& destination);
+    IO_DICOM_API void anonymize(
+        const data::DicomSeries::sptr& source,
+        const data::DicomSeries::sptr& destination);
 
     /// Get job observer
     IO_DICOM_API SPTR(core::jobs::Aggregator) getJob() const;
 
 protected:
-
     /// Dicom writer
     io::dicom::helper::DicomSeriesWriter::sptr m_writer;
 
@@ -85,8 +87,8 @@ protected:
 
     /// Job observer
     SPTR(core::jobs::Aggregator) m_job;
-
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

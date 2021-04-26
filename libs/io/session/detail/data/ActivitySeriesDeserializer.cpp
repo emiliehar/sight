@@ -30,6 +30,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -37,18 +38,20 @@ namespace detail::data
 ActivitySeriesDeserializer::sptr ActivitySeriesDeserializer::shared()
 {
     struct make_shared_enabler final : public ActivitySeriesDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ActivitySeriesDeserializer::uptr ActivitySeriesDeserializer::unique()
 {
     struct make_unique_enabler final : public ActivitySeriesDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr ActivitySeriesDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -58,8 +61,8 @@ sight::data::Object::sptr ActivitySeriesDeserializer::deserialize(
     const core::crypto::secure_string& password)
 {
     // Create or reuse the object
-    const auto& activitySeries =
-        object ? sight::data::ActivitySeries::dynamicCast(object) : sight::data::ActivitySeries::New();
+    const auto& activitySeries
+        = object ? sight::data::ActivitySeries::dynamicCast(object) : sight::data::ActivitySeries::New();
 
     SIGHT_ASSERT(
         "Object '" << activitySeries->getClassname() << "' is not a '" << sight::data::ActivitySeries::classname() << "'",
@@ -79,7 +82,7 @@ sight::data::Object::sptr ActivitySeriesDeserializer::deserialize(
     return activitySeries;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr ActivitySeriesDeserializer::create()
 {
@@ -88,4 +91,5 @@ sight::data::Object::sptr ActivitySeriesDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

@@ -27,7 +27,7 @@
 namespace sight::data
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ObjectLock::~ObjectLock()
 {
@@ -35,7 +35,7 @@ ObjectLock::~ObjectLock()
     m_objects.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ObjectLock::ObjectLock(const ObjectLock& objectLock)
 {
@@ -43,7 +43,7 @@ ObjectLock::ObjectLock(const ObjectLock& objectLock)
     m_locks   = objectLock.m_locks;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ObjectLock& ObjectLock::operator=(const ObjectLock& objectLock)
 {
@@ -56,71 +56,71 @@ ObjectLock& ObjectLock::operator=(const ObjectLock& objectLock)
     return *this;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void ObjectLock::lock( data::Array::sptr array, LocksType& locks )
+void ObjectLock::lock(data::Array::sptr array, LocksType& locks)
 {
-    if ( array )
+    if(array)
     {
-        locks.push_back( array->getBufferObject()->lock() );
+        locks.push_back(array->getBufferObject()->lock());
         m_objects.push_back(array);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void ObjectLock::lock( data::Image::sptr image, LocksType& locks )
+void ObjectLock::lock(data::Image::sptr image, LocksType& locks)
 {
-    if ( image )
+    if(image)
     {
         locks.push_back(image->lock());
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void ObjectLock::lock( data::Mesh::sptr mesh, LocksType& locks )
+void ObjectLock::lock(data::Mesh::sptr mesh, LocksType& locks)
 {
-    if ( mesh )
+    if(mesh)
     {
         LocksType meshLocks = mesh->lock();
         std::copy(meshLocks.begin(), meshLocks.end(), std::back_inserter(locks));
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void ObjectLock::lock( data::Reconstruction::sptr rec, LocksType& locks )
+void ObjectLock::lock(data::Reconstruction::sptr rec, LocksType& locks)
 {
-    if ( rec )
+    if(rec)
     {
-        this->lock( rec->getImage(), locks );
-        this->lock( rec->getMesh(), locks );
+        this->lock(rec->getImage(), locks);
+        this->lock(rec->getMesh(), locks);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-ObjectLock::ObjectLock( data::Object::sptr obj )
+ObjectLock::ObjectLock(data::Object::sptr obj)
 {
-    data::Image::sptr image = data::Image::dynamicCast( obj );
-    data::Mesh::sptr mesh   = data::Mesh::dynamicCast( obj );
-    data::Array::sptr array = data::Array::dynamicCast( obj );
+    data::Image::sptr image = data::Image::dynamicCast(obj);
+    data::Mesh::sptr mesh   = data::Mesh::dynamicCast(obj);
+    data::Array::sptr array = data::Array::dynamicCast(obj);
 
-    if( image )
+    if(image)
     {
-        this->lock( image, m_locks );
+        this->lock(image, m_locks);
     }
-    else if ( mesh )
+    else if(mesh)
     {
-        this->lock( mesh, m_locks );
+        this->lock(mesh, m_locks);
     }
-    else if ( array )
+    else if(array)
     {
-        this->lock( array, m_locks );
+        this->lock(array, m_locks);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // fwData

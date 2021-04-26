@@ -32,6 +32,7 @@
 
 namespace sight::navigation::openvslam
 {
+
 /**
  * @brief The Helper class
  */
@@ -60,13 +61,14 @@ public:
      * @param _orbParams initialize parameters (optionnal).
      * @return shared_ptr of ::openvslam::config, to initialize openvslam system.
      */
-    static std::shared_ptr< ::openvslam::config > createMonocularConfig(const data::Camera::csptr _sightCam,
-                                                                        const navigation::openvslam::OrbParams& _orbParams
-                                                                            = navigation::openvslam::OrbParams(),
-                                                                        const navigation::openvslam::InitParams& _initParams
-                                                                            = navigation::openvslam::InitParams());
+    static std::shared_ptr< ::openvslam::config> createMonocularConfig(
+        const data::Camera::csptr _sightCam,
+        const navigation::openvslam::OrbParams& _orbParams
+        = navigation::openvslam::OrbParams(),
+        const navigation::openvslam::InitParams& _initParams
+        = navigation::openvslam::InitParams());
 
-    static void writeOpenvslamConfig(const std::shared_ptr<::openvslam::config > config, const std::string& _filepath);
+    static void writeOpenvslamConfig(const std::shared_ptr<::openvslam::config> config, const std::string& _filepath);
 
     /**
      * @brief write
@@ -80,7 +82,7 @@ public:
      * @param _filepath
      * @return
      */
-    static std::shared_ptr<::openvslam::config > readOpenvslamConfig(const std::string& _filepath);
+    static std::shared_ptr<::openvslam::config> readOpenvslamConfig(const std::string& _filepath);
 };
 
 } // namespace sight::navigation::openvslam

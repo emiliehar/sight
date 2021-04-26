@@ -26,51 +26,53 @@
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QtMenuItemContainer::QtMenuItemContainer(ui::base::GuiBaseObject::Key key) noexcept :
     m_menuItem(0)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QtMenuItemContainer::~QtMenuItemContainer() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtMenuItemContainer::clean()
 {
     SIGHT_ASSERT("The qtMenuItem is not yet initialized, cleaning is thus impossible", m_menuItem);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtMenuItemContainer::destroyContainer()
 {
     SIGHT_ASSERT("The qtMenuItem is not yet initialized, cleaning is thus impossible", m_menuItem);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtMenuItemContainer::setQtMenuItem(QAction* menuItem)
 {
     this->m_menuItem = menuItem;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QAction* QtMenuItemContainer::getQtMenuItem()
 {
     return this->m_menuItem;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace container
+
 } // namespace sight::ui::qt

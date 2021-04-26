@@ -28,18 +28,19 @@
 
 #include <string>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::ImageOrientationSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::ImageOrientationSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string ImageOrientationSplitter::s_FILTER_NAME        = "Image orientation splitter";
-const std::string ImageOrientationSplitter::s_FILTER_DESCRIPTION =
-    "Split instances according to image orientation tag.";
+const std::string ImageOrientationSplitter::s_FILTER_NAME = "Image orientation splitter";
+const std::string ImageOrientationSplitter::s_FILTER_DESCRIPTION
+    = "Split instances according to image orientation tag.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageOrientationSplitter::ImageOrientationSplitter(filter::dicom::IFilter::Key key) :
     TagValueSplitter(key)
@@ -47,34 +48,35 @@ ImageOrientationSplitter::ImageOrientationSplitter(filter::dicom::IFilter::Key k
     this->setTag(DCM_ImageOrientationPatient);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageOrientationSplitter::~ImageOrientationSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImageOrientationSplitter::getName() const
 {
     return ImageOrientationSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImageOrientationSplitter::getDescription() const
 {
     return ImageOrientationSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool ImageOrientationSplitter::isConfigurationRequired() const
 {
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

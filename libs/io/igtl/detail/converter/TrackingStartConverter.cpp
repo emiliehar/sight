@@ -33,6 +33,7 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
 
@@ -48,13 +49,13 @@ TrackingStartConverter::TrackingStartConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TrackingStartConverter::~TrackingStartConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer TrackingStartConverter::fromFwDataObject(data::Object::csptr src) const
 {
@@ -66,11 +67,11 @@ TrackingStartConverter::~TrackingStartConverter()
     return ::igtl::MessageBase::Pointer(trackingMsg.GetPointer());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Object::sptr TrackingStartConverter::fromIgtlMessage(const ::igtl::MessageBase::Pointer src) const
 {
-    ::igtl::StartTrackingDataMessage* msg = dynamic_cast< ::igtl::StartTrackingDataMessage* >(src.GetPointer());
+    ::igtl::StartTrackingDataMessage* msg = dynamic_cast< ::igtl::StartTrackingDataMessage*>(src.GetPointer());
 
     ::igtl::StartTrackingDataMessage::Pointer trackingMsg = ::igtl::StartTrackingDataMessage::Pointer(msg);
 
@@ -97,21 +98,21 @@ data::Object::sptr TrackingStartConverter::fromIgtlMessage(const ::igtl::Message
     return composite;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IConverter::sptr TrackingStartConverter::New()
 {
-    return std::make_shared< TrackingStartConverter >();
+    return std::make_shared<TrackingStartConverter>();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& TrackingStartConverter::getIgtlType() const
 {
     return TrackingStartConverter::s_IGTL_TYPE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& TrackingStartConverter::getFwDataObjectType() const
 {
@@ -119,4 +120,5 @@ std::string const& TrackingStartConverter::getFwDataObjectType() const
 }
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

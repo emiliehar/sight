@@ -51,14 +51,12 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SImagesSubstract final : public service::IOperator
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SImagesSubstract, ::sight::service::IOperator)
 
     MODULE_FILTER_IMAGE_API SImagesSubstract() noexcept          = default;
     MODULE_FILTER_IMAGE_API virtual ~SImagesSubstract() noexcept = default;
 
 protected:
-
     MODULE_FILTER_IMAGE_API void configuring() override;
 
     /// Overrides

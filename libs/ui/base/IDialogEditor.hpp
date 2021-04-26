@@ -37,13 +37,10 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API IDialogEditor : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IDialogEditor, service::IService)
 
 protected:
-
     IDialogEditor() noexcept
     {
     }
@@ -51,7 +48,6 @@ protected:
     virtual ~IDialogEditor() noexcept
     {
     }
-
 };
 
 } // namespace sight::ui::base

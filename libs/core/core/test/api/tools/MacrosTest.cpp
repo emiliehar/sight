@@ -26,34 +26,34 @@
 #include <core/tools/Object.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::MacrosTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::MacrosTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
 class ClassTest
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(ClassTest)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New()
     {
         return std::make_shared<ClassTest>();
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     static sptr New(int num)
     {
         return std::make_shared<ClassTest>(num);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     int getNum()
     {
@@ -77,21 +77,21 @@ private:
     int m_num{1};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MacrosTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MacrosTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MacrosTest::factoryMacroTest()
 {
@@ -109,4 +109,5 @@ void MacrosTest::factoryMacroTest()
 }
 
 } // namespace ut
+
 } // namespace sight::core::tools

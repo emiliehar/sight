@@ -66,7 +66,6 @@ namespace sight::module::ui::history
 class MODULE_UI_HISTORY_CLASS_API SCommandHistory : public service::IService
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SCommandHistory, service::IService)
 
     /// Constructor.
@@ -76,7 +75,6 @@ public:
     MODULE_UI_HISTORY_API virtual ~SCommandHistory();
 
 protected:
-
     /// Set memory and command boundaries.
     MODULE_UI_HISTORY_API void configuring() override;
 
@@ -90,7 +88,6 @@ protected:
     MODULE_UI_HISTORY_API void stopping() override;
 
 private:
-
     typedef core::com::Signal<void (bool)> CanDoSignalType;
 
     /// SLOT: add a command to the history.

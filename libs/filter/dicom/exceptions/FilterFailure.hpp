@@ -28,6 +28,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace exceptions
 {
 
@@ -45,8 +46,8 @@ public:
 
     /// Destructor
     FILTER_DICOM_API virtual ~FilterFailure() noexcept;
-
 };
 
 } // namespace exceptions
+
 } // namespace sight::filter::dicom

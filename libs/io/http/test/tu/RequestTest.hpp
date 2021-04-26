@@ -28,13 +28,14 @@
 
 namespace sight::io::http
 {
+
 namespace ut
 {
 
 class RequestTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( RequestTest );
-CPPUNIT_TEST( testRequest );
+CPPUNIT_TEST_SUITE(RequestTest);
+CPPUNIT_TEST(testRequest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -54,4 +55,5 @@ private:
 };
 
 } // namespace ut
+
 } // namespace sight::io::http

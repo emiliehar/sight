@@ -37,6 +37,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace video
 {
 
@@ -49,7 +50,6 @@ class MODULE_UI_QT_CLASS_API SSlider : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SSlider, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -81,7 +81,6 @@ public:
     ///@}
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /// Installs the layout
@@ -116,7 +115,6 @@ protected:
     void setDuration(int64_t duration);
 
 protected Q_SLOTS:
-
     /// Calls when the cursor is moved.
     void changePosition();
 
@@ -124,7 +122,6 @@ protected Q_SLOTS:
     void sliderPressed();
 
 private:
-
     /// Slider to show progress.
     QPointer<QSlider> m_positionSlider;
     QPointer<QLabel> m_currentPosition;
@@ -135,4 +132,5 @@ private:
 };
 
 } // video
+
 } // sight::module::ui::qt

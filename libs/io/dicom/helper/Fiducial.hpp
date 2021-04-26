@@ -30,11 +30,14 @@
 
 namespace sight::data
 {
+
 class SeriesDB;
+
 }
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
@@ -43,9 +46,7 @@ namespace helper
  */
 class IO_DICOM_CLASS_API Fiducial
 {
-
 public:
-
     /**
      * @brief Return true if the series contains at least one image containing landmarks.
      * @param[in] seriesDB SeriesDB where to look for landmarks
@@ -66,4 +67,5 @@ public:
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

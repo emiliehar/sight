@@ -32,17 +32,18 @@
 
 #include <filesystem>
 
-fwGuiRegisterMacro( ::sight::ui::qml::dialog::MessageDialog, ::sight::ui::base::dialog::IMessageDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(::sight::ui::qml::dialog::MessageDialog, ::sight::ui::base::dialog::IMessageDialog::REGISTRY_KEY);
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-//value of the enum in QMessageBox
-typedef const std::map< ui::base::dialog::IMessageDialog::Icons, std::string> MessageDialogQmlIconsType;
+// value of the enum in QMessageBox
+typedef const std::map<ui::base::dialog::IMessageDialog::Icons, std::string> MessageDialogQmlIconsType;
 MessageDialogQmlIconsType messageDialogQmlIcons =
 {
     {ui::base::dialog::IMessageDialog::NONE, ""},
@@ -53,8 +54,8 @@ MessageDialogQmlIconsType messageDialogQmlIcons =
 };
 
 // value of the enum in int value of Dialog
-typedef const std::map< ui::base::dialog::IMessageDialog::Buttons,
-                        StandardButton::ButtonList> MessageDialogQmlButtonType;
+typedef const std::map<ui::base::dialog::IMessageDialog::Buttons,
+                       StandardButton::ButtonList> MessageDialogQmlButtonType;
 MessageDialogQmlButtonType messageDialogQmlButton =
 {
     {ui::base::dialog::IMessageDialog::OK, StandardButton::ButtonList::Ok},
@@ -63,60 +64,60 @@ MessageDialogQmlButtonType messageDialogQmlButton =
     {ui::base::dialog::IMessageDialog::NO, StandardButton::ButtonList::No}
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MessageDialog::MessageDialog(ui::base::GuiBaseObject::Key key)
 {
     qmlRegisterType<StandardButton>("Dialog", 1, 0, "StandardButton");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MessageDialog::~MessageDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void MessageDialog::setTitle( const std::string& title )
+void MessageDialog::setTitle(const std::string& title)
 {
     m_title = QString::fromStdString(title);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void MessageDialog::setMessage( const std::string& msg )
+void MessageDialog::setMessage(const std::string& msg)
 {
     m_message = QString::fromStdString(msg);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void MessageDialog::setIcon( ui::base::dialog::IMessageDialog::Icons icon )
+void MessageDialog::setIcon(ui::base::dialog::IMessageDialog::Icons icon)
 {
     m_icon = icon;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void MessageDialog::addButton( ui::base::dialog::IMessageDialog::Buttons button )
+void MessageDialog::addButton(ui::base::dialog::IMessageDialog::Buttons button)
 {
-    m_buttons = (ui::base::dialog::IMessageDialog::Buttons) ( m_buttons | button );
+    m_buttons = (ui::base::dialog::IMessageDialog::Buttons) (m_buttons | button);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MessageDialog::addCustomButton(const std::string& label, std::function<void()> clickedFn)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void MessageDialog::setDefaultButton(ui::base::dialog::IMessageDialog::Buttons button )
+void MessageDialog::setDefaultButton(ui::base::dialog::IMessageDialog::Buttons button)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ui::base::dialog::IMessageDialog::Buttons MessageDialog::show()
 {
@@ -142,18 +143,20 @@ ui::base::dialog::IMessageDialog::Buttons MessageDialog::show()
     SIGHT_ASSERT("The dialog is not found inside the window", dialog);
     StandardButton* buttonSetting = qobject_cast<StandardButton*>(dialog->findChild<QObject*>("standardButton"));
     Q_EMIT messageChanged();
-    //set icon
+    // set icon
     auto pathIcon = core::runtime::getLibraryResourceFilePath(icon);
-    if (!std::filesystem::exists(pathIcon))
+
+    if(!std::filesystem::exists(pathIcon))
     {
         pathIcon = "";
     }
+
     emitIcon(QUrl::fromLocalFile(QString::fromStdString(pathIcon.string())));
     emitButtons(buttonSetting);
 
     m_clicked = ui::base::dialog::IMessageDialog::CANCEL;
     QEventLoop loop;
-    //slot to retrieve the result and open the dialog with invoke
+    // slot to retrieve the result and open the dialog with invoke
     connect(dialog, SIGNAL(accepted()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(reset()), &loop, SLOT(quit()));
@@ -161,17 +164,18 @@ ui::base::dialog::IMessageDialog::Buttons MessageDialog::show()
     QMetaObject::invokeMethod(dialog, "open");
     loop.exec();
     delete window;
+
     return m_clicked;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MessageDialog::resultDialog(int clicked)
 {
-    for(MessageDialogQmlButtonType::value_type button :  messageDialogQmlButton)
+    for(MessageDialogQmlButtonType::value_type button : messageDialogQmlButton)
     {
         // get the button that has been click
-        if ( clicked == button.second)
+        if(clicked == button.second)
         {
             m_clicked = button.first;
             break;
@@ -179,7 +183,7 @@ void MessageDialog::resultDialog(int clicked)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MessageDialog::emitIcon(const QUrl& iconPath)
 {
@@ -187,23 +191,26 @@ void MessageDialog::emitIcon(const QUrl& iconPath)
     Q_EMIT iconChanged();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MessageDialog::emitButtons(StandardButton* standardButton)
 {
     int buttons = 0;
+
     // add the different type of button needed
-    for(MessageDialogQmlButtonType::value_type button :  messageDialogQmlButton)
+    for(MessageDialogQmlButtonType::value_type button : messageDialogQmlButton)
     {
-        if ( m_buttons & button.first)
+        if(m_buttons & button.first)
         {
             buttons |= button.second;
         }
     }
+
     standardButton->setButton(static_cast<StandardButton::ButtonList>(buttons));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

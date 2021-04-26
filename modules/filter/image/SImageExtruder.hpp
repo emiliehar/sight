@@ -66,7 +66,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SImageExtruder final : public service::IOperator
 {
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SImageExtruder, ::sight::service::IOperator)
 
@@ -77,7 +76,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SImageExtruder();
 
 private:
-
     /// Does nothing.
     void configuring() override;
 
@@ -107,7 +105,6 @@ private:
 
     /// Extrudes one mesh from the image.
     void extrudeMesh(const data::Mesh::csptr _mesh, const data::Image::sptr _image) const;
-
 };
 
 } // namespace sight::module::filter::image.

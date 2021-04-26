@@ -25,6 +25,7 @@
  **/
 namespace sight::io::igtl::detail
 {
+
 /**
  * @brief converter  namespace for IConverter derived classes
  **/
@@ -48,6 +49,7 @@ namespace archiver
  */
 namespace helper
 {
+
 /**
  * @brief some detail to hide to the user of ScalarToBytes utility class
  */

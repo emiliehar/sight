@@ -26,14 +26,15 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class StructureTraitsDictionaryTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( StructureTraitsDictionaryTest );
-    CPPUNIT_TEST( testAddingStructure );
+    CPPUNIT_TEST_SUITE(StructureTraitsDictionaryTest);
+    CPPUNIT_TEST(testAddingStructure);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -44,5 +45,6 @@ public:
     void testAddingStructure();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

@@ -29,7 +29,9 @@
 
 namespace sight::atoms
 {
+
 class Object;
+
 }
 
 namespace sight::io::atoms::patch
@@ -44,7 +46,6 @@ namespace sight::io::atoms::patch
 class IO_ATOMS_CLASS_API PatchingManager
 {
 public:
-
     /// Default constructor
     IO_ATOMS_API PatchingManager(SPTR(sight::atoms::Object)object);
 
@@ -61,7 +62,6 @@ public:
     IO_ATOMS_API SPTR(sight::atoms::Object) transformTo(const std::string& newVersion);
 
 protected:
-
     /// Object that we want to patch
     SPTR(sight::atoms::Object) m_object;
 };

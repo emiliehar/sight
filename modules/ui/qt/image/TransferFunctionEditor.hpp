@@ -83,7 +83,6 @@ class MODULE_UI_QT_CLASS_API TransferFunctionEditor : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(TransferFunctionEditor, sight::ui::base::IEditor)
 
     /// Basic constructor, do nothing.
@@ -93,7 +92,6 @@ public:
     MODULE_UI_QT_API virtual ~TransferFunctionEditor() noexcept;
 
 protected:
-
     /// Configure the transfer function editor.
     MODULE_UI_QT_API void configuring() override;
 
@@ -132,7 +130,7 @@ protected:
 
     /// Create a string that represents a TF name not already present in the composite. For example, if blabla is
     /// already used, it will return blabla_1.
-    MODULE_UI_QT_API std::string createTransferFunctionName( const std::string& _sBasename ) const;
+    MODULE_UI_QT_API std::string createTransferFunctionName(const std::string& _sBasename) const;
 
     /// Update the output transferFunction with the selected TF in the ComboBox.
     MODULE_UI_QT_API void updateTransferFunction();
@@ -141,7 +139,6 @@ protected:
     MODULE_UI_QT_API void updateTransferFunctionPreset();
 
 private Q_SLOTS:
-
     void deleteTF();
     void newTF();
     void reinitializeTFPool();
@@ -151,8 +148,7 @@ private Q_SLOTS:
     void presetChoice(int index);
 
 private:
-
-    typedef std::vector< std::filesystem::path > PathContainerType;
+    typedef std::vector<std::filesystem::path> PathContainerType;
 
     QComboBox* m_pTransferFunctionPreset;
     QPushButton* m_deleteButton;
@@ -168,4 +164,4 @@ private:
     PathContainerType m_paths;
 };
 
-}
+} // namespace sight::module

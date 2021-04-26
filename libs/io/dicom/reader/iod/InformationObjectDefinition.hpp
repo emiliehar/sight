@@ -36,8 +36,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace iod
 {
 
@@ -46,11 +48,9 @@ namespace iod
  */
 class IO_DICOM_CLASS_API InformationObjectDefinition
 {
-
 public:
-
-    typedef std::function< void (std::uint64_t) > ProgressCallback;
-    typedef std::function< bool () > CancelRequestedCallback;
+    typedef std::function<void (std::uint64_t)> ProgressCallback;
+    typedef std::function<bool ()> CancelRequestedCallback;
 
     /**
      * @brief Constructor
@@ -60,11 +60,12 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API InformationObjectDefinition(const data::DicomSeries::csptr& dicomSeries,
-                                             const SPTR(io::dicom::container::DicomInstance)& instance,
-                                             const core::log::Logger::sptr& logger = nullptr,
-                                             ProgressCallback progress             = nullptr,
-                                             CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API InformationObjectDefinition(
+        const data::DicomSeries::csptr& dicomSeries,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~InformationObjectDefinition();
@@ -77,14 +78,13 @@ public:
     IO_DICOM_API virtual void read(data::Series::sptr series) = 0;
 
 protected:
-
     /// DICOM Instance
     SPTR(io::dicom::container::DicomInstance) m_instance;
 
     /// Dicom Series
     data::DicomSeries::csptr m_dicomSeries;
 
-    ///Logger
+    /// Logger
     core::log::Logger::sptr m_logger;
 
     /// Progress callback for jobs
@@ -92,9 +92,10 @@ protected:
 
     /// Cancel information for jobs
     CancelRequestedCallback m_cancelRequestedCallback;
-
 };
 
 } // namespace iod
+
 } // namespace reader
+
 } // namespace sight::io::dicom

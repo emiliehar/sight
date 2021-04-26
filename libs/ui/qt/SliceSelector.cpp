@@ -37,15 +37,15 @@
 namespace sight::ui::qt
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SliceSelector::SliceSelector(QWidget* const parent ) noexcept :
-    QWidget( parent )
+SliceSelector::SliceSelector(QWidget* const parent) noexcept :
+    QWidget(parent)
 {
-    m_fctChangeIndexCallback = std::bind( &ui::qt::SliceSelector::printIndex, this, std::placeholders:: _1);
-    m_fctChangeTypeCallback  = std::bind( &ui::qt::SliceSelector::printType, this, std::placeholders:: _1);
+    m_fctChangeIndexCallback = std::bind(&ui::qt::SliceSelector::printIndex, this, std::placeholders::_1);
+    m_fctChangeTypeCallback  = std::bind(&ui::qt::SliceSelector::printType, this, std::placeholders::_1);
 
-    m_sliceType = new QComboBox( this );
+    m_sliceType = new QComboBox(this);
     /// Slice type names as a qt string array.
     QStringList sliceTypesArray;
     sliceTypesArray << tr("Sagittal") << tr("Frontal") << tr("Axial");
@@ -66,10 +66,10 @@ SliceSelector::SliceSelector(QWidget* const parent ) noexcept :
     QObject::connect(m_sliceIndex, SIGNAL(valueChanged(int)), this, SLOT(onSliceIndexChange(int)));
     QObject::connect(m_sliceType, SIGNAL(currentIndexChanged(int)), this, SLOT(onSliceTypeChange(int)));
 
-    this->setLayout( layout );
+    this->setLayout(layout);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SliceSelector::~SliceSelector() noexcept
 {
@@ -77,18 +77,18 @@ SliceSelector::~SliceSelector() noexcept
     QObject::disconnect(m_sliceType, SIGNAL(currentIndexChanged(int)), this, SLOT(onSliceTypeChange(int)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SliceSelector::setSliceRange( int min, int max )
+void SliceSelector::setSliceRange(int min, int max)
 {
     QObject::disconnect(m_sliceIndex, SIGNAL(valueChanged(int)), this, SLOT(onSliceIndexChange(int)));
     this->m_sliceIndex->setRange(min, max);
     QObject::connect(m_sliceIndex, SIGNAL(valueChanged(int)), this, SLOT(onSliceIndexChange(int)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SliceSelector::setSliceValue( int index )
+void SliceSelector::setSliceValue(int index)
 {
     QObject::disconnect(m_sliceIndex, SIGNAL(valueChanged(int)), this, SLOT(onSliceIndexChange(int)));
     this->m_sliceIndex->setValue(index);
@@ -96,51 +96,51 @@ void SliceSelector::setSliceValue( int index )
 
     std::stringstream ss;
     ss << index << " / " << this->m_sliceIndex->maximum();
-    this->m_pSliceIndexText->setText( QString::fromStdString(ss.str()));
+    this->m_pSliceIndexText->setText(QString::fromStdString(ss.str()));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SliceSelector::setTypeSelection( int type )
+void SliceSelector::setTypeSelection(int type)
 {
     this->m_sliceType->setCurrentIndex(type);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SliceSelector::onSliceIndexChange( int value ) noexcept
+void SliceSelector::onSliceIndexChange(int value) noexcept
 {
-    m_fctChangeIndexCallback( value );
-    this->setSliceValue( value );
+    m_fctChangeIndexCallback(value);
+    this->setSliceValue(value);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SliceSelector::setChangeIndexCallback(ChangeIndexCallback fct)
 {
     m_fctChangeIndexCallback = fct;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SliceSelector::setChangeTypeCallback(ChangeTypeCallback fct)
 {
     m_fctChangeTypeCallback = fct;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SliceSelector::printIndex(int index)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SliceSelector::printType(int type)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SliceSelector::setEnable(bool enable)
 {
@@ -149,13 +149,13 @@ void SliceSelector::setEnable(bool enable)
     m_pSliceIndexText->setEnabled(enable);
 }
 
-//------------------------------------------------------------------------------
-void SliceSelector::onSliceTypeChange( int index )
+// ------------------------------------------------------------------------------
+void SliceSelector::onSliceTypeChange(int index)
 {
     m_fctChangeTypeCallback(index);
-    this->setSliceValue( this->m_sliceIndex->value());
+    this->setSliceValue(this->m_sliceIndex->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // fwGuiQt

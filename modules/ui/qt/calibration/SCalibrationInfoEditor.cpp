@@ -62,15 +62,16 @@ SCalibrationInfoEditor::SCalibrationInfoEditor() noexcept
 
 void SCalibrationInfoEditor::updating()
 {
-    data::CalibrationInfo::sptr calInfo1 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_1);
-    SIGHT_ASSERT("Object "+s_CALIBRATION_INFO_1+" is not a CalibrationInfo !", calInfo1);
+    data::CalibrationInfo::sptr calInfo1 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_1);
+    SIGHT_ASSERT("Object " + s_CALIBRATION_INFO_1 + " is not a CalibrationInfo !", calInfo1);
     data::mt::ObjectReadLock calib1Lock(calInfo1);
 
     data::CalibrationInfo::PointListContainerType plList1 = calInfo1->getPointListContainer();
 
     m_capturesListWidget->clear();
 
-    data::CalibrationInfo::sptr calInfo2 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_2);
+    data::CalibrationInfo::sptr calInfo2 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_2);
+
     if(calInfo2)
     {
         data::mt::ObjectReadLock calib2Lock(calInfo2);
@@ -80,7 +81,7 @@ void SCalibrationInfoEditor::updating()
 
         data::CalibrationInfo::PointListContainerType::const_iterator it1, it2;
 
-        for(it1 = plList1.begin(), it2 = plList2.begin(); it1 != plList1.end() && it2 != plList2.end(); ++it1, ++it2 )
+        for(it1 = plList1.begin(), it2 = plList2.begin() ; it1 != plList1.end() && it2 != plList2.end() ; ++it1, ++it2)
         {
             QString countString;
             size_t count1 = (*it1)->getPoints().size();
@@ -99,15 +100,18 @@ void SCalibrationInfoEditor::updating()
             const auto errMsg = "Left and right calibration input datasets do not have the same size.\n\n"
                                 "Your images may be out of sync.";
 
-            sight::ui::base::dialog::MessageDialog::show("Inputs do not match",
-                                                         errMsg, sight::ui::base::dialog::MessageDialog::WARNING);
+            sight::ui::base::dialog::MessageDialog::show(
+                "Inputs do not match",
+                errMsg,
+                sight::ui::base::dialog::MessageDialog::WARNING);
         }
     }
     else
     {
         size_t captureIdx = 0;
         data::CalibrationInfo::PointListContainerType::const_iterator it1;
-        for(it1 = plList1.begin(); it1 != plList1.end(); ++it1)
+
+        for(it1 = plList1.begin() ; it1 != plList1.end() ; ++it1)
         {
             QString countString;
             size_t count = (*it1)->getPoints().size();
@@ -140,10 +144,10 @@ void SCalibrationInfoEditor::starting()
     // Main container, VBox
     QVBoxLayout* vLayout = new QVBoxLayout();
 
-    //   First HBox, displays number of items and the remove button
+    // First HBox, displays number of items and the remove button
     QHBoxLayout* nbItemsHBox = new QHBoxLayout();
 
-    //     Fill the nbItemsHBox
+    // Fill the nbItemsHBox
     QLabel* label = new QLabel("nb captures:");
     nbItemsHBox->addWidget(label);
 
@@ -151,10 +155,13 @@ void SCalibrationInfoEditor::starting()
     nbItemsHBox->addWidget(m_nbCapturesLabel);
     nbItemsHBox->addStretch();
 
-    //   The ListWidget
+    // The ListWidget
     m_capturesListWidget = new QListWidget();
-    QObject::connect(m_capturesListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
-                     SLOT(onItemDoubleClicked(QListWidgetItem*)));
+    QObject::connect(
+        m_capturesListWidget,
+        SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+        this,
+        SLOT(onItemDoubleClicked(QListWidgetItem*)));
 
     // Fill the main VBox
     vLayout->addLayout(nbItemsHBox);
@@ -182,17 +189,17 @@ void SCalibrationInfoEditor::remove()
     {
         const size_t idx = static_cast<size_t>(row);
 
-        data::CalibrationInfo::sptr calInfo1 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_1);
-        SIGHT_ASSERT("Object "+s_CALIBRATION_INFO_1+" is not a CalibrationInfo !", calInfo1);
+        data::CalibrationInfo::sptr calInfo1 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_1);
+        SIGHT_ASSERT("Object " + s_CALIBRATION_INFO_1 + " is not a CalibrationInfo !", calInfo1);
 
-        data::CalibrationInfo::sptr calInfo2 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_2);
+        data::CalibrationInfo::sptr calInfo2 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_2);
 
         calInfo1->removeRecord(idx);
 
-        //Notify
+        // Notify
         {
-            auto sig = calInfo1->signal< data::CalibrationInfo::RemovedRecordSignalType >(
-                data::CalibrationInfo::s_REMOVED_RECORD_SIG );
+            auto sig = calInfo1->signal<data::CalibrationInfo::RemovedRecordSignalType>(
+                data::CalibrationInfo::s_REMOVED_RECORD_SIG);
             core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
             sig->asyncEmit();
         }
@@ -201,10 +208,10 @@ void SCalibrationInfoEditor::remove()
         {
             calInfo2->removeRecord(idx);
 
-            //Notify
+            // Notify
             {
-                auto sig = calInfo2->signal< data::CalibrationInfo::RemovedRecordSignalType >(
-                    data::CalibrationInfo::s_REMOVED_RECORD_SIG );
+                auto sig = calInfo2->signal<data::CalibrationInfo::RemovedRecordSignalType>(
+                    data::CalibrationInfo::s_REMOVED_RECORD_SIG);
                 core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
                 sig->asyncEmit();
             }
@@ -218,16 +225,16 @@ void SCalibrationInfoEditor::remove()
 
 void SCalibrationInfoEditor::reset()
 {
-    data::CalibrationInfo::sptr calInfo1 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_1);
-    SIGHT_ASSERT("Object "+s_CALIBRATION_INFO_1+" is not a CalibrationInfo !", calInfo1);
+    data::CalibrationInfo::sptr calInfo1 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_1);
+    SIGHT_ASSERT("Object " + s_CALIBRATION_INFO_1 + " is not a CalibrationInfo !", calInfo1);
 
-    data::CalibrationInfo::sptr calInfo2 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_2);
+    data::CalibrationInfo::sptr calInfo2 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_2);
 
     calInfo1->resetRecords();
 
-    //Notify
+    // Notify
     {
-        auto sig = calInfo1->signal< data::CalibrationInfo::ResetRecordSignalType >(
+        auto sig = calInfo1->signal<data::CalibrationInfo::ResetRecordSignalType>(
             data::CalibrationInfo::s_RESET_RECORD_SIG);
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();
@@ -237,9 +244,9 @@ void SCalibrationInfoEditor::reset()
     {
         calInfo2->resetRecords();
 
-        //Notify
+        // Notify
         {
-            auto sig = calInfo2->signal< data::CalibrationInfo::ResetRecordSignalType >(
+            auto sig = calInfo2->signal<data::CalibrationInfo::ResetRecordSignalType>(
                 data::CalibrationInfo::s_RESET_RECORD_SIG);
             core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
             sig->asyncEmit();
@@ -260,12 +267,12 @@ void SCalibrationInfoEditor::getSelection()
     {
         const size_t idx = static_cast<size_t>(row);
 
-        data::CalibrationInfo::sptr calInfo1 = this->getInOut< data::CalibrationInfo >(s_CALIBRATION_INFO_1);
-        SIGHT_ASSERT("Object "+s_CALIBRATION_INFO_1+" is not a CalibrationInfo !", calInfo1);
+        data::CalibrationInfo::sptr calInfo1 = this->getInOut<data::CalibrationInfo>(s_CALIBRATION_INFO_1);
+        SIGHT_ASSERT("Object " + s_CALIBRATION_INFO_1 + " is not a CalibrationInfo !", calInfo1);
 
-        //Notify
+        // Notify
         {
-            auto sig = calInfo1->signal< data::CalibrationInfo::GetRecordSignalType >(
+            auto sig = calInfo1->signal<data::CalibrationInfo::GetRecordSignalType>(
                 data::CalibrationInfo::s_GET_RECORD_SIG);
             sig->asyncEmit(idx);
         }
@@ -277,8 +284,9 @@ void SCalibrationInfoEditor::getSelection()
 service::IService::KeyConnectionsMap SCalibrationInfoEditor::getAutoConnections() const
 {
     KeyConnectionsMap connections;
-    connections.push( s_CALIBRATION_INFO_1, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT );
-    connections.push( s_CALIBRATION_INFO_2, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT );
+    connections.push(s_CALIBRATION_INFO_1, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+    connections.push(s_CALIBRATION_INFO_2, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
@@ -291,4 +299,4 @@ void SCalibrationInfoEditor::onItemDoubleClicked(QListWidgetItem*)
 
 // ----------------------------------------------------------------------------
 
-}
+} // namespace sight::module

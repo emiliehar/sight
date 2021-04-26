@@ -33,18 +33,24 @@ namespace sight::io::patch::semantic
  */
 namespace V1
 {
+
 /**
  * @brief Contains the semantic patches to transform atoms from version V1 to version V2.
  */
 namespace V2
 {
+
 /**
  * @brief Contains the semantic patches to transform atoms (from fwData objects) from version V1 to version
  * V2.
  */
 namespace data
 {
-}             // namespace data
-}         // namespace V2
-}     // namespace V1
+
+} // namespace data
+
+} // namespace V2
+
+} // namespace V1
+
 } // namespace sight::io::patch::semantic

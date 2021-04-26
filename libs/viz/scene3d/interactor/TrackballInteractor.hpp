@@ -39,9 +39,7 @@ namespace sight::viz::scene3d::interactor
  */
 class VIZ_SCENE3D_CLASS_API TrackballInteractor final : public ::sight::viz::scene3d::interactor::IInteractor
 {
-
 public:
-
     /// Initializes the trackball.
     VIZ_SCENE3D_API TrackballInteractor(SPTR(Layer)_layer = nullptr, bool _layerOrderDependant = true);
 
@@ -61,8 +59,13 @@ public:
      *
      * @todo set to final when the vr interactor is deleted.
      */
-    VIZ_SCENE3D_API void mouseMoveEvent(MouseButton _button, Modifier, int _x, int _y,
-                                        int _dx, int _dy) override;
+    VIZ_SCENE3D_API void mouseMoveEvent(
+        MouseButton _button,
+        Modifier,
+        int _x,
+        int _y,
+        int _dx,
+        int _dy) override;
 
     /// Verifies if the button is pressed within the camera's viewport and enables mouse movements if that is the case.
     VIZ_SCENE3D_API void buttonPressEvent(MouseButton _button, Modifier, int _x, int _y) override;
@@ -95,7 +98,6 @@ public:
     VIZ_SCENE3D_API void setSceneLength(float _sceneLength) override;
 
 private:
-
     /**
      * @brief The camera's scene node will rotate around its point of interest (lookAt).
      * @param dx The mouse's X displacement
@@ -126,14 +128,13 @@ private:
     static constexpr int MOUSE_SCALE_FACTOR = 200;
 
     /// Animate the camera to rotate around the trackball center.
-    bool m_animate { false };
+    bool m_animate{false};
 
     /// Enables/disables mouse move events.
-    bool m_mouseMove { false };
+    bool m_mouseMove{false};
 
     /// Timer used to animate the camera.
     core::thread::Timer::sptr m_timer;
-
 };
 
 } // namespace sight::viz::scene3d::interactor

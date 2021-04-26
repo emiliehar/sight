@@ -27,8 +27,10 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
+
 /**
  *
  * @brief class to manage conversion between data::Object and RawMessage(contain serialized atom)
@@ -79,7 +81,6 @@ public:
     IO_IGTL_API std::string const& getFwDataObjectType() const;
 
 private:
-
     /// the igtl type supported for conversion
     static const std::string s_IGTL_TYPE;
 
@@ -88,4 +89,5 @@ private:
 };
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

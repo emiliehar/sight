@@ -29,32 +29,33 @@ namespace sight::viz::scene3d
 namespace factory
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const ::Ogre::String Text::FACTORY_TYPE_NAME = "Text";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const ::Ogre::String& Text::getType(void) const
 {
     return FACTORY_TYPE_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-::Ogre::MovableObject* Text::createInstanceImpl( const ::Ogre::String& name, const ::Ogre::NameValuePairList* )
+::Ogre::MovableObject* Text::createInstanceImpl(const ::Ogre::String& name, const ::Ogre::NameValuePairList*)
 {
     return new viz::scene3d::Text(name);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 #if OGRE_VERSION_PATCH < 9
-void Text::destroyInstance( ::Ogre::MovableObject* obj)
+void Text::destroyInstance(::Ogre::MovableObject* obj)
 {
     delete obj;
 }
 #endif
+
 } // namespace factory
 
 } // namespace sight::viz::scene3d

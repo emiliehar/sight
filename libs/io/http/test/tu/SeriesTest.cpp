@@ -31,10 +31,11 @@
 
 #include <cppunit/Exception.h>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::http::ut::SeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::http::ut::SeriesTest);
 
 namespace sight::io::http
 {
+
 namespace ut
 {
 
@@ -55,7 +56,7 @@ const QString studyDescription("");
 const QString patientAge("");
 const QString institutionName("IRCAD IHU");
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesTest::setUp()
 {
@@ -92,18 +93,18 @@ void SeriesTest::setUp()
     m_json.insert("InstitutionName", institutionName);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesTest::testSeries()
 {
-    io::http::helper::Series::DicomSeriesContainer seriesVector =
-        io::http::helper::Series::toFwMedData(m_json);
+    io::http::helper::Series::DicomSeriesContainer seriesVector
+        = io::http::helper::Series::toFwMedData(m_json);
     CPPUNIT_ASSERT(seriesVector.size() == 1);
     data::Series::sptr series = seriesVector[0];
     CPPUNIT_ASSERT(series);
@@ -115,8 +116,9 @@ void SeriesTest::testSeries()
     CPPUNIT_ASSERT_EQUAL(dicomSeries->getTime(), seriesTime.toStdString());
     CPPUNIT_ASSERT_EQUAL(dicomSeries->getDescription(), seriesDescription.toStdString());
     CPPUNIT_ASSERT_EQUAL(dicomSeries->getModality(), modality.toStdString());
-    CPPUNIT_ASSERT_EQUAL(dicomSeries->getNumberOfInstances(),
-                         static_cast<size_t>(numberOfSeriesRelatedInstances.toULong()));
+    CPPUNIT_ASSERT_EQUAL(
+        dicomSeries->getNumberOfInstances(),
+        static_cast<size_t>(numberOfSeriesRelatedInstances.toULong()));
 
     data::Patient::sptr patient = series->getPatient();
     CPPUNIT_ASSERT(patient);
@@ -137,12 +139,12 @@ void SeriesTest::testSeries()
     CPPUNIT_ASSERT(equipment);
     CPPUNIT_ASSERT_EQUAL(equipment->getInstitutionName(), institutionName.toStdString());
 
-    io::http::helper::Series::InstanceUIDContainer instances =
-        io::http::helper::Series::toSeriesInstanceUIDContainer(seriesVector);
+    io::http::helper::Series::InstanceUIDContainer instances
+        = io::http::helper::Series::toSeriesInstanceUIDContainer(seriesVector);
     CPPUNIT_ASSERT(instances.size() == 1);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
 

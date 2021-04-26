@@ -44,46 +44,46 @@
 namespace sight::module::ui::base
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPreferences::starting()
 {
     this->load();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPreferences::stopping()
 {
     this->save();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPreferences::updating()
 {
     this->save();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPreferences::configuring()
 {
-    std::vector < core::runtime::ConfigurationElement::sptr > vectConfig = m_configuration->find("filename");
-    SIGHT_ASSERT("The <filename> element must exist.", !vectConfig.empty() );
+    std::vector<core::runtime::ConfigurationElement::sptr> vectConfig = m_configuration->find("filename");
+    SIGHT_ASSERT("The <filename> element must exist.", !vectConfig.empty());
     m_prefFile = vectConfig.at(0)->getValue();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPreferences::load()
 {
-    if (std::filesystem::is_regular_file(m_prefFile))
+    if(std::filesystem::is_regular_file(m_prefFile))
     {
         const std::filesystem::path folderPath = m_prefFile.parent_path();
         const std::filesystem::path filename   = m_prefFile.filename();
 
-        auto data = this->getLockedInOut< data::Object >(sight::ui::base::preferences::s_PREFERENCES_KEY);
+        auto data = this->getLockedInOut<data::Object>(sight::ui::base::preferences::s_PREFERENCES_KEY);
 
         // Read atom
         io::zip::IReadArchive::sptr readArchive = io::zip::ReadDirArchive::New(folderPath.string());
@@ -91,20 +91,21 @@ void SPreferences::load()
         io::atoms::Reader reader;
         try
         {
-            auto atom = atoms::Object::dynamicCast( reader.read( readArchive, filename ) );
+            auto atom = atoms::Object::dynamicCast(reader.read(readArchive, filename));
 
-            data::Object::sptr newData = atoms::conversion::convert(atom,
-                                                                    atoms::conversion::AtomVisitor::ChangePolicy());
+            data::Object::sptr newData = atoms::conversion::convert(
+                atom,
+                atoms::conversion::AtomVisitor::ChangePolicy());
             data->shallowCopy(newData);
         }
         catch(...)
         {
-            SIGHT_ERROR("Failed to load preference file '"+m_prefFile.string()+"'.");
+            SIGHT_ERROR("Failed to load preference file '" + m_prefFile.string() + "'.");
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SPreferences::save()
 {
@@ -113,7 +114,7 @@ void SPreferences::save()
 
     data::Object::sptr obj;
     {
-        obj = this->getLockedInOut< data::Object >(sight::ui::base::preferences::s_PREFERENCES_KEY).get_shared();
+        obj = this->getLockedInOut<data::Object>(sight::ui::base::preferences::s_PREFERENCES_KEY).get_shared();
     }
 
     // Lock recursively all objects referenced in the root object
@@ -126,11 +127,13 @@ void SPreferences::save()
     io::atoms::FormatType format              = io::atoms::JSON;
 
     namespace fs = std::filesystem;
-    if(fs::exists(m_prefFile) && fs::is_regular_file(m_prefFile) &&
-       (fs::status(m_prefFile).permissions() & fs::perms::owner_write) == fs::perms::none)
+
+    if(fs::exists(m_prefFile) && fs::is_regular_file(m_prefFile)
+       && (fs::status(m_prefFile).permissions() & fs::perms::owner_write) == fs::perms::none)
     {
-        SIGHT_ERROR("SPreference need write access to the file '"+m_prefFile.string()+"'."
-                    "Please, change file permission.");
+        SIGHT_ERROR(
+            "SPreference need write access to the file '" + m_prefFile.string() + "'."
+                                                                                  "Please, change file permission.");
     }
     else
     {
@@ -138,6 +141,6 @@ void SPreferences::save()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace sight::module::ui::base
+} // namespace sight::module::ui::base

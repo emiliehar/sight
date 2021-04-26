@@ -26,89 +26,104 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 std::string InputDialog::showInputDialog(const std::string& title, const std::string& message, const std::string& text)
 {
     ui::base::dialog::InputDialog inputBox(title, message, text);
+
     return inputBox.getInput();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 InputDialog::InputDialog()
 {
-    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(std::function< void() >([&]
+    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(
+        std::function<void()>(
+            [&]
             {
                 ui::base::GuiBaseObject::sptr guiObj = ui::base::factory::New(IInputDialog::REGISTRY_KEY);
-                m_implementation = ui::base::dialog::IInputDialog::dynamicCast(guiObj);
+                m_implementation                     = ui::base::dialog::IInputDialog::dynamicCast(guiObj);
             }));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 InputDialog::InputDialog(const std::string& title, const std::string& message, const std::string& text)
 {
-    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(std::function< void() >( [&]
+    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(
+        std::function<void()>(
+            [&]
             {
                 ui::base::GuiBaseObject::sptr guiObj = ui::base::factory::New(IInputDialog::REGISTRY_KEY);
-                m_implementation = ui::base::dialog::IInputDialog::dynamicCast(guiObj);
+                m_implementation                     = ui::base::dialog::IInputDialog::dynamicCast(guiObj);
                 m_implementation->setTitle(title);
                 m_implementation->setMessage(message);
                 m_implementation->setInput(text);
             }));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 InputDialog::~InputDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void InputDialog::setTitle( const std::string& title )
+void InputDialog::setTitle(const std::string& title)
 {
-    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(std::function< void() >([&]
+    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(
+        std::function<void()>(
+            [&]
             {
                 m_implementation->setTitle(title);
             })).wait();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void InputDialog::setMessage( const std::string& msg )
+void InputDialog::setMessage(const std::string& msg)
 {
-    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(std::function< void() >( [&]
+    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(
+        std::function<void()>(
+            [&]
             {
                 m_implementation->setMessage(msg);
             })).wait();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void InputDialog::setInput(const std::string& text)
 {
-    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(std::function< void() >([&]
+    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(
+        std::function<void()>(
+            [&]
             {
                 m_implementation->setInput(text);
             })).wait();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string InputDialog::getInput()
 {
-    std::function< std::string() > func = std::bind(&IInputDialog::getInput, m_implementation);
-    std::shared_future< std::string > f =
-        core::thread::ActiveWorkers::getDefaultWorker()->postTask<std::string>(func);
+    std::function<std::string()> func = std::bind(&IInputDialog::getInput, m_implementation);
+    std::shared_future<std::string> f
+        = core::thread::ActiveWorkers::getDefaultWorker()->postTask<std::string>(func);
     f.wait();
+
     return f.get();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

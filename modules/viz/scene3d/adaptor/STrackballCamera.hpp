@@ -55,9 +55,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API STrackballCamera final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(STrackballCamera, ::sight::viz::scene3d::IAdaptor)
 
@@ -68,7 +66,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~STrackballCamera() noexcept override;
 
 protected:
-
     /// Configures the layer and the interaction priority.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -82,16 +79,14 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     /// Contains the interaction handler.
-    std::shared_ptr< sight::viz::scene3d::interactor::TrackballInteractor > m_trackball;
+    std::shared_ptr<sight::viz::scene3d::interactor::TrackballInteractor> m_trackball;
 
     /// Defines the interaction priority.
-    int m_priority { 0 };
+    int m_priority{0};
 
     /// Defines if the interaction must take into account above layers.
-    bool m_layerOrderDependant { true };
-
+    bool m_layerOrderDependant{true};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

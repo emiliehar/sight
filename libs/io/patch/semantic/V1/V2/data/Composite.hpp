@@ -28,10 +28,13 @@
 
 namespace sight::io::patch::semantic
 {
+
 namespace V1
 {
+
 namespace V2
 {
+
 namespace data
 {
 
@@ -48,7 +51,7 @@ public:
     IO_PATCH_API ~Composite();
 
     /// Copy constructor
-    IO_PATCH_API Composite( const Composite& cpy );
+    IO_PATCH_API Composite(const Composite& cpy);
 
     /**
      * @brief Applies patch
@@ -61,10 +64,12 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace data
+
 } // namespace V2
+
 } // namespace V1
+
 } // namespace sight::io::patch::semantic

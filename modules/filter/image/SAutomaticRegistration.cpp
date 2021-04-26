@@ -46,41 +46,40 @@ static const service::IService::KeyType s_REFERENCE_IN = "reference";
 
 static const service::IService::KeyType s_TRANSFORM_INOUT = "transform";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SAutomaticRegistration::SAutomaticRegistration()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SAutomaticRegistration::~SAutomaticRegistration()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::configuring()
 {
     service::IService::ConfigType config = this->getConfigTree();
 
-    m_minStep = config.get< double >("minStep", -1.);
+    m_minStep = config.get<double>("minStep", -1.);
 
     SIGHT_FATAL_IF("Invalid or missing minStep.", m_minStep <= 0);
 
-    m_maxIterations = config.get< unsigned long >("maxIterations", 0);
+    m_maxIterations = config.get<unsigned long>("maxIterations", 0);
 
     SIGHT_FATAL_IF("Invalid or missing number of iterations.", m_maxIterations == 0);
 
-    const std::string metric = config.get< std::string >("metric", "");
+    const std::string metric = config.get<std::string>("metric", "");
     this->setMetric(metric);
 
-    const std::string shrinkList = config.get< std::string >("levels", "");
+    const std::string shrinkList = config.get<std::string>("levels", "");
     std::string sigmaShrinkPair;
 
     std::istringstream shrinksStream(shrinkList);
+
     while(std::getline(shrinksStream, sigmaShrinkPair, ';'))
     {
         std::istringstream sigmaShrinkStream(sigmaShrinkPair);
@@ -103,34 +102,34 @@ void SAutomaticRegistration::configuring()
     if(m_multiResolutionParameters.empty())
     {
         // By default, no multi-resolution
-        m_multiResolutionParameters.push_back( std::make_pair( 1, 0.0 ));
+        m_multiResolutionParameters.push_back(std::make_pair(1, 0.0));
     }
 
-    m_samplingPercentage = config.get< double >("samplingPercentage", 1.);
+    m_samplingPercentage = config.get<double>("samplingPercentage", 1.);
 
-    m_log = config.get< bool >("log", false);
+    m_log = config.get<bool>("log", false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::updating()
 {
     using sight::filter::image::AutomaticRegistration;
 
-    data::Image::csptr target    = this->getInput< data::Image >(s_TARGET_IN);
-    data::Image::csptr reference = this->getInput< data::Image >(s_REFERENCE_IN);
+    data::Image::csptr target    = this->getInput<data::Image>(s_TARGET_IN);
+    data::Image::csptr reference = this->getInput<data::Image>(s_REFERENCE_IN);
 
     data::mt::ObjectReadLock targetLock(target);
     data::mt::ObjectReadLock refLock(reference);
 
-    data::Matrix4::sptr transform =
-        this->getInOut< data::Matrix4 >(s_TRANSFORM_INOUT);
+    data::Matrix4::sptr transform
+        = this->getInOut<data::Matrix4>(s_TRANSFORM_INOUT);
 
     data::mt::ObjectWriteLock trfLock(transform);
 
@@ -144,10 +143,11 @@ void SAutomaticRegistration::updating()
 
     typedef AutomaticRegistration::MultiResolutionParametersType::value_type ParamPairType;
 
-    auto lastElt = std::remove_copy_if(m_multiResolutionParameters.begin(),
-                                       m_multiResolutionParameters.end(),
-                                       multiResolutionParameters.begin(),
-                                       [](const ParamPairType& v){return v.first == 0; });
+    auto lastElt = std::remove_copy_if(
+        m_multiResolutionParameters.begin(),
+        m_multiResolutionParameters.end(),
+        multiResolutionParameters.begin(),
+        [](const ParamPairType& v){return v.first == 0;});
 
     multiResolutionParameters.erase(lastElt, multiResolutionParameters.end());
 
@@ -155,7 +155,8 @@ void SAutomaticRegistration::updating()
 
     sight::ui::base::dialog::ProgressDialog dialog("Automatic Registration", "Registering, please be patient.");
 
-    dialog.setCancelCallback([&registrator]()
+    dialog.setCancelCallback(
+        [&registrator]()
         {
             registrator.stopRegistration();
         });
@@ -187,73 +188,81 @@ void SAutomaticRegistration::updating()
                << std::endl;
     }
 
-    auto transfoModifiedSig = transform->signal< data::Matrix4::ModifiedSignalType >
+    auto transfoModifiedSig = transform->signal<data::Matrix4::ModifiedSignalType>
                                   (data::Matrix4::s_MODIFIED_SIG);
 
     std::chrono::time_point<std::chrono::high_resolution_clock> regStartTime;
     size_t i = 0;
 
-    AutomaticRegistration::IterationCallbackType iterationCallback =
-        [&]()
-        {
-            const ::itk::SizeValueType currentIteration = registrator.getCurrentIteration();
-            const ::itk::SizeValueType currentLevel     = registrator.getCurrentLevel();
+    AutomaticRegistration::IterationCallbackType iterationCallback
+        = [&]()
+          {
+              const ::itk::SizeValueType currentIteration = registrator.getCurrentIteration();
+              const ::itk::SizeValueType currentLevel     = registrator.getCurrentLevel();
 
-            const float progress = float(i++)/float(m_maxIterations * multiResolutionParameters.size());
+              const float progress = float(i++) / float(m_maxIterations * multiResolutionParameters.size());
 
-            std::string msg = "Number of iterations : " + std::to_string(i) + " Current level : "
-                              + std::to_string(currentLevel);
-            dialog(progress, msg);
-            dialog.setMessage(msg);
+              std::string msg = "Number of iterations : " + std::to_string(i) + " Current level : "
+                                + std::to_string(currentLevel);
+              dialog(progress, msg);
+              dialog.setMessage(msg);
 
-            registrator.getCurrentMatrix(transform);
+              registrator.getCurrentMatrix(transform);
 
-            if(m_log)
-            {
-                std::stringstream transformStream;
+              if(m_log)
+              {
+                  std::stringstream transformStream;
 
-                for(std::uint8_t i = 0; i < 16; ++i)
-                {
-                    transformStream << transform->getCoefficients()[i];
+                  for(std::uint8_t i = 0 ; i < 16 ; ++i)
+                  {
+                      transformStream << transform->getCoefficients()[i];
 
-                    if(i != 15)
-                    {
-                        transformStream << ";";
-                    }
-                }
+                      if(i != 15)
+                      {
+                          transformStream << ";";
+                      }
+                  }
 
-                const std::chrono::time_point<std::chrono::high_resolution_clock> now =
-                    std::chrono::high_resolution_clock::now();
+                  const std::chrono::time_point<std::chrono::high_resolution_clock> now
+                      = std::chrono::high_resolution_clock::now();
 
-                const auto duration = now - regStartTime;
+                  const auto duration = now - regStartTime;
 
-                regLog << "'" << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "',"
-                       << "'" << currentLevel << "',"
-                       << "'" << currentIteration << "',"
-                       << "'" << multiResolutionParameters[currentLevel].first << "',"
-                       << "'" << multiResolutionParameters[currentLevel].second << "',"
-                       << "'" << registrator.getCurrentMetricValue() << "',"
-                       << "'" << registrator.getCurrentParameters() << "',"
-                       << "'" << transformStream.str() << "',"
-                       << "'" << registrator.getRelaxationFactor() << "',"
-                       << "'" << registrator.getLearningRate() << "',"
-                       << "'" << registrator.getGradientMagnitudeTolerance() << "',"
-                       << "'" << m_minStep << "',"
-                       << "'" << m_maxIterations << "',"
-                       << "'" << m_samplingPercentage << "',"
-                       << "'" << multiResolutionParameters.size() << "'"
-                       << std::endl;
+                  regLog << "'" << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << "',"
+                         << "'" << currentLevel << "',"
+                         << "'" << currentIteration << "',"
+                         << "'" << multiResolutionParameters[currentLevel].first << "',"
+                         << "'" << multiResolutionParameters[currentLevel].second << "',"
+                         << "'" << registrator.getCurrentMetricValue() << "',"
+                         << "'" << registrator.getCurrentParameters() << "',"
+                         << "'" << transformStream.str() << "',"
+                         << "'" << registrator.getRelaxationFactor() << "',"
+                         << "'" << registrator.getLearningRate() << "',"
+                         << "'" << registrator.getGradientMagnitudeTolerance() << "',"
+                         << "'" << m_minStep << "',"
+                         << "'" << m_maxIterations << "',"
+                         << "'" << m_samplingPercentage << "',"
+                         << "'" << multiResolutionParameters.size() << "'"
+                         << std::endl;
 
-                regLog.flush(); // Flush, just to be sure.
-            }
+                  regLog.flush(); // Flush, just to be sure.
+              }
 
-            transfoModifiedSig->asyncEmit();
-        };
+              transfoModifiedSig->asyncEmit();
+          };
 
     try
     {
-        registrator.registerImage(target, reference, transform, m_metric, multiResolutionParameters,
-                                  m_samplingPercentage, m_minStep, m_maxIterations, iterationCallback);
+        registrator.registerImage(
+            target,
+            reference,
+            transform,
+            m_metric,
+            multiResolutionParameters,
+            m_samplingPercentage,
+            m_minStep,
+            m_maxIterations,
+            iterationCallback);
     }
     catch(::itk::ExceptionObject& e)
     {
@@ -264,13 +273,13 @@ void SAutomaticRegistration::updating()
     transfoModifiedSig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SAutomaticRegistration::getAutoConnections() const
 {
@@ -284,7 +293,7 @@ service::IService::KeyConnectionsMap SAutomaticRegistration::getAutoConnections(
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::setEnumParameter(std::string val, std::string key)
 {
@@ -298,7 +307,7 @@ void SAutomaticRegistration::setEnumParameter(std::string val, std::string key)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::setDoubleParameter(double val, std::string key)
 {
@@ -306,12 +315,12 @@ void SAutomaticRegistration::setDoubleParameter(double val, std::string key)
     {
         m_minStep = val;
     }
-    else if(key.find("sigma_") != std::string::npos )
+    else if(key.find("sigma_") != std::string::npos)
     {
         const unsigned long level = this->extractLevelFromParameterName(key);
         m_multiResolutionParameters[level].second = val;
     }
-    else if( key == "samplingPercentage" )
+    else if(key == "samplingPercentage")
     {
         m_samplingPercentage = val;
     }
@@ -321,7 +330,7 @@ void SAutomaticRegistration::setDoubleParameter(double val, std::string key)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::setIntParameter(int val, std::string key)
 {
@@ -330,7 +339,7 @@ void SAutomaticRegistration::setIntParameter(int val, std::string key)
         SIGHT_FATAL_IF("The number of iterations must be greater than 0 !!", val <= 0);
         m_maxIterations = static_cast<unsigned long>(val);
     }
-    else if(key.find("shrink_") != std::string::npos )
+    else if(key.find("shrink_") != std::string::npos)
     {
         const unsigned long level = this->extractLevelFromParameterName(key);
         m_multiResolutionParameters[level].first = ::itk::SizeValueType(val);
@@ -341,11 +350,11 @@ void SAutomaticRegistration::setIntParameter(int val, std::string key)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 unsigned long SAutomaticRegistration::extractLevelFromParameterName(const std::string& name)
 {
     // find the level
-    const std::string levelSuffix = name.substr(name.find("_")+1);
+    const std::string levelSuffix = name.substr(name.find("_") + 1);
     const unsigned long level     = std::stoul(levelSuffix);
 
     if(level >= m_multiResolutionParameters.size())
@@ -356,7 +365,7 @@ unsigned long SAutomaticRegistration::extractLevelFromParameterName(const std::s
     return level;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SAutomaticRegistration::setMetric(const std::string& metricName)
 {
@@ -378,6 +387,6 @@ void SAutomaticRegistration::setMetric(const std::string& metricName)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::filter::image

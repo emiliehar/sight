@@ -28,6 +28,7 @@
 
 namespace sight::utestData
 {
+
 namespace ut
 {
 
@@ -36,11 +37,11 @@ namespace ut
  */
 class ImageTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ImageTest );
-CPPUNIT_TEST( generator3DTest );
-CPPUNIT_TEST( generator2DTest );
-CPPUNIT_TEST( deepCopyTest );
-CPPUNIT_TEST( stressTest );
+CPPUNIT_TEST_SUITE(ImageTest);
+CPPUNIT_TEST(generator3DTest);
+CPPUNIT_TEST(generator2DTest);
+CPPUNIT_TEST(deepCopyTest);
+CPPUNIT_TEST(stressTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -55,8 +56,8 @@ public:
 
 private:
     void stressTestWithType(core::tools::Type type, int nbTest);
-
 };
 
-} //namespace ut
-} //namespace sight::utestData
+} // namespace ut
+
+} // namespace sight::utestData

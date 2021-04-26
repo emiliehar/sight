@@ -55,8 +55,7 @@ public:
     TUTO03MESHERWITHGENERICSCENECPP_API void uninitialize() noexcept;
 
 private:
-
-    std::unique_ptr< sight::service::AppManager > m_appManager;
+    std::unique_ptr<sight::service::AppManager> m_appManager;
 
     sight::core::com::SlotBase::sptr m_slotRecSelected;
     sight::core::com::SlotBase::sptr m_slotEmptySelection;

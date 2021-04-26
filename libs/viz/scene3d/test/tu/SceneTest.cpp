@@ -30,29 +30,30 @@
 #include <cstdint>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::viz::scene3d::helper::ut::SceneTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::viz::scene3d::helper::ut::SceneTest);
 
 namespace sight::viz::scene3d
 {
+
 namespace helper
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SceneTest::SceneTest()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SceneTest::~SceneTest()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SceneTest::setUp()
 {
@@ -63,7 +64,7 @@ void SceneTest::setUp()
     m_ogreRoot = Utils::getOgreRoot();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SceneTest::tearDown()
 {
@@ -71,7 +72,7 @@ void SceneTest::tearDown()
     Utils::destroyOgreRoot();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SceneTest::getNodeById()
 {
@@ -121,8 +122,10 @@ void SceneTest::getNodeById()
     CPPUNIT_ASSERT_EQUAL(nullNode, viz::scene3d::helper::Scene::getNodeById("Node2_1", node1));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace helper
-} //namespace sight::viz::scene3d
+} // namespace ut
+
+} // namespace helper
+
+} // namespace sight::viz::scene3d

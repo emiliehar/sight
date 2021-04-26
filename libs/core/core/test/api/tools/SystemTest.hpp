@@ -26,14 +26,15 @@
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
 class SystemTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SystemTest );
-CPPUNIT_TEST( genTempFilenameTest );
-CPPUNIT_TEST( robustRenameTest );
+CPPUNIT_TEST_SUITE(SystemTest);
+CPPUNIT_TEST(genTempFilenameTest);
+CPPUNIT_TEST(robustRenameTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -46,4 +47,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::core::tools

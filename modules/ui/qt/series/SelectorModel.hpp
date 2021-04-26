@@ -37,6 +37,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace series
 {
 
@@ -45,23 +46,21 @@ namespace series
  */
 class MODULE_UI_QT_CLASS_API SelectorModel : public QStandardItemModel
 {
-
 Q_OBJECT
 
 public:
-
     /// Defines the role of the items data (ITEM_TYPE or UID)
     enum Role
     {
         ITEM_TYPE = Qt::UserRole, ///< Role for the item type (STUDY or SERIES)
-        UID                       ///< Role for the fwID of the object
+        UID ///< Role for the fwID of the object
     };
 
     /// Defines item type (STUDY or SERIES), it is used in items data (ITEM_TYPE role).
     enum ItemType
     {
-        STUDY = 1,  ///< Type to represent Study/Patient
-        SERIES      ///< Type to represent Series
+        STUDY = 1, ///< Type to represent Study/Patient
+        SERIES ///< Type to represent Series
     };
 
     /// Defines header columns used in the tree widget of all series.
@@ -70,22 +69,16 @@ public:
         NAME = 0,
         SEX,
         BIRTHDATE,
-
         MODALITY,
-
         DESCRIPTION,
-
         DATE,
         TIME,
-
         PATIENT_AGE,
-
         BODY_PART_EXAMINED,
         PATIENT_POSITION,
         CONTRAST_AGENT,
         ACQUISITION_TIME,
         CONTRAST_BOLUS_START_TIME,
-
         REMOVE
     };
 
@@ -116,7 +109,7 @@ public:
     /// Returns item flags with non editable flag
     Qt::ItemFlags flags(const QModelIndex& _index) const
     {
-        return (QStandardItemModel::flags(_index) & ~Qt::ItemIsEditable);
+        return QStandardItemModel::flags(_index) & ~Qt::ItemIsEditable;
     }
 
     /// Returns the type of the item (SERIES or STUDY) associated to the ITEM_TYPE role.
@@ -157,7 +150,6 @@ public:
     void setRemoveSerieIcon(const std::filesystem::path& _path);
 
 Q_SIGNALS:
-
     /**
      * @brief SIGNAL: sent when the button to remove a study is clicked.
      * @param _uid the instance UID of the study to remove.
@@ -171,14 +163,13 @@ Q_SIGNALS:
     void removeSerieID(const std::string& _id);
 
 private:
-
-    typedef std::map< data::DicomValueType, QStandardItem* > StudyUidItemMapType;
+    typedef std::map<data::DicomValueType, QStandardItem*> StudyUidItemMapType;
 
     /**
      * @brief Returns the informations contained in the data container as a string, all items are separated by the
      * separator.
      */
-    template <typename T>
+    template<typename T>
     QStandardItem* getInfo(T _data, QString _separator);
 
     /// Removes the study item and all the series associated.
@@ -194,7 +185,7 @@ private:
     void init();
 
     /// Defines the number of studies rows in the tree.
-    int m_studyRowCount { 0 };
+    int m_studyRowCount{0};
 
     /**
      * @brief Stores a map to register the association of study Instance UID  and study root item.
@@ -203,28 +194,28 @@ private:
     StudyUidItemMapType m_items;
 
     /// Defines if the selector is in insert mode (adding new series, forbid selection of existing series).
-    bool m_insert { false };
+    bool m_insert{false};
 
     /// Stores a map containing the specified icons for a series (map\<series classname, icon path\>).
     SeriesIconType m_seriesIcons;
 
     /// Allows to remove items.
-    bool m_allowedRemove { true };
+    bool m_allowedRemove{true};
 
     /// Defines the path of the remove study button icon.
     std::filesystem::path m_removeStudyIcon;
 
     /// Defines the path of the remove serie button icon.
     std::filesystem::path m_removeSerieIcon;
-
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template <typename T>
+template<typename T>
 QStandardItem* SelectorModel::getInfo(T _data, QString _separator)
 {
     QString dataStr;
+
     if(!_data.empty())
     {
         typename T::iterator itr = _data.begin();
@@ -232,46 +223,49 @@ QStandardItem* SelectorModel::getInfo(T _data, QString _separator)
         str << *itr++;
         dataStr = QString::fromStdString(str.str());
 
-        for(; itr != _data.end(); ++itr)
+        for( ; itr != _data.end() ; ++itr)
         {
             str.str("");
             str << *itr;
             dataStr.append(_separator + QString::fromStdString(str.str()));
         }
     }
+
     QStandardItem* item = new QStandardItem(dataStr);
+
     return item;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void SelectorModel::setInsertMode(bool _insert)
 {
     m_insert = _insert;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SelectorModel::setAllowedRemove(bool _allowed)
 {
     m_allowedRemove = _allowed;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void SelectorModel::setRemoveStudyIcon(const std::filesystem::path& _path)
 {
     m_removeStudyIcon = _path;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void SelectorModel::setRemoveSerieIcon(const std::filesystem::path& _path)
 {
     m_removeSerieIcon = _path;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace series.
+
 } // namespace sight::module::ui::qt.

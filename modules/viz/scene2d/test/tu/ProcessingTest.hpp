@@ -26,24 +26,24 @@
 
 namespace sight::module::viz::scene2d
 {
+
 namespace ut
 {
 
 class ProcessingTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ProcessingTest );
-CPPUNIT_TEST( histogramTest );
+CPPUNIT_TEST_SUITE(ProcessingTest);
+CPPUNIT_TEST(histogramTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     // interface
     void setUp();
     void tearDown();
 
     void histogramTest();
-
 };
 
 } // namespace ut
+
 } // namespace sight::module::viz::scene2d

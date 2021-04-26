@@ -27,17 +27,17 @@
 namespace sight::module::viz::scene3d
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SIGHT_REGISTER_PLUGIN("::sight::module::viz::scene3d::Plugin");
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Plugin::~Plugin() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::start()
 {
@@ -49,7 +49,7 @@ void Plugin::start()
     m_log->setLogDetail(::Ogre::LL_BOREME);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::stop() noexcept
 {
@@ -58,27 +58,31 @@ void Plugin::stop() noexcept
     delete m_logManager;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SightOgreListener::messageLogged(const ::Ogre::String& _message,
-                                      ::Ogre::LogMessageLevel _lml,
-                                      bool,
-                                      const ::Ogre::String&,
-                                      bool& _skipThisMessage)
+void SightOgreListener::messageLogged(
+    const ::Ogre::String& _message,
+    ::Ogre::LogMessageLevel _lml,
+    bool,
+    const ::Ogre::String&,
+    bool& _skipThisMessage)
 {
-    if (!_skipThisMessage)
+    if(!_skipThisMessage)
     {
         switch(_lml)
         {
             case ::Ogre::LML_TRIVIAL:
                 SIGHT_INFO(_message);
                 break;
+
             case ::Ogre::LML_NORMAL:
                 SIGHT_DEBUG(_message);
                 break;
+
             case ::Ogre::LML_WARNING:
                 SIGHT_WARN(_message);
                 break;
+
             case ::Ogre::LML_CRITICAL:
                 SIGHT_ERROR(_message);
                 break;
@@ -86,6 +90,6 @@ void SightOgreListener::messageLogged(const ::Ogre::String& _message,
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d.

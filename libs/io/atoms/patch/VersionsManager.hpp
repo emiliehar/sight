@@ -42,14 +42,12 @@ namespace sight::io::atoms::patch
  */
 class IO_ATOMS_CLASS_API VersionsManager
 {
-
 public:
-
     /**
      * @name Typedefs
      * @{ */
-    typedef std::vector< std::filesystem::path > ListPathType;
-    typedef std::map< std::string, VersionsGraph::sptr > VersionsGraphMapType;
+    typedef std::vector<std::filesystem::path> ListPathType;
+    typedef std::map<std::string, VersionsGraph::sptr> VersionsGraphMapType;
     /**  @} */
 
     IO_ATOMS_API VersionsManager();
@@ -69,8 +67,10 @@ public:
      * @param versionName name of the version to write.
      * @todo Ignoring file in ignored library.
      */
-    IO_ATOMS_API static void generateNewFile(const std::filesystem::path& filePath, const std::string& context,
-                                             const std::string& versionName);
+    IO_ATOMS_API static void generateNewFile(
+        const std::filesystem::path& filePath,
+        const std::string& context,
+        const std::string& versionName);
 
     /**
      * @brief Builds version table.
@@ -87,12 +87,12 @@ public:
     IO_ATOMS_API void buildLinkTable(const std::string& dirPath);
 
     /// Returns the default instance of VersionsManager
-    static SPTR(VersionsManager) getDefault() {
+    static SPTR(VersionsManager) getDefault()
+    {
         return s_default;
     }
 
 private:
-
     /**
      * @brief Loads a file containing object versions.
      * @param filePath path to a .versions file

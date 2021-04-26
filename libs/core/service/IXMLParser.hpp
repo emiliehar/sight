@@ -51,14 +51,12 @@ namespace sight::service
 class SERVICE_CLASS_API IXMLParser : public service::IService
 {
 public:
-
     SIGHT_DECLARE_SERVICE(IXMLParser, service::IService)
 
 public:
+    SERVICE_API void setObjectConfig(core::runtime::ConfigurationElement::csptr _cfgElem);
 
-    SERVICE_API void setObjectConfig( core::runtime::ConfigurationElement::csptr _cfgElem );
-
-    SERVICE_API virtual void createConfig( core::tools::Object::sptr _obj );
+    SERVICE_API virtual void createConfig(core::tools::Object::sptr _obj);
 
     SERVICE_API virtual void startConfig();
 
@@ -71,11 +69,10 @@ public:
     core::runtime::ConfigurationElement::csptr m_cfg;
 
 protected:
-
     /**
      * @brief Constructor. Does nothing.
      */
-    SERVICE_API IXMLParser( );
+    SERVICE_API IXMLParser();
 
     /**
      * @brief Destructor. Does nothing.

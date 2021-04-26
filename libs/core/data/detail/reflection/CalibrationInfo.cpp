@@ -26,14 +26,14 @@
 
 #include <core/reflection/UserObject.hpp>
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(CalibrationInfo))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (CalibrationInfo))
 {
     builder
     .tag("object_version", "1")
     .tag("lib_name", "::sight::data")
-    .base< sight::data::Object >()
+    .base<sight::data::Object>()
     .property("pointlist_container", &::sight::data::CalibrationInfo::m_pointListContainer)
     .property("image_container", &::sight::data::CalibrationInfo::m_imageContainer)
     ;

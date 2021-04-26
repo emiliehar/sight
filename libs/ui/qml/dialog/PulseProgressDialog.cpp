@@ -35,40 +35,43 @@
 #include <QtConcurrent>
 #include <QtCore>
 
-fwGuiRegisterMacro(::sight::ui::qml::dialog::PulseProgressDialog,
-                   ::sight::ui::base::dialog::IPulseProgressDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(
+    ::sight::ui::qml::dialog::PulseProgressDialog,
+    ::sight::ui::base::dialog::IPulseProgressDialog::REGISTRY_KEY);
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 PulseProgressDialog::PulseProgressDialog(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PulseProgressDialog::~PulseProgressDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PulseProgressDialog::setTitle(const std::string& title)
 {
     m_title = QString::fromStdString(title);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PulseProgressDialog::setMessage(const std::string& msg)
 {
     m_message = QString::fromStdString(msg);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PulseProgressDialog::show()
 {
@@ -76,8 +79,8 @@ void PulseProgressDialog::show()
     SPTR(ui::qml::QmlEngine) engine = ui::qml::QmlEngine::getDefault();
 
     // get the path of the qml ui file in the 'rc' directory
-    const auto& dialogPath =
-        core::runtime::getLibraryResourceFilePath("fwGuiQml/dialog/PulseProgressDialog.qml");
+    const auto& dialogPath
+        = core::runtime::getLibraryResourceFilePath("fwGuiQml/dialog/PulseProgressDialog.qml");
     // set the context for the new component
     QSharedPointer<QQmlContext> context = QSharedPointer<QQmlContext>(new QQmlContext(engine->getRootContext()));
     context->setContextProperty("pulseProgressDialog", this);
@@ -96,7 +99,7 @@ void PulseProgressDialog::show()
     // Start the computation.
 
     QEventLoop loop;
-    //slot to retrieve the result and open the dialog with invoke
+    // slot to retrieve the result and open the dialog with invoke
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
     QObject::connect(&futureWatcher, SIGNAL(finished()), &loop, SLOT(quit()));
     QMetaObject::invokeMethod(dialog, "open");
@@ -107,18 +110,20 @@ void PulseProgressDialog::show()
     delete window;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool PulseProgressDialog::eventFilter(QObject* watched, QEvent* event)
 {
-    if (event->type() == QEvent::Shortcut || event->type() == QEvent::ShortcutOverride)
+    if(event->type() == QEvent::Shortcut || event->type() == QEvent::ShortcutOverride)
     {
         return true;
     }
+
     return false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

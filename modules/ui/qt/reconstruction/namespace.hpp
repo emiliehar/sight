@@ -28,4 +28,5 @@
 
 namespace sight::module::ui::qt::reconstruction
 {
+
 }

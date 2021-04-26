@@ -34,8 +34,10 @@
 
 namespace sight::core::jobs
 {
+
 class Observer;
 class IJob;
+
 }
 
 namespace sight::io::vtk
@@ -46,14 +48,14 @@ namespace sight::io::vtk
  *
  * Read a VTK Image using the VTK lib
  */
-class VtiImageReader : public base::reader::GenericObjectReader< data::Image >,
+class VtiImageReader : public base::reader::GenericObjectReader<data::Image>,
                        public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(VtiImageReader, io::base::reader::GenericObjectReader< data::Image >,
-                        io::base::reader::factory::New< VtiImageReader >);
+    SIGHT_DECLARE_CLASS(
+        VtiImageReader,
+        io::base::reader::GenericObjectReader<data::Image>,
+        io::base::reader::factory::New<VtiImageReader>);
 
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
@@ -73,8 +75,7 @@ public:
     IO_VTK_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 };
 

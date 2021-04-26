@@ -30,92 +30,91 @@ namespace sight::filter::image
 class PowellMetric : public PowellOptimizer::PowellOptimizerType::MetricType
 {
 public:
-
     typedef PowellMetric Self;
     typedef PowellOptimizer::PowellOptimizerType::MetricType Superclass;
-    typedef ::itk::SmartPointer<Self>                        Pointer;
-    typedef ::itk::SmartPointer<const Self>                  ConstPointer;
-    itkNewMacro( Self );
+    typedef ::itk::SmartPointer<Self> Pointer;
+    typedef ::itk::SmartPointer<const Self> ConstPointer;
+    itkNewMacro(Self);
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     void Initialize(void) override
     {
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     void SetFunction(PowellOptimizer::OptimizedFunctionType _f)
     {
         m_function = _f;
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
-    void SetParameters( ParametersType& params ) override
+    void SetParameters(ParametersType& params) override
     {
         m_parameters = params;
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     NumberOfParametersType GetNumberOfParameters() const override
     {
-        return static_cast< NumberOfParametersType >(m_parameters.size());
+        return static_cast<NumberOfParametersType>(m_parameters.size());
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     MeasureType GetValue() const override
     {
         m_Value = m_function(m_parameters);
+
         return m_Value;
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
-    void GetDerivative( DerivativeType& ) const override
+    void GetDerivative(DerivativeType&) const override
     {
         // Unused in Powell's method.
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
-    void GetValueAndDerivative( MeasureType&, DerivativeType& ) const override
+    void GetValueAndDerivative(MeasureType&, DerivativeType&) const override
     {
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     NumberOfParametersType GetNumberOfLocalParameters() const override
     {
         return 0;
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     const ParametersType& GetParameters() const override
     {
         return m_parameters;
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
     bool HasLocalSupport() const override
     {
         return false;
     }
 
-    //-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
 
-    void UpdateTransformParameters( const DerivativeType&, ParametersValueType ) override
+    void UpdateTransformParameters(const DerivativeType&, ParametersValueType) override
     {
     }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 private:
-
     PowellMetric()
     {
     }
@@ -129,10 +128,14 @@ private:
     PowellOptimizer::OptimizedFunctionType m_function;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-PowellOptimizer::PowellOptimizer(const PowellOptimizer::OptimizedFunctionType& _f, double _stepTolerance,
-                                 double _valueTolerance, double _stepLength, std::uint32_t _maximumIterations) :
+PowellOptimizer::PowellOptimizer(
+    const PowellOptimizer::OptimizedFunctionType& _f,
+    double _stepTolerance,
+    double _valueTolerance,
+    double _stepLength,
+    std::uint32_t _maximumIterations) :
     m_function(_f)
 {
     m_powellOptimizer = PowellOptimizerType::New();
@@ -142,7 +145,7 @@ PowellOptimizer::PowellOptimizer(const PowellOptimizer::OptimizedFunctionType& _
     m_powellOptimizer->SetMaximumIteration(_maximumIterations);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 PowellOptimizer::FunctionParametersType PowellOptimizer::optimize(
     const PowellOptimizer::FunctionParametersType& _initParameters)
@@ -158,14 +161,14 @@ PowellOptimizer::FunctionParametersType PowellOptimizer::optimize(
     {
         m_powellOptimizer->StartOptimization();
     }
-    catch (::itk::ExceptionObject& e)
+    catch(::itk::ExceptionObject& e)
     {
-        SIGHT_ERROR("Powell optimizer exception : " << e );
+        SIGHT_ERROR("Powell optimizer exception : " << e);
     }
 
     return metric->GetParameters();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::filter::image.

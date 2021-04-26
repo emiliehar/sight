@@ -30,6 +30,7 @@ namespace sight::viz::scene3d
  */
 namespace factory
 {
+
 } // namespace factory
 
 } // namespace sight::viz::scene3d

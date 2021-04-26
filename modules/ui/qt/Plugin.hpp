@@ -28,19 +28,20 @@
 
 namespace sight::core::thread
 {
+
 class Worker;
-} //namespace thread
+
+} // namespace thread
 
 namespace sight::module::ui::qt
 {
+
 /**
  * @brief   This class is called when the guiQt module is loaded.
  */
 class MODULE_UI_QT_CLASS_API Plugin : public core::runtime::Plugin
 {
-
 public:
-
     /**
      * @brief   destructor
      */
@@ -55,13 +56,10 @@ public:
     MODULE_UI_QT_API int run() noexcept;
 
 protected:
-
     MODULE_UI_QT_API void loadStyleSheet();
 
 private:
-
     SPTR(core::thread::Worker) m_workerQt;
-
 };
 
 } // namespace sight::module::ui::qt

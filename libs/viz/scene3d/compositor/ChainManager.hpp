@@ -32,11 +32,14 @@
 
 namespace Ogre
 {
+
 class Viewport;
+
 }
 
 namespace sight::viz::scene3d
 {
+
 class SRender;
 
 namespace compositor
@@ -49,7 +52,7 @@ class VIZ_SCENE3D_CLASS_API ChainManager : ::boost::noncopyable,
                                            public service::IHasServices
 {
 public:
-    typedef std::unique_ptr < ChainManager > uptr;
+    typedef std::unique_ptr<ChainManager> uptr;
 
     typedef std::string CompositorIdType;
     typedef std::pair<CompositorIdType, bool> CompositorType;
@@ -68,7 +71,7 @@ public:
                                                const std::string& _layerId,
                                                SPTR(viz::scene3d::SRender) _renderService);
 
-    VIZ_SCENE3D_API void setCompositorChain(const std::vector<CompositorIdType>&_compositors,
+    VIZ_SCENE3D_API void setCompositorChain(const std::vector<CompositorIdType>& _compositors,
                                             const std::string& _layerId, SPTR(viz::scene3d::SRender) _renderService);
 
     VIZ_SCENE3D_API CompositorChainType getCompositorChain();
@@ -88,11 +91,11 @@ public:
         {
         }
 
-        //------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------
 
         bool operator()(const CompositorType& _compositor) const
         {
-            return (_compositor.first == compositorName);
+            return _compositor.first == compositorName;
         }
 
     private:
@@ -100,7 +103,6 @@ public:
     };
 
 private:
-
     /// Adds the final compositor to the compositor chain
     void addFinalCompositor();
 
@@ -119,10 +121,9 @@ private:
 
     /// Map allowing to keep the objects of the created adaptors alive
     data::Composite::sptr m_adaptorsObjectsOwner;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Inline method(s)
 
 inline ChainManager::CompositorChainType ChainManager::getCompositorChain()
@@ -130,14 +131,14 @@ inline ChainManager::CompositorChainType ChainManager::getCompositorChain()
     return m_compositorChain;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void ChainManager::setOgreViewport(::Ogre::Viewport* _viewport)
 {
     m_ogreViewport = _viewport;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace compositor
 

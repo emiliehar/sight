@@ -29,6 +29,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -37,7 +38,6 @@ class StringSerializer : public GenericSerializer<sight::data::String>
 {
 public:
     SIGHT_DECLARE_CLASS(StringSerializer, GenericSerializer<sight::data::String>)
-
     /// Delete default copy constructors and assignment operators
     StringSerializer(const StringSerializer&)            = delete;
     StringSerializer(StringSerializer&&)                 = delete;
@@ -61,10 +61,10 @@ public:
         const core::crypto::secure_string& password = "") override;
 
 protected:
-
     /// Default constructor
     StringSerializer() = default;
 };
 
 } // namespace detail::data
+
 } // namespace sight::io::session

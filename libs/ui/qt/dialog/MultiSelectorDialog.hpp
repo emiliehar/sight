@@ -34,9 +34,11 @@
 
 namespace sight::ui::qt
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief   MultiSelectorDialog allowing the choice of an element among severals (_selections)
@@ -46,9 +48,10 @@ class UI_QT_CLASS_API MultiSelectorDialog : public ui::base::dialog::IMultiSelec
                                             public QDialog
 {
 public:
-
-    SIGHT_DECLARE_CLASS(MultiSelectorDialog, ui::base::dialog::IMultiSelectorDialog,
-                        ui::base::factory::New< MultiSelectorDialog >)
+    SIGHT_DECLARE_CLASS(
+        MultiSelectorDialog,
+        ui::base::dialog::IMultiSelectorDialog,
+        ui::base::factory::New<MultiSelectorDialog>)
 
     UI_QT_API MultiSelectorDialog(ui::base::GuiBaseObject::Key key);
 
@@ -72,7 +75,6 @@ public:
     UI_QT_API void setMessage(const std::string& msg) override;
 
 private:
-
     Selections m_selections;
     /// Dialog box message
     std::string m_message;
@@ -80,4 +82,5 @@ private:
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::qt

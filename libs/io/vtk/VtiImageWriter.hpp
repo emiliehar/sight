@@ -34,7 +34,9 @@
 
 namespace sight::core::jobs
 {
+
 class Observer;
+
 }
 
 namespace sight::io::vtk
@@ -45,14 +47,14 @@ namespace sight::io::vtk
  *
  * Write a VTK Image using the VTK lib
  */
-class VtiImageWriter : public base::writer::GenericObjectWriter< data::Image >,
+class VtiImageWriter : public base::writer::GenericObjectWriter<data::Image>,
                        public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(VtiImageWriter, io::base::writer::GenericObjectWriter< data::Image >,
-                        io::base::writer::factory::New< VtiImageWriter >);
+    SIGHT_DECLARE_CLASS(
+        VtiImageWriter,
+        io::base::writer::GenericObjectWriter<data::Image>,
+        io::base::writer::factory::New<VtiImageWriter>);
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
     //! @brief Constructor.
@@ -71,8 +73,7 @@ public:
     IO_VTK_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 };
 

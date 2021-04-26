@@ -36,16 +36,20 @@ namespace vr
  */
 class VIZ_SCENE3D_CLASS_API IllumAmbientOcclusionSAT final
 {
-
 public:
-
     typedef std::shared_ptr<IllumAmbientOcclusionSAT> sptr;
 
     /// Initializes the illumination volume with the give dimensions.
-    VIZ_SCENE3D_API IllumAmbientOcclusionSAT(std::string parentId, ::Ogre::SceneManager* sceneManager,
-                                             float satSizeRatio = 0.25f, bool ao = false, bool shadows = false,
-                                             int nbShells = 3, int shellRadius = 3, float coneAngle = 0.1f,
-                                             int samplesAlongCone = 50);
+    VIZ_SCENE3D_API IllumAmbientOcclusionSAT(
+        std::string parentId,
+        ::Ogre::SceneManager* sceneManager,
+        float satSizeRatio   = 0.25f,
+        bool ao              = false,
+        bool shadows         = false,
+        int nbShells         = 3,
+        int shellRadius      = 3,
+        float coneAngle      = 0.1f,
+        int samplesAlongCone = 50);
 
     /// Destructor, does nothing.
     VIZ_SCENE3D_API virtual ~IllumAmbientOcclusionSAT();
@@ -57,8 +61,10 @@ public:
     VIZ_SCENE3D_API void updateVolIllum();
 
     /// Recomputes the SAT and the illumination volume when the image or the TF changed.
-    VIZ_SCENE3D_API void SATUpdate(::Ogre::TexturePtr _img, const viz::scene3d::TransferFunction::sptr& _tf,
-                                   float _sampleDistance);
+    VIZ_SCENE3D_API void SATUpdate(
+        ::Ogre::TexturePtr _img,
+        const viz::scene3d::TransferFunction::sptr& _tf,
+        float _sampleDistance);
 
     /// Illumination volume texture getter.
     VIZ_SCENE3D_API ::Ogre::TexturePtr getIlluminationVolume();
@@ -82,7 +88,6 @@ public:
     VIZ_SCENE3D_API void setSamplesAlongCone(int _samplesAlongCone);
 
 private:
-
     /// Allocates or resize the texture used to store the illumination volume.
     void updateTexture();
 
@@ -126,7 +131,7 @@ private:
     ::Ogre::SceneManager* m_sceneManager;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Inline method(s)
 
 inline ::Ogre::TexturePtr IllumAmbientOcclusionSAT::getIlluminationVolume()
@@ -134,49 +139,49 @@ inline ::Ogre::TexturePtr IllumAmbientOcclusionSAT::getIlluminationVolume()
     return m_illuminationVolume;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void IllumAmbientOcclusionSAT::setAO(bool _ao)
 {
     m_ao = _ao;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void IllumAmbientOcclusionSAT::setShadows(bool _shadows)
 {
     m_shadows = _shadows;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void IllumAmbientOcclusionSAT::setNbShells(int _nbShells)
 {
     m_nbShells = _nbShells;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void IllumAmbientOcclusionSAT::setShellRadius(int _shellRadius)
 {
     m_shellRadius = _shellRadius;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void IllumAmbientOcclusionSAT::setConeAngle(float _coneAngle)
 {
     m_coneAngle = _coneAngle;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void IllumAmbientOcclusionSAT::setSamplesAlongCone(int _samplesAlongCone)
 {
     m_samplesAlongCone = _samplesAlongCone;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace vr
 

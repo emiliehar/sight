@@ -36,8 +36,10 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
+
 /**
  *
  * @brief class to manage conversion between data::Integer of Float and igtl::RawMessage
@@ -46,17 +48,16 @@ template<typename ScalarType, typename FwDataObjectType>
 class IO_IGTL_CLASS_API ScalarConverter : public IConverter
 {
 public:
-
     /// Constructor
     ScalarConverter()
     {
-        BOOST_STATIC_ASSERT( ::boost::is_base_of< data::Object, FwDataObjectType>::value);
+        BOOST_STATIC_ASSERT(::boost::is_base_of<data::Object, FwDataObjectType>::value);
     }
 
     ScalarConverter(const std::string& a) :
         m_igtlType(a)
     {
-        BOOST_STATIC_ASSERT( ::boost::is_base_of< data::Object, FwDataObjectType>::value);
+        BOOST_STATIC_ASSERT(::boost::is_base_of<data::Object, FwDataObjectType>::value);
     }
 
     /// Destructor
@@ -69,11 +70,11 @@ public:
      *
      * @return an data::Integer converted from an igtl::RawMessage
      */
-    data::Object::sptr fromIgtlMessage (const ::igtl::MessageBase::Pointer src) const
+    data::Object::sptr fromIgtlMessage(const ::igtl::MessageBase::Pointer src) const
     {
         typename FwDataObjectType::sptr obj = FwDataObjectType::New();
 
-        RawMessage::Pointer msg = RawMessage::Pointer(dynamic_cast< RawMessage*>(src.GetPointer()));
+        RawMessage::Pointer msg = RawMessage::Pointer(dynamic_cast<RawMessage*>(src.GetPointer()));
         const ScalarType scalar = helper::ScalarToBytes<ScalarType>::fromBytes(msg->getMessage().data());
         obj->setValue(scalar);
 
@@ -85,7 +86,7 @@ public:
      *
      * @return an  igtl::RawMessage converted from an data::Integer
      */
-    ::igtl::MessageBase::Pointer fromFwDataObject (data::Object::csptr src) const
+    ::igtl::MessageBase::Pointer fromFwDataObject(data::Object::csptr src) const
     {
         RawMessage::Pointer msg;
         typename FwDataObjectType::csptr obj = FwDataObjectType::dynamicConstCast(src);
@@ -93,6 +94,7 @@ public:
         msg = RawMessage::New(m_igtlType);
         RawMessage::RawDataType content = helper::ScalarToBytes<ScalarType>::toBytes(obj->getValue());
         msg->append(content);
+
         return ::igtl::MessageBase::Pointer(msg);
     }
 
@@ -127,16 +129,15 @@ public:
     }
 
 protected:
-
     /// igtl type supported for conversion
     const std::string m_igtlType;
-
 };
 
-class IO_IGTL_CLASS_API IntConverter : public ScalarConverter< int, data::Integer>
+class IO_IGTL_CLASS_API IntConverter : public ScalarConverter<int,
+                                                              data::Integer>
 {
 public:
-    typedef ScalarConverter< int, data::Integer>  Superclass;
+    typedef ScalarConverter<int, data::Integer> Superclass;
     /// Constructor
     IntConverter() :
         Superclass("INTEGER")
@@ -155,14 +156,15 @@ public:
      */
     static IConverter::sptr New()
     {
-        return std::make_shared< IntConverter >();
+        return std::make_shared<IntConverter>();
     }
 };
 
-class IO_IGTL_CLASS_API FloatConverter : public ScalarConverter< float, data::Float>
+class IO_IGTL_CLASS_API FloatConverter : public ScalarConverter<float,
+                                                                data::Float>
 {
 public:
-    typedef ScalarConverter< float, data::Float>  Superclass;
+    typedef ScalarConverter<float, data::Float> Superclass;
     /// Constructor
     FloatConverter() :
         Superclass("FLOAT")
@@ -181,9 +183,10 @@ public:
      */
     static IConverter::sptr New()
     {
-        return std::make_shared< FloatConverter >();
+        return std::make_shared<FloatConverter>();
     }
 };
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

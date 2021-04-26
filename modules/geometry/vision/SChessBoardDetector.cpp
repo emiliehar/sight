@@ -61,11 +61,11 @@ static const service::IService::KeyType s_DETECTION_INOUT = "detection";
 
 SChessBoardDetector::SChessBoardDetector() noexcept
 {
-    m_sigChessboardDetected = newSignal< ChessboardDetectedSignalType >( s_CHESSBOARD_DETECTED_SIG );
-    m_sigChessboardFound    = newSignal< ChessboardFoundSignalType >( s_CHESSBOARD_FOUND_SIG );
+    m_sigChessboardDetected = newSignal<ChessboardDetectedSignalType>(s_CHESSBOARD_DETECTED_SIG);
+    m_sigChessboardFound    = newSignal<ChessboardFoundSignalType>(s_CHESSBOARD_FOUND_SIG);
 
-    newSlot( s_RECORD_POINTS_SLOT, &SChessBoardDetector::recordPoints, this );
-    newSlot( s_UPDATE_CHESSBOARD_SIZE_SLOT, &SChessBoardDetector::updateChessboardSize, this );
+    newSlot(s_RECORD_POINTS_SLOT, &SChessBoardDetector::recordPoints, this);
+    newSlot(s_UPDATE_CHESSBOARD_SIZE_SLOT, &SChessBoardDetector::updateChessboardSize, this);
 }
 
 // ----------------------------------------------------------------------------
@@ -78,8 +78,9 @@ SChessBoardDetector::~SChessBoardDetector() noexcept
 
 void SChessBoardDetector::configuring()
 {
-    SIGHT_ASSERT("This service must have the same number of 'image' keys and 'calInfo' keys",
-                 this->getKeyGroupSize(s_IMAGE_INPUT) == this->getKeyGroupSize(s_CALINFO_INOUT));
+    SIGHT_ASSERT(
+        "This service must have the same number of 'image' keys and 'calInfo' keys",
+        this->getKeyGroupSize(s_IMAGE_INPUT) == this->getKeyGroupSize(s_CALINFO_INOUT));
 
     const ConfigType config      = this->getConfigTree();
     const ConfigType boardConfig = config.get_child("board");
@@ -111,7 +112,8 @@ void SChessBoardDetector::updating()
 
     // Run parallel detections in separate threads.
     std::vector<std::thread> detectionJobs;
-    for(size_t i = 1; i < imageGroupSize; ++i)
+
+    for(size_t i = 1 ; i < imageGroupSize ; ++i)
     {
         detectionJobs.push_back(std::thread(&SChessBoardDetector::doDetection, this, i));
     }
@@ -161,11 +163,11 @@ void SChessBoardDetector::recordPoints()
 
     const bool allDetected = (std::count(m_images.begin(), m_images.end(), nullptr) == 0);
 
-    if (allDetected)
+    if(allDetected)
     {
-        for(size_t i = 0; i < calibGroupSize; ++i)
+        for(size_t i = 0 ; i < calibGroupSize ; ++i)
         {
-            auto calInfo = this->getInOut< data::CalibrationInfo >(s_CALINFO_INOUT, i);
+            auto calInfo = this->getInOut<data::CalibrationInfo>(s_CALINFO_INOUT, i);
             SIGHT_ASSERT("Missing 'calibInfo' in-out.", calInfo);
             data::mt::ObjectWriteLock calInfoLock(calInfo);
 
@@ -175,7 +177,7 @@ void SChessBoardDetector::recordPoints()
 
                 // Notify
                 data::CalibrationInfo::AddedRecordSignalType::sptr sig;
-                sig = calInfo->signal< data::CalibrationInfo::AddedRecordSignalType >(
+                sig = calInfo->signal<data::CalibrationInfo::AddedRecordSignalType>(
                     data::CalibrationInfo::s_ADDED_RECORD_SIG);
 
                 sig->asyncEmit();
@@ -193,19 +195,22 @@ void SChessBoardDetector::recordPoints()
 void SChessBoardDetector::updateChessboardSize()
 {
     const std::string widthStr = ui::base::preferences::getPreference(m_widthKey);
+
     if(!widthStr.empty())
     {
         m_width = std::stoul(widthStr);
     }
 
     const std::string heightStr = ui::base::preferences::getPreference(m_heightKey);
+
     if(!heightStr.empty())
     {
         m_height = std::stoul(heightStr);
     }
 
     const std::string scaleStr = ui::base::preferences::getPreference(m_scaleKey);
-    if (!scaleStr.empty())
+
+    if(!scaleStr.empty())
     {
         m_scale = std::stof(scaleStr);
 
@@ -221,7 +226,7 @@ void SChessBoardDetector::updateChessboardSize()
 
 void SChessBoardDetector::doDetection(size_t _imageIndex)
 {
-    const auto img = this->getInput< data::Image >(s_IMAGE_INPUT, _imageIndex);
+    const auto img = this->getInput<data::Image>(s_IMAGE_INPUT, _imageIndex);
     SIGHT_ASSERT("Missing 'image' input.", img);
 
     data::mt::ObjectReadLock imgLock(img);
@@ -231,10 +236,10 @@ void SChessBoardDetector::doDetection(size_t _imageIndex)
     {
         const ::cv::Mat cvImg = io::opencv::Image::moveToCv(img);
 
-        m_pointLists[_imageIndex] =
-            sight::geometry::vision::helper::detectChessboard(cvImg, m_width, m_height, m_scale);
+        m_pointLists[_imageIndex]
+            = sight::geometry::vision::helper::detectChessboard(cvImg, m_width, m_height, m_scale);
 
-        if (m_pointLists[_imageIndex] != nullptr)
+        if(m_pointLists[_imageIndex] != nullptr)
         {
             m_images[_imageIndex] = data::Image::New();
             m_images[_imageIndex]->deepCopy(img);
@@ -245,11 +250,13 @@ void SChessBoardDetector::doDetection(size_t _imageIndex)
         }
 
         const bool outputDetection = (this->getKeyGroupSize(s_DETECTION_INOUT) == this->getKeyGroupSize(s_IMAGE_INPUT));
+
         if(outputDetection)
         {
-            auto outPl = this->getInOut< data::PointList >(s_DETECTION_INOUT, _imageIndex);
+            auto outPl = this->getInOut<data::PointList>(s_DETECTION_INOUT, _imageIndex);
             data::mt::ObjectWriteLock writeLockOutPl(outPl);
-            if (m_pointLists[_imageIndex] != nullptr)
+
+            if(m_pointLists[_imageIndex] != nullptr)
             {
                 outPl->deepCopy(m_pointLists[_imageIndex]);
             }
@@ -258,7 +265,7 @@ void SChessBoardDetector::doDetection(size_t _imageIndex)
                 outPl->getPoints().clear();
             }
 
-            auto sig = outPl->signal< data::PointList::ModifiedSignalType >(data::PointList::s_MODIFIED_SIG);
+            auto sig = outPl->signal<data::PointList::ModifiedSignalType>(data::PointList::s_MODIFIED_SIG);
             sig->asyncEmit();
         }
     }
@@ -266,4 +273,4 @@ void SChessBoardDetector::doDetection(size_t _imageIndex)
 
 // ----------------------------------------------------------------------------
 
-} //namespace sight::module::geometry::vision
+} // namespace sight::module::geometry::vision

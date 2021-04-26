@@ -51,7 +51,7 @@ static const service::IService::KeyType s_SLICE_OUT = "slice";
 static const core::com::Slots::SlotKeyType s_UPDATE_SLICE_TYPE_SLOT    = "updateSliceType";
 static const core::com::Slots::SlotKeyType s_UPDATE_DEFAULT_VALUE_SLOT = "updateDefaultValue";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPlaneSlicer::SPlaneSlicer() noexcept :
     m_orientation(data::helper::MedicalImage::Orientation::Z_AXIS),
@@ -61,13 +61,13 @@ SPlaneSlicer::SPlaneSlicer() noexcept :
     newSlot(s_UPDATE_DEFAULT_VALUE_SLOT, &SPlaneSlicer::updateDefaultValue, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPlaneSlicer::~SPlaneSlicer() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::starting()
 {
@@ -79,20 +79,20 @@ void SPlaneSlicer::starting()
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::updating()
 {
     this->setReslicerExtent();
     this->setReslicerAxes();
 
-    auto image                           = this->getInput< data::Image >(s_IMAGE_IN);
+    auto image                           = this->getInput<data::Image>(s_IMAGE_IN);
     vtkSmartPointer<vtkImageData> vtkimg = vtkSmartPointer<vtkImageData>::New();
 
     io::vtk::toVTKImage(image, vtkimg.Get());
@@ -100,7 +100,7 @@ void SPlaneSlicer::updating()
     m_reslicer->SetInputData(vtkimg);
     m_reslicer->Update();
 
-    auto slice = this->getInOut< data::Image >(s_SLICE_OUT);
+    auto slice = this->getInOut<data::Image>(s_SLICE_OUT);
 
     io::vtk::fromVTKImage(m_reslicer->GetOutput(), slice);
 
@@ -110,16 +110,16 @@ void SPlaneSlicer::updating()
     const auto size = slice->getSize2();
     slice->setSize2({{size[0], size[1], 1}});
     const auto spacing = slice->getSpacing2();
-    slice->setSpacing2({{spacing[0], spacing[1], 0 }});
+    slice->setSpacing2({{spacing[0], spacing[1], 0}});
     const auto origin = slice->getOrigin2();
     slice->setOrigin2({{origin[0], origin[1], 0}});
 
-    auto sig = slice->signal< data::Image::ModifiedSignalType >(data::Image::s_MODIFIED_SIG);
+    auto sig = slice->signal<data::Image::ModifiedSignalType>(data::Image::s_MODIFIED_SIG);
 
     sig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::configuring()
 {
@@ -147,7 +147,7 @@ void SPlaneSlicer::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SPlaneSlicer::getAutoConnections() const
 {
@@ -163,11 +163,11 @@ service::IService::KeyConnectionsMap SPlaneSlicer::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::setReslicerExtent()
 {
-    data::Image::csptr extentImg = this->getInput< data::Image >(s_EXTENT_IN);
+    data::Image::csptr extentImg = this->getInput<data::Image>(s_EXTENT_IN);
 
     SIGHT_ASSERT("No extentImg.", extentImg);
 
@@ -177,23 +177,29 @@ void SPlaneSlicer::setReslicerExtent()
 
     // cast size_t to int.
     std::vector<int> intSize(size.size());
-    std::transform(size.begin(), size.end(), intSize.begin(), [](size_t s) -> int
+    std::transform(
+        size.begin(),
+        size.end(),
+        intSize.begin(),
+        [](size_t s) -> int
         {
             return std::max(static_cast<int>(s) - 1, 0);
         });
 
-    switch (m_orientation)
+    switch(m_orientation)
     {
         case data::helper::MedicalImage::Orientation::X_AXIS:
             m_reslicer->SetOutputExtent(0, intSize[1], 0, intSize[2], 0, 0);
             m_reslicer->SetOutputOrigin(origin[1], origin[2], origin[0]);
             m_reslicer->SetOutputSpacing(spacing[1], spacing[2], spacing[0]);
             break;
+
         case data::helper::MedicalImage::Orientation::Y_AXIS:
             m_reslicer->SetOutputExtent(0, intSize[0], 0, intSize[2], 0, 0);
             m_reslicer->SetOutputOrigin(origin[0], origin[2], origin[1]);
             m_reslicer->SetOutputSpacing(spacing[0], spacing[2], spacing[1]);
             break;
+
         case data::helper::MedicalImage::Orientation::Z_AXIS:
             m_reslicer->SetOutputExtent(0, intSize[0], 0, intSize[1], 0, 0);
             m_reslicer->SetOutputOrigin(origin[0], origin[1], origin[2]);
@@ -202,11 +208,11 @@ void SPlaneSlicer::setReslicerExtent()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::setReslicerAxes()
 {
-    data::Matrix4::csptr axes = this->getInput< data::Matrix4>(s_AXES_IN);
+    data::Matrix4::csptr axes = this->getInput<data::Matrix4>(s_AXES_IN);
 
     SIGHT_ASSERT("No axes found.", axes);
 
@@ -215,11 +221,12 @@ void SPlaneSlicer::setReslicerAxes()
     this->applySliceTranslation(axesMatrix);
 
     // permutate axes.
-    switch (m_orientation)
+    switch(m_orientation)
     {
         case data::helper::MedicalImage::Orientation::X_AXIS:
+
             // permutate X with Y and Y with Z
-            for(std::uint8_t i = 0; i < 4; ++i)
+            for(std::uint8_t i = 0 ; i < 4 ; ++i)
             {
                 const double x = axesMatrix->GetElement(i, 0);
                 const double y = axesMatrix->GetElement(i, 1);
@@ -228,38 +235,47 @@ void SPlaneSlicer::setReslicerAxes()
                 axesMatrix->SetElement(i, 1, z);
                 axesMatrix->SetElement(i, 2, x);
             }
+
             break;
+
         case data::helper::MedicalImage::Orientation::Y_AXIS:
+
             // permutate Y with Z
-            for(std::uint8_t i = 0; i < 4; ++i)
+            for(std::uint8_t i = 0 ; i < 4 ; ++i)
             {
                 const double y = axesMatrix->GetElement(i, 1);
                 const double z = axesMatrix->GetElement(i, 2);
                 axesMatrix->SetElement(i, 1, z);
                 axesMatrix->SetElement(i, 2, y);
             }
+
             break;
-        case data::helper::MedicalImage::Orientation::Z_AXIS: break; // Nothing to do.
+
+        case data::helper::MedicalImage::Orientation::Z_AXIS:
+            break;                                                   // Nothing to do.
     }
 
     m_reslicer->SetResliceAxes(axesMatrix);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::applySliceTranslation(vtkSmartPointer<vtkMatrix4x4> vtkMat) const
 {
-    auto image = this->getInput< data::Image >(s_EXTENT_IN);
+    auto image = this->getInput<data::Image>(s_EXTENT_IN);
 
     data::Object::sptr index;
-    switch (m_orientation)
+
+    switch(m_orientation)
     {
         case data::helper::MedicalImage::Orientation::X_AXIS:
             index = image->getField(data::fieldHelper::Image::m_sagittalSliceIndexId);
             break;
+
         case data::helper::MedicalImage::Orientation::Y_AXIS:
             index = image->getField(data::fieldHelper::Image::m_frontalSliceIndexId);
             break;
+
         case data::helper::MedicalImage::Orientation::Z_AXIS:
             index = image->getField(data::fieldHelper::Image::m_axialSliceIndexId);
             break;
@@ -281,27 +297,27 @@ void SPlaneSlicer::applySliceTranslation(vtkSmartPointer<vtkMatrix4x4> vtkMat) c
     vtkMatrix4x4::Multiply4x4(vtkMat, transMat, vtkMat);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::updateSliceOrientation(int from, int to)
 {
-    if( to == static_cast< int > ( m_orientation ) )
+    if(to == static_cast<int>(m_orientation))
     {
-        m_orientation = static_cast< data::helper::MedicalImage::Orientation > ( from );
+        m_orientation = static_cast<data::helper::MedicalImage::Orientation>(from);
     }
     else if(from == static_cast<int>(m_orientation))
     {
-        m_orientation = static_cast< data::helper::MedicalImage::Orientation >( to );
+        m_orientation = static_cast<data::helper::MedicalImage::Orientation>(to);
     }
 
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SPlaneSlicer::updateDefaultValue()
 {
-    data::Image::csptr image = this->getInput< data::Image >(s_IMAGE_IN);
+    data::Image::csptr image = this->getInput<data::Image>(s_IMAGE_IN);
     SIGHT_ASSERT("No 'image' found.", image);
 
     double min, max;
@@ -310,6 +326,6 @@ void SPlaneSlicer::updateDefaultValue()
     m_reslicer->SetBackgroundLevel(min);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sight::module::filter::image
+} // namespace sight::module::filter::image

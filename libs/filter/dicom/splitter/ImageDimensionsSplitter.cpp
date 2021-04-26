@@ -33,48 +33,50 @@
 #include <dcmtk/dcmimgle/dcmimage.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::ImageDimensionsSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::ImageDimensionsSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string ImageDimensionsSplitter::s_FILTER_NAME        = "Image dimensions splitter";
-const std::string ImageDimensionsSplitter::s_FILTER_DESCRIPTION =
-    "Split instances according to image dimensions.";
+const std::string ImageDimensionsSplitter::s_FILTER_NAME = "Image dimensions splitter";
+const std::string ImageDimensionsSplitter::s_FILTER_DESCRIPTION
+    = "Split instances according to image dimensions.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageDimensionsSplitter::ImageDimensionsSplitter(filter::dicom::IFilter::Key key) :
     ISplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageDimensionsSplitter::~ImageDimensionsSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImageDimensionsSplitter::getName() const
 {
     return ImageDimensionsSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImageDimensionsSplitter::getDescription() const
 {
     return ImageDimensionsSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageDimensionsSplitter::DicomSeriesContainerType ImageDimensionsSplitter::apply(
-    const data::DicomSeries::sptr& series, const core::log::Logger::sptr& logger) const
+    const data::DicomSeries::sptr& series,
+    const core::log::Logger::sptr& logger) const
 {
     DicomSeriesContainerType result;
     result.push_back(series);
@@ -90,8 +92,8 @@ ImageDimensionsSplitter::DicomSeriesContainerType ImageDimensionsSplitter::apply
     filter::dicom::helper::Filter::applyFilter(result, rowsSplitter, false, logger);
 
     return result;
-
 }
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

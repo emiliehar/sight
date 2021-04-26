@@ -29,16 +29,16 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief   Defines the generic input dialog box for IHM.
  */
 class UI_BASE_CLASS_API IInputDialog : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IInputDialog, ui::base::GuiBaseObject)
 
     /// Constructor. Do nothing.
@@ -60,8 +60,8 @@ public:
 
     /// Set the message
     UI_BASE_API virtual void setMessage(const std::string& msg) = 0;
-
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

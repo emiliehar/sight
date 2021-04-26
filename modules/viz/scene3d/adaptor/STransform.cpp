@@ -34,28 +34,29 @@ static const service::IService::KeyType s_TRANSFORM_INOUT = "transform";
 
 static const std::string s_PARENT_CONFIG = "parent";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STransform::STransform() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STransform::~STransform() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap STransform::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_TRANSFORM_INOUT, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransform::configuring()
 {
@@ -69,7 +70,7 @@ void STransform::configuring()
     m_parentTransformId = config.get<std::string>(s_PARENT_CONFIG, m_parentTransformId);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransform::starting()
 {
@@ -79,7 +80,7 @@ void STransform::starting()
     ::Ogre::SceneNode* const rootSceneNode = sceneManager->getRootSceneNode();
     SIGHT_ASSERT("Root scene node not found", rootSceneNode);
 
-    if (!m_parentTransformId.empty())
+    if(!m_parentTransformId.empty())
     {
         m_parentTransformNode = this->getTransformNode(m_parentTransformId, rootSceneNode);
     }
@@ -93,12 +94,12 @@ void STransform::starting()
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransform::updating()
 {
     {
-        const auto transform = this->getLockedInOut< data::Matrix4 >(s_TRANSFORM_INOUT);
+        const auto transform = this->getLockedInOut<data::Matrix4>(s_TRANSFORM_INOUT);
         m_ogreTransform = ::Ogre::Affine3(sight::viz::scene3d::Utils::convertTM3DToOgreMx(transform.get_shared()));
     }
 
@@ -127,12 +128,12 @@ void STransform::updating()
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransform::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

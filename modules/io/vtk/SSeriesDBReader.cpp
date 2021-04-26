@@ -49,27 +49,28 @@ namespace sight::module::io::vtk
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesDBReader::SSeriesDBReader() noexcept
 {
-    m_sigJobCreated = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
+    m_sigJobCreated = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SSeriesDBReader::getIOPathType() const
 {
     return sight::io::base::service::FILES;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::configureWithIHM()
 {
     this->openLocationDialog();
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::openLocationDialog()
 {
@@ -92,14 +93,17 @@ void SSeriesDBReader::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
     auto result = core::location::MultipleFiles::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         const std::vector<std::filesystem::path> paths = result->getFiles();
+
         if(!paths.empty())
         {
             defaultDirectory->setFolder(paths[0].parent_path());
             dialogFile.saveDefaultLocation(defaultDirectory);
         }
+
         this->setFiles(paths);
     }
     else
@@ -108,36 +112,37 @@ void SSeriesDBReader::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::configuring()
 {
     sight::io::base::service::IReader::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SSeriesDBReader::info(std::ostream& _sstream )
+void SSeriesDBReader::info(std::ostream& _sstream)
 {
     _sstream << "SSeriesDBReader::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SSeriesDBReader::loadSeriesDB( const std::vector<std::filesystem::path>& vtkFiles,
-                                    const data::SeriesDB::sptr& seriesDB )
+void SSeriesDBReader::loadSeriesDB(
+    const std::vector<std::filesystem::path>& vtkFiles,
+    const data::SeriesDB::sptr& seriesDB)
 {
     auto reader = sight::io::vtk::SeriesDBReader::New();
     reader->setObject(seriesDB);
@@ -150,7 +155,7 @@ void SSeriesDBReader::loadSeriesDB( const std::vector<std::filesystem::path>& vt
         reader->read();
         m_readFailed = false;
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         m_readFailed = true;
         std::stringstream ss;
@@ -161,7 +166,7 @@ void SSeriesDBReader::loadSeriesDB( const std::vector<std::filesystem::path>& vt
             ss.str(),
             sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
         m_readFailed = true;
         std::stringstream ss;
@@ -173,14 +178,14 @@ void SSeriesDBReader::loadSeriesDB( const std::vector<std::filesystem::path>& vt
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBReader::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        auto lockedSeriesDB = this->getLockedInOut< data::SeriesDB >(sight::io::base::service::s_DATA_KEY);
+        auto lockedSeriesDB = this->getLockedInOut<data::SeriesDB>(sight::io::base::service::s_DATA_KEY);
 
         data::SeriesDB::sptr localSeriesDB = data::SeriesDB::New();
 
@@ -200,7 +205,7 @@ void SSeriesDBReader::updating()
 
         data::SeriesDB::ContainerType addedSeries = lockedSeriesDB->getContainer();
 
-        auto sig = lockedSeriesDB->signal< data::SeriesDB::AddedSeriesSignalType >(
+        auto sig = lockedSeriesDB->signal<data::SeriesDB::AddedSeriesSignalType>(
             data::SeriesDB::s_ADDED_SERIES_SIG);
         sig->asyncEmit(addedSeries);
 
@@ -212,6 +217,6 @@ void SSeriesDBReader::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ioVtk

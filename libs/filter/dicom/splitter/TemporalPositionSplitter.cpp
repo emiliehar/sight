@@ -26,18 +26,19 @@
 
 #include <dcmtk/dcmdata/dcdeftag.h>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::TemporalPositionSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::TemporalPositionSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string TemporalPositionSplitter::s_FILTER_NAME        = "Temporal position splitter";
-const std::string TemporalPositionSplitter::s_FILTER_DESCRIPTION =
-    "Split instances according to temporal position identifier tag.";
+const std::string TemporalPositionSplitter::s_FILTER_NAME = "Temporal position splitter";
+const std::string TemporalPositionSplitter::s_FILTER_DESCRIPTION
+    = "Split instances according to temporal position identifier tag.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TemporalPositionSplitter::TemporalPositionSplitter(filter::dicom::IFilter::Key key) :
     TagValueSplitter(key)
@@ -45,34 +46,35 @@ TemporalPositionSplitter::TemporalPositionSplitter(filter::dicom::IFilter::Key k
     this->setTag(DCM_TemporalPositionIdentifier);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TemporalPositionSplitter::~TemporalPositionSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string TemporalPositionSplitter::getName() const
 {
     return TemporalPositionSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string TemporalPositionSplitter::getDescription() const
 {
     return TemporalPositionSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool TemporalPositionSplitter::isConfigurationRequired() const
 {
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

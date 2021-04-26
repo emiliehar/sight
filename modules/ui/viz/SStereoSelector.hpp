@@ -47,7 +47,6 @@ class MODULE_UI_VIZ_CLASS_API SStereoSelector : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SStereoSelector, sight::ui::base::IEditor)
 
     /// Constructor.
@@ -57,7 +56,6 @@ public:
     MODULE_UI_VIZ_API virtual ~SStereoSelector() noexcept;
 
 protected:
-
     /**
      * @brief method description:
      * @code{.xml}
@@ -79,7 +77,6 @@ protected:
     MODULE_UI_VIZ_API void updating() override;
 
 private Q_SLOTS:
-
     /// Slot: called when a layer is selected
     /// Sets the current layer
     void onSelectedLayerItem(int index);
@@ -88,14 +85,13 @@ private Q_SLOTS:
     void onSelectedModeItem(int index);
 
 private:
-
     /// Retrieves all the layers from the application thanks to the render services
     void refreshRenderers();
 
     QPointer<QComboBox> m_layersBox;
     QPointer<QComboBox> m_modeBox;
 
-    std::vector< sight::viz::scene3d::Layer::wptr > m_layers;
+    std::vector<sight::viz::scene3d::Layer::wptr> m_layers;
     sight::viz::scene3d::Layer::wptr m_currentLayer;
 };
 

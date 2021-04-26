@@ -58,7 +58,6 @@ class MODULE_UI_QT_CLASS_API SOrganMaterialEditor : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SOrganMaterialEditor, sight::ui::base::IEditor)
 
     /// Creates the service.
@@ -68,7 +67,6 @@ public:
     MODULE_UI_QT_API virtual ~SOrganMaterialEditor() noexcept;
 
 private:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /**
@@ -92,10 +90,10 @@ private:
     void stopping() final;
 
     /// Updates the UI according to the material (color and transparency widgets)
-    void refreshMaterial( );
+    void refreshMaterial();
 
     /// Notifies the material changes.
-    void materialNotification( );
+    void materialNotification();
 
     QPointer<QPushButton> m_diffuseColourButton;
     QPointer<QPushButton> m_ambientColourButton;
@@ -103,7 +101,6 @@ private:
     QPointer<QLabel> m_transparencyValue;
 
 private Q_SLOTS:
-
     /**
      * @brief Slot: called when the opacity slider changed.
      * @param _value The new opacity value.
@@ -115,7 +112,6 @@ private Q_SLOTS:
 
     /// Slot: called when the ambient color button is clicked.
     void onAmbientColorButton();
-
 };
 
 } // uiReconstructionQt

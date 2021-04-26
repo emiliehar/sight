@@ -60,14 +60,14 @@ public:
     /// add new work item to the pool
     template<class F, class ... Args>
     auto post(F&& f, Args&& ... args)
-    ->std::shared_future<typename std::result_of<F(Args ...)>::type>;
+    -> std::shared_future<typename std::result_of<F(Args ...)>::type>;
 
 private:
     /// need to keep track of threads so we can join them
-    std::vector< std::thread > m_workers;
+    std::vector<std::thread> m_workers;
 
     /// the task queue
-    std::queue< std::function<void()> > m_tasks;
+    std::queue<std::function<void()> > m_tasks;
 
     /// synchronization
     std::mutex m_queueMutex;
@@ -75,15 +75,15 @@ private:
     bool m_stop;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 template<class F, class ... Args>
 auto Pool::post(F&& f, Args&& ... args)
-->std::shared_future<typename std::result_of<F(Args ...)>::type>
+-> std::shared_future<typename std::result_of<F(Args ...)>::type>
 {
     using return_type = typename std::result_of<F(Args ...)>::type;
 
-    auto task = std::make_shared< std::packaged_task<return_type()> >(
+    auto task = std::make_shared<std::packaged_task<return_type()> >(
         std::bind(std::forward<F>(f), std::forward<Args>(args) ...)
         );
 
@@ -97,18 +97,20 @@ auto Pool::post(F&& f, Args&& ... args)
             throw std::runtime_error("enqueue on stopped Pool");
         }
 
-        m_tasks.emplace([task]()
+        m_tasks.emplace(
+            [task]()
             {
                 (*task)();
             });
     }
     m_condition.notify_one();
+
     return res;
 }
 
 /// Get the default pool
 CORE_API Pool& getDefaultPool();
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace sight::core::thread
+} // namespace sight::core::thread

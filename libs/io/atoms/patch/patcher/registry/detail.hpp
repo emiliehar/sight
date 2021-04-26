@@ -42,7 +42,7 @@ namespace registry
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(io::atoms::patch::patcher::IPatcher) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(io::atoms::patch::patcher::IPatcher)(), KeyType> Type;
 
 IO_ATOMS_API SPTR(Type) get();
 

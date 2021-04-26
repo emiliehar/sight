@@ -46,27 +46,27 @@
 namespace sight::module::io::dicom
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesDBWriter::SSeriesDBWriter() noexcept :
     m_fiducialsExportMode(sight::io::dicom::writer::Series::COMPREHENSIVE_3D_SR)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesDBWriter::~SSeriesDBWriter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBWriter::openLocationDialog()
 {
@@ -79,7 +79,8 @@ void SSeriesDBWriter::openLocationDialog()
     dialogFile.setType(ui::base::dialog::LocationDialog::FOLDER);
 
     auto result = core::location::SingleFolder::dynamicCast(dialogFile.show());
-    if (result && this->selectFiducialsExportMode())
+
+    if(result && this->selectFiducialsExportMode())
     {
         defaultDirectory->setFolder(result->getFolder());
         this->setFolder(result->getFolder());
@@ -91,45 +92,48 @@ void SSeriesDBWriter::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesDBWriter::updating()
 {
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         const std::filesystem::path& folder = this->getFolder();
+
         if(!std::filesystem::is_empty(folder))
         {
             sight::ui::base::dialog::MessageDialog dialog;
-            dialog.setMessage("Folder '"+folder.string()+"' isn't empty, files can be overwritten."
-                              "\nDo you want to continue ?");
+            dialog.setMessage(
+                "Folder '" + folder.string() + "' isn't empty, files can be overwritten."
+                                               "\nDo you want to continue ?");
             dialog.setTitle("Folder not empty.");
             dialog.setIcon(ui::base::dialog::MessageDialog::QUESTION);
-            dialog.addButton( sight::ui::base::dialog::MessageDialog::YES_NO );
+            dialog.addButton(sight::ui::base::dialog::MessageDialog::YES_NO);
             sight::ui::base::dialog::MessageDialog::Buttons button = dialog.show();
 
             if(button == sight::ui::base::dialog::MessageDialog::NO)
             {
                 m_writeFailed = true;
+
                 return;
             }
         }
@@ -139,7 +143,7 @@ void SSeriesDBWriter::updating()
         }
 
         // Retrieve dataStruct associated with this service
-        data::Vector::csptr vector = this->getInput< data::Vector >(sight::io::base::service::s_DATA_KEY);
+        data::Vector::csptr vector = this->getInput<data::Vector>(sight::io::base::service::s_DATA_KEY);
 
         // Create SeriesDB
         data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
@@ -163,9 +167,9 @@ void SSeriesDBWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SSeriesDBWriter::saveSeriesDB( const std::filesystem::path folder, data::SeriesDB::sptr seriesDB )
+void SSeriesDBWriter::saveSeriesDB(const std::filesystem::path folder, data::SeriesDB::sptr seriesDB)
 {
     auto writer = sight::io::dicom::writer::SeriesDB::New();
     writer->setObject(seriesDB);
@@ -175,38 +179,42 @@ void SSeriesDBWriter::saveSeriesDB( const std::filesystem::path folder, data::Se
     try
     {
         sight::ui::base::dialog::ProgressDialog progressMeterGUI("Saving series ");
-        writer->addHandler( progressMeterGUI );
+        writer->addHandler(progressMeterGUI);
         writer->write();
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         m_writeFailed = true;
         std::stringstream ss;
         ss << "Warning during saving : " << e.what();
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", ss.str(), sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
         m_writeFailed = true;
         sight::ui::base::dialog::MessageDialog::show(
-            "Warning", "Warning during saving", sight::ui::base::dialog::IMessageDialog::WARNING);
+            "Warning",
+            "Warning during saving",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SSeriesDBWriter::getIOPathType() const
 {
     return sight::io::base::service::FOLDER;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool SSeriesDBWriter::selectFiducialsExportMode()
 {
     // Retrieve dataStruct associated with this service
-    data::Vector::csptr vector = this->getInput< data::Vector >(sight::io::base::service::s_DATA_KEY);
+    data::Vector::csptr vector = this->getInput<data::Vector>(sight::io::base::service::s_DATA_KEY);
 
     // Create SeriesDB
     data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
@@ -229,15 +237,18 @@ bool SSeriesDBWriter::selectFiducialsExportMode()
         static const std::string comprehensiveSRIOD   = "Comprehensive SR";
         static const std::string comprehensive3DSRIOD = "Comprehensive 3D SR";
 
-        std::vector< std::string > exportModes;
+        std::vector<std::string> exportModes;
+
         if(!containsDistances)
         {
             exportModes.push_back(fiducialIOD);
         }
+
         if(!contains3DDistances)
         {
             exportModes.push_back(comprehensiveSRIOD);
         }
+
         exportModes.push_back(comprehensive3DSRIOD);
 
         // Create selector

@@ -88,13 +88,11 @@ namespace sight::module::io::atoms
  */
 class MODULE_IO_ATOMS_CLASS_API SWriter : public sight::io::base::service::IWriter
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SWriter, sight::io::base::service::IWriter)
 
     /// Signal type for job creation.
-    typedef core::com::Signal< void ( core::jobs::IJob::sptr ) > JobCreatedSignalType;
+    typedef core::com::Signal<void (core::jobs::IJob::sptr)> JobCreatedSignalType;
 
     /// Does nothing
     MODULE_IO_ATOMS_API SWriter();
@@ -115,9 +113,8 @@ public:
     MODULE_IO_ATOMS_API void openLocationDialog() override;
 
 protected:
-
     /// Maps file extension to format name.
-    typedef std::map< std::string, std::string > FileExtension2NameType;
+    typedef std::map<std::string, std::string> FileExtension2NameType;
 
     /// Parse the configuration
     MODULE_IO_ATOMS_API void configuring() override;
@@ -154,7 +151,7 @@ protected:
     bool versionSelection();
 
     /// Allowed file extensions
-    std::set< std::string > m_allowedExts;
+    std::set<std::string> m_allowedExts;
 
     /// Maps custom extensions to known format.
     FileExtension2NameType m_customExts;

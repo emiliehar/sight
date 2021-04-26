@@ -43,9 +43,8 @@ public:
     IO_PATCH_API static void setCurrentVersion(const std::string& version);
 
 private:
-
     /// Current version of the MedicalData context
     static std::string s_currentVersion;
 };
 
-} //namespace sight::io::patch::semantic
+} // namespace sight::io::patch::semantic

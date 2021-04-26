@@ -26,13 +26,14 @@
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
 class Os : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( Os );
-CPPUNIT_TEST( getSharedLibraryPath );
+CPPUNIT_TEST_SUITE(Os);
+CPPUNIT_TEST(getSharedLibraryPath);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,4 +46,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::core::tools

@@ -26,14 +26,15 @@
 
 namespace sight::module::ui::viz
 {
+
 namespace ut
 {
 
 class UtilsTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( UtilsTest );
-CPPUNIT_TEST( convertOgreColorToQColor );
-CPPUNIT_TEST( convertQColorToOgreColor );
+CPPUNIT_TEST_SUITE(UtilsTest);
+CPPUNIT_TEST(convertOgreColorToQColor);
+CPPUNIT_TEST(convertQColorToOgreColor);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,5 +46,6 @@ public:
     void convertQColorToOgreColor();
 };
 
-} //namespace ut
-} //namespace sight::module::ui::viz
+} // namespace ut
+
+} // namespace sight::module::ui::viz

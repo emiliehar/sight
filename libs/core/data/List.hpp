@@ -28,7 +28,7 @@
 
 #include <list>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(List));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (List));
 
 namespace sight::data
 {
@@ -40,14 +40,12 @@ namespace sight::data
  */
 class DATA_CLASS_API List : public Object
 {
-
 public:
+    SIGHT_DECLARE_CLASS(List, data::Object, data::factory::New<List>)
 
-    SIGHT_DECLARE_CLASS(List, data::Object, data::factory::New< List >)
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (List));
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(List));
-
-    typedef std::list< Object::sptr > ContainerType;
+    typedef std::list<Object::sptr> ContainerType;
 
     typedef ContainerType::value_type ValueType;
     typedef ContainerType::reference ReferenceType;
@@ -81,12 +79,12 @@ public:
     IteratorType begin();
     IteratorType end();
     ConstIteratorType begin() const;
-    ConstIteratorType end()   const;
+    ConstIteratorType end() const;
 
     ReverseIteratorType rbegin();
     ReverseIteratorType rend();
     ConstReverseIteratorType rbegin() const;
-    ConstReverseIteratorType rend()   const;
+    ConstReverseIteratorType rend() const;
 
     bool empty() const;
     SizeType size() const;
@@ -100,140 +98,139 @@ public:
     /// @brief get/set the list of data::Object
     /// @{
     ContainerType& getContainer();
-    const ContainerType& getContainer () const;
-    void setContainer (const ContainerType& val);
+    const ContainerType& getContainer() const;
+    void setContainer(const ContainerType& val);
     /// @}
 
     /// Defines shallow copy
-    DATA_API void shallowCopy( const Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const Object::csptr& _source) override;
 
     /// Defines deep copy
     DATA_API void cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache) override;
 
 protected:
-
     ContainerType m_container;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::IteratorType List::begin()
 {
     return m_container.begin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::IteratorType List::end()
 {
     return m_container.end();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ConstIteratorType List::begin() const
 {
     return m_container.begin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ConstIteratorType List::end() const
 {
     return m_container.end();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ReverseIteratorType List::rbegin()
 {
     return m_container.rbegin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ReverseIteratorType List::rend()
 {
     return m_container.rend();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ConstReverseIteratorType List::rbegin() const
 {
     return m_container.rbegin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ConstReverseIteratorType List::rend() const
 {
     return m_container.rend();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline bool List::empty() const
 {
     return m_container.empty();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::SizeType List::size() const
 {
     return m_container.size();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ReferenceType List::front()
 {
     return m_container.front();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ReferenceType List::back()
 {
     return m_container.back();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ConstReferenceType List::front() const
 {
     return m_container.front();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ConstReferenceType List::back() const
 {
     return m_container.back();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline List::ContainerType& List::getContainer()
 {
     return m_container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline const List::ContainerType& List::getContainer () const
+inline const List::ContainerType& List::getContainer() const
 {
     return m_container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline void List::setContainer (const List::ContainerType& val)
-{                                                                                                                                                                                         \
+inline void List::setContainer(const List::ContainerType& val)
+{ \
     m_container = val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::data

@@ -46,7 +46,7 @@ namespace sight::atoms
 class ATOMS_CLASS_API Map : public Base
 {
 public:
-    SIGHT_DECLARE_CLASS(Map, atoms::Base, atoms::factory::New< Map >)
+    SIGHT_DECLARE_CLASS(Map, atoms::Base, atoms::factory::New<Map>)
 
     typedef std::map<std::string, Base::sptr> MapType;
 
@@ -93,7 +93,7 @@ public:
      */
     std::pair<IteratorType, bool> insert(const std::string& key, const Base::sptr& value)
     {
-        return m_value.insert( ValueType(key, value) );
+        return m_value.insert(ValueType(key, value));
     }
 
     /**
@@ -140,7 +140,7 @@ public:
     }
 
     //! clear the map
-    void  clear()
+    void clear()
     {
         m_value.clear();
     }
@@ -201,4 +201,4 @@ protected:
     MapType m_value;
 };
 
-}
+} // namespace sight::atoms

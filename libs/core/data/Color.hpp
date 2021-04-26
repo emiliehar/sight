@@ -28,25 +28,24 @@
 
 #include <array>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(Color));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (Color));
 
 namespace sight::data
 {
+
 /**
  * @brief   This class defines color object.
  */
 
 class DATA_CLASS_API Color : public Object
 {
-
 public:
-
     typedef float ColorType;
     typedef std::array<ColorType, 4> ColorArray;
 
-    SIGHT_DECLARE_CLASS(Color, data::Object, data::factory::New< Color >)
+    SIGHT_DECLARE_CLASS(Color, data::Object, data::factory::New<Color>)
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(Color));
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (Color));
 
     DATA_API static sptr New(ColorType red, ColorType green = 1.f, ColorType blue = 1.f, ColorType alpha = 1.f);
 
@@ -54,13 +53,13 @@ public:
      * @brief Constructor
      * @param key Private construction key
      */
-    DATA_API Color( data::Object::Key key );
+    DATA_API Color(data::Object::Key key);
 
     /// Destructor
     DATA_API virtual ~Color();
 
     /// Defines shallow copy
-    DATA_API void shallowCopy( const Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const Object::csptr& _source) override;
 
     /// Defines deep copy
     DATA_API void cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache) override;
@@ -70,17 +69,20 @@ public:
      *  @{  */
     ColorArray& getRGBA();
     const ColorArray& getRGBA() const;
-    void setRGBA(const ColorArray&  _vRGBA);
+    void setRGBA(const ColorArray& _vRGBA);
     /** @} */
 
     ///@{
     /// Set RGBA color
-    DATA_API void setRGBA( const ColorType red, const ColorType green, const ColorType blue,
-                           const ColorType alpha = 1.0 );
+    DATA_API void setRGBA(
+        const ColorType red,
+        const ColorType green,
+        const ColorType blue,
+        const ColorType alpha = 1.0);
 
-    ///@brief set RGBA from hexadecimal format (\#ffffff)
-    ///@param[in] hexaColor c hexadecimal format (\#ffffff)
-    DATA_API void setRGBA(const std::string& hexaColor );
+    /// @brief set RGBA from hexadecimal format (\#ffffff)
+    /// @param[in] hexaColor c hexadecimal format (\#ffffff)
+    DATA_API void setRGBA(const std::string& hexaColor);
     ///@}
 
     /** @name color attributes accessor
@@ -96,40 +98,38 @@ public:
     /**@brief Get read-only reference to color attributes
      * @{
      */
-    DATA_API const ColorType& red()   const;
+    DATA_API const ColorType& red() const;
     DATA_API const ColorType& green() const;
-    DATA_API const ColorType& blue()  const;
+    DATA_API const ColorType& blue() const;
     DATA_API const ColorType& alpha() const;
     //@}
 
 protected:
-
     //! RGBA of the image (in terms of points)
     ColorArray m_vRGBA;
-
 }; // end class Color
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline Color::ColorArray& Color::getRGBA()
 {
     return this->m_vRGBA;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const Color::ColorArray& Color::getRGBA() const
 {
     return this->m_vRGBA;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline void Color::setRGBA(const Color::ColorArray&  _vRGBA)
+inline void Color::setRGBA(const Color::ColorArray& _vRGBA)
 {
     this->m_vRGBA = _vRGBA;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // end namespace sight::data

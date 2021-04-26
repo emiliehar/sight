@@ -48,7 +48,6 @@ namespace sight::module::io::matrix
  */
 class MODULE_IO_MATRIX_CLASS_API Matrix4ReaderService : public sight::io::base::service::IReader
 {
-
 public:
     SIGHT_DECLARE_SERVICE(Matrix4ReaderService, sight::io::base::service::IReader)
 
@@ -80,14 +79,13 @@ public:
     /**
      * @brief   returns  (filename) extension
      */
-    MODULE_IO_MATRIX_API std::vector< std::string > getSupportedExtensions() override;
+    MODULE_IO_MATRIX_API std::vector<std::string> getSupportedExtensions() override;
     /// @}
 
     /// Return path type managed by the service, here FILE
     MODULE_IO_MATRIX_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */
@@ -97,14 +95,14 @@ protected:
      *
      * This method is used to initialize the service. The starting method is empty for this service.
      */
-    MODULE_IO_MATRIX_API void starting( ) override;
+    MODULE_IO_MATRIX_API void starting() override;
 
     /**
      * @brief Stopping method. This method is called by stop() from base service ( service::IService )
      *
      * The stopping method is empty for this service.
      */
-    MODULE_IO_MATRIX_API void stopping( ) override;
+    MODULE_IO_MATRIX_API void stopping() override;
 
     /**
      * @brief Configuring method : calls implementation from `io::IReader`
@@ -128,9 +126,8 @@ protected:
      *
      * @param[out] _sstream output stream
      */
-    MODULE_IO_MATRIX_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_MATRIX_API void info(std::ostream& _sstream) override;
     /// @}
-
 };
 
 } // namespace sight::module::io::matrix

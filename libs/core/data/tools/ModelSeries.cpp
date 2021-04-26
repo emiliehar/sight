@@ -28,20 +28,24 @@
 namespace sight::data::tools
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ModelSeries::addMesh(const data::ModelSeries::sptr& _modelSeries, const data::Mesh::sptr& _mesh,
-                          const std::string& _organName, const std::string& _structureType,
-                          const data::Color::sptr& _colour, data::Material::RepresentationType _mode,
-                          bool _visible)
+void ModelSeries::addMesh(
+    const data::ModelSeries::sptr& _modelSeries,
+    const data::Mesh::sptr& _mesh,
+    const std::string& _organName,
+    const std::string& _structureType,
+    const data::Color::sptr& _colour,
+    data::Material::RepresentationType _mode,
+    bool _visible)
 {
-    //reconstruction creation
-    data::Reconstruction::sptr reconstructionQuadMesh =
-        createReconstructionFromMesh(_mesh, _organName, _structureType, _colour, _mode, _visible);
+    // reconstruction creation
+    data::Reconstruction::sptr reconstructionQuadMesh
+        = createReconstructionFromMesh(_mesh, _organName, _structureType, _colour, _mode, _visible);
 
     addReconstruction(_modelSeries, reconstructionQuadMesh);
 
-    auto sig = _modelSeries->signal< data::ModelSeries::ReconstructionsAddedSignalType>(
+    auto sig = _modelSeries->signal<data::ModelSeries::ReconstructionsAddedSignalType>(
         data::ModelSeries::s_RECONSTRUCTIONS_ADDED_SIG);
 
     data::ModelSeries::ReconstructionVectorType reconstructionsVector;
@@ -49,14 +53,15 @@ void ModelSeries::addMesh(const data::ModelSeries::sptr& _modelSeries, const dat
     sig->asyncEmit(reconstructionsVector);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::Reconstruction::sptr ModelSeries::createReconstructionFromMesh( const data::Mesh::sptr& _mesh,
-                                                                      const std::string& _organName,
-                                                                      const std::string& _structureType,
-                                                                      const data::Color::sptr& _color,
-                                                                      data::Material::RepresentationType _mode,
-                                                                      bool _visible)
+data::Reconstruction::sptr ModelSeries::createReconstructionFromMesh(
+    const data::Mesh::sptr& _mesh,
+    const std::string& _organName,
+    const std::string& _structureType,
+    const data::Color::sptr& _color,
+    data::Material::RepresentationType _mode,
+    bool _visible)
 {
     data::Color::sptr diffuse = data::Color::New();
     diffuse->setRGBA(_color->red(), _color->green(), _color->blue(), _color->alpha());
@@ -74,21 +79,23 @@ data::Reconstruction::sptr ModelSeries::createReconstructionFromMesh( const data
     return reconstruction;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ModelSeries::addReconstruction( const data::ModelSeries::sptr& _modelSeries,
-                                     const data::Reconstruction::sptr& _rec)
+void ModelSeries::addReconstruction(
+    const data::ModelSeries::sptr& _modelSeries,
+    const data::Reconstruction::sptr& _rec)
 {
     data::ModelSeries::ReconstructionVectorType recDB = _modelSeries->getReconstructionDB();
 
     SIGHT_THROW_IF("Reconstruction is invalid.", _rec == nullptr);
-    SIGHT_THROW_IF("Reconstruction already exists in ModelSeries.",
-                   std::find(recDB.begin(), recDB.end(), _rec) != recDB.end());
+    SIGHT_THROW_IF(
+        "Reconstruction already exists in ModelSeries.",
+        std::find(recDB.begin(), recDB.end(), _rec) != recDB.end());
 
     recDB.push_back(_rec);
     _modelSeries->setReconstructionDB(recDB);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // end namespace sight::data::tools

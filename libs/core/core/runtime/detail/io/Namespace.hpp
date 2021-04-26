@@ -24,8 +24,10 @@
 
 namespace sight::core::runtime
 {
+
 namespace detail
 {
+
 /// The namespace sightcore::runtime::io contains classes to read and perform profile file  .
 namespace io
 {

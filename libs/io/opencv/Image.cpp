@@ -29,7 +29,7 @@
 namespace sight::io::opencv
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static ::cv::Mat toCv(const data::Image::csptr& _image, bool _copy)
 {
@@ -44,46 +44,51 @@ static ::cv::Mat toCv(const data::Image::csptr& _image, bool _copy)
 
     const auto imageSize = _image->getSize2();
     std::vector<int> cvSize;
-    for(size_t i = 0; i < _image->getNumberOfDimensions(); ++i)
+
+    for(size_t i = 0 ; i < _image->getNumberOfDimensions() ; ++i)
     {
-        cvSize.push_back( static_cast<int>(imageSize[i]) );
+        cvSize.push_back(static_cast<int>(imageSize[i]));
     }
+
     if(cvSize.size() == 1)
     {
         // If we have a single row, we want to initialize the ::cv::Math with (1, N) since it takes (rows,cols)
         cvSize.push_back(1);
     }
+
     // Reverse from (w,h,d) to (d,h,w) because OpenCV uses a row major format
     std::reverse(cvSize.begin(), cvSize.end());
 
     ::cv::Mat cvImage;
+
     if(_copy)
     {
         ::cv::Mat mat = ::cv::Mat(cvSize, cvType, const_cast<void*>(_image->getBuffer()));
-        cvImage       = mat.clone();
+        cvImage = mat.clone();
     }
     else
     {
         cvImage = ::cv::Mat(cvSize, cvType, const_cast<void*>(_image->getBuffer()));
     }
+
     return cvImage;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::cv::Mat Image::moveToCv(data::Image::sptr& _image)
 {
     return toCv(_image, false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const ::cv::Mat Image::moveToCv(const data::Image::csptr& _image)
 {
     return toCv(_image, false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Image::copyFromCv(data::Image::sptr& _image, const ::cv::Mat& _cvImage)
 {
@@ -98,7 +103,7 @@ void Image::copyFromCv(data::Image::sptr& _image, const ::cv::Mat& _cvImage)
 
     data::Image::Size imageSize = {0, 0, 0};
 
-    if (_cvImage.dims == 1)
+    if(_cvImage.dims == 1)
     {
         imageSize[0] = _cvImage.size[0];
     }
@@ -108,7 +113,7 @@ void Image::copyFromCv(data::Image::sptr& _image, const ::cv::Mat& _cvImage)
         imageSize[0] = _cvImage.size[1];
         imageSize[1] = 0;
     }
-    else if (_cvImage.dims == 2)
+    else if(_cvImage.dims == 2)
     {
         imageSize[0] = _cvImage.size[1];
         imageSize[1] = _cvImage.size[0];
@@ -121,6 +126,7 @@ void Image::copyFromCv(data::Image::sptr& _image, const ::cv::Mat& _cvImage)
     }
 
     const auto prevImageSize = _image->getSize2();
+
     if(prevImageComp != imageComp || prevImageType != imageType || imageSize != prevImageSize)
     {
         // The pixel format is not changed here, we have no way to know the format from a ::cv::Mat
@@ -133,17 +139,17 @@ void Image::copyFromCv(data::Image::sptr& _image, const ::cv::Mat& _cvImage)
     const auto dumpLock = _image->lock();
     SIGHT_ASSERT("Empty image buffer", _image->getAllocatedSizeInBytes() > 0);
 
-    auto buffer = _image->begin< std::uint8_t >();
-    std::copy(_cvImage.data, _cvImage.data+_image->getSizeInBytes(), buffer);
+    auto buffer = _image->begin<std::uint8_t>();
+    std::copy(_cvImage.data, _cvImage.data + _image->getSizeInBytes(), buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::cv::Mat Image::copyToCv(const data::Image::csptr& _image)
 {
     return toCv(_image, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}//namespace sight::io::opencv
+} // namespace sight::io::opencv

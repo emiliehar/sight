@@ -36,9 +36,7 @@ namespace Tuto01DataServiceBasicCpp
 /// This class is started when the module is loaded.
 class TUTO01DATASERVICEBASICCPP_CLASS_API Plugin final : public sight::core::runtime::Plugin
 {
-
 public:
-
     /// Destroys the plugin.
     TUTO01DATASERVICEBASICCPP_API ~Plugin() noexcept override;
 
@@ -55,7 +53,6 @@ public:
     TUTO01DATASERVICEBASICCPP_API void uninitialize() override;
 
 private:
-
     sight::data::Image::sptr m_image;
 
     sight::service::IService::sptr m_frameSrv;
@@ -67,7 +64,6 @@ private:
     sight::service::IService::sptr m_negatoSrv;
 
     sight::service::IService::sptr m_readerSrv;
-
 };
 
 } // namespace Tuto01DataServiceBasicCpp.

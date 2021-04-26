@@ -32,7 +32,7 @@ namespace registry
 
 static AdaptorRegistryType s_REGISTRY;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 AdaptorRegistryType& getAdaptorRegistry()
 {
@@ -40,4 +40,5 @@ AdaptorRegistryType& getAdaptorRegistry()
 }
 
 } // namespace registry.
+
 } // namespace sight::viz::qt3d.

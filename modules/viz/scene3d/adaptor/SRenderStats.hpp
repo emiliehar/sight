@@ -55,9 +55,7 @@ class PostWindowRenderListener;
  */
 class MODULE_VIZ_SCENE3D_CLASS_API SRenderStats final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SRenderStats, ::sight::viz::scene3d::IAdaptor)
 
@@ -68,7 +66,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SRenderStats() noexcept override;
 
 protected:
-
     /// Configures stats color and size.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -82,24 +79,22 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     friend class PostWindowRenderListener;
 
     /// Contains the listener to frame update events and updates the stats text.
-    std::unique_ptr< PostWindowRenderListener > m_listener;
+    std::unique_ptr<PostWindowRenderListener> m_listener;
 
     /// Contains the displays stats in the overlay.
-    sight::viz::scene3d::Text* m_statsText { nullptr };
+    sight::viz::scene3d::Text* m_statsText{nullptr};
 
     /// Defines the text's color.
     ::Ogre::ColourValue m_textColor;
 
     /// Defines the text's font height in points.
-    size_t m_fontSize { 12 };
+    size_t m_fontSize{12};
 
     /// Defines the TrueType font source file.
-    std::string m_fontSource { "DejaVuSans.ttf" };
-
+    std::string m_fontSource{"DejaVuSans.ttf"};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

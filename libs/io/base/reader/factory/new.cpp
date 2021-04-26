@@ -26,15 +26,16 @@
 
 namespace sight::io::base
 {
+
 namespace reader
 {
 
 namespace factory
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-io::base::reader::IObjectReader::sptr New( const io::base::reader::registry::KeyType& classname )
+io::base::reader::IObjectReader::sptr New(const io::base::reader::registry::KeyType& classname)
 {
     return io::base::reader::registry::get()->create(classname);
 }

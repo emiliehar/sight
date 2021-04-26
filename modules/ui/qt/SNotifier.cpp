@@ -38,7 +38,7 @@ static const core::com::Slots::SlotKeyType s_POP_FAILURE_SLOT = "popFailure";
 
 static const core::com::Slots::SlotKeyType s_SET_ENUM_PARAMETER_SLOT = "setEnumParameter";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SNotifier::SNotifier() noexcept
 {
@@ -57,20 +57,20 @@ SNotifier::SNotifier() noexcept
     newSlot(s_SET_ENUM_PARAMETER_SLOT, &SNotifier::setEnumParameter, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SNotifier::~SNotifier() noexcept
 {
     m_positionMap.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::configuring()
 {
     const auto configTree = this->getConfigTree();
-    m_defaultMessage = configTree.get< std::string >("message", m_defaultMessage);
-    const std::string position = configTree.get< std::string >("position", "TOP_RIGHT");
+    m_defaultMessage = configTree.get<std::string>("message", m_defaultMessage);
+    const std::string position = configTree.get<std::string>("position", "TOP_RIGHT");
 
     if(m_positionMap.find(position) != m_positionMap.end())
     {
@@ -78,18 +78,19 @@ void SNotifier::configuring()
     }
     else
     {
-        SIGHT_ERROR("Position '" + position + "' isn't a valid position value, accepted values are:"
-                    "TOP_RIGHT, TOP_LEFT, CENTERED_TOP, CENTERED, BOTTOM_RIGHT, BOTTOM_LEFT, CENTERED_BOTTOM.")
+        SIGHT_ERROR(
+            "Position '" + position + "' isn't a valid position value, accepted values are:"
+                                      "TOP_RIGHT, TOP_LEFT, CENTERED_TOP, CENTERED, BOTTOM_RIGHT, BOTTOM_LEFT, CENTERED_BOTTOM.")
     }
 
     m_durationInMs = configTree.get<int>("duration", m_durationInMs);
 
     m_maxStackedNotifs = configTree.get<std::uint8_t>("maxNotifications", m_maxStackedNotifs);
 
-    m_parentContainerID = configTree.get< std::string >("parent.<xmlattr>.uid", m_parentContainerID);
+    m_parentContainerID = configTree.get<std::string>("parent.<xmlattr>.uid", m_parentContainerID);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::starting()
 {
@@ -109,25 +110,23 @@ void SNotifier::starting()
         {
             m_containerWhereToDisplayNotifs = container;
         }
-
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::stopping()
 {
     m_popups.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::updating()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::setEnumParameter(std::string _val, std::string _key)
 {
@@ -146,31 +145,30 @@ void SNotifier::setEnumParameter(std::string _val, std::string _key)
     {
         SIGHT_ERROR("Value '" + _val + "' is not handled for key " + _key);
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::popInfo(std::string _message)
 {
     this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::INFO);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::popSuccess(std::string _message)
 {
     this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::SUCCESS);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::popFailure(std::string _message)
 {
     this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::FAILURE);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SNotifier::showNotification(const std::string& _message, sight::ui::base::dialog::INotificationDialog::Type _type)
 {
@@ -178,7 +176,7 @@ void SNotifier::showNotification(const std::string& _message, sight::ui::base::d
     bool foundAPlace           = false;
 
     // Find the first free place.
-    for (size_t i = 0; i < m_popups.size(); ++i)
+    for(size_t i = 0 ; i < m_popups.size() ; ++i)
     {
         // No popup or a recently hidden popup.
         if(m_popups[i] == nullptr || !m_popups[i]->isVisible())
@@ -196,7 +194,7 @@ void SNotifier::showNotification(const std::string& _message, sight::ui::base::d
         indexOfCurrentNotif = m_indexQueue.front(); // Oldest index.
         m_indexQueue.pop(); // Remove it.
 
-        //Remove the oldest one.
+        // Remove the oldest one.
         m_popups[indexOfCurrentNotif]->close();
         m_popups[indexOfCurrentNotif].reset();
     }
@@ -212,8 +210,8 @@ void SNotifier::showNotification(const std::string& _message, sight::ui::base::d
         messageToShow = _message;
     }
 
-    sight::ui::base::dialog::NotificationDialog::sptr notif =
-        sight::ui::base::dialog::NotificationDialog::New();
+    sight::ui::base::dialog::NotificationDialog::sptr notif
+        = sight::ui::base::dialog::NotificationDialog::New();
 
     notif->setContainer(m_containerWhereToDisplayNotifs);
 
@@ -232,9 +230,8 @@ void SNotifier::showNotification(const std::string& _message, sight::ui::base::d
     }
 
     m_indexQueue.push(indexOfCurrentNotif);
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::module

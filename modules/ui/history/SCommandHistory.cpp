@@ -39,7 +39,6 @@
 namespace sight::module::ui::history
 {
 
-
 static const core::com::Signals::SignalKeyType s_CANUNDO_SIGNAL = "canUndo";
 static const core::com::Signals::SignalKeyType s_CANREDO_SIGNAL = "canRedo";
 
@@ -48,7 +47,7 @@ static const core::com::Slots::SlotKeyType s_UNDO_SLOT    = "undo";
 static const core::com::Slots::SlotKeyType s_REDO_SLOT    = "redo";
 static const core::com::Slots::SlotKeyType s_CLEAR_SLOT   = "clear";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SCommandHistory::SCommandHistory()
 {
@@ -57,24 +56,24 @@ SCommandHistory::SCommandHistory()
     newSlot(s_REDO_SLOT, &SCommandHistory::redo, this);
     newSlot(s_CLEAR_SLOT, &SCommandHistory::clear, this);
 
-    m_canUndoSig = newSignal< CanDoSignalType >( s_CANUNDO_SIGNAL );
-    m_canRedoSig = newSignal< CanDoSignalType >( s_CANREDO_SIGNAL );
+    m_canUndoSig = newSignal<CanDoSignalType>(s_CANUNDO_SIGNAL);
+    m_canRedoSig = newSignal<CanDoSignalType>(s_CANREDO_SIGNAL);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SCommandHistory::~SCommandHistory()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::configuring()
 {
     service::IService::ConfigType config = this->getConfigTree();
 
-    auto maxCommands = config.get_optional< size_t >("maxCommands");
-    auto maxMemory   = config.get_optional< size_t >("maxMemory");
+    auto maxCommands = config.get_optional<size_t>("maxCommands");
+    auto maxMemory   = config.get_optional<size_t>("maxMemory");
 
     if(maxCommands.is_initialized())
     {
@@ -85,31 +84,30 @@ void SCommandHistory::configuring()
     {
         m_undoRedoManager.setHistorySize(maxMemory.value());
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::starting()
 {
     this->emitModifSig();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::updating()
 {
     this->emitModifSig();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::stopping()
 {
     m_undoRedoManager.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::enqueue(sight::ui::history::ICommand::sptr command)
 {
@@ -117,7 +115,7 @@ void SCommandHistory::enqueue(sight::ui::history::ICommand::sptr command)
     this->emitModifSig();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::undo()
 {
@@ -125,7 +123,7 @@ void SCommandHistory::undo()
     this->emitModifSig();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::redo()
 {
@@ -133,7 +131,7 @@ void SCommandHistory::redo()
     this->emitModifSig();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::clear()
 {
@@ -141,7 +139,7 @@ void SCommandHistory::clear()
     this->emitModifSig();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCommandHistory::emitModifSig() const
 {
@@ -149,6 +147,6 @@ void SCommandHistory::emitModifSig() const
     m_canRedoSig->asyncEmit(m_undoRedoManager.canRedo());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::ui::history

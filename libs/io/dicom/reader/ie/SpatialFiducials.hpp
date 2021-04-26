@@ -28,17 +28,18 @@
 
 namespace sight::io::dicom
 {
+
 namespace reader
 {
+
 namespace ie
 {
 
 /**
  * @brief Spatial Fiducials Information Entity class
  */
-class IO_DICOM_CLASS_API SpatialFiducials : public io::dicom::reader::ie::InformationEntity< data::Image >
+class IO_DICOM_CLASS_API SpatialFiducials : public io::dicom::reader::ie::InformationEntity<data::Image>
 {
-
 public:
     /**
      * @brief Constructor
@@ -50,13 +51,14 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API SpatialFiducials(const CSPTR(data::DicomSeries)& dicomSeries,
-                                  const SPTR(::gdcm::Reader)& reader,
-                                  const SPTR(io::dicom::container::DicomInstance)& instance,
-                                  const data::Image::sptr& series,
-                                  const core::log::Logger::sptr& logger = nullptr,
-                                  ProgressCallback progress             = nullptr,
-                                  CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API SpatialFiducials(
+        const CSPTR(data::DicomSeries)& dicomSeries,
+        const SPTR(::gdcm::Reader)& reader,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const data::Image::sptr& series,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~SpatialFiducials();
@@ -70,9 +72,10 @@ public:
      * @brief Read image distances from dataset
      */
     void readDistance(const ::gdcm::DataSet& fiducialDataset);
-
 };
 
 } // namespace ie
+
 } // namespace reader
+
 } // namespace sight::io::dicom

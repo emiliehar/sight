@@ -76,7 +76,7 @@ void SOpenCVReader::openLocationDialog()
     this->defineLocationGUI();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 bool SOpenCVReader::defineLocationGUI()
 {
@@ -94,7 +94,7 @@ bool SOpenCVReader::defineLocationGUI()
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
 
-    if (result)
+    if(result)
     {
         this->setFile(result->getFile());
         defaultDirectory->setFolder(result->getFile().parent_path());
@@ -109,62 +109,62 @@ bool SOpenCVReader::defineLocationGUI()
     return ok;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SOpenCVReader::starting()
 {
-
 }
 
 // ----------------------------------------------------------------------------
 
 void SOpenCVReader::stopping()
 {
-
 }
 
 // ----------------------------------------------------------------------------
 
 void SOpenCVReader::updating()
 {
-
-    data::CameraSeries::sptr camSeries = this->getInOut< data::CameraSeries >(sight::io::base::service::s_DATA_KEY);
+    data::CameraSeries::sptr camSeries = this->getInOut<data::CameraSeries>(sight::io::base::service::s_DATA_KEY);
 
     bool use_dialog = false;
-    //use dialog only if no file was configured
+
+    // use dialog only if no file was configured
     if(!this->hasLocationDefined())
     {
         use_dialog = this->defineLocationGUI();
+
         if(!use_dialog)
         {
             this->m_readFailed = true;
+
             return;
         }
     }
 
     ::cv::FileStorage fs(this->getFile().string().c_str(), ::cv::FileStorage::READ); // Read the settings
-    if (!fs.isOpened())
+
+    if(!fs.isOpened())
     {
         this->m_readFailed = true;
-        SIGHT_ERROR("The file "+ this->getFile().string() + " cannot be opened.");
+        SIGHT_ERROR("The file " + this->getFile().string() + " cannot be opened.");
     }
 
-    //Remove all CameraSeries
+    // Remove all CameraSeries
     // lock cameraSeries
     data::mt::ObjectReadToWriteLock lock(camSeries);
     const size_t cams = camSeries->getNumberOfCameras();
 
-    for(size_t c = 0; c < cams; ++c)
+    for(size_t c = 0 ; c < cams ; ++c)
     {
         data::Camera::sptr cam = camSeries->getCamera(0);
         lock.upgrade();
         camSeries->removeCamera(cam);
         lock.downgrade();
 
-        auto sig = camSeries->signal< data::CameraSeries::RemovedCameraSignalType >
+        auto sig = camSeries->signal<data::CameraSeries::RemovedCameraSignalType>
                        (data::CameraSeries::s_REMOVED_CAMERA_SIG);
         sig->asyncEmit(cam);
-
     }
 
     lock.unlock();
@@ -172,10 +172,10 @@ void SOpenCVReader::updating()
     int nbCameras;
     fs["nbCameras"] >> nbCameras;
 
-    for(int c = 0; c < nbCameras; ++c)
+    for(int c = 0 ; c < nbCameras ; ++c)
     {
         std::stringstream camNum;
-        camNum<<"camera_"<<c;
+        camNum << "camera_" << c;
 
         ::cv::FileNode n = fs[camNum.str()];
 
@@ -210,11 +210,12 @@ void SOpenCVReader::updating()
         cam->setWidth(static_cast<size_t>(width));
         cam->setHeight(static_cast<size_t>(height));
 
-        cam->setDistortionCoefficient(dist.at<double>(0),
-                                      dist.at<double>(1),
-                                      dist.at<double>(2),
-                                      dist.at<double>(3),
-                                      dist.at<double>(4));
+        cam->setDistortionCoefficient(
+            dist.at<double>(0),
+            dist.at<double>(1),
+            dist.at<double>(2),
+            dist.at<double>(3),
+            dist.at<double>(4));
 
         cam->setScale(scale);
         cam->setIsCalibrated(true);
@@ -223,7 +224,7 @@ void SOpenCVReader::updating()
         camSeries->addCamera(cam);
         writeLock.unlock();
 
-        auto sig = camSeries->signal< data::CameraSeries::AddedCameraSignalType >(
+        auto sig = camSeries->signal<data::CameraSeries::AddedCameraSignalType>(
             data::CameraSeries::s_ADDED_CAMERA_SIG);
         sig->asyncEmit(cam);
 
@@ -234,28 +235,33 @@ void SOpenCVReader::updating()
         {
             data::Matrix4::sptr extMat = data::Matrix4::New();
 
-            for(size_t i = 0; i < 4; ++i)
+            for(size_t i = 0 ; i < 4 ; ++i)
             {
-                for(size_t j = 0; j < 4; ++j)
+                for(size_t j = 0 ; j < 4 ; ++j)
                 {
-                    extMat->setCoefficient(i, j, extrinsic.at< double >(static_cast<int>(i),
-                                                                        static_cast<int>(j)));
+                    extMat->setCoefficient(
+                        i,
+                        j,
+                        extrinsic.at<double>(
+                            static_cast<int>(i),
+                            static_cast<int>(j)));
                 }
             }
+
             writeLock.lock();
             camSeries->setExtrinsicMatrix(static_cast<size_t>(c), extMat);
             writeLock.unlock();
-            auto sig = camSeries->signal< data::CameraSeries::ExtrinsicCalibratedSignalType >
+            auto sig = camSeries->signal<data::CameraSeries::ExtrinsicCalibratedSignalType>
                            (data::CameraSeries::s_EXTRINSIC_CALIBRATED_SIG);
         }
     }
 
     fs.release(); // close file
 
-    auto sig = camSeries->signal< data::CameraSeries::ModifiedSignalType >(data::CameraSeries::s_MODIFIED_SIG);
+    auto sig = camSeries->signal<data::CameraSeries::ModifiedSignalType>(data::CameraSeries::s_MODIFIED_SIG);
     sig->asyncEmit();
 
-    //clear locations only if it was configured through GUI.
+    // clear locations only if it was configured through GUI.
     if(use_dialog)
     {
         this->clearLocations();
@@ -278,4 +284,5 @@ sight::io::base::service::IOPathType SOpenCVReader::getIOPathType() const
 }
 
 // ----------------------------------------------------------------------------
-} //namespace sight::module::io::vision
+
+} // namespace sight::module::io::vision

@@ -28,14 +28,15 @@
 
 #include <service/macros.hpp>
 
-SIGHT_REGISTER_SERVICE( ::sight::service::ut::TestService, ::sight::service::ut::TestServiceImplementation)
-SIGHT_REGISTER_SERVICE_OBJECT( ::sight::service::ut::TestServiceImplementation, ::sight::data::Object);
-SIGHT_REGISTER_SERVICE( ::sight::service::ut::TestService, ::sight::service::ut::TestServiceImplementation2 )
-SIGHT_REGISTER_SERVICE( ::sight::service::ut::TestService, ::sight::service::ut::TestSrvAutoconnect )
-SIGHT_REGISTER_SERVICE( ::sight::service::IService, ::sight::service::ut::TestServiceWithData )
+SIGHT_REGISTER_SERVICE(::sight::service::ut::TestService, ::sight::service::ut::TestServiceImplementation)
+SIGHT_REGISTER_SERVICE_OBJECT(::sight::service::ut::TestServiceImplementation, ::sight::data::Object);
+SIGHT_REGISTER_SERVICE(::sight::service::ut::TestService, ::sight::service::ut::TestServiceImplementation2)
+SIGHT_REGISTER_SERVICE(::sight::service::ut::TestService, ::sight::service::ut::TestSrvAutoconnect)
+SIGHT_REGISTER_SERVICE(::sight::service::IService, ::sight::service::ut::TestServiceWithData)
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -56,7 +57,7 @@ const service::IService::KeyType TestServiceWithData::s_INPUT       = "input";
 const service::IService::KeyType TestServiceWithData::s_INOUT_GROUP = "inoutGroup";
 const service::IService::KeyType TestServiceWithData::s_OUTPUT      = "output";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TestService::starting()
 {
@@ -64,10 +65,11 @@ void TestService::starting()
     {
         throw core::Exception("start error");
     }
+
     m_startOrder = s_START_COUNTER++;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TestService::stopping()
 {
@@ -77,7 +79,7 @@ void TestService::stopping()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TestService::updating()
 {
@@ -85,10 +87,11 @@ void TestService::updating()
     {
         throw core::Exception("update error");
     }
+
     m_updateOrder = s_UPDATE_COUNTER++;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 TestServiceImplementation::TestServiceImplementation() noexcept
 {
@@ -96,31 +99,32 @@ TestServiceImplementation::TestServiceImplementation() noexcept
     newSlot(s_UPDATE2_SLOT, &TestServiceImplementation::update2, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 TestServiceImplementation::~TestServiceImplementation() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TestServiceWithData::updating()
 {
-    data::Object::csptr input = this->getInput< data::Object >(s_INPUT);
+    data::Object::csptr input = this->getInput<data::Object>(s_INPUT);
 
     data::Object::sptr output = data::Object::copy(input);
 
     this->setOutput(s_OUTPUT, output);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TestServiceWithData::stopping()
 {
     this->setOutput(s_OUTPUT, nullptr);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::service

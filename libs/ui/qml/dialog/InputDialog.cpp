@@ -30,55 +30,56 @@
 #include <QGuiApplication>
 #include <QObject>
 
-fwGuiRegisterMacro( ::sight::ui::qml::dialog::InputDialog, ::sight::ui::base::dialog::IInputDialog::REGISTRY_KEY );
+fwGuiRegisterMacro(::sight::ui::qml::dialog::InputDialog, ::sight::ui::base::dialog::IInputDialog::REGISTRY_KEY);
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InputDialog::InputDialog(ui::base::GuiBaseObject::Key key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InputDialog::~InputDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InputDialog::setTitle( const std::string& title )
+void InputDialog::setTitle(const std::string& title)
 {
     m_title = QString::fromStdString(title);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InputDialog::setMessage( const std::string& msg )
+void InputDialog::setMessage(const std::string& msg)
 {
     m_message = QString::fromStdString(msg);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InputDialog::setInput(const std::string& text)
 {
     m_input = QString::fromStdString(text);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string InputDialog::getInput()
 {
     // get the qml engine QmlApplicationEngine
     SPTR(ui::qml::QmlEngine) engine = ui::qml::QmlEngine::getDefault();
     // get the path of the qml ui file in the 'rc' directory
-    const auto& dialogPath =
-        core::runtime::getLibraryResourceFilePath("fwGuiQml/dialog/InputDialog.qml");
+    const auto& dialogPath
+        = core::runtime::getLibraryResourceFilePath("fwGuiQml/dialog/InputDialog.qml");
 
     // set the context for the new component
     QSharedPointer<QQmlContext> context = QSharedPointer<QQmlContext>(new QQmlContext(engine->getRootContext()));
@@ -96,7 +97,7 @@ std::string InputDialog::getInput()
     m_input = "";
 
     QEventLoop loop;
-    //slot to retrieve the result and open the dialog with invoke
+    // slot to retrieve the result and open the dialog with invoke
     connect(dialog, SIGNAL(accepted()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(rejected()), &loop, SLOT(quit()));
     connect(dialog, SIGNAL(reset()), &loop, SLOT(quit()));
@@ -105,14 +106,15 @@ std::string InputDialog::getInput()
     loop.exec();
 
     delete window;
+
     return m_input.toStdString();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InputDialog::resultDialog(const QVariant& msg, bool isOk)
 {
-    if (isOk)
+    if(isOk)
     {
         m_input = msg.toString();
     }
@@ -122,7 +124,8 @@ void InputDialog::resultDialog(const QVariant& msg, bool isOk)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

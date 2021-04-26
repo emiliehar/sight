@@ -24,6 +24,7 @@
 
 namespace sight::service
 {
+
 /**
  * @brief       The namespace sight::service::registry contains class to manage services, object and config.
  */
@@ -31,4 +32,5 @@ namespace registry
 {
 
 }
+
 }

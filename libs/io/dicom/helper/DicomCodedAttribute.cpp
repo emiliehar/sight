@@ -26,13 +26,13 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-DicomCodedAttribute::DicomCodedAttributeVectorType
-DicomCodedAttribute::convertEntryToCodedAttribute(const std::string& entry)
+DicomCodedAttribute::DicomCodedAttributeVectorType DicomCodedAttribute::convertEntryToCodedAttribute(const std::string& entry)
 {
     DicomCodedAttributeVectorType result;
 
@@ -58,13 +58,14 @@ DicomCodedAttribute::convertEntryToCodedAttribute(const std::string& entry)
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::gdcm::Segment::BasicCodedEntryVector DicomCodedAttribute::convertEntryToGDCMCodedAttribute(const std::string& entry)
 {
     ::gdcm::Segment::BasicCodedEntryVector result;
 
     DicomCodedAttributeVectorType codedAttributes = convertEntryToCodedAttribute(entry);
+
     for(const auto& attribute : codedAttributes)
     {
         result.push_back(attribute.toGDCMFormat());
@@ -73,7 +74,7 @@ DicomCodedAttribute::convertEntryToCodedAttribute(const std::string& entry)
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool DicomCodedAttribute::checkAndFormatEntry(std::string& entry, bool multipleValue)
 {
@@ -98,17 +99,20 @@ bool DicomCodedAttribute::checkAndFormatEntry(std::string& entry, bool multipleV
     if(attributeContainer.size() == 1 || (attributeContainer.size() > 1 && multipleValue))
     {
         entry = "";
+
         for(const auto& attribute : attributeContainer)
         {
             entry += attribute;
         }
+
         return true;
     }
 
     return false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace helper
-} //namespace sight::io::dicom
+} // namespace helper
+
+} // namespace sight::io::dicom

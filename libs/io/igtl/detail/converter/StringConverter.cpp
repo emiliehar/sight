@@ -30,8 +30,10 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
+
 const std::string StringConverter::s_IGTL_TYPE          = "STRING";
 const std::string StringConverter::s_FWDATA_OBJECT_TYPE = data::String::classname();
 
@@ -41,13 +43,13 @@ StringConverter::StringConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 StringConverter::~StringConverter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::igtl::MessageBase::Pointer StringConverter::fromFwDataObject(data::Object::csptr src) const
 {
@@ -55,37 +57,38 @@ StringConverter::~StringConverter()
 
     ::igtl::StringMessage::Pointer dest = ::igtl::StringMessage::New();
     dest->SetString(srcStr->getValue().c_str());
+
     return ::igtl::MessageBase::Pointer(dest.GetPointer());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Object::sptr StringConverter::fromIgtlMessage(const ::igtl::MessageBase::Pointer src) const
 {
     data::String::sptr dest = data::String::New();
 
-    ::igtl::StringMessage* msg            = dynamic_cast< ::igtl::StringMessage* >(src.GetPointer());
+    ::igtl::StringMessage* msg            = dynamic_cast< ::igtl::StringMessage*>(src.GetPointer());
     ::igtl::StringMessage::Pointer srcStr = ::igtl::StringMessage::Pointer(msg);
     dest->setValue(std::string(srcStr->GetString()));
 
     return dest;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IConverter::sptr StringConverter::New()
 {
-    return std::make_shared< StringConverter >();
+    return std::make_shared<StringConverter>();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& StringConverter::getIgtlType() const
 {
     return StringConverter::s_IGTL_TYPE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string const& StringConverter::getFwDataObjectType() const
 {
@@ -93,4 +96,5 @@ std::string const& StringConverter::getFwDataObjectType() const
 }
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

@@ -54,86 +54,90 @@ ImageInfo::ImageInfo() noexcept
     newSlot(s_GET_INTERACTION_SLOT, &ImageInfo::getInteraction, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ImageInfo::~ImageInfo() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageInfo::starting()
 {
     this->sight::ui::base::IGuiContainer::create();
 
-    auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer() );
+    auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer());
 
     QHBoxLayout* hLayout = new QHBoxLayout();
 
-    QLabel* staticText = new QLabel( QObject::tr("intensity:"));
-    hLayout->addWidget( staticText, 0, Qt::AlignVCenter );
+    QLabel* staticText = new QLabel(QObject::tr("intensity:"));
+    hLayout->addWidget(staticText, 0, Qt::AlignVCenter);
 
     m_valueText = new QLineEdit();
     m_valueText->setReadOnly(true);
-    hLayout->addWidget( m_valueText, 1, Qt::AlignVCenter );
+    hLayout->addWidget(m_valueText, 1, Qt::AlignVCenter);
 
-    qtContainer->setLayout( hLayout );
+    qtContainer->setLayout(hLayout);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageInfo::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageInfo::configuring()
 {
     this->sight::ui::base::IGuiContainer::initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageInfo::updating()
 {
-    data::Image::csptr image = this->getInput< data::Image >(s_IMAGE_INPUT);
+    data::Image::csptr image = this->getInput<data::Image>(s_IMAGE_INPUT);
     SIGHT_ASSERT("The input '" + s_IMAGE_INPUT + "' is not defined", image);
-    const bool imageIsValid = data::fieldHelper::MedicalImageHelpers::checkImageValidity( image );
+    const bool imageIsValid = data::fieldHelper::MedicalImageHelpers::checkImageValidity(image);
     m_valueText->setEnabled(imageIsValid);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageInfo::getInteraction(data::tools::PickingInfo info)
 {
-    if (info.m_eventId == data::tools::PickingInfo::Event::MOUSE_MOVE)
+    if(info.m_eventId == data::tools::PickingInfo::Event::MOUSE_MOVE)
     {
-        data::Image::csptr image = this->getInput< data::Image >(s_IMAGE_INPUT);
+        data::Image::csptr image = this->getInput<data::Image>(s_IMAGE_INPUT);
         SIGHT_ASSERT("The input '" + s_IMAGE_INPUT + "' is not defined", image);
 
-        const bool imageIsValid = data::fieldHelper::MedicalImageHelpers::checkImageValidity( image );
+        const bool imageIsValid = data::fieldHelper::MedicalImageHelpers::checkImageValidity(image);
         m_valueText->setEnabled(imageIsValid);
-        if (imageIsValid)
+
+        if(imageIsValid)
         {
             const double* point          = info.m_worldPos;
             const data::Image::Size size = image->getSize2();
 
-            if (point[0] < 0 || point[1] < 0 || point[2] < 0)
+            if(point[0] < 0 || point[1] < 0 || point[2] < 0)
             {
-                SIGHT_ERROR("The received coordinates are not in image space, maybe you used the wrong picker "
-                            "interactor (see ::visuVTKAdaptor::SImagePickerInteractor)");
+                SIGHT_ERROR(
+                    "The received coordinates are not in image space, maybe you used the wrong picker "
+                    "interactor (see ::visuVTKAdaptor::SImagePickerInteractor)");
+
                 return;
             }
 
             const data::Image::Size coords =
-            {{ static_cast< data::Image::Size::value_type >(point[0]),
-               static_cast< data::Image::Size::value_type >(point[1]),
-               static_cast< data::Image::Size::value_type >(point[2])}};
+            {{static_cast<data::Image::Size::value_type>(point[0]),
+                static_cast<data::Image::Size::value_type>(point[1]),
+                static_cast<data::Image::Size::value_type>(point[2])}};
 
             bool isInside = (coords[0] < size[0] && coords[1] < size[1]);
-            if (image->getNumberOfDimensions() < 3)
+
+            if(image->getNumberOfDimensions() < 3)
             {
                 isInside = (isInside && coords[2] == 0);
             }
@@ -142,29 +146,31 @@ void ImageInfo::getInteraction(data::tools::PickingInfo info)
                 isInside = (isInside && coords[2] < size[2]);
             }
 
-            if (!isInside)
+            if(!isInside)
             {
-                SIGHT_ERROR("The received coordinates are not in image space, maybe you used the wrong picker "
-                            "interactor (see ::visuVTKAdaptor::SImagePickerInteractor)");
+                SIGHT_ERROR(
+                    "The received coordinates are not in image space, maybe you used the wrong picker "
+                    "interactor (see ::visuVTKAdaptor::SImagePickerInteractor)");
+
                 return;
             }
 
             const auto dumpLock = image->lock();
 
-            const std::string intensity = image->getPixelAsString(coords[0], coords[1], coords[2] );
+            const std::string intensity = image->getPixelAsString(coords[0], coords[1], coords[2]);
             m_valueText->setText(QString::fromStdString(intensity));
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void ImageInfo::info( std::ostream& _sstream )
+void ImageInfo::info(std::ostream& _sstream)
 {
     _sstream << "Image Info Editor";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap ImageInfo::getAutoConnections() const
 {
@@ -176,5 +182,6 @@ service::IService::KeyConnectionsMap ImageInfo::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
-}
+// ------------------------------------------------------------------------------
+
+} // namespace sight::module

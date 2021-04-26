@@ -42,7 +42,7 @@ const core::com::Slots::SlotKeyType IAdaptor::s_HIDE_SLOT              = "hide";
 static const std::string s_LAYER_CONFIG   = "layer";
 static const std::string s_VISIBLE_CONFIG = "visible";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IAdaptor::IAdaptor() noexcept
 {
@@ -52,21 +52,21 @@ IAdaptor::IAdaptor() noexcept
     newSlot(s_HIDE_SLOT, &IAdaptor::hide, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IAdaptor::~IAdaptor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void IAdaptor::info(std::ostream& _sstream )
+void IAdaptor::info(std::ostream& _sstream)
 {
     _sstream << "IAdaptor : ";
-    this->service::IService::info( _sstream );
+    this->service::IService::info(_sstream);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::configureParams()
 {
@@ -75,7 +75,7 @@ void IAdaptor::configureParams()
     m_isVisible = config.get<bool>(s_VISIBLE_CONFIG, m_isVisible);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::initialize()
 {
@@ -86,9 +86,11 @@ void IAdaptor::initialize()
         auto& registry       = viz::scene3d::registry::getAdaptorRegistry();
         auto renderServiceId = registry[this->getID()];
 
-        auto result =
-            std::find_if(servicesVector.begin(), servicesVector.end(),
-                         [renderServiceId](const service::IService::sptr& srv)
+        auto result
+            = std::find_if(
+                  servicesVector.begin(),
+                  servicesVector.end(),
+                  [renderServiceId](const service::IService::sptr& srv)
             {
                 return srv->getID() == renderServiceId;
             });
@@ -98,65 +100,66 @@ void IAdaptor::initialize()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::setLayerID(const std::string& _id)
 {
     m_layerID = _id;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string& IAdaptor::getLayerID() const
 {
     return m_layerID;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void IAdaptor::setRenderService( SRender::sptr _service)
+void IAdaptor::setRenderService(SRender::sptr _service)
 {
     SIGHT_ASSERT("service not instanced", _service);
-    SIGHT_ASSERT("The adaptor ('"+this->getID()+"') is not stopped", this->isStopped());
+    SIGHT_ASSERT("The adaptor ('" + this->getID() + "') is not stopped", this->isStopped());
 
     m_renderService = _service;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SRender::sptr IAdaptor::getRenderService() const
 {
     return m_renderService.lock();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Layer::sptr IAdaptor::getLayer() const
 {
     return this->getRenderService()->getLayer(m_layerID);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::SceneManager* IAdaptor::getSceneManager()
 {
     return m_renderService.lock()->getSceneManager(m_layerID);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::requestRender()
 {
     auto renderService = this->getRenderService();
-    if ( (renderService->getStatus() == service::IService::STARTED ||
-          renderService->getStatus() == service::IService::SWAPPING) &&
-         renderService->getRenderMode() == viz::scene3d::SRender::RenderMode::AUTO )
+
+    if((renderService->getStatus() == service::IService::STARTED
+        || renderService->getStatus() == service::IService::SWAPPING)
+       && renderService->getRenderMode() == viz::scene3d::SRender::RenderMode::AUTO)
     {
         this->getRenderService()->requestRender();
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IAdaptor::updateVisibility(bool _isVisible)
 {
@@ -164,33 +167,34 @@ void IAdaptor::updateVisibility(bool _isVisible)
     this->setVisible(m_isVisible);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::toggleVisibility()
 {
     this->updateVisibility(!m_isVisible);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::show()
 {
     this->updateVisibility(true);
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void IAdaptor::hide()
 {
     this->updateVisibility(false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::setVisible(bool)
 {
     SIGHT_WARN("This adaptor has no method 'setVisible(bool)', it needs to be overridden to be called.");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d.

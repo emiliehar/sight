@@ -35,6 +35,7 @@
 
 namespace sight::ui::base
 {
+
 namespace view
 {
 
@@ -71,17 +72,15 @@ class UI_BASE_CLASS_API IActivityView : public ui::base::IGuiContainer,
                                         public activity::IActivityLauncher
 {
 public:
-
     SIGHT_DECLARE_CLASS(IActivityView, ui::base::IGuiContainer)
 
     UI_BASE_API static const core::com::Slots::SlotKeyType s_LAUNCH_ACTIVITY_SLOT;
     UI_BASE_API static const core::com::Slots::SlotKeyType s_LAUNCH_ACTIVITY_SERIES_SLOT;
 
 protected:
-
     typedef activity::extension::ActivityAppConfigParam ParameterType;
     typedef activity::extension::ActivityAppConfig::ActivityAppConfigParamsType ParametersType;
-    typedef std::map< std::string, std::string> ReplaceMapType;
+    typedef std::map<std::string, std::string> ReplaceMapType;
 
     /// Constructor. Do nothing.
     UI_BASE_API IActivityView();
@@ -112,8 +111,8 @@ protected:
 
     /// Create the activity series given in 'mainActivity' configuration
     UI_BASE_API data::ActivitySeries::sptr createMainActivity() const override;
-
 };
 
 } // namespace view
+
 } // namespace sight::ui::base

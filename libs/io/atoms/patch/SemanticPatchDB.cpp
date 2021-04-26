@@ -43,7 +43,7 @@ SemanticPatchDB::~SemanticPatchDB()
 
 // ----------------------------------------------------------------------------
 
-SemanticPatchDB::SemanticPatchDB( const SemanticPatchDB& cpy )
+SemanticPatchDB::SemanticPatchDB(const SemanticPatchDB& cpy)
 {
 }
 
@@ -69,10 +69,12 @@ io::atoms::patch::ISemanticPatch::sptr SemanticPatchDB::getPatch(
 
     core::mt::ReadLock lock(m_mutex);
     PatchesType::const_iterator it = m_patches.find(origin);
+
     if(it != m_patches.end())
     {
         PatchVectorType::const_iterator itVec;
-        for(itVec = it->second.begin(); itVec != it->second.end(); ++itVec)
+
+        for(itVec = it->second.begin() ; itVec != it->second.end() ; ++itVec)
         {
             if((*itVec)->isApplicable(context, originVersion, targetVersion))
             {
@@ -89,6 +91,7 @@ io::atoms::patch::ISemanticPatch::sptr SemanticPatchDB::getPatch(
 size_t SemanticPatchDB::size() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_patches.size();
 }
 
@@ -99,4 +102,4 @@ SemanticPatchDB::sptr SemanticPatchDB::getDefault()
     return s_default;
 }
 
-} //fwAtomsPatch
+} // fwAtomsPatch

@@ -36,15 +36,18 @@ class IBuilder;
 
 namespace builder
 {
+
 namespace registry
 {
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(activity::IBuilder) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(activity::IBuilder)(), KeyType> Type;
 
 ACTIVITY_API SPTR(Type) get();
 
 } // namespace registry
+
 } // namespace builder
+
 } // namespace sight::activity

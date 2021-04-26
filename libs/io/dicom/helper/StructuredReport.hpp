@@ -41,7 +41,6 @@ namespace helper
 class IO_DICOM_CLASS_API StructuredReport
 {
 public:
-
     /**
      * @brief Read a Structured Report
      * @param[in] dataset Dataset from which the SR must be created
@@ -54,11 +53,11 @@ public:
      * @param[in] root Root node
      * @param[in] out Destination stream
      */
-    IO_DICOM_API static void dumpSR(const SPTR(io::dicom::container::sr::DicomSRNode)& root,
-                                    std::ostream& out = std::cout);
+    IO_DICOM_API static void dumpSR(
+        const SPTR(io::dicom::container::sr::DicomSRNode)& root,
+        std::ostream& out = std::cout);
 
 protected:
-
     /**
      * @brief Read all sub nodes and add it as children to the parent node
      * @param[in] dataset Dataset from which the sub nodes must been read
@@ -81,8 +80,10 @@ protected:
      * @param[in] out Destination stream
      * @param[in] index Node index
      */
-    IO_DICOM_API static void dumpSRNode(const SPTR(io::dicom::container::sr::DicomSRNode)& node,
-                                        std::ostream& out, int& index);
+    IO_DICOM_API static void dumpSRNode(
+        const SPTR(io::dicom::container::sr::DicomSRNode)& node,
+        std::ostream& out,
+        int& index);
 
     /**
      * @brief Read content of a code sequence (eg : Concept Name Code Sequence, ...)
@@ -91,20 +92,21 @@ protected:
      * @tparam GROUP Tag group of the code sequence.
      * @tparam ELEMENT Element group of the code sequence.
      */
-    template <uint16_t GROUP, uint16_t ELEMENT>
+    template<uint16_t GROUP, uint16_t ELEMENT>
     static io::dicom::container::DicomCodedAttribute readCodeSequence(const ::gdcm::DataSet& dataset)
     {
         io::dicom::container::DicomCodedAttribute codedAttributes;
 
-        if ( !dataset.FindDataElement(::gdcm::Tag(GROUP, ELEMENT)))
+        if(!dataset.FindDataElement(::gdcm::Tag(GROUP, ELEMENT)))
         {
             // Return empty coded attributes
             return codedAttributes;
         }
 
-        ::gdcm::SmartPointer< ::gdcm::SequenceOfItems > sequence =
-            dataset.GetDataElement(::gdcm::Tag(GROUP, ELEMENT)).GetValueAsSQ();
-        if (sequence->GetNumberOfItems() == 0)  // One Item shall be permitted
+        ::gdcm::SmartPointer< ::gdcm::SequenceOfItems> sequence
+            = dataset.GetDataElement(::gdcm::Tag(GROUP, ELEMENT)).GetValueAsSQ();
+
+        if(sequence->GetNumberOfItems() == 0) // One Item shall be permitted
         {
             // Return empty coded attributes
             return codedAttributes;
@@ -124,12 +126,14 @@ protected:
         // Code Meaning - Type 1
         auto codeMeaning = io::dicom::helper::DicomDataReader::getTagValue<0x0008, 0x0104>(itemDataset);
 
-        return io::dicom::container::DicomCodedAttribute(codeValue,
-                                                         codingSchemeDesignator,
-                                                         codeMeaning,
-                                                         codingSchemeVersion);
+        return io::dicom::container::DicomCodedAttribute(
+            codeValue,
+            codingSchemeDesignator,
+            codeMeaning,
+            codingSchemeVersion);
     }
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

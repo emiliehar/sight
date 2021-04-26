@@ -28,6 +28,7 @@
 
 namespace sight::data
 {
+
 namespace helper
 {
 
@@ -39,7 +40,6 @@ namespace helper
  */
 class DATA_DEPRECATED_CLASS_API ImageGetter
 {
-
 public:
     typedef data::Image::SizeType SizeType;
     typedef data::Image::IndexType IndexType;
@@ -47,15 +47,15 @@ public:
     typedef data::Image::BufferIndexType BufferIndexType;
 
     /// Shared pointer type
-    typedef std::shared_ptr < ImageGetter > sptr;
+    typedef std::shared_ptr<ImageGetter> sptr;
     /// Const shared pointer type
-    typedef std::shared_ptr < const ImageGetter > csptr;
+    typedef std::shared_ptr<const ImageGetter> csptr;
     /// Unique pointer type
-    typedef std::unique_ptr < ImageGetter > uptr;
+    typedef std::unique_ptr<ImageGetter> uptr;
     /// Const unique pointer type
-    typedef std::unique_ptr < const ImageGetter > cuptr;
+    typedef std::unique_ptr<const ImageGetter> cuptr;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(data::Image::csptr image)
     {
@@ -64,7 +64,7 @@ public:
 
     /// Constructor. Initialize parameters.
     [[deprecated("will be removed in sight 22.0, please use data::Image")]]
-    DATA_API ImageGetter( data::Image::csptr image );
+    DATA_API ImageGetter(data::Image::csptr image);
 
     /// Destrucotr. Do nothing.
     DATA_API virtual ~ImageGetter();
@@ -75,22 +75,25 @@ public:
     /** @{
      * @brief Helpers for 3D images
      */
-    DATA_API void* getPixelBuffer( SizeType::value_type x, SizeType::value_type y,
-                                   SizeType::value_type z ) const;
+    DATA_API void* getPixelBuffer(
+        SizeType::value_type x,
+        SizeType::value_type y,
+        SizeType::value_type z) const;
 
-    DATA_API void* getPixelBuffer( IndexType index ) const;
+    DATA_API void* getPixelBuffer(IndexType index) const;
 
-    DATA_API const std::string getPixelAsString(SizeType::value_type x,
-                                                SizeType::value_type y,
-                                                SizeType::value_type z ) const;
-    // @}
+    DATA_API const std::string getPixelAsString(
+        SizeType::value_type x,
+        SizeType::value_type y,
+        SizeType::value_type z) const;
+// @}
 
 private:
-
     data::Image::csptr m_image;
 
     core::memory::BufferObject::Lock m_lock;
 };
 
 } // helper
+
 } // fwDataTools

@@ -27,14 +27,15 @@
 #include <utestData/generator/Image.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::ImageSeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::ImageSeriesTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageSeriesTest::setUp()
 {
@@ -42,7 +43,7 @@ void ImageSeriesTest::setUp()
     m_series = data::ImageSeries::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageSeriesTest::tearDown()
 {
@@ -50,7 +51,7 @@ void ImageSeriesTest::tearDown()
     m_series.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ImageSeriesTest::imageTest()
 {
@@ -64,7 +65,8 @@ void ImageSeriesTest::imageTest()
     CPPUNIT_ASSERT_EQUAL(img, m_series->getImage());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

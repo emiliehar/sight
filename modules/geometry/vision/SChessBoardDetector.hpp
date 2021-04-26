@@ -92,7 +92,6 @@ public:
     MODULE_GEOMETRY_VISION_API ~SChessBoardDetector() noexcept override;
 
 protected:
-
     /// Configures the service.
     MODULE_GEOMETRY_VISION_API void configuring() override;
 
@@ -109,7 +108,6 @@ protected:
     MODULE_GEOMETRY_VISION_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// SLOT: stores the last detected chessboard in the CalibrationInfo structure.
     void recordPoints();
 
@@ -135,18 +133,18 @@ private:
     std::string m_scaleKey;
 
     /// Width of the chessboard we're looking for.
-    size_t m_width { 11 };
+    size_t m_width{11};
 
     /// Height of the chessboard we're looking for.
-    size_t m_height { 8 };
+    size_t m_height{8};
 
-    float m_scale { 1.f };
+    float m_scale{1.f};
 
     /// Last detected chessboard points in each image. Null if detection failed.
-    std::vector< data::PointList::sptr > m_pointLists;
+    std::vector<data::PointList::sptr> m_pointLists;
 
     /// Last images on which a chessboard was detected. Null if detection failed.
-    std::vector< data::Image::sptr > m_images;
+    std::vector<data::Image::sptr> m_images;
 };
 
-} //namespace sight::module::geometry::vision
+} // namespace sight::module::geometry::vision

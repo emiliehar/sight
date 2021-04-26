@@ -40,8 +40,8 @@
 namespace sight::module::viz::scene3d::adaptor
 {
 
-const core::com::Signals::SignalKeyType module::viz::scene3d::adaptor::STexture::s_TEXTURE_SWAPPED_SIG =
-    "textureSwapped";
+const core::com::Signals::SignalKeyType module::viz::scene3d::adaptor::STexture::s_TEXTURE_SWAPPED_SIG
+    = "textureSwapped";
 
 static const std::string DEFAULT_TEXTURE_FILENAME = "default.png";
 
@@ -53,21 +53,20 @@ static const std::string s_WRAPPING_CONFIG     = "wrapping";
 static const std::string s_USE_ALPHA_CONFIG    = "useAlpha";
 static const std::string s_DYNAMIC_CONFIG      = "dynamic";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STexture::STexture() noexcept
 {
-    m_sigTextureSwapped = newSignal< TextureSwappedSignalType >( s_TEXTURE_SWAPPED_SIG );
+    m_sigTextureSwapped = newSignal<TextureSwappedSignalType>(s_TEXTURE_SWAPPED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STexture::~STexture() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STexture::configuring()
 {
@@ -86,7 +85,7 @@ void STexture::configuring()
     m_isDynamic = config.get<bool>(s_DYNAMIC_CONFIG, m_isDynamic);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STexture::starting()
 {
@@ -94,31 +93,33 @@ void STexture::starting()
 
     this->getRenderService()->makeCurrent();
 
-    m_texture =
-        ::Ogre::dynamic_pointer_cast< ::Ogre::Texture>( ::Ogre::TextureManager::getSingleton().createOrRetrieve(
-                                                            m_textureName,
-                                                            sight::viz::scene3d::RESOURCE_GROUP,
-                                                            true).first);
+    m_texture
+        = ::Ogre::dynamic_pointer_cast< ::Ogre::Texture>(
+              ::Ogre::TextureManager::getSingleton().createOrRetrieve(
+                  m_textureName,
+                  sight::viz::scene3d::RESOURCE_GROUP,
+                  true).first);
 
     this->updating();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap STexture::getAutoConnections() const
 {
     service::IService::KeyConnectionsMap connections;
     connections.push(s_TEXTURE_INOUT, data::Image::s_BUFFER_MODIFIED_SIG, s_UPDATE_SLOT);
     connections.push(s_TEXTURE_INOUT, data::Image::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STexture::updating()
 {
     // Retrieves associated Sight image
-    const auto image = this->getLockedInput< data::Image>(s_TEXTURE_INOUT);
+    const auto image = this->getLockedInput<data::Image>(s_TEXTURE_INOUT);
 
     if(image->getAllocatedSizeInBytes() != 0)
     {
@@ -130,7 +131,7 @@ void STexture::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STexture::stopping()
 {
@@ -142,7 +143,7 @@ void STexture::stopping()
     m_texture.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool STexture::isValid() const
 {
@@ -156,6 +157,7 @@ bool STexture::isValid() const
 
     return false;
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

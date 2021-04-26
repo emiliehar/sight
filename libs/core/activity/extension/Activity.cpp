@@ -37,6 +37,7 @@
 
 namespace sight::activity
 {
+
 namespace extension
 {
 
@@ -46,31 +47,32 @@ ActivityAppConfigParam::ActivityAppConfigParam(const ConfigType& config) :
     // @deprecated This is no longer necessary to use "uid" to get the prefix replacement, since
     // this is now done in AppConfig. However we keep that code for a while for backward compatibility
     by = config.get_optional<std::string>("<xmlattr>.uid").get_value_or("");
+
     if(by.empty())
     {
         by = config.get<std::string>("<xmlattr>.by");
     }
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ActivityAppConfig::ActivityAppConfig(const ConfigType& config) :
     id(config.get<std::string>("<xmlattr>.id"))
 {
-    if(config.count("parameters") == 1 )
+    if(config.count("parameters") == 1)
     {
         const ConfigType& configParameters = config.get_child("parameters");
-        BOOST_FOREACH( const ConfigType::value_type& v,  configParameters.equal_range("parameter") )
+        BOOST_FOREACH(const ConfigType::value_type& v, configParameters.equal_range("parameter"))
         {
-            ActivityAppConfigParam parameter( v.second );
-            parameters.push_back( parameter );
+            ActivityAppConfigParam parameter(v.second);
+            parameters.push_back(parameter);
         }
     }
+
     SIGHT_ASSERT("At most 1 <parameters> tag is allowed", config.count("parameters") < 2);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ActivityRequirementKey::ActivityRequirementKey(const ConfigType& config) :
     key(config.get_value<std::string>()),
@@ -78,7 +80,7 @@ ActivityRequirementKey::ActivityRequirementKey(const ConfigType& config) :
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ActivityRequirement::ActivityRequirement(const ConfigType& config) :
     name(config.get<std::string>("<xmlattr>.name")),
@@ -89,12 +91,12 @@ ActivityRequirement::ActivityRequirement(const ConfigType& config) :
     minOccurs(config.get_optional<unsigned int>("<xmlattr>.minOccurs").get_value_or(1)),
     maxOccurs(config.get_optional<unsigned int>("<xmlattr>.maxOccurs").get_value_or(1))
 {
-    BOOST_FOREACH( const ConfigType::value_type& v, config.equal_range("key") )
+    BOOST_FOREACH(const ConfigType::value_type& v, config.equal_range("key"))
     {
         keys.push_back(ActivityRequirementKey(v.second));
     }
 
-    if (config.get_optional<std::string>("<xmlattr>.maxOccurs").get_value_or("") == "*")
+    if(config.get_optional<std::string>("<xmlattr>.maxOccurs").get_value_or("") == "*")
     {
         this->maxOccurs = std::numeric_limits<unsigned int>::max();
     }
@@ -102,15 +104,16 @@ ActivityRequirement::ActivityRequirement(const ConfigType& config) :
     std::string createStr = config.get_optional<std::string>("<xmlattr>.create").get_value_or("false");
     SIGHT_ASSERT("'create' attribute must be 'true' or 'false'", createStr == "true" || createStr == "false");
     create = (createStr == "true");
-    SIGHT_ASSERT("Create option is only available if minOccurs = 0 and maxOccurs = 1",
-                 !create || (minOccurs == 0 && maxOccurs == 1));
+    SIGHT_ASSERT(
+        "Create option is only available if minOccurs = 0 and maxOccurs = 1",
+        !create || (minOccurs == 0 && maxOccurs == 1));
 
     SIGHT_ASSERT(
         "minOccurs value shall be equal or greater than 0 and lower or equal to maxOccurs (" << maxOccurs << ")",
             0 <= minOccurs && minOccurs <= maxOccurs);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ActivityInfo::ActivityInfo(const SPTR(core::runtime::Extension)& ext) :
     id(ext->findConfigurationElement("id")->getValue()),
@@ -127,18 +130,19 @@ ActivityInfo::ActivityInfo(const SPTR(core::runtime::Extension)& ext) :
     }
 
     core::runtime::ConfigurationElement::sptr req = ext->findConfigurationElement("requirements");
-    for(  core::runtime::ConfigurationElementContainer::Iterator elem = req->begin();
-          elem != req->end();
-          ++elem )
+
+    for(core::runtime::ConfigurationElementContainer::Iterator elem = req->begin() ;
+        elem != req->end() ;
+        ++elem)
     {
-        ActivityRequirement requirement( core::runtime::Convert::toPropertyTree(*elem).get_child("requirement") );
-        requirements.push_back( requirement );
+        ActivityRequirement requirement(core::runtime::Convert::toPropertyTree(*elem).get_child("requirement"));
+        requirements.push_back(requirement);
 
         MinMaxType& minMax = m_requirementCount[requirement.type];
 
         minMax.first += requirement.minOccurs;
 
-        if (requirement.maxOccurs < (std::numeric_limits<unsigned int>::max() - minMax.second) )
+        if(requirement.maxOccurs < (std::numeric_limits<unsigned int>::max() - minMax.second))
         {
             minMax.second += requirement.maxOccurs;
         }
@@ -149,7 +153,8 @@ ActivityInfo::ActivityInfo(const SPTR(core::runtime::Extension)& ext) :
     }
 
     core::runtime::ConfigurationElement::csptr builderCfg = ext->findConfigurationElement("builder");
-    if (builderCfg)
+
+    if(builderCfg)
     {
         builderImpl = builderCfg->getValue();
     }
@@ -160,33 +165,36 @@ ActivityInfo::ActivityInfo(const SPTR(core::runtime::Extension)& ext) :
 
     // backward compatibility
     core::runtime::ConfigurationElement::csptr validatorCfg = ext->findConfigurationElement("validator");
+
     if(validatorCfg)
     {
         std::string validatorImplStr = validatorCfg->getValue();
+
         if(!validatorImplStr.empty())
         {
-            validatorsImpl.push_back( validatorImplStr );
+            validatorsImpl.push_back(validatorImplStr);
         }
     }
 
     core::runtime::ConfigurationElement::sptr validatorsCfg = ext->findConfigurationElement("validators");
-    if( validatorsCfg )
+
+    if(validatorsCfg)
     {
         auto validators = core::runtime::Convert::toPropertyTree(validatorsCfg).get_child("validators");
-        BOOST_FOREACH( auto const &validator, validators.equal_range("validator") )
+        BOOST_FOREACH(auto const& validator, validators.equal_range("validator"))
         {
-            validatorsImpl.push_back( validator.second.get_value<std::string>() );
+            validatorsImpl.push_back(validator.second.get_value<std::string>());
         }
     }
 
     // Set Default validator if none is defined
-    if (validatorsImpl.empty())
+    if(validatorsImpl.empty())
     {
         validatorsImpl.push_back("::sight::activity::validator::DefaultActivity");
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool ActivityInfo::usableWith(DataCountType dataCounts) const
 {
@@ -194,11 +202,12 @@ bool ActivityInfo::usableWith(DataCountType dataCounts) const
 
     if(ok)
     {
-        for( const RequirementsMinMaxCount::value_type& reqCount :  m_requirementCount )
+        for(const RequirementsMinMaxCount::value_type& reqCount : m_requirementCount)
         {
             const MinMaxType& reqMinMax  = reqCount.second;
             DataCountType::iterator iter = dataCounts.find(reqCount.first);
-            if (iter != dataCounts.end())
+
+            if(iter != dataCounts.end())
             {
                 unsigned int dataCount = iter->second;
                 ok = dataCount && reqMinMax.first <= dataCount && dataCount <= reqMinMax.second;
@@ -208,7 +217,8 @@ bool ActivityInfo::usableWith(DataCountType dataCounts) const
             {
                 ok = (reqMinMax.first == 0);
             }
-            if( !ok )
+
+            if(!ok)
             {
                 break;
             }
@@ -216,7 +226,7 @@ bool ActivityInfo::usableWith(DataCountType dataCounts) const
 
         if(ok)
         {
-            for( const DataCountType::value_type& dataCount :  dataCounts )
+            for(const DataCountType::value_type& dataCount : dataCounts)
             {
                 if(m_requirementCount.find(dataCount.first) == m_requirementCount.end())
                 {
@@ -230,50 +240,52 @@ bool ActivityInfo::usableWith(DataCountType dataCounts) const
     return ok;
 }
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Activity::sptr Activity::s_activity = Activity::New();
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Activity::sptr Activity::getDefault()
 {
     return s_activity;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Activity::~Activity()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Activity::parseBundleInformation()
 {
-    std::vector< SPTR( core::runtime::Extension ) >  extensions
+    std::vector<SPTR(core::runtime::Extension)> extensions
         = core::runtime::getAllExtensionsForPoint("sight::activity::extension::Activity");
 
-    for( const SPTR( core::runtime::Extension ) &ext :  extensions )
+    for(const SPTR(core::runtime::Extension) & ext : extensions)
     {
         SIGHT_DEBUG("Parsing <" << ext->getModule()->getIdentifier() << "> Activity");
         ActivityInfo info(ext);
 
         core::mt::WriteLock lock(m_registryMutex);
-        SIGHT_ASSERT("The id " <<  info.id << "(" << info.title << ")"
-                               << " already exists in the Activity registry", m_reg.find( info.id ) == m_reg.end());
-        m_reg.insert( Registry::value_type(info.id, info) );
+        SIGHT_ASSERT(
+            "The id " << info.id << "(" << info.title << ")"
+                      << " already exists in the Activity registry",
+                m_reg.find(info.id) == m_reg.end());
+        m_reg.insert(Registry::value_type(info.id, info));
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Activity::Activity()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Activity::clearRegistry()
 {
@@ -281,38 +293,39 @@ void Activity::clearRegistry()
     m_reg.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-bool Activity::hasInfo( const std::string& extensionId ) const
+bool Activity::hasInfo(const std::string& extensionId) const
 {
     core::mt::ReadLock lock(m_registryMutex);
-    Registry::const_iterator iter = m_reg.find( extensionId );
+    Registry::const_iterator iter = m_reg.find(extensionId);
+
     return iter != m_reg.end();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-std::vector< ActivityInfo > Activity::getInfos() const
+std::vector<ActivityInfo> Activity::getInfos() const
 {
-    std::vector< ActivityInfo > infos;
+    std::vector<ActivityInfo> infos;
 
     core::mt::ReadLock lock(m_registryMutex);
 
-    for( Registry::value_type val :  m_reg )
+    for(Registry::value_type val : m_reg)
     {
-        infos.push_back( val.second );
+        infos.push_back(val.second);
     }
 
     return infos;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-ActivityInfo::DataCountType Activity::getDataCount( const data::Vector::csptr& data ) const
+ActivityInfo::DataCountType Activity::getDataCount(const data::Vector::csptr& data) const
 {
     ActivityInfo::DataCountType dataCount;
 
-    for( const data::Object::csptr& obj :  *data)
+    for(const data::Object::csptr& obj : *data)
     {
         ++dataCount[obj->getClassname()];
     }
@@ -320,19 +333,20 @@ ActivityInfo::DataCountType Activity::getDataCount( const data::Vector::csptr& d
     return dataCount;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-std::vector< ActivityInfo > Activity::getInfos( const data::Vector::csptr& data ) const
+std::vector<ActivityInfo> Activity::getInfos(const data::Vector::csptr& data) const
 {
     ActivityInfo::DataCountType dataCount = this->getDataCount(data);
-    std::vector< ActivityInfo > infos;
+    std::vector<ActivityInfo> infos;
 
     core::mt::ReadLock lock(m_registryMutex);
 
-    for( const Registry::value_type& regValue :  m_reg )
+    for(const Registry::value_type& regValue : m_reg)
     {
         const ActivityInfo& activity = regValue.second;
-        if (activity.usableWith(dataCount))
+
+        if(activity.usableWith(dataCount))
         {
             infos.push_back(activity);
         }
@@ -341,34 +355,36 @@ std::vector< ActivityInfo > Activity::getInfos( const data::Vector::csptr& data 
     return infos;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-std::vector< std::string > Activity::getKeys() const
+std::vector<std::string> Activity::getKeys() const
 {
-    std::vector< std::string > keys;
+    std::vector<std::string> keys;
 
     core::mt::ReadLock lock(m_registryMutex);
 
-    for( Registry::value_type val :  m_reg )
+    for(Registry::value_type val : m_reg)
     {
-        keys.push_back( val.first );
+        keys.push_back(val.first);
     }
 
     return keys;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-const ActivityInfo Activity::getInfo( const std::string& extensionId ) const
+const ActivityInfo Activity::getInfo(const std::string& extensionId) const
 {
     core::mt::ReadLock lock(m_registryMutex);
-    Registry::const_iterator iter = m_reg.find( extensionId );
-    SIGHT_ASSERT("The id " <<  extensionId << " is not found in the application configuration parameter registry",
-                 iter != m_reg.end());
+    Registry::const_iterator iter = m_reg.find(extensionId);
+    SIGHT_ASSERT(
+        "The id " << extensionId << " is not found in the application configuration parameter registry",
+            iter != m_reg.end());
+
     return iter->second;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace extension
 

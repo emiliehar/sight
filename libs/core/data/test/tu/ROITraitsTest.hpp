@@ -26,14 +26,15 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class ROITraitsTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( ROITraitsTest );
-    CPPUNIT_TEST( creation );
+    CPPUNIT_TEST_SUITE(ROITraitsTest);
+    CPPUNIT_TEST(creation);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -44,5 +45,6 @@ public:
     void creation();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

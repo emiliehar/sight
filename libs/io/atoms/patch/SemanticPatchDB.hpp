@@ -44,14 +44,13 @@ class ISemanticPatch;
 class IO_ATOMS_CLASS_API SemanticPatchDB
 {
 public:
-
-    typedef SPTR (SemanticPatchDB) sptr;
-    ///Typedef used to store the pair type/version of a data structure
-    typedef std::pair< std::string, std::string > VersionIDType;
-    ///Typedef used to store a list of contextual patches applicable on an object
-    typedef std::vector< SPTR(io::atoms::patch::ISemanticPatch) > PatchVectorType;
-    ///Typedef used to store all the contextual patches
-    typedef std::map< VersionIDType, PatchVectorType > PatchesType;
+    typedef SPTR(SemanticPatchDB) sptr;
+    /// Typedef used to store the pair type/version of a data structure
+    typedef std::pair<std::string, std::string> VersionIDType;
+    /// Typedef used to store a list of contextual patches applicable on an object
+    typedef std::vector<SPTR(io::atoms::patch::ISemanticPatch)> PatchVectorType;
+    /// Typedef used to store all the contextual patches
+    typedef std::map<VersionIDType, PatchVectorType> PatchesType;
 
     /// Registers a new patch.
     IO_ATOMS_API void registerPatch(SPTR(io::atoms::patch::ISemanticPatch) patch);
@@ -86,9 +85,8 @@ public:
     IO_ATOMS_API virtual ~SemanticPatchDB();
 
 private:
-
     /// Copy constructor. Does nothing.
-    IO_ATOMS_API SemanticPatchDB( const SemanticPatchDB& cpy );
+    IO_ATOMS_API SemanticPatchDB(const SemanticPatchDB& cpy);
 
     /// Mutex to protect concurrent access for m_patches
     mutable core::mt::ReadWriteMutex m_mutex;
@@ -98,7 +96,6 @@ private:
 
     /// Default instance of SemanticPatchDB;
     static SemanticPatchDB::sptr s_default;
-
 };
 
 } // fwAtomsPatch

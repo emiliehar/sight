@@ -44,18 +44,17 @@ namespace sight::module::viz::scene3d::adaptor
 
 class CompositorListener : public ::Ogre::CompositorInstance::Listener
 {
-
 public:
-
     CompositorListener(::Ogre::Viewport*, SCompositorParameter::sptr _adaptor) :
         m_adaptor(_adaptor)
     {
     }
+
     ~CompositorListener()
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void notifyMaterialRender(::Ogre::uint32, ::Ogre::MaterialPtr& mat)
     {
@@ -64,7 +63,7 @@ public:
         adaptor->updateValue(mat);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual void notifyResourcesCreated(bool)
     {
@@ -80,19 +79,19 @@ private:
 
 static const std::string s_COMPOSITOR_NAME_CONFIG = "compositorName";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCompositorParameter::SCompositorParameter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCompositorParameter::~SCompositorParameter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCompositorParameter::configuring()
 {
@@ -105,7 +104,7 @@ void SCompositorParameter::configuring()
     SIGHT_ERROR_IF("'" + s_COMPOSITOR_NAME_CONFIG + "' attribute not set", m_compositorName.empty());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCompositorParameter::starting()
 {
@@ -113,8 +112,8 @@ void SCompositorParameter::starting()
 
     sight::viz::scene3d::Layer::sptr layer = this->getRenderService()->getLayer(m_layerID);
 
-    ::Ogre::CompositorChain* compChain =
-        ::Ogre::CompositorManager::getSingleton().getCompositorChain(layer->getViewport());
+    ::Ogre::CompositorChain* compChain
+        = ::Ogre::CompositorManager::getSingleton().getCompositorChain(layer->getViewport());
 
     this->getRenderService()->makeCurrent();
 
@@ -131,7 +130,7 @@ void SCompositorParameter::starting()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCompositorParameter::updating()
 {
@@ -141,7 +140,7 @@ void SCompositorParameter::updating()
     this->IParameter::updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCompositorParameter::stopping()
 {
@@ -154,7 +153,7 @@ void SCompositorParameter::stopping()
     delete m_listener;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SCompositorParameter::setVisible(bool _enable)
 {
@@ -163,7 +162,7 @@ void SCompositorParameter::setVisible(bool _enable)
     this->updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCompositorParameter::updateValue(::Ogre::MaterialPtr& _mat)
 {
@@ -171,6 +170,6 @@ void SCompositorParameter::updateValue(::Ogre::MaterialPtr& _mat)
     this->IParameter::updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

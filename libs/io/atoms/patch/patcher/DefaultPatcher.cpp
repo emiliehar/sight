@@ -49,18 +49,19 @@ DefaultPatcher::DefaultPatcher(io::atoms::patch::patcher::IPatcher::Key key)
 {
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 DefaultPatcher::~DefaultPatcher()
 {
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-sight::atoms::Object::sptr DefaultPatcher::transformObject(sight::atoms::Object::sptr object,
-                                                           const std::string& context,
-                                                           const std::string& currentVersion,
-                                                           const std::string& targetVersion)
+sight::atoms::Object::sptr DefaultPatcher::transformObject(
+    sight::atoms::Object::sptr object,
+    const std::string& context,
+    const std::string& currentVersion,
+    const std::string& targetVersion)
 {
     m_object         = object;
     m_context        = context;
@@ -68,10 +69,11 @@ sight::atoms::Object::sptr DefaultPatcher::transformObject(sight::atoms::Object:
     m_currentVersion = m_versionsGraph->getNode(currentVersion);
     m_targetVersion  = m_versionsGraph->getNode(targetVersion);
 
-    fwAtomsPatchInfoLogMacro("Transform from version '"
-                             + m_versionsGraph->getNode(m_currentVersion).getVersionName() + "' to '"
-                             + m_versionsGraph->getNode(m_targetVersion).getVersionName() + "' in context '"
-                             + m_context + "'");
+    fwAtomsPatchInfoLogMacro(
+        "Transform from version '"
+        + m_versionsGraph->getNode(m_currentVersion).getVersionName() + "' to '"
+        + m_versionsGraph->getNode(m_targetVersion).getVersionName() + "' in context '"
+        + m_context + "'");
     fwAtomsPatchInfoLogMacro("Begin structural pass");
 
     // Structural
@@ -91,11 +93,11 @@ sight::atoms::Object::sptr DefaultPatcher::transformObject(sight::atoms::Object:
     return obj;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Object::sptr DefaultPatcher::processStructuralObject(sight::atoms::Object::sptr current)
 {
-    CacheType::const_iterator cIt = m_cache.find(current->getMetaInfo( io::atoms::patch::s_OBJ_ID ));
+    CacheType::const_iterator cIt = m_cache.find(current->getMetaInfo(io::atoms::patch::s_OBJ_ID));
 
     // If the object has not been processed yet.
     if(cIt == m_cache.end())
@@ -103,20 +105,22 @@ sight::atoms::Object::sptr DefaultPatcher::processStructuralObject(sight::atoms:
         sight::atoms::Object::sptr newAtomObject = sight::atoms::Object::New();
 
         // Cache update
-        m_cache[current->getMetaInfo( io::atoms::patch::s_OBJ_ID )] = newAtomObject;
-        m_newVersions[current]                                      = newAtomObject;
+        m_cache[current->getMetaInfo(io::atoms::patch::s_OBJ_ID)] = newAtomObject;
+        m_newVersions[current]                                    = newAtomObject;
 
         // Set id
-        newAtomObject->setMetaInfo( io::atoms::patch::s_OBJ_ID,
-                                    current->getMetaInfo( io::atoms::patch::s_OBJ_ID ));
+        newAtomObject->setMetaInfo(
+            io::atoms::patch::s_OBJ_ID,
+            current->getMetaInfo(io::atoms::patch::s_OBJ_ID));
 
         // Set meta Info
         newAtomObject->setMetaInfos(current->getMetaInfos());
 
         // Fetch all attributes and affect them in the new object.
-        for( sight::atoms::Object::AttributesType::value_type elem :  current->getAttributes() )
+        for(sight::atoms::Object::AttributesType::value_type elem : current->getAttributes())
         {
             sight::atoms::Base::sptr obj = this->processBase(elem.second);
+
             if(this->isKnown(obj))
             {
                 newAtomObject->setAttribute(elem.first, obj);
@@ -132,22 +136,22 @@ sight::atoms::Object::sptr DefaultPatcher::processStructuralObject(sight::atoms:
     }
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Object::sptr DefaultPatcher::processContextualObject(sight::atoms::Object::sptr current)
 {
-    CacheType::const_iterator cIt = m_cache.find(current->getMetaInfo( io::atoms::patch::s_OBJ_ID ));
+    CacheType::const_iterator cIt = m_cache.find(current->getMetaInfo(io::atoms::patch::s_OBJ_ID));
 
     // If the object has not been processed yet.
     if(cIt == m_cache.end())
     {
         // Cache update
-        m_cache[current->getMetaInfo( io::atoms::patch::s_OBJ_ID )] = m_newVersions[current];
+        m_cache[current->getMetaInfo(io::atoms::patch::s_OBJ_ID)] = m_newVersions[current];
 
         // Fetch all attributes and affect them in the new object.
-        for( sight::atoms::Object::AttributesType::value_type elem :  current->getAttributes() )
+        for(sight::atoms::Object::AttributesType::value_type elem : current->getAttributes())
         {
-            if ( elem.second )
+            if(elem.second)
             {
                 if(elem.second->isObject())
                 {
@@ -166,17 +170,17 @@ sight::atoms::Object::sptr DefaultPatcher::processContextualObject(sight::atoms:
     // If the object has already been processed.
     else
     {
-        return m_cache[current->getMetaInfo( io::atoms::patch::s_OBJ_ID )];
+        return m_cache[current->getMetaInfo(io::atoms::patch::s_OBJ_ID)];
     }
 }
 
-//  ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Base::sptr DefaultPatcher::processBase(sight::atoms::Base::sptr base)
 {
     sight::atoms::Base::sptr newBase;
 
-    if ( !base )
+    if(!base)
     {
         return newBase;
     }
@@ -184,6 +188,7 @@ sight::atoms::Base::sptr DefaultPatcher::processBase(sight::atoms::Base::sptr ba
     if(base->isObject())
     {
         sight::atoms::Object::sptr obj = sight::atoms::Object::dynamicCast(base);
+
         if(m_pass == Structural)
         {
             newBase = this->processStructuralObject(obj);
@@ -224,7 +229,7 @@ sight::atoms::Base::sptr DefaultPatcher::processBase(sight::atoms::Base::sptr ba
     return newBase;
 }
 
-//  ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Map::sptr DefaultPatcher::processMapping(sight::atoms::Map::sptr map)
 {
@@ -234,32 +239,34 @@ sight::atoms::Map::sptr DefaultPatcher::processMapping(sight::atoms::Map::sptr m
     std::string key;
     sight::atoms::Base::sptr value;
 
-    for( sight::atoms::Map::MapType::value_type elem :  map->getValue() )
+    for(sight::atoms::Map::MapType::value_type elem : map->getValue())
     {
         key   = elem.first;
         value = elem.second;
 
         sight::atoms::Base::sptr obj = this->processBase(value);
-        if (this->isKnown(obj))
+
+        if(this->isKnown(obj))
         {
-            newMap->insert( key,  obj);
+            newMap->insert(key, obj);
         }
     }
 
     return newMap;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Sequence::sptr DefaultPatcher::processSequence(sight::atoms::Sequence::sptr seq)
 {
     sight::atoms::Sequence::sptr newSeq = sight::atoms::Sequence::New();
 
     // Fetch all attributes and affect them in the new object
-    for( sight::atoms::Base::sptr elem :  seq->getValue() )
+    for(sight::atoms::Base::sptr elem : seq->getValue())
     {
         sight::atoms::Base::sptr obj = this->processBase(elem);
-        if (this->isKnown(obj))
+
+        if(this->isKnown(obj))
         {
             newSeq->push_back(obj);
         }
@@ -268,10 +275,11 @@ sight::atoms::Sequence::sptr DefaultPatcher::processSequence(sight::atoms::Seque
     return newSeq;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Object::sptr DefaultPatcher::applyStructuralPatch(
-    sight::atoms::Object::sptr previous, sight::atoms::Object::sptr current)
+    sight::atoms::Object::sptr previous,
+    sight::atoms::Object::sptr current)
 {
     if(previous)
     {
@@ -280,47 +288,55 @@ sight::atoms::Object::sptr DefaultPatcher::applyStructuralPatch(
         const std::string& version   = io::atoms::patch::helper::getVersion(current);
 
         auto [currentInfos, success] = m_versionsGraph->getLinkedVersion(
-            m_currentVersion, m_targetVersion,
-            std::make_pair(classname, version) );
+            m_currentVersion,
+            m_targetVersion,
+            std::make_pair(classname, version));
 
         if(success)
         {
             // Get patch
-            io::atoms::patch::IStructuralPatch::sptr patch =
-                io::atoms::patch::StructuralPatchDB::getDefault()->getPatch(
-                    classname, version, currentInfos.first, currentInfos.second);
+            io::atoms::patch::IStructuralPatch::sptr patch
+                = io::atoms::patch::StructuralPatchDB::getDefault()->getPatch(
+                      classname,
+                      version,
+                      currentInfos.first,
+                      currentInfos.second);
 
             if(patch)
             {
-                fwAtomsPatchInfoLogMacro("Apply structural patch to transform '" + classname
-                                         + "|" + version + "' to '"
-                                         + currentInfos.first + "|" + currentInfos.second + "'");
+                fwAtomsPatchInfoLogMacro(
+                    "Apply structural patch to transform '" + classname
+                    + "|" + version + "' to '"
+                    + currentInfos.first + "|" + currentInfos.second + "'");
                 // Applying a patch on current (the current object is modified)
                 patch->apply(previous, current, m_newVersions);
                 fwAtomsPatchInfoLogMacro("End structural patch");
             }
             else
             {
-                fwAtomsPatchInfoLogMacro("Move object '" + classname + "|" + version + "' to '"
-                                         + currentInfos.first + "|" + currentInfos.second + "'");
+                fwAtomsPatchInfoLogMacro(
+                    "Move object '" + classname + "|" + version + "' to '"
+                    + currentInfos.first + "|" + currentInfos.second + "'");
                 io::atoms::patch::helper::setClassname(current, currentInfos.first);
                 io::atoms::patch::helper::setVersion(current, currentInfos.second);
             }
         }
         else
         {
-            fwAtomsPatchErrorLogMacro("No linked version found for object '" + classname
-                                      + "' with version '" + version + "'");
+            fwAtomsPatchErrorLogMacro(
+                "No linked version found for object '" + classname
+                + "' with version '" + version + "'");
         }
     }
 
     return current;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 sight::atoms::Object::sptr DefaultPatcher::applyContextualPatch(
-    sight::atoms::Object::sptr previous, sight::atoms::Object::sptr current)
+    sight::atoms::Object::sptr previous,
+    sight::atoms::Object::sptr current)
 {
     if(previous)
     {
@@ -329,18 +345,22 @@ sight::atoms::Object::sptr DefaultPatcher::applyContextualPatch(
 
         // Get patch
         io::atoms::patch::SemanticPatchDB::sptr contextDB = io::atoms::patch::SemanticPatchDB::getDefault();
-        io::atoms::patch::ISemanticPatch::sptr patch      =
-            contextDB->getPatch(m_context, currentName, targetName,
-                                io::atoms::patch::helper::getClassname(previous),
-                                io::atoms::patch::helper::getVersion(previous));
+        io::atoms::patch::ISemanticPatch::sptr patch
+            = contextDB->getPatch(
+                  m_context,
+                  currentName,
+                  targetName,
+                  io::atoms::patch::helper::getClassname(previous),
+                  io::atoms::patch::helper::getVersion(previous));
 
         if(patch)
         {
-            fwAtomsPatchInfoLogMacro("Apply contextual patch to transform '"
-                                     + io::atoms::patch::helper::getClassname(previous)
-                                     + "|" + io::atoms::patch::helper::getVersion(previous) + "' to '"
-                                     + io::atoms::patch::helper::getClassname(current)
-                                     + "|" + io::atoms::patch::helper::getVersion(current) + "'");
+            fwAtomsPatchInfoLogMacro(
+                "Apply contextual patch to transform '"
+                + io::atoms::patch::helper::getClassname(previous)
+                + "|" + io::atoms::patch::helper::getVersion(previous) + "' to '"
+                + io::atoms::patch::helper::getClassname(current)
+                + "|" + io::atoms::patch::helper::getVersion(current) + "'");
 
             // Applying a patch on current (the current object is modified)
             patch->apply(previous, current, m_newVersions);
@@ -351,7 +371,7 @@ sight::atoms::Object::sptr DefaultPatcher::applyContextualPatch(
     return current;
 }
 
-//  ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 bool DefaultPatcher::isKnown(const sight::atoms::Base::sptr& base)
 {
@@ -360,7 +380,7 @@ bool DefaultPatcher::isKnown(const sight::atoms::Base::sptr& base)
     VersionDescriptor::VersionsType versions = target.getVersions();
     sight::atoms::Object::sptr obj           = sight::atoms::Object::dynamicCast(base);
 
-    if (!obj)
+    if(!obj)
     {
         isKnown = true;
     }
@@ -368,16 +388,17 @@ bool DefaultPatcher::isKnown(const sight::atoms::Base::sptr& base)
     {
         std::string classname = obj->getMetaInfo(io::atoms::patch::s_OBJ_CLASSNAME);
 
-        if (classname.empty() || versions.find(classname) != versions.end())
+        if(classname.empty() || versions.find(classname) != versions.end())
         {
             isKnown = true;
         }
     }
+
     return isKnown;
 }
 
-//  ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-} //  namespace patcher
+} // namespace patcher
 
-} //  namespace sight::io::atoms::patch
+} // namespace sight::io::atoms::patch

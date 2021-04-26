@@ -56,7 +56,8 @@ static inline std::optional<QPoint> getCursorPosition(const QWindow* const _w)
     const auto widgetCursorPosition = _w->mapFromGlobal(globalCursorPosition);
 
     std::optional<QPoint> res;
-    if (_w->geometry().contains(widgetCursorPosition))
+
+    if(_w->geometry().contains(widgetCursorPosition))
     {
         res = widgetCursorPosition;
     }
@@ -96,7 +97,7 @@ void Window::setAnimating(bool _animating)
 {
     m_animating = _animating;
 
-    if (_animating)
+    if(_animating)
     {
         renderLater();
     }
@@ -108,15 +109,16 @@ void Window::initialize()
 {
     m_ogreRoot = sight::viz::scene3d::Utils::getOgreRoot();
 
-    SIGHT_ASSERT("OpenGL RenderSystem not found",
-                 m_ogreRoot->getRenderSystem()->getName().find("GL") != std::string::npos);
+    SIGHT_ASSERT(
+        "OpenGL RenderSystem not found",
+        m_ogreRoot->getRenderSystem()->getName().find("GL") != std::string::npos);
 
     Ogre::NameValuePairList parameters;
 
     // We share the OpenGL context on all windows. The first window will create the context, the other ones will
     // reuse the current context.
     parameters["currentGLContext"]  = "true";
-    parameters["externalGLControl"] = "true";     // Let us handle buffer swapping and vsync.
+    parameters["externalGLControl"] = "true"; // Let us handle buffer swapping and vsync.
 
     /*
        We need to supply the low level OS window handle to this QWindow so that Ogre3D knows where to draw
@@ -138,11 +140,12 @@ void Window::initialize()
     m_glContext = module::viz::scene3dQt::OpenGLContext::getGlobalOgreOpenGLContext();
     this->makeCurrent();
 
-    m_ogreRenderWindow = m_ogreRoot->createRenderWindow("Widget-RenderWindow_" + std::to_string(m_id),
-                                                        static_cast<unsigned int>(this->width()),
-                                                        static_cast<unsigned int>(this->height()),
-                                                        false,
-                                                        &parameters);
+    m_ogreRenderWindow = m_ogreRoot->createRenderWindow(
+        "Widget-RenderWindow_" + std::to_string(m_id),
+        static_cast<unsigned int>(this->width()),
+        static_cast<unsigned int>(this->height()),
+        false,
+        &parameters);
 
     m_ogreRenderWindow->setVisible(true);
     m_ogreRenderWindow->setAutoUpdated(false);
@@ -179,11 +182,11 @@ void Window::requestRender()
     this->renderLater();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Window::makeCurrent()
 {
-    if (m_glContext)
+    if(m_glContext)
     {
         m_glContext->makeCurrent(this);
     }
@@ -193,7 +196,7 @@ void Window::makeCurrent()
 
 void Window::destroyWindow()
 {
-    if (m_ogreRenderWindow)
+    if(m_ogreRenderWindow)
     {
         m_ogreRenderWindow->removeListener(this);
         sight::viz::scene3d::WindowManager::sptr mgr = sight::viz::scene3d::WindowManager::get();
@@ -206,7 +209,7 @@ void Window::destroyWindow()
 
 void Window::render()
 {
-    if (m_ogreRenderWindow == nullptr)
+    if(m_ogreRenderWindow == nullptr)
     {
         return;
     }
@@ -237,7 +240,7 @@ void Window::render()
 
         m_glContext->swapBuffers(this);
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         SIGHT_ERROR("Exception occured during Ogre rendering" << e.what());
     }
@@ -268,7 +271,7 @@ void Window::renderLater()
        only get called when the window is resized, moved, etc. as opposed to all of the time; which is
        generally what we need.
      */
-    if (!m_update_pending)
+    if(!m_update_pending)
     {
         m_update_pending = true;
         QApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
@@ -287,18 +290,19 @@ bool Window::event(QEvent* _event)
        before calling the render() function.
      */
 
-    switch (_event->type())
+    switch(_event->type())
     {
         case QEvent::UpdateRequest:
             m_update_pending = false;
             renderNow();
+
             return true;
 
         case QEvent::Resize:
         {
             bool result = QWindow::event(_event);
 
-            if (m_ogreRenderWindow != nullptr && m_ogreSize != this->size())
+            if(m_ogreRenderWindow != nullptr && m_ogreSize != this->size())
             {
                 this->ogreResize(this->size());
             }
@@ -312,6 +316,7 @@ bool Window::event(QEvent* _event)
 
     return QWindow::event(_event);
 }
+
 // ----------------------------------------------------------------------------
 
 void Window::exposeEvent(QExposeEvent*)
@@ -324,7 +329,7 @@ void Window::exposeEvent(QExposeEvent*)
 
 void Window::moveEvent(QMoveEvent*)
 {
-    if (m_ogreRenderWindow != nullptr)
+    if(m_ogreRenderWindow != nullptr)
     {
         m_ogreRenderWindow->reposition(x(), y());
     }
@@ -335,20 +340,21 @@ void Window::moveEvent(QMoveEvent*)
 void Window::renderNow()
 {
     // Small optimization to not render when not visible
-    if (!this->isExposed())
+    if(!this->isExposed())
     {
         return;
     }
 
-    if (m_ogreSize != this->size())
+    if(m_ogreSize != this->size())
     {
         this->ogreResize(this->size());
+
         return;
     }
 
     this->render();
 
-    if (m_animating)
+    if(m_animating)
     {
         this->renderLater();
     }
@@ -388,34 +394,39 @@ void Window::keyReleaseEvent(QKeyEvent* _e)
 
 // ----------------------------------------------------------------------------
 
-Window::InteractionInfo Window::convertMouseEvent(const QMouseEvent* const _evt,
-                                                  InteractionInfo::InteractionEnum _interactionType) const
+Window::InteractionInfo Window::convertMouseEvent(
+    const QMouseEvent* const _evt,
+    InteractionInfo::InteractionEnum _interactionType) const
 {
     InteractionInfo info;
     const auto button        = _evt->button();
     const auto activeButtons = _evt->buttons();
 
-    switch (button)
+    switch(button)
     {
         case Qt::NoButton:
-            info.button =
-                (activeButtons& Qt::LeftButton) ? sight::viz::scene3d::interactor::IInteractor::LEFT : (activeButtons&
-                                                                                                        Qt::
-                                                                                                        MiddleButton) ?
-                ::
-                sight::viz::scene3d::interactor::IInteractor::MIDDLE : (activeButtons& Qt::RightButton) ? ::
-                sight::viz::scene3d::interactor::IInteractor::RIGHT : sight::viz::scene3d::interactor::IInteractor::
-                UNKNOWN;
+            info.button
+                = (activeButtons& Qt::LeftButton) ? sight::viz::scene3d::interactor::IInteractor::LEFT : (activeButtons&
+                                                                                                          Qt::
+                                                                                                          MiddleButton)
+                  ? ::
+                  sight::viz::scene3d::interactor::IInteractor::MIDDLE : (activeButtons& Qt::RightButton) ? ::
+                  sight::viz::scene3d::interactor::IInteractor::RIGHT : sight::viz::scene3d::interactor::IInteractor::
+                  UNKNOWN;
             break;
+
         case Qt::LeftButton:
             info.button = sight::viz::scene3d::interactor::IInteractor::LEFT;
             break;
+
         case Qt::MiddleButton:
             info.button = sight::viz::scene3d::interactor::IInteractor::MIDDLE;
             break;
+
         case Qt::RightButton:
             info.button = sight::viz::scene3d::interactor::IInteractor::RIGHT;
             break;
+
         default:
             info.button = sight::viz::scene3d::interactor::IInteractor::UNKNOWN;
             break;
@@ -499,7 +510,7 @@ void Window::mouseReleaseEvent(QMouseEvent* _e)
 
 void Window::ogreResize(const QSize& _newSize)
 {
-    if (!_newSize.isValid())
+    if(!_newSize.isValid())
     {
         return;
     }
@@ -519,7 +530,8 @@ void Window::ogreResize(const QSize& _newSize)
     const auto numViewports = m_ogreRenderWindow->getNumViewports();
 
     ::Ogre::Viewport* viewport = nullptr;
-    for (unsigned short i = 0; i < numViewports; i++)
+
+    for(unsigned short i = 0 ; i < numViewports ; i++)
     {
         viewport = m_ogreRenderWindow->getViewport(i);
 
@@ -529,14 +541,14 @@ void Window::ogreResize(const QSize& _newSize)
         viewport->getCamera()->setAspectRatio(vpWidth / vpHeight);
     }
 
-    if (viewport && ::Ogre::CompositorManager::getSingleton().hasCompositorChain(viewport))
+    if(viewport && ::Ogre::CompositorManager::getSingleton().hasCompositorChain(viewport))
     {
         ::Ogre::CompositorChain* chain = ::Ogre::CompositorManager::getSingleton().getCompositorChain(
             viewport);
 
-        for (auto instance : chain->getCompositorInstances())
+        for(auto instance : chain->getCompositorInstances())
         {
-            if (instance->getEnabled())
+            if(instance->getEnabled())
             {
                 instance->setEnabled(false);
                 instance->setEnabled(true);
@@ -559,7 +571,7 @@ void Window::ogreResize(const QSize& _newSize)
 
 void Window::onScreenChanged(QScreen*)
 {
-    if (m_ogreRenderWindow != nullptr)
+    if(m_ogreRenderWindow != nullptr)
     {
         this->ogreResize(this->size());
     }

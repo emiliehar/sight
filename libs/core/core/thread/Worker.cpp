@@ -25,13 +25,13 @@
 namespace sight::core::thread
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ThreadIdType getCurrentThreadId()
 {
     return std::this_thread::get_id();
 }
 
-//SPTR(Worker) Worker::defaultFactory() => WorkerAsio.cpp
+// SPTR(Worker) Worker::defaultFactory() => WorkerAsio.cpp
 
-} //namespace sight::core::thread
+} // namespace sight::core::thread

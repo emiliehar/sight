@@ -26,15 +26,16 @@
 
 namespace sight::io::zip
 {
+
 namespace ut
 {
 
 class ZipTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ZipTest );
-CPPUNIT_TEST( commentTest );
-CPPUNIT_TEST( cryptTest );
-CPPUNIT_TEST( badPasswordCryptTest );
+CPPUNIT_TEST_SUITE(ZipTest);
+CPPUNIT_TEST(commentTest);
+CPPUNIT_TEST(cryptTest);
+CPPUNIT_TEST(badPasswordCryptTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,4 +49,5 @@ public:
 };
 
 } // namespace ut
+
 } // namespace sight::io::zip

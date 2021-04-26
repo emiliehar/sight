@@ -25,58 +25,62 @@
 namespace sight::viz::scene3d
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-const IWindowInteractor::FactoryRegistryKeyType IWindowInteractor::REGISTRY_KEY =
-    "::viz::scene3d::IWindowInteractor::REGISTRY_KEY";
+const IWindowInteractor::FactoryRegistryKeyType IWindowInteractor::REGISTRY_KEY
+    = "::viz::scene3d::IWindowInteractor::REGISTRY_KEY";
 
-const IWindowInteractor::FactoryRegistryKeyType IWindowInteractor::OFFSCREEN_REGISTRY_KEY =
-    "::viz::scene3d::IWindowInteractor::OFFSCREEN_REGISTRY_KEY";
+const IWindowInteractor::FactoryRegistryKeyType IWindowInteractor::OFFSCREEN_REGISTRY_KEY
+    = "::viz::scene3d::IWindowInteractor::OFFSCREEN_REGISTRY_KEY";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IWindowInteractor::sptr IWindowInteractor::createManager()
 {
     IWindowInteractor::sptr manager = viz::scene3d::factory::New(
-        viz::scene3d::IWindowInteractor::REGISTRY_KEY );
-    SIGHT_ASSERT(
-        "The factory process to create an IWindowInteractor, failed. Missing Qt or Wx component ?",
-        manager );
-    return manager;
-}
-
-//-----------------------------------------------------------------------------
-
-IWindowInteractor::sptr IWindowInteractor::createOffscreenManager(unsigned int _w,
-                                                                  unsigned int _h)
-{
-    IWindowInteractor::sptr manager = viz::scene3d::offscreenInteractorMgrFactory::New(
-        viz::scene3d::IWindowInteractor::OFFSCREEN_REGISTRY_KEY, std::make_pair(_w, _h));
+        viz::scene3d::IWindowInteractor::REGISTRY_KEY);
     SIGHT_ASSERT(
         "The factory process to create an IWindowInteractor, failed. Missing Qt or Wx component ?",
         manager);
+
     return manager;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+IWindowInteractor::sptr IWindowInteractor::createOffscreenManager(
+    unsigned int _w,
+    unsigned int _h)
+{
+    IWindowInteractor::sptr manager = viz::scene3d::offscreenInteractorMgrFactory::New(
+        viz::scene3d::IWindowInteractor::OFFSCREEN_REGISTRY_KEY,
+        std::make_pair(_w, _h));
+    SIGHT_ASSERT(
+        "The factory process to create an IWindowInteractor, failed. Missing Qt or Wx component ?",
+        manager);
+
+    return manager;
+}
+
+// -----------------------------------------------------------------------------
 
 IWindowInteractor::IWindowInteractor()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IWindowInteractor::~IWindowInteractor()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IWindowInteractor::setFullscreen(bool, int)
 {
     SIGHT_ERROR("Fullscreen not supported.");
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d

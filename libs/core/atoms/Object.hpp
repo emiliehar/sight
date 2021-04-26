@@ -36,12 +36,12 @@ namespace sight::atoms
 class ATOMS_CLASS_API Object : public Base
 {
 public:
-    SIGHT_DECLARE_CLASS(Object, atoms::Base, atoms::factory::New< Object >)
+    SIGHT_DECLARE_CLASS(Object, atoms::Base, atoms::factory::New<Object>)
 
     typedef std::map<std::string, Base::sptr> AttributesType;
     typedef std::map<std::string, std::string> MetaInfosType;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * @brief Constructor
@@ -71,7 +71,7 @@ public:
     ATOMS_API Base::sptr getAttribute(const std::string& key) const;
 
     //! Returns requested attribute casted in OBJECT_TYPE::sptr if exists, empty sptr else.
-    template < typename OBJECT_TYPE >
+    template<typename OBJECT_TYPE>
     SPTR(OBJECT_TYPE) getAttribute(const std::string& key) const;
 
     //! add a atrtribut, old value is erased
@@ -89,7 +89,7 @@ public:
     //! clear attributes
     ATOMS_API void clearAttribute();
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * @brief Add a metainfo in the object
@@ -97,7 +97,7 @@ public:
      */
     ATOMS_API void setMetaInfo(const std::string& key, const std::string& value);
 
-    //!Replace metaInfos.
+    //! Replace metaInfos.
     ATOMS_API void setMetaInfos(const MetaInfosType& metaInfos);
 
     //! Returns one meta information
@@ -135,10 +135,8 @@ public:
     }
 
 private:
-
     MetaInfosType m_metaInfos;
     AttributesType m_attributes;
-
 };
 
-}
+} // namespace sight::atoms

@@ -35,32 +35,35 @@
 #include <io/patch/structural/data/Image/V3ToV2.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::structural::ut::data::Image::V3ToV2Test );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::structural::ut::data::Image::V3ToV2Test);
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace Image
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V3ToV2Test::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V3ToV2Test::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V3ToV2Test::applyPatchTest()
 {
@@ -88,8 +91,12 @@ void V3ToV2Test::applyPatchTest()
     CPPUNIT_ASSERT(nullptr == imgObjV2->getAttribute("pixel_format"));
 }
 
-//------------------------------------------------------------------------------
-} //namespace Image
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+// ------------------------------------------------------------------------------
+
+} // namespace Image
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

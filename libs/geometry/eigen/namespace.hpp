@@ -35,4 +35,5 @@ namespace helper
 {
 
 } // namespace helper
+
 } // namespace sight::geometry::eigen

@@ -46,31 +46,31 @@ namespace sight::module::ui::viz
 using sight::viz::scene3d::ILight;
 using sight::viz::scene3d::Layer;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static const core::com::Slots::SlotKeyType s_EDIT_LIGHT_SLOT = "editLight";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SLightEditor::SLightEditor() noexcept
 {
     newSlot(s_EDIT_LIGHT_SLOT, &SLightEditor::editLight, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SLightEditor::~SLightEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::configuring()
 {
     this->initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::starting()
 {
@@ -83,9 +83,10 @@ void SLightEditor::starting()
     m_lightNameLabel->setAlignment(::Qt::AlignHCenter);
 
     m_lightTypeBox = new QComboBox();
-    m_lightTypeBox->addItems(QStringList() <<
-                             ILight::s_POINT_LIGHT.c_str() <<
-                             ILight::s_DIRECTIONAL_LIGHT.c_str());
+    m_lightTypeBox->addItems(
+        QStringList()
+            << ILight::s_POINT_LIGHT.c_str()
+            << ILight::s_DIRECTIONAL_LIGHT.c_str());
     m_lightTypeBox->setEnabled(false);
 
     m_visualFeedback = new QPushButton("Feedback");
@@ -207,13 +208,13 @@ void SLightEditor::starting()
     QObject::connect(m_zReset, &QPushButton::clicked, this, &SLightEditor::onResetZTranslation);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::stopping()
 {
@@ -238,41 +239,43 @@ void SLightEditor::stopping()
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditDiffuseColor(bool)
 {
-    ::Ogre::ColourValue newDiffuseColor = this->editColor(m_currentLight->getDiffuseColor(),
-                                                          "Light diffuse color");
+    ::Ogre::ColourValue newDiffuseColor = this->editColor(
+        m_currentLight->getDiffuseColor(),
+        "Light diffuse color");
 
     m_currentLight->setDiffuseColor(newDiffuseColor);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditSpecularColor(bool)
 {
-    ::Ogre::ColourValue newSpecularColor = this->editColor(m_currentLight->getSpecularColor(),
-                                                           "Light specular color");
+    ::Ogre::ColourValue newSpecularColor = this->editColor(
+        m_currentLight->getSpecularColor(),
+        "Light specular color");
 
     m_currentLight->setSpecularColor(newSpecularColor);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditThetaOffset(int _value)
 {
     m_currentLight->setThetaOffset(static_cast<float>(_value - ILight::s_OFFSET_RANGE / 2));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditPhiOffset(int _value)
 {
     m_currentLight->setPhiOffset(static_cast<float>(_value - ILight::s_OFFSET_RANGE / 2));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditType(const QString& _type)
 {
@@ -281,6 +284,7 @@ void SLightEditor::onEditType(const QString& _type)
         m_currentLight->setType(::Ogre::Light::LT_POINT);
         m_thetaSlider->setEnabled(false);
         m_phiSlider->setEnabled(false);
+
         if(m_currentLight->getName().find(Layer::s_DEFAULT_LIGHT_NAME) == std::string::npos)
         {
             m_xTranslation->setEnabled(true);
@@ -294,11 +298,13 @@ void SLightEditor::onEditType(const QString& _type)
     else if(_type == ILight::s_DIRECTIONAL_LIGHT.c_str())
     {
         m_currentLight->setType(::Ogre::Light::LT_DIRECTIONAL);
+
         if(m_currentLight->getName().find(Layer::s_DEFAULT_LIGHT_NAME) == std::string::npos)
         {
             m_thetaSlider->setEnabled(true);
             m_phiSlider->setEnabled(true);
         }
+
         m_xTranslation->setEnabled(false);
         m_yTranslation->setEnabled(false);
         m_zTranslation->setEnabled(false);
@@ -310,10 +316,11 @@ void SLightEditor::onEditType(const QString& _type)
     {
         SIGHT_ASSERT("Unknow type for light", false);
     }
+
     m_currentLight->update();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onToggleFeedback(bool _enable)
 {
@@ -321,47 +328,47 @@ void SLightEditor::onToggleFeedback(bool _enable)
     m_currentLight->getRenderService()->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditXTranslation(int _value)
 {
-    ::Ogre::Node* const lightNode = this->getLightNode();
+    ::Ogre::Node* const lightNode    = this->getLightNode();
     const ::Ogre::Vector3 currentPos = lightNode->getPosition();
-    lightNode->setPosition(::Ogre::Vector3(static_cast< ::Ogre::Real >(_value), currentPos[1], currentPos[2]));
+    lightNode->setPosition(::Ogre::Vector3(static_cast< ::Ogre::Real>(_value), currentPos[1], currentPos[2]));
     m_currentLight->getRenderService()->requestRender();
 
     m_xLabel->setText(QString("X: %1").arg(_value));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditYTranslation(int _value)
 {
-    ::Ogre::Node* const lightNode = this->getLightNode();
+    ::Ogre::Node* const lightNode    = this->getLightNode();
     const ::Ogre::Vector3 currentPos = lightNode->getPosition();
-    lightNode->setPosition(::Ogre::Vector3(currentPos[0], static_cast< ::Ogre::Real >(_value), currentPos[2]));
+    lightNode->setPosition(::Ogre::Vector3(currentPos[0], static_cast< ::Ogre::Real>(_value), currentPos[2]));
     m_currentLight->getRenderService()->requestRender();
 
     m_yLabel->setText(QString("Y: %1").arg(_value));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onEditZTranslation(int _value)
 {
-    ::Ogre::Node* const lightNode = this->getLightNode();
+    ::Ogre::Node* const lightNode    = this->getLightNode();
     const ::Ogre::Vector3 currentPos = lightNode->getPosition();
-    lightNode->setPosition(::Ogre::Vector3(currentPos[0], currentPos[1], static_cast< ::Ogre::Real >(_value)));
+    lightNode->setPosition(::Ogre::Vector3(currentPos[0], currentPos[1], static_cast< ::Ogre::Real>(_value)));
     m_currentLight->getRenderService()->requestRender();
 
     m_zLabel->setText(QString("Z: %1").arg(_value));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onResetXTranslation(bool)
 {
-    ::Ogre::Node* const lightNode = this->getLightNode();
+    ::Ogre::Node* const lightNode    = this->getLightNode();
     const ::Ogre::Vector3 currentPos = lightNode->getPosition();
     lightNode->setPosition(::Ogre::Vector3(0.f, currentPos[1], currentPos[2]));
     m_currentLight->getRenderService()->requestRender();
@@ -370,11 +377,11 @@ void SLightEditor::onResetXTranslation(bool)
     m_xTranslation->setValue(0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onResetYTranslation(bool)
 {
-    ::Ogre::Node* const lightNode = this->getLightNode();
+    ::Ogre::Node* const lightNode    = this->getLightNode();
     const ::Ogre::Vector3 currentPos = lightNode->getPosition();
     lightNode->setPosition(::Ogre::Vector3(currentPos[0], 0.f, currentPos[2]));
     m_currentLight->getRenderService()->requestRender();
@@ -383,11 +390,11 @@ void SLightEditor::onResetYTranslation(bool)
     m_yTranslation->setValue(0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::onResetZTranslation(bool)
 {
-    ::Ogre::Node* const lightNode = this->getLightNode();
+    ::Ogre::Node* const lightNode    = this->getLightNode();
     const ::Ogre::Vector3 currentPos = lightNode->getPosition();
     lightNode->setPosition(::Ogre::Vector3(currentPos[0], currentPos[1], 0.f));
     m_currentLight->getRenderService()->requestRender();
@@ -396,21 +403,23 @@ void SLightEditor::onResetZTranslation(bool)
     m_zTranslation->setValue(0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::Node* SLightEditor::getLightNode() const
 {
     ::Ogre::SceneNode* const root = m_currentLight->getLayer()->getSceneManager()->getRootSceneNode();
-    ::Ogre::Node* const lightNode =
-        sight::viz::scene3d::helper::Scene::getNodeById(m_currentLight->getTransformId(), root);
+    ::Ogre::Node* const lightNode
+        = sight::viz::scene3d::helper::Scene::getNodeById(m_currentLight->getTransformId(), root);
+
     return lightNode;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLightEditor::editLight(ILight::sptr _lightAdaptor)
 {
     m_currentLight = _lightAdaptor;
+
     if(_lightAdaptor)
     {
         SIGHT_ASSERT("The selected light adaptor doesn't exist.", _lightAdaptor);
@@ -425,6 +434,7 @@ void SLightEditor::editLight(ILight::sptr _lightAdaptor)
         if(m_currentLight->getName().find(Layer::s_DEFAULT_LIGHT_NAME) == std::string::npos)
         {
             m_visualFeedback->setEnabled(true);
+
             if(m_currentLight->getType() == ::Ogre::Light::LT_DIRECTIONAL)
             {
                 m_thetaSlider->setEnabled(true);
@@ -459,14 +469,17 @@ void SLightEditor::editLight(ILight::sptr _lightAdaptor)
 
         m_visualFeedback->setChecked(m_currentLight->isVisualFeedbackOn());
 
-        m_thetaSlider->setValue(static_cast<int>(m_currentLight->getThetaOffset() +
-                                                 ILight::s_OFFSET_RANGE / 2));
-        m_phiSlider->setValue(static_cast<int>(m_currentLight->getPhiOffset() +
-                                               ILight::s_OFFSET_RANGE / 2));
+        m_thetaSlider->setValue(
+            static_cast<int>(m_currentLight->getThetaOffset()
+                             + ILight::s_OFFSET_RANGE / 2));
+        m_phiSlider->setValue(
+            static_cast<int>(m_currentLight->getPhiOffset()
+                             + ILight::s_OFFSET_RANGE / 2));
 
-        ::Ogre::SceneNode* const root = m_currentLight->getLayer()->getSceneManager()->getRootSceneNode();
+        ::Ogre::SceneNode* const root       = m_currentLight->getLayer()->getSceneManager()->getRootSceneNode();
         const ::Ogre::Node* const lightNode = sight::viz::scene3d::helper::Scene::getNodeById(
-            m_currentLight->getTransformId(), root);
+            m_currentLight->getTransformId(),
+            root);
         const ::Ogre::Vector3 currentPos = lightNode->getPosition();
 
         m_xTranslation->setValue(static_cast<int>(currentPos[0]));
@@ -484,7 +497,7 @@ void SLightEditor::editLight(ILight::sptr _lightAdaptor)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::ColourValue SLightEditor::editColor(const ::Ogre::ColourValue& _currentColor, const std::string& _title)
 {
@@ -492,13 +505,14 @@ void SLightEditor::editLight(ILight::sptr _lightAdaptor)
         this->getContainer());
     QWidget* const container = qtContainer->getQtContainer();
 
-    QColor qColor = QColorDialog::getColor(module::ui::viz::helper::Utils::converOgreColorToQColor(_currentColor),
-                                           container,
-                                           _title.c_str());
+    QColor qColor = QColorDialog::getColor(
+        module::ui::viz::helper::Utils::converOgreColorToQColor(_currentColor),
+        container,
+        _title.c_str());
 
     return module::ui::viz::helper::Utils::convertQColorToOgreColor(qColor);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::viz

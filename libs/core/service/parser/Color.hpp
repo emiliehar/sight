@@ -30,6 +30,7 @@
 
 namespace sight::service
 {
+
 namespace parser
 {
 
@@ -48,9 +49,7 @@ namespace parser
  */
 class SERVICE_CLASS_API Color final : public service::IXMLParser
 {
-
 public:
-
     /// Creates default attributes and methods (New(), ::sptr, ...).
     SIGHT_DECLARE_SERVICE(Color, service::IXMLParser)
 
@@ -65,14 +64,13 @@ public:
     }
 
 private:
-
     /**
      * @brief Parse a color XML configuration.
      * @param _obj color in which apply the configuration.
      */
     void createConfig(core::tools::Object::sptr _obj) override;
-
 };
 
 } // namespace parser.
+
 } // namespace sight::service.

@@ -38,7 +38,6 @@ namespace sight::core::tools
 class CORE_CLASS_API System
 {
 public:
-
     /**
      * @brief   Returns the system's temporary folder.
      * Returns the value returned by std::filesystem::temp_directory_path, or
@@ -61,7 +60,7 @@ public:
      * @return  created folder
      */
     CORE_API static const std::filesystem::path getTemporaryFolder(
-        const std::string& subFolderPrefix = "" ) noexcept;
+        const std::string& subFolderPrefix = "") noexcept;
 
     /**
      * @brief   Returns the pid of a temporary folder
@@ -106,9 +105,7 @@ public:
     }
 
 protected:
-
     static std::string s_tempPrefix;
-
 };
 
 } // namespace sight::core::tools

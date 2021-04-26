@@ -36,18 +36,17 @@ template<class SRV_IMPL>
 class ServiceFactoryRegistry
 {
 public:
-
     ServiceFactoryRegistry(const std::string& simpl, const std::string& stype)
     {
         auto factory = service::extension::Factory::getDefault();
-        factory->addServiceFactory( &::sight::service::factory::New< SRV_IMPL >, simpl, stype);
+        factory->addServiceFactory(&::sight::service::factory::New<SRV_IMPL>, simpl, stype);
     }
 
     ServiceFactoryRegistry(const std::string& simpl, const std::string& stype, const std::string& oimpl)
     {
         auto factory = service::extension::Factory::getDefault();
-        factory->addServiceFactory( &::sight::service::factory::New< SRV_IMPL >, simpl, stype);
-        factory->addObjectFactory( simpl, oimpl);
+        factory->addServiceFactory(&::sight::service::factory::New<SRV_IMPL>, simpl, stype);
+        factory->addObjectFactory(simpl, oimpl);
     }
 };
 
@@ -57,12 +56,11 @@ public:
 class ServiceObjectFactoryRegistry
 {
 public:
-
     ServiceObjectFactoryRegistry(const std::string& simpl, const std::string& oimpl)
     {
         auto factory = service::extension::Factory::getDefault();
-        factory->addObjectFactory( simpl, oimpl);
+        factory->addObjectFactory(simpl, oimpl);
     }
 };
 
-} //end namespace sight::service
+} // end namespace sight::service

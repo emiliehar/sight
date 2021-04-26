@@ -55,9 +55,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API SPicker final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SPicker, ::sight::viz::scene3d::IAdaptor)
 
@@ -68,7 +66,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SPicker() noexcept override;
 
 protected:
-
     /// Configures the picker's query mask and priority.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -82,22 +79,20 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     /// Determines the execution order of the picking interactor.
-    int m_priority { 2 };
+    int m_priority{2};
 
     /// Defines the mask used to filter out entities when picking.
-    std::uint32_t m_queryMask { 0xFFFFFFFF };
+    std::uint32_t m_queryMask{0xFFFFFFFF};
 
     /// Defines if the interaction must take into account above layers.
-    bool m_layerOrderDependant { true };
+    bool m_layerOrderDependant{true};
 
     /// Contains the interactor managed by the adaptor.
-    std::shared_ptr< sight::viz::scene3d::interactor::MeshPickerInteractor > m_interactor;
+    std::shared_ptr<sight::viz::scene3d::interactor::MeshPickerInteractor> m_interactor;
 
     /// Defines the signal sent on picking events.
     sight::viz::scene3d::interactor::MeshPickerInteractor::PointClickedSigType::sptr m_pickedSig;
-
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

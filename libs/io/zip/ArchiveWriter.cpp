@@ -50,7 +50,7 @@ static inline std::tuple<int, int> to_minizip_parameter(Method method, Level lev
         case Method::DEFLATE:
             minizip_method = MZ_COMPRESS_METHOD_DEFLATE;
 
-            switch (level)
+            switch(level)
             {
                 case Level::BEST:
                 case Level::ULTRA:
@@ -65,12 +65,13 @@ static inline std::tuple<int, int> to_minizip_parameter(Method method, Level lev
                     minizip_level = MZ_COMPRESS_LEVEL_DEFAULT;
                     break;
             }
+
             break;
 
         case Method::ZSTD:
             minizip_method = MZ_COMPRESS_METHOD_ZSTD;
 
-            switch (level)
+            switch(level)
             {
                 case Level::ULTRA:
                     minizip_level = 22;
@@ -88,6 +89,7 @@ static inline std::tuple<int, int> to_minizip_parameter(Method method, Level lev
                     minizip_level = 5;
                     break;
             }
+
             break;
 
         default:
@@ -105,42 +107,41 @@ static inline int open_new_file_in_zip(
     const std::filesystem::path& file_path,
     const core::crypto::secure_string& password,
     const int method,
-    const int level )
+    const int level)
 {
     zip_fileinfo zip_file_info;
     const char* const key = password.empty() ? nullptr : password.c_str();
 
     return zipOpenNewFileInZip5(
-        zip_file,          // zipFile file
+        zip_file, // zipFile file
         file_path.c_str(), // const char *filename : the filename in zip
-        &zip_file_info,    // const zip_fileinfo *zipfi: contain supplemental information
-        nullptr,           // (UNUSED) const void *extrafield_local: buffer to store the local header extra field data
-        0,                 // (UNUSED) uint16_t size_extrafield_local: size of extrafield_local buffer
-        nullptr,           // const void *extrafield_global: buffer to store the global header extra field data
-        0,                 // uint16_t size_extrafield_global: size of extrafield_local buffer
-        nullptr,           // const char *comment: buffer for comment string
-        method,            // int method: contain the compression method
-        level,             // int level: contain the level of compression
-        0,                 // int raw: use 0 to disable
-        0,                 // (UNUSED) int windowBits: use default value
-        0,                 // (UNUSED) int memLevel: use default value
-        0,                 // (UNUSED) int strategy: use default value
-        key,               // const char *password: NULL means no encryption
-        0,                 // (UNUSED) unsigned long crc_for_crypting,
-        0,                 // unsigned long version_madeby
-        0,                 // uint16_t flag_base: use default value
-        1                  // int zip64: use 0 to disable
+        &zip_file_info, // const zip_fileinfo *zipfi: contain supplemental information
+        nullptr, // (UNUSED) const void *extrafield_local: buffer to store the local header extra field data
+        0, // (UNUSED) uint16_t size_extrafield_local: size of extrafield_local buffer
+        nullptr, // const void *extrafield_global: buffer to store the global header extra field data
+        0, // uint16_t size_extrafield_global: size of extrafield_local buffer
+        nullptr, // const char *comment: buffer for comment string
+        method, // int method: contain the compression method
+        level, // int level: contain the level of compression
+        0, // int raw: use 0 to disable
+        0, // (UNUSED) int windowBits: use default value
+        0, // (UNUSED) int memLevel: use default value
+        0, // (UNUSED) int strategy: use default value
+        key, // const char *password: NULL means no encryption
+        0, // (UNUSED) unsigned long crc_for_crypting,
+        0, // unsigned long version_madeby
+        0, // uint16_t flag_base: use default value
+        1 // int zip64: use 0 to disable
         );
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /// Implementation class
 class ArchiveWriterImpl final : public ArchiveWriter
 {
 public:
     SIGHT_DECLARE_CLASS(ArchiveWriterImpl, ArchiveWriter)
-
     /// Delete default constructors and assignment operators, as we don't want to allow resources duplication
     ArchiveWriterImpl()                                = delete;
     ArchiveWriterImpl(const ArchiveWriter&)            = delete;
@@ -223,7 +224,7 @@ public:
                     const std::filesystem::path& file_path,
                     const core::crypto::secure_string& password,
                     const int m_method,
-                    const int m_level ) :
+                    const int m_level) :
                     m_archive(archive),
                     m_file_path(file_path),
                     m_password(password),
@@ -236,11 +237,11 @@ public:
             ZipSink(const std::shared_ptr<const Parameters>& parameters) :
                 m_attributes(parameters),
                 m_file_keeper(std::make_shared<const ZipFileKeeper>(m_attributes)),
-                m_lock_guard(std::make_shared< std::lock_guard<std::mutex> >(m_attributes->m_archive->m_operation_mutex))
+                m_lock_guard(std::make_shared<std::lock_guard<std::mutex> >(m_attributes->m_archive->m_operation_mutex))
             {
             }
 
-            //------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------
 
             std::streamsize write(const char* buffer, std::streamsize size)
             {
@@ -248,7 +249,7 @@ public:
                 const int result = zipWriteInFileInZip(
                     m_attributes->m_archive->m_zip_file,
                     buffer,
-                    static_cast< std::uint32_t >(size));
+                    static_cast<std::uint32_t>(size));
 
                 SIGHT_THROW_EXCEPTION_IF(
                     exception::Write(
@@ -263,7 +264,6 @@ public:
             }
 
         private:
-
             // Used to create and destroy minizip file handle
             struct ZipFileKeeper
             {
@@ -315,7 +315,7 @@ public:
             const std::shared_ptr<const ZipFileKeeper> m_file_keeper;
 
             // Locks the archive mutex so nobody could open another file.
-            const std::shared_ptr< const std::lock_guard<std::mutex> > m_lock_guard;
+            const std::shared_ptr<const std::lock_guard<std::mutex> > m_lock_guard;
         };
 
         // Translate to minizip dialect
@@ -331,11 +331,10 @@ public:
 
         // Creating a ZipSink also lock the archive mutex.
         // Due to its design, minizip only allows one archive with the same path with one file operation.
-        return std::make_unique< boost::iostreams::stream<ZipSink> >(parameters);
+        return std::make_unique<boost::iostreams::stream<ZipSink> >(parameters);
     }
 
 private:
-
     /// Internal class
     friend class ZipSink;
 
@@ -343,13 +342,13 @@ private:
     std::filesystem::path m_archive_path;
 
     /// Archive context handle
-    zipFile m_zip_file {nullptr};
+    zipFile m_zip_file{nullptr};
 
     /// Mutex to prevent multiple read/write operation on same file
     std::mutex m_operation_mutex;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ArchiveWriter::sptr ArchiveWriter::shared(const std::filesystem::path& archive_path)
 {

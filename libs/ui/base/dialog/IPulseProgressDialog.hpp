@@ -30,17 +30,17 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief   Defines the generic Progress dialog for IHM.
  * @todo    add methods for behavior like autoClose, flying window or in status bar
  */
 class UI_BASE_CLASS_API IPulseProgressDialog : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(IPulseProgressDialog, ui::base::GuiBaseObject)
 
     typedef std::string FactoryRegistryKeyType;
@@ -55,19 +55,19 @@ public:
     UI_BASE_API virtual ~IPulseProgressDialog();
     UI_BASE_API IPulseProgressDialog();
 
-    ///set the title for the dialog
+    /// set the title for the dialog
     UI_BASE_API virtual void setTitle(const std::string& title) = 0;
 
-    ///set the message for the dialog
+    /// set the message for the dialog
     UI_BASE_API virtual void setMessage(const std::string& msg) = 0;
 
-    ///set the stuff
+    /// set the stuff
     UI_BASE_API virtual void setStuff(Stuff stuff);
 
-    ///set the frequence
+    /// set the frequence
     UI_BASE_API virtual void setFrequence(MilliSecond frequence);
 
-    ///show the pulse progress dialog
+    /// show the pulse progress dialog
     UI_BASE_API virtual void show() = 0;
 
 protected:
@@ -75,5 +75,6 @@ protected:
     MilliSecond m_frequence;
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

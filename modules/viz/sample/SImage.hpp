@@ -27,8 +27,8 @@
 #include <ui/base/IGuiContainer.hpp>
 
 namespace sight::module::viz::sample
-
 {
+
 /**
  * @brief Render a 3D negatoscope of a medical image.
  *
@@ -43,9 +43,7 @@ namespace sight::module::viz::sample
  */
 class MODULE_VIZ_SAMPLE_CLASS_API SImage : public sight::ui::base::IGuiContainer
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SImage, sight::ui::base::IGuiContainer)
 
@@ -56,7 +54,6 @@ public:
     MODULE_VIZ_SAMPLE_API virtual ~SImage() noexcept;
 
 protected:
-
     /// Checks if the input image is autoconnect.
     MODULE_VIZ_SAMPLE_API void configuring() override;
 
@@ -80,19 +77,17 @@ protected:
     MODULE_VIZ_SAMPLE_API void stopping() override;
 
 private:
-
     /// Contains the render service.
-    service::IService::sptr m_renderSrv { nullptr };
+    service::IService::sptr m_renderSrv{nullptr};
 
     /// Contains the trackball interactor adaptor.
-    service::IService::sptr m_interactorSrv { nullptr };
+    service::IService::sptr m_interactorSrv{nullptr};
 
     /// Contains the negato adaptor.
-    service::IService::sptr m_negatoSrv { nullptr };
+    service::IService::sptr m_negatoSrv{nullptr};
 
     /// Defines whether or not to autoConnect to the image, needed for the purpose of tutorials.
-    bool m_imageAutoConnect { false };
-
+    bool m_imageAutoConnect{false};
 };
 
 } // namespace sight::module::viz::sample.

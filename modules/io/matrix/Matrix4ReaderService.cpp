@@ -43,53 +43,54 @@
 namespace sight::module::io::matrix
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType Matrix4ReaderService::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Matrix4ReaderService::info(std::ostream& _sstream )
+void Matrix4ReaderService::info(std::ostream& _sstream)
 {
-    this->SuperClass::info( _sstream );
+    this->SuperClass::info(_sstream);
     _sstream << std::endl << " Matrix4 object reader";
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-std::vector< std::string > Matrix4ReaderService::getSupportedExtensions()
+std::vector<std::string> Matrix4ReaderService::getSupportedExtensions()
 {
-    std::vector< std::string > extensions;
+    std::vector<std::string> extensions;
     extensions.push_back(".trf");
+
     return extensions;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Matrix4ReaderService::starting( )
+void Matrix4ReaderService::starting()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4ReaderService::configuring()
 {
     sight::io::base::service::IReader::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Matrix4ReaderService::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4ReaderService::openLocationDialog()
 {
@@ -102,7 +103,8 @@ void Matrix4ReaderService::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::READ);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFile().parent_path());
         dialogFile.saveDefaultLocation(defaultDirectory);
@@ -114,31 +116,31 @@ void Matrix4ReaderService::openLocationDialog()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4ReaderService::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Matrix4ReaderService::updating()
 {
     if(this->hasLocationDefined())
     {
         // Retrieve object
-        data::Matrix4::sptr matrix =
-            this->getInOut< data::Matrix4 >(sight::io::base::service::s_DATA_KEY);
+        data::Matrix4::sptr matrix
+            = this->getInOut<data::Matrix4>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The inout key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", matrix);
 
-        sight::io::base::reader::Matrix4Reader::sptr reader =
-            sight::io::base::reader::Matrix4Reader::New();
-        reader->setObject( matrix );
+        sight::io::base::reader::Matrix4Reader::sptr reader
+            = sight::io::base::reader::Matrix4Reader::New();
+        reader->setObject(matrix);
         reader->setFile(this->getFile());
         reader->read();
 
         // Notify reading
-        auto sig = matrix->signal< data::Object::ModifiedSignalType >(
+        auto sig = matrix->signal<data::Object::ModifiedSignalType>(
             data::Object::s_MODIFIED_SIG);
         {
             core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
@@ -151,6 +153,6 @@ void Matrix4ReaderService::updating()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::module

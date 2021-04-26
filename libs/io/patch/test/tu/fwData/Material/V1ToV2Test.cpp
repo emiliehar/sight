@@ -34,34 +34,38 @@
 #include <io/patch/structural/data/Material/V1ToV2.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::structural::ut::data::Material::V1ToV2Test );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::structural::ut::data::Material::V1ToV2Test);
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace Material
 {
+
 // force link for log
 utest::Exception e("");
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V1ToV2Test::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V1ToV2Test::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V1ToV2Test::applyPatchTest()
 {
@@ -94,8 +98,12 @@ void V1ToV2Test::applyPatchTest()
     CPPUNIT_ASSERT(matObjV2->getAttribute("diffuse_texture_wrapping"));
 }
 
-//------------------------------------------------------------------------------
-} //namespace Material
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+// ------------------------------------------------------------------------------
+
+} // namespace Material
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

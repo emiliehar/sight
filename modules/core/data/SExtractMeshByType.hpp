@@ -33,6 +33,7 @@
 
 namespace sight::module::data
 {
+
 /**
  * @brief This service extract meshes of a specific structure type from data::ModelSeries.
  * If the model series have some meshes with the same structure type, it will extract the first found.
@@ -71,11 +72,10 @@ namespace sight::module::data
 class MODULE_DATA_CLASS_API SExtractMeshByType : public module::data::ICamp
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SExtractMeshByType, ::sight::module::data::ICamp)
 
-    typedef std::map<std::string, std::tuple< std::string, std::string, std::string > > ExtractMapType;
-    typedef std::vector<std::pair< std::string, std::string > > ExtractVectorType;
+    typedef std::map<std::string, std::tuple<std::string, std::string, std::string> > ExtractMapType;
+    typedef std::vector<std::pair<std::string, std::string> > ExtractVectorType;
 
     /// Constructor
     MODULE_DATA_API SExtractMeshByType();
@@ -84,7 +84,6 @@ public:
     MODULE_DATA_API ~SExtractMeshByType();
 
 protected:
-
     /// Does nothing
     MODULE_DATA_API void starting() override;
 
@@ -98,7 +97,6 @@ protected:
     MODULE_DATA_API void updating() override;
 
 private:
-
     /// Map to associate \<from, to\> for object extraction
     /// @deprecated
     ExtractMapType m_extractOld;
@@ -107,4 +105,4 @@ private:
     ExtractVectorType m_extract;
 };
 
-}// namespace sight::module::data
+} // namespace sight::module::data

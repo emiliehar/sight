@@ -35,46 +35,46 @@
 namespace sight::module::ui::qt
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SLaunchBrowser::SLaunchBrowser( ) noexcept
+SLaunchBrowser::SLaunchBrowser() noexcept
 {
     m_url = "";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SLaunchBrowser::~SLaunchBrowser() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SLaunchBrowser::info(std::ostream& _sstream )
+void SLaunchBrowser::info(std::ostream& _sstream)
 {
     _sstream << "Action for manage url" << std::endl;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SLaunchBrowser::configuring()
 {
     this->sight::ui::base::IAction::initialize();
 
-    std::vector < Configuration > urlConfig = m_configuration->find("url");
+    std::vector<Configuration> urlConfig = m_configuration->find("url");
+
     if(!urlConfig.empty())
     {
         m_url = urlConfig.at(0)->getValue();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLaunchBrowser::updating()
 {
-
     SIGHT_WARN_IF("URL is empty.", m_url.empty());
     QUrl url(QString::fromStdString(m_url), QUrl::TolerantMode);
 
@@ -92,19 +92,20 @@ void SLaunchBrowser::updating()
     SIGHT_WARN_IF("Browser wasn't successfully launched.", !isSuccess);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLaunchBrowser::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SLaunchBrowser::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt

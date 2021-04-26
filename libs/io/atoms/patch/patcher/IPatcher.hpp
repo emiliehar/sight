@@ -46,9 +46,7 @@ namespace patcher
  */
 class IO_ATOMS_CLASS_API IPatcher : public core::tools::Object
 {
-
 public:
-
     /// Factory key used by IPatcher implementations
     typedef io::atoms::patch::patcher::factory::Key Key;
 
@@ -58,19 +56,19 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
         Registry(std::string functorKey)
         {
-            io::atoms::patch::patcher::registry::get()->addFactory(functorKey,
-                                                                   &io::atoms::patch::patcher::factory::New<T>);
+            io::atoms::patch::patcher::registry::get()->addFactory(
+                functorKey,
+                &io::atoms::patch::patcher::factory::New<T>);
         }
     };
 
 public:
-
     SIGHT_DECLARE_CLASS(IPatcher, core::tools::Object)
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
@@ -81,11 +79,11 @@ public:
     IO_ATOMS_API virtual ~IPatcher();
 
     /// Transform the specified object
-    IO_ATOMS_API virtual sight::atoms::Object::sptr transformObject(sight::atoms::Object::sptr object,
-                                                                    const std::string& context,
-                                                                    const std::string& currentVersion,
-                                                                    const std::string& targetVersion) = 0;
-
+    IO_ATOMS_API virtual sight::atoms::Object::sptr transformObject(
+        sight::atoms::Object::sptr object,
+        const std::string& context,
+        const std::string& currentVersion,
+        const std::string& targetVersion) = 0;
 };
 
 } // namespace patcher

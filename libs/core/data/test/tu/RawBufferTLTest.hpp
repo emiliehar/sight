@@ -26,18 +26,19 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class RawBufferTLTest : public CPPUNIT_NS::TestFixture
 {
 public:
-    CPPUNIT_TEST_SUITE( RawBufferTLTest );
-    CPPUNIT_TEST( pushTest );
-    CPPUNIT_TEST( getObjectTest );
-    CPPUNIT_TEST( setObjectTest );
-    CPPUNIT_TEST( modifyTimeTest );
-    CPPUNIT_TEST( copyTest );
+    CPPUNIT_TEST_SUITE(RawBufferTLTest);
+    CPPUNIT_TEST(pushTest);
+    CPPUNIT_TEST(getObjectTest);
+    CPPUNIT_TEST(setObjectTest);
+    CPPUNIT_TEST(modifyTimeTest);
+    CPPUNIT_TEST(copyTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -52,5 +53,6 @@ public:
     void copyTest();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

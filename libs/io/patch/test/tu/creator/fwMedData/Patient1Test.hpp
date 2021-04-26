@@ -26,18 +26,21 @@
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace creator
 {
+
 namespace data
 {
 
 class Patient1Test : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( Patient1Test );
-CPPUNIT_TEST( createTest );
-CPPUNIT_TEST( copyTest );
+CPPUNIT_TEST_SUITE(Patient1Test);
+CPPUNIT_TEST(createTest);
+CPPUNIT_TEST(copyTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -46,10 +49,12 @@ public:
     void tearDown();
     void createTest();
     void copyTest();
-
 };
 
-} //namespace data
-} //namespace creator
-} //namespace ut
-} //namespace sight::io::patch::structural
+} // namespace data
+
+} // namespace creator
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

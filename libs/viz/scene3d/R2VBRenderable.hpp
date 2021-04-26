@@ -48,24 +48,31 @@ class VIZ_SCENE3D_CLASS_API R2VBRenderable : public ::Ogre::SimpleRenderable
 {
 public:
     [[deprecated("Will be removed in sight 22.0")]]
-    VIZ_SCENE3D_API static R2VBRenderable* New(const std::string& _name, ::Ogre::SubEntity* _sourceObject,
-                                               ::Ogre::SceneManager* _sceneManager,
-                                               data::Mesh::CellTypesEnum _primitiveType,
-                                               const std::string& _mtlName );
+    VIZ_SCENE3D_API static R2VBRenderable* New(
+        const std::string& _name,
+        ::Ogre::SubEntity* _sourceObject,
+        ::Ogre::SceneManager* _sceneManager,
+        data::Mesh::CellTypesEnum _primitiveType,
+        const std::string& _mtlName);
 
     /// Create a new instance of R2VBRenderable
-    VIZ_SCENE3D_API static R2VBRenderable* New(const std::string& _name, ::Ogre::SubEntity* _sourceObject,
-                                               ::Ogre::SceneManager* _sceneManager,
-                                               data::Mesh::CellType _primitiveType,
-                                               const std::string& _mtlName );
+    VIZ_SCENE3D_API static R2VBRenderable* New(
+        const std::string& _name,
+        ::Ogre::SubEntity* _sourceObject,
+        ::Ogre::SceneManager* _sceneManager,
+        data::Mesh::CellType _primitiveType,
+        const std::string& _mtlName);
 
     VIZ_SCENE3D_API R2VBRenderable(const ::Ogre::String& name);
     virtual VIZ_SCENE3D_API ~R2VBRenderable();
 
     /// Set the maximum number of vertices in output, and adjust the size of the output buffer accordingly.
     /// It also updates the vertex declaration of the output buffer
-    VIZ_SCENE3D_API void setOutputSettings(size_t _vertexCount, bool _hasColor, bool _hasTexCoord,
-                                           bool _hasNormals = true);
+    VIZ_SCENE3D_API void setOutputSettings(
+        size_t _vertexCount,
+        bool _hasColor,
+        bool _hasTexCoord,
+        bool _hasNormals = true);
 
     /** @copydoc SimpleRenderable::_updateRenderQueue. */
     VIZ_SCENE3D_API void _updateRenderQueue(::Ogre::RenderQueue* _queue) override;
@@ -119,59 +126,59 @@ protected:
     size_t m_maxOutputVertexCount;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Inline functions
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline R2VBRenderable::~R2VBRenderable()
 {
     m_srcObject = nullptr;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline Ogre::Real R2VBRenderable::getBoundingRadius() const
 {
     return m_srcObject->getParent()->getBoundingRadius();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline Ogre::Real R2VBRenderable::getSquaredViewDepth(const Ogre::Camera* _cam) const
 {
     return this->getParentNode()->getSquaredViewDepth(_cam);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void R2VBRenderable::setDirty()
 {
     m_dirty = true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void R2VBRenderable::manualUpdate()
 {
     m_r2vbBuffer->update(mParentSceneManager);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void R2VBRenderable::setRenderToBufferMaterial(const std::string& _mtlName)
 {
     m_r2vbBuffer->setRenderToBufferMaterialName(_mtlName);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline data::Mesh::CellTypesEnum R2VBRenderable::getInputPrimitiveType() const
 {
-    return static_cast< data::Mesh::CellTypesEnum >(m_inputPrimitiveType);
+    return static_cast<data::Mesh::CellTypesEnum>(m_inputPrimitiveType);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline data::Mesh::CellType R2VBRenderable::getInputPrimitiveType2() const
 {

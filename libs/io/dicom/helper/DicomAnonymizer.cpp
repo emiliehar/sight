@@ -50,6 +50,7 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
@@ -67,8 +68,9 @@ DicomAnonymizer::DicomAnonymizer() :
     const std::filesystem::path tagsPathStr = core::runtime::getLibraryResourceFilePath(
         "io_dicom/tags.csv");
     std::filesystem::path tagsPath = tagsPathStr;
-    SIGHT_ASSERT("File '" + tagsPath.string() + "' must exists",
-                 std::filesystem::is_regular_file(tagsPath));
+    SIGHT_ASSERT(
+        "File '" + tagsPath.string() + "' must exists",
+        std::filesystem::is_regular_file(tagsPath));
 
     auto csvStream = std::ifstream(tagsPath.string());
     io::dicom::helper::CsvIO csvReader(csvStream);
@@ -84,7 +86,7 @@ DicomAnonymizer::DicomAnonymizer() :
         }
 
         const std::string& actionCode = tagVec[0];
-        ::gdcm::Tag tag = io::dicom::helper::getGdcmTag(tagVec[1], tagVec[2]);
+        ::gdcm::Tag tag               = io::dicom::helper::getGdcmTag(tagVec[1], tagVec[2]);
 
         if(actionCode == "D")
         {
@@ -123,20 +125,20 @@ DicomAnonymizer::DicomAnonymizer() :
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomAnonymizer::~DicomAnonymizer()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::setReferenceDate(const ::boost::gregorian::date& referenceDate)
 {
     m_referenceDate = referenceDate;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::anonymize(const std::filesystem::path& dirPath)
 {
@@ -146,25 +148,29 @@ void DicomAnonymizer::anonymize(const std::filesystem::path& dirPath)
     m_observer->finish();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void moveDirectory(const std::filesystem::path& input,
-                   const std::filesystem::path& output)
+void moveDirectory(
+    const std::filesystem::path& input,
+    const std::filesystem::path& output)
 {
     namespace fs = std::filesystem;
     std::error_code ec;
     fs::copy(input, output, fs::copy_options::overwrite_existing | fs::copy_options::recursive, ec);
-    SIGHT_THROW_IF("copy_directory " << input.string() << " " << output.string()
-                                     << " error : " << ec.message(), ec.value());
+    SIGHT_THROW_IF(
+        "copy_directory " << input.string() << " " << output.string()
+                          << " error : " << ec.message(),
+            ec.value());
 
     fs::directory_iterator it(input);
     fs::directory_iterator end;
     fs::permissions(output, fs::perms::owner_all, ec);
     SIGHT_ERROR_IF("set " << output.string() << " permission error : " << ec.message(), ec.value());
 
-    for(; it != end; ++it)
+    for( ; it != end ; ++it)
     {
         fs::path dest = output / it->path().filename();
+
         if(fs::is_directory(*it))
         {
             moveDirectory(*it, dest);
@@ -172,8 +178,10 @@ void moveDirectory(const std::filesystem::path& input,
         else
         {
             fs::rename(*it, dest, ec);
-            SIGHT_THROW_IF("rename " << it->path().string() << " " << dest.string()
-                                     << " error : " << ec.message(), ec.value());
+            SIGHT_THROW_IF(
+                "rename " << it->path().string() << " " << dest.string()
+                          << " error : " << ec.message(),
+                    ec.value());
         }
 
         fs::permissions(dest, fs::perms::owner_all, ec);
@@ -181,7 +189,7 @@ void moveDirectory(const std::filesystem::path& input,
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::removeAnonymizeTag(const ::gdcm::Tag& tag)
 {
@@ -193,49 +201,49 @@ void DicomAnonymizer::removeAnonymizeTag(const ::gdcm::Tag& tag)
     m_actionCodeUTags.erase(tag);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const DicomAnonymizer::TagContainerType& DicomAnonymizer::getActionCodeDTags()
 {
     return m_actionCodeDTags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const DicomAnonymizer::TagContainerType& DicomAnonymizer::getActionCodeZTags()
 {
     return m_actionCodeZTags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const DicomAnonymizer::TagContainerType& DicomAnonymizer::getActionCodeXTags()
 {
     return m_actionCodeXTags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const DicomAnonymizer::TagContainerType& DicomAnonymizer::getActionCodeKTags()
 {
     return m_actionCodeKTags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const DicomAnonymizer::TagContainerType& DicomAnonymizer::getActionCodeCTags()
 {
     return m_actionCodeCTags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const DicomAnonymizer::TagContainerType& DicomAnonymizer::getActionCodeUTags()
 {
     return m_actionCodeUTags;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::anonymizationProcess(const std::filesystem::path& dirPath)
 {
@@ -251,7 +259,7 @@ void DicomAnonymizer::anonymizationProcess(const std::filesystem::path& dirPath)
     std::filesystem::directory_iterator it(dirPath);
     std::filesystem::directory_iterator end;
 
-    for(; it != end; ++it)
+    for( ; it != end ; ++it)
     {
         if(std::filesystem::is_directory(*it))
         {
@@ -260,10 +268,11 @@ void DicomAnonymizer::anonymizationProcess(const std::filesystem::path& dirPath)
         }
     }
 
-    std::vector< std::filesystem::path > dicomFiles;
+    std::vector<std::filesystem::path> dicomFiles;
     io::dicom::helper::DicomSearch::searchRecursively(tmpPath, dicomFiles, false);
 
     unsigned int fileIndex = 0;
+
     for(const auto& file : dicomFiles)
     {
         if(m_observer->cancelRequested())
@@ -284,24 +293,23 @@ void DicomAnonymizer::anonymizationProcess(const std::filesystem::path& dirPath)
             ((m_archiving) ? 50 : 100) * static_cast<float>(fileIndex) / static_cast<float>(dicomFiles.size()));
         m_observer->doneWork(progress);
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::resetIndex()
 {
     m_fileIndex = 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 unsigned int DicomAnonymizer::getNextIndex()
 {
     return m_fileIndex++;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputStream)
 {
@@ -317,9 +325,10 @@ void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputS
     ::gdcm::Tag tag;
     ::gdcm::DataElement dataElement;
     const ::gdcm::File& datasetFile = reader.GetFile();
-    ::gdcm::DataSet dataset = datasetFile.GetDataSet();
+    ::gdcm::DataSet dataset         = datasetFile.GetDataSet();
 
-    std::vector< ::gdcm::DataElement > preservedTags;
+    std::vector< ::gdcm::DataElement> preservedTags;
+
     for(const ::gdcm::Tag& t : m_privateTags)
     {
         if(dataset.FindDataElement(t))
@@ -328,7 +337,7 @@ void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputS
         }
     }
 
-    m_anonymizer.SetFile( datasetFile );
+    m_anonymizer.SetFile(datasetFile);
 
     m_anonymizer.RemoveGroupLength();
     m_anonymizer.RemoveRetired();
@@ -348,22 +357,27 @@ void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputS
     {
         this->applyActionCodeD(tag);
     }
+
     for(const auto& tag : m_actionCodeZTags)
     {
         this->applyActionCodeZ(tag);
     }
+
     for(const auto& tag : m_actionCodeXTags)
     {
         this->applyActionCodeX(tag);
     }
+
     for(const auto& tag : m_actionCodeKTags)
     {
         this->applyActionCodeK(tag);
     }
+
     for(const auto& tag : m_actionCodeCTags)
     {
         this->applyActionCodeC(tag);
     }
+
     for(const auto& tag : m_actionCodeUTags)
     {
         this->applyActionCodeU(tag);
@@ -382,7 +396,8 @@ void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputS
     // Curve Data (0x50xx,0xxxxx)
     auto element = dataElementSet.lower_bound(::gdcm::Tag(0x5000, 0x0));
     auto end     = dataElementSet.upper_bound(::gdcm::Tag(0x50ff, 0xffff));
-    for(; element != end; ++element)
+
+    for( ; element != end ; ++element)
     {
         tag = element->GetTag();
         applyActionCodeXWithException(tag);
@@ -391,16 +406,18 @@ void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputS
     // Overlay Data (0x60xx,0x3000) && Overlay Comments (0x60xx,0x4000)
     element = dataElementSet.lower_bound(::gdcm::Tag(0x6000, 0x3000));
     end     = dataElementSet.upper_bound(::gdcm::Tag(0x60ff, 0x4000));
-    for(; element != end; ++element)
+
+    for( ; element != end ; ++element)
     {
         tag = element->GetTag();
+
         if(tag.GetElement() == 0x3000 || tag.GetElement() == 0x4000)
         {
             applyActionCodeXWithException(tag);
         }
     }
 
-    m_anonymizer.RemovePrivateTags();   // Private attributes (X)
+    m_anonymizer.RemovePrivateTags(); // Private attributes (X)
 
     for(const ::gdcm::DataElement& de : preservedTags)
     {
@@ -415,7 +432,7 @@ void DicomAnonymizer::anonymize(std::istream& inputStream, std::ostream& outputS
     SIGHT_THROW_IF("Unable to anonymize (file write failed)", !writer.Write());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::addExceptionTag(uint16_t group, uint16_t element, const std::string& value)
 {
@@ -431,7 +448,7 @@ void DicomAnonymizer::addExceptionTag(uint16_t group, uint16_t element, const st
     m_actionCodeUTags.erase(tag);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::preservePrivateTag(const ::gdcm::Tag& tag)
 {
@@ -444,7 +461,7 @@ void DicomAnonymizer::preservePrivateTag(const ::gdcm::Tag& tag)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionCodeD(const ::gdcm::Tag& tag)
 {
@@ -459,21 +476,21 @@ void DicomAnonymizer::applyActionCodeD(const ::gdcm::Tag& tag)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionCodeZ(const ::gdcm::Tag& tag)
 {
     this->applyActionCodeD(tag);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionCodeX(const ::gdcm::Tag& tag)
 {
     m_anonymizer.Remove(tag);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionCodeK(const ::gdcm::Tag& tag)
 {
@@ -484,19 +501,21 @@ void DicomAnonymizer::applyActionCodeK(const ::gdcm::Tag& tag)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionCodeC(const ::gdcm::Tag& tag)
 {
-    SIGHT_FATAL("Basic profile \"C\" is not supported yet: "
-                "Only basic profile is supported by the current implementation.");
+    SIGHT_FATAL(
+        "Basic profile \"C\" is not supported yet: "
+        "Only basic profile is supported by the current implementation.");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionCodeU(const ::gdcm::Tag& tag)
 {
     const std::string oldUID = m_stringFilter.ToString(tag);
+
     if(!oldUID.empty())
     {
         auto it = m_uidMap.find(oldUID);
@@ -516,7 +535,7 @@ void DicomAnonymizer::applyActionCodeU(const ::gdcm::Tag& tag)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::addShiftDateTag(const ::gdcm::Tag& tag)
 {
@@ -530,7 +549,7 @@ void DicomAnonymizer::addShiftDateTag(const ::gdcm::Tag& tag)
     m_actionShiftDateTags.insert(tag);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::applyActionShiftDate(const ::gdcm::Tag& tag)
 {
@@ -539,7 +558,7 @@ void DicomAnonymizer::applyActionShiftDate(const ::gdcm::Tag& tag)
 
     const auto shift = date - m_referenceDate;
 
-    //Minimum date
+    // Minimum date
     const ::boost::gregorian::date min_date = ::boost::gregorian::from_undelimited_string(c_MIN_DATE_STRING);
 
     const auto shiftedDate = min_date + shift;
@@ -547,30 +566,26 @@ void DicomAnonymizer::applyActionShiftDate(const ::gdcm::Tag& tag)
     m_anonymizer.Replace(tag, ::boost::gregorian::to_iso_string(shiftedDate).c_str());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomAnonymizer::generateDummyValue(const ::gdcm::Tag& tag)
 {
-
-    switch (m_publicDictionary.GetDictEntry(tag).GetVR())
+    switch(m_publicDictionary.GetDictEntry(tag).GetVR())
     {
         case ::gdcm::VR::AE:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::AS:
-        {
             m_anonymizer.Replace(tag, "000Y");
             break;
-        }
+
         case ::gdcm::VR::AT:
-        {
             m_anonymizer.Replace(tag, "00H,00H,00H,00H");
             break;
-        }
+
         case ::gdcm::VR::CS:
-        {
+
             // Patient's sex
             if(tag == ::gdcm::Tag(0x0010, 0x0040))
             {
@@ -580,142 +595,121 @@ void DicomAnonymizer::generateDummyValue(const ::gdcm::Tag& tag)
             {
                 m_anonymizer.Replace(tag, "ANONYMIZED");
             }
+
             break;
-        }
+
         case ::gdcm::VR::DA:
-        {
             m_anonymizer.Replace(tag, c_MIN_DATE_STRING.c_str());
             break;
-        }
+
         case ::gdcm::VR::DS:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::DT:
-        {
             m_anonymizer.Replace(tag, std::string(c_MIN_DATE_STRING + "000000.000000").c_str());
             break;
-        }
+
         case ::gdcm::VR::FD:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::FL:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::IS:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::LO:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::LT:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::OB:
-        {
             m_anonymizer.Replace(tag, "00H00H");
             break;
-        }
+
         case ::gdcm::VR::OF:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::OW:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::PN:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED^ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::SH:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::SL:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::SQ:
-        {
             m_anonymizer.Empty(tag);
             break;
-        }
+
         case ::gdcm::VR::SS:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::ST:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::TM:
-        {
             m_anonymizer.Replace(tag, "000000.000000");
             break;
-        }
+
         case ::gdcm::VR::UI:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::UL:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::UN:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         case ::gdcm::VR::US:
-        {
             m_anonymizer.Replace(tag, "0");
             break;
-        }
+
         case ::gdcm::VR::UT:
-        {
             m_anonymizer.Replace(tag, "ANONYMIZED");
             break;
-        }
+
         default:
-        {
-            SIGHT_ERROR(tag<<" is not supported. Emptied value. ");
+            SIGHT_ERROR(tag << " is not supported. Emptied value. ");
             m_anonymizer.Empty(tag);
             break;
-        }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void DicomAnonymizer::copyDirectory(const std::filesystem::path& input,
-                                    const std::filesystem::path& output)
+void DicomAnonymizer::copyDirectory(
+    const std::filesystem::path& input,
+    const std::filesystem::path& output)
 {
     namespace fs = std::filesystem;
     std::error_code ec;
     fs::copy(input, output, fs::copy_options::overwrite_existing | fs::copy_options::recursive, ec);
-    SIGHT_THROW_IF("copy_directory " << input.string() << " " << output.string()
-                                     << " error : " << ec.message(), ec.value());
+    SIGHT_THROW_IF(
+        "copy_directory " << input.string() << " " << output.string()
+                          << " error : " << ec.message(),
+            ec.value());
 
     fs::directory_iterator it(input);
     fs::directory_iterator end;
@@ -724,9 +718,10 @@ void DicomAnonymizer::copyDirectory(const std::filesystem::path& input,
     fs::permissions(output, fs::perms::owner_all, ec);
     SIGHT_ERROR_IF("set " + output.string() + " permission error : " + ec.message(), ec.value());
 
-    for(; it != end; ++it)
+    for( ; it != end ; ++it)
     {
         fs::path dest = output / it->path().filename();
+
         if(fs::is_directory(*it))
         {
             DicomAnonymizer::copyDirectory(*it, dest);
@@ -751,13 +746,14 @@ void DicomAnonymizer::copyDirectory(const std::filesystem::path& input,
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(core::jobs::IJob) DicomAnonymizer::getJob() const
 {
     return m_observer;
 }
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace helper
+
 } // namespace sight::io::dicom

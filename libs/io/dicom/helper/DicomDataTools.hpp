@@ -47,7 +47,6 @@ namespace helper
 class IO_DICOM_CLASS_API DicomDataTools
 {
 public:
-
     /**
      * @brief Return the pixel type of a fwData Image.
      * @param[in] image Image of fwData
@@ -86,8 +85,9 @@ public:
      * @param[in] point 3D point
      * @throw io::dicom::exception::Failed
      */
-    IO_DICOM_API static std::size_t convertPointToFrameNumber(const data::Image::csptr& image,
-                                                              const data::Point::csptr& point);
+    IO_DICOM_API static std::size_t convertPointToFrameNumber(
+        const data::Image::csptr& image,
+        const data::Point::csptr& point);
 
     /**
      * @brief Convert a frame number to a Z coordinate
@@ -95,10 +95,11 @@ public:
      * @param[in] frameNumber Frame number
      * @throw io::dicom::exception::Failed
      */
-    IO_DICOM_API static double convertFrameNumberToZCoordinate(const data::Image::csptr& image,
-                                                               const std::size_t frameNumber);
-
+    IO_DICOM_API static double convertFrameNumberToZCoordinate(
+        const data::Image::csptr& image,
+        const std::size_t frameNumber);
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

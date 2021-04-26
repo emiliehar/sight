@@ -35,6 +35,7 @@
 
 namespace sight::module::viz::scene3d::adaptor
 {
+
 /**
  * @brief This adaptor maps a texture on a mesh. This is done via module::viz::scene3d::adaptor::SMaterial. In the
  * configuration we
@@ -66,9 +67,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API STexture final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(STexture, ::sight::viz::scene3d::IAdaptor)
 
@@ -97,7 +96,6 @@ public:
     MODULE_VIZ_SCENE3D_API bool isValid() const;
 
 protected:
-
     /// Configures the adaptor.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -120,7 +118,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
-
     /// Contains the Ogre texture.
     ::Ogre::TexturePtr m_texture;
 
@@ -128,51 +125,50 @@ private:
     std::string m_textureName;
 
     /// Defines the filtering method.
-    std::string m_filtering { "linear" };
+    std::string m_filtering{"linear"};
 
     /// Defines the wraping method.
-    std::string m_wrapping { "repeat" };
+    std::string m_wrapping{"repeat"};
 
     /// Defines if 1.0 is used as the alpha value (no transparency) or another value.
-    bool m_useAlpha { true };
+    bool m_useAlpha{true};
 
     /// Defines if the texture changes dynamically, defined in m_configuration.
-    bool m_isDynamic { false };
+    bool m_isDynamic{false};
 
     /// Defines the signal emitted when the texture has to be changed on the associated material.
-    typedef core::com::Signal< void () > TextureSwappedSignalType;
+    typedef core::com::Signal<void ()> TextureSwappedSignalType;
     TextureSwappedSignalType::sptr m_sigTextureSwapped;
-
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline ::Ogre::TexturePtr STexture::getTexture() const
 {
     return m_texture;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::string STexture::getTextureName() const
 {
     return m_textureName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void STexture::setTextureName(std::string _texName)
 {
     m_textureName = _texName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool STexture::getUseAlpha() const
 {
     return m_useAlpha;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

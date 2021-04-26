@@ -29,21 +29,25 @@ namespace sight::ui::base
 /// The namespace sight::ui::base::builder contains the base interface for GUI elements builder.
 namespace builder
 {
+
 } // namespace builder
 
 /// The namespace sight::ui::base::container contains the base interface for GUI containers (toolbar, menu, menuBar...).
 namespace container
 {
+
 } // namespace container
 
 /// The namespace sight::ui::base::dialog contains the base interface for GUI dialog elements.
 namespace dialog
 {
+
 } // namespace dialog
 
 /// Contains ui::base::factory utilities
 namespace factory
 {
+
 } // namespace factory
 
 /// The namespace sight::ui::base::layoutManager contains the base interface of managers used to handle the GUI layouts
@@ -51,12 +55,14 @@ namespace factory
 /// in Sight.
 namespace layoutManager
 {
+
 } // namespace layoutManager
 
 /// The namespace sight::ui::base::registry contains the classes of service management of GUI elements (Menu, View,
 // ToolBar).
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace sight::ui::base

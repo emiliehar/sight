@@ -34,7 +34,7 @@ namespace detail
 namespace dl
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 #if defined(linux) || defined(__linux) || defined(__APPLE__)
 typedef Posix LibraryImplType;
@@ -42,14 +42,14 @@ typedef Posix LibraryImplType;
 typedef Win32 LibraryImplType;
 #endif
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Library::Library(const std::filesystem::path& modulePath) noexcept :
     m_implementor(std::make_unique<LibraryImplType>(modulePath))
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dl
 

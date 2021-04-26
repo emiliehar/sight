@@ -34,7 +34,9 @@
 
 namespace sight::core::memory
 {
+
 class IPolicy;
+
 }
 
 namespace sight::module::io::atoms
@@ -102,14 +104,11 @@ namespace sight::module::io::atoms
  */
 class MODULE_IO_ATOMS_CLASS_API SReader : public sight::io::base::service::IReader
 {
-
 public:
-
     /// Signal type for job creation.
-    typedef core::com::Signal< void ( core::jobs::IJob::sptr ) > JobCreatedSignalType;
+    typedef core::com::Signal<void (core::jobs::IJob::sptr)> JobCreatedSignalType;
 
     SIGHT_DECLARE_SERVICE(SReader, sight::io::base::service::IReader)
-
     /// Does nothing
     SReader();
 
@@ -129,13 +128,12 @@ public:
     MODULE_IO_ATOMS_API void openLocationDialog() override;
 
     /// Maps file extension to format name.
-    typedef std::map< std::string, std::string > FileExtension2NameType;
+    typedef std::map<std::string, std::string> FileExtension2NameType;
 
     /// Managed file extensions
     static const FileExtension2NameType s_EXTENSIONS;
 
 protected:
-
     /// Does nothing
     MODULE_IO_ATOMS_API void starting() override;
 
@@ -154,7 +152,6 @@ protected:
     MODULE_IO_ATOMS_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 private:
-
     /// Notify modification on associated object if reading succeeded
     void notificationOfUpdate();
 
@@ -174,7 +171,7 @@ private:
     std::string m_version;
 
     /// Allowed file extensions
-    std::set< std::string > m_allowedExts;
+    std::set<std::string> m_allowedExts;
 
     /// IFilter name used to make an atom compliant with current context
     std::string m_filter;

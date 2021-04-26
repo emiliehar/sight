@@ -30,6 +30,7 @@
 
 namespace sight::core
 {
+
 namespace log
 {
 
@@ -40,9 +41,7 @@ namespace log
  */
 class SpyLogger : public core::BaseObject
 {
-
 public:
-
     enum LevelType
     {
         SL_TRACE,
@@ -77,7 +76,7 @@ public:
 
     CORE_API void log(const std::string& mes, const char* file = 0, int line = -1);
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static SpyLogger& getSpyLogger()
     {
@@ -85,12 +84,11 @@ public:
     }
 
 protected:
-
-    CORE_API SpyLogger ();
+    CORE_API SpyLogger();
 
     CORE_API static SpyLogger s_spyLogger;
-
 }; // SpyLogger
 
 } // namespace log
+
 } // namespace sight::core

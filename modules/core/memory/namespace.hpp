@@ -27,6 +27,7 @@
 
 namespace sight::module::memory
 {
+
 /**
  * @brief     The namespace sight::module::memory::manager contains contains tools to manage memory.
  *            It allows to define the buffer loading mode for the application (lazy and direct) at the start of this
@@ -38,5 +39,7 @@ namespace sight::module::memory
  */
 namespace manager
 {
+
 }
+
 }

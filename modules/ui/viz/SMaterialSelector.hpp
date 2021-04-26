@@ -65,7 +65,6 @@ class MODULE_UI_VIZ_CLASS_API SMaterialSelector : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SMaterialSelector, sight::ui::base::IEditor)
 
     /// Constructor.
@@ -80,10 +79,9 @@ public:
      */
     MODULE_UI_VIZ_API static const core::com::Signals::SignalKeyType s_SELECTED_SIG;
     typedef core::com::Signal<void (std::string)> SelectedSignalType;
-    /** @} */
+/** @} */
 
 protected:
-
     /**
      * @brief method description:
      * @code{.xml}
@@ -105,7 +103,6 @@ protected:
     MODULE_UI_VIZ_API void swapping() override;
 
 protected Q_SLOTS:
-
     /// SLOT: Called when a material is selected
     void onSelectedModeItem(const QString& text);
 
@@ -113,7 +110,6 @@ protected Q_SLOTS:
     void onReloadMaterial();
 
 private:
-
     void updateMaterial();
 
     QPointer<QComboBox> m_materialBox;

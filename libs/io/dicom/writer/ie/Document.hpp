@@ -29,17 +29,18 @@
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
+
 namespace ie
 {
 
 /**
  * @brief Document Information Entity class
  */
-class IO_DICOM_CLASS_API Document : public io::dicom::writer::ie::InformationEntity< data::Image >
+class IO_DICOM_CLASS_API Document : public io::dicom::writer::ie::InformationEntity<data::Image>
 {
-
 public:
     /**
      * @brief Constructor
@@ -50,13 +51,14 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API Document(const SPTR(::gdcm::Writer)& writer,
-                          const SPTR(io::dicom::container::DicomInstance)& instance,
-                          const data::Image::csptr& image,
-                          bool use3DSR                          = false,
-                          const core::log::Logger::sptr& logger = nullptr,
-                          ProgressCallback progress             = nullptr,
-                          CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API Document(
+        const SPTR(::gdcm::Writer)& writer,
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const data::Image::csptr& image,
+        bool use3DSR                          = false,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~Document();
@@ -80,7 +82,6 @@ public:
     IO_DICOM_API void writeSOPCommonModule();
 
 protected:
-
     /**
      * @brief Write Pertinent Other Evidence Sequence (0040,A385)
      */
@@ -88,9 +89,10 @@ protected:
 
     /// True if we must use 3DSR
     bool m_use3DSR;
-
 };
 
 } // namespace ie
+
 } // namespace writer
+
 } // namespace sight::io::dicom

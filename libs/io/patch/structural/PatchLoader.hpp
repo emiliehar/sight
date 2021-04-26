@@ -35,4 +35,4 @@ public:
     IO_PATCH_API static void loadPatches();
 };
 
-} //namespace sight::io::patch::structural
+} // namespace sight::io::patch::structural

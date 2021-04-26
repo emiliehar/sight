@@ -28,21 +28,24 @@ namespace sight::data
 namespace timeline
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-RawBuffer::RawBuffer(core::HiResClock::HiResClockType timestamp,
-                     BufferDataType buffer, size_t size, DeleterType d) :
+RawBuffer::RawBuffer(
+    core::HiResClock::HiResClockType timestamp,
+    BufferDataType buffer,
+    size_t size,
+    DeleterType d) :
     Buffer(timestamp, buffer, size, d)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 RawBuffer::~RawBuffer()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void RawBuffer::setBufferValues(BufferDataType values)
 {

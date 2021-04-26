@@ -43,7 +43,7 @@ public:
 
     typedef typename PowellOptimizerType::ParametersType FunctionParametersType;
 
-    typedef std::function< double (const FunctionParametersType&) > OptimizedFunctionType;
+    typedef std::function<double (const FunctionParametersType&)> OptimizedFunctionType;
 
     /**
      * @brief Constructor. Initializes the ITK optimizer.
@@ -53,8 +53,12 @@ public:
      * @param _stepLength first and maximum step length.
      * @param _maximumIterations maximum number of iterations allowed.
      */
-    FILTER_IMAGE_API PowellOptimizer(const OptimizedFunctionType& _f, double _stepTolerance, double _valueTolerance,
-                                     double _stepLength, std::uint32_t _maximumIterations);
+    FILTER_IMAGE_API PowellOptimizer(
+        const OptimizedFunctionType& _f,
+        double _stepTolerance,
+        double _valueTolerance,
+        double _stepLength,
+        std::uint32_t _maximumIterations);
 
     /**
      * @brief Runs the optimization function.
@@ -64,13 +68,11 @@ public:
     FILTER_IMAGE_API FunctionParametersType optimize(const FunctionParametersType& _initParameters);
 
 private:
-
     /// ITK Powell optimization algorithm.
     typename PowellOptimizerType::Pointer m_powellOptimizer;
 
     /// Function whose local minimum is computed.
     const OptimizedFunctionType& m_function;
-
 };
 
 } // namespace sight::filter::image.

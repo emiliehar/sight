@@ -29,11 +29,11 @@
 #include <core/reflection/Mapper/ArrayMapper.hpp>
 #include <core/reflection/UserObject.hpp>
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(Graph))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (Graph))
 {
     builder.base< ::sight::data::Object>()
     .tag("object_version", "1")
     .tag("lib_name", "::sight::data")
     .property("nodes", &::sight::data::Graph::m_nodes);
-    //.property("connections", &::sight::data::Graph::m_connections);
+    // .property("connections", &::sight::data::Graph::m_connections);
 }

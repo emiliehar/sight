@@ -37,10 +37,12 @@ namespace timeline
 class DATA_CLASS_API RawBuffer : public data::timeline::Buffer
 {
 public:
-
     /// Constructor
-    DATA_API RawBuffer(core::HiResClock::HiResClockType timestamp = 0,
-                       BufferDataType buffer = 0, size_t size = 0, DeleterType d = 0);
+    DATA_API RawBuffer(
+        core::HiResClock::HiResClockType timestamp = 0,
+        BufferDataType buffer                      = 0,
+        size_t size                                = 0,
+        DeleterType d                              = 0);
 
     /// Destructor
     DATA_API virtual ~RawBuffer();
@@ -54,7 +56,7 @@ public:
         return m_buffer;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<typename TYPE>
     TYPE* getBuffer() const

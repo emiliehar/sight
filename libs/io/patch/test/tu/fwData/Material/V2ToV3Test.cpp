@@ -34,32 +34,35 @@
 #include <io/patch/structural/data/Material/V2ToV3.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::structural::ut::data::Material::V2ToV3Test );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::structural::ut::data::Material::V2ToV3Test);
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace Material
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V2ToV3Test::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V2ToV3Test::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V2ToV3Test::applyPatchTest()
 {
@@ -95,8 +98,12 @@ void V2ToV3Test::applyPatchTest()
     CPPUNIT_ASSERT(lighting->getValue() == true);
 }
 
-//------------------------------------------------------------------------------
-} //namespace Material
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+// ------------------------------------------------------------------------------
+
+} // namespace Material
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

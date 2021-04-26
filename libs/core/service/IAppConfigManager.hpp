@@ -31,6 +31,7 @@
 
 namespace sight::service
 {
+
 /**
  * @brief This class provides an interface to manage configurations template.
  * @deprecated This class is no longer supported, use service::AppConfigManager.
@@ -66,16 +67,18 @@ public:
      * @param configId the identifier of the requested config.
      * @param replaceFields the associations between the value and the pattern to replace in the config.
      */
-    SERVICE_API virtual void setConfig(const std::string& configId,
-                                       const FieldAdaptorType& replaceFields = FieldAdaptorType()) = 0;
+    SERVICE_API virtual void setConfig(
+        const std::string& configId,
+        const FieldAdaptorType& replaceFields = FieldAdaptorType()) = 0;
 
     /**
      * @brief Set configuration
      * @param configId the identifier of the requested config.
      * @param replaceFields composite of association between the value and the pattern to replace in the config.
      */
-    SERVICE_API virtual void setConfig(const std::string& configId,
-                                       const data::Composite::csptr& replaceFields) = 0;
+    SERVICE_API virtual void setConfig(
+        const std::string& configId,
+        const data::Composite::csptr& replaceFields) = 0;
 
     /// Get config root
     SERVICE_API virtual data::Object::sptr getConfigRoot() const = 0;
@@ -107,7 +110,7 @@ protected:
         STATE_CREATED,
         STATE_STARTED,
         STATE_STOPPED,
-        STATE_DESTROYED,
+        STATE_DESTROYED
     };
 
     /// XML Configuration tree
@@ -117,55 +120,54 @@ protected:
     ConfigState m_state;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline IAppConfigManager::IAppConfigManager() :
     m_state(STATE_DESTROYED)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline IAppConfigManager::~IAppConfigManager()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool IAppConfigManager::isCreated() const
 {
     return m_state == STATE_CREATED;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool IAppConfigManager::isStarted() const
 {
     return m_state == STATE_STARTED;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool IAppConfigManager::isStopped() const
 {
     return m_state == STATE_STOPPED;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool IAppConfigManager::isDestroyed() const
 {
     return m_state == STATE_DESTROYED;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void IAppConfigManager::setConfig(core::runtime::ConfigurationElement::csptr cfgElem)
 {
     m_cfgElem = cfgElem;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::service

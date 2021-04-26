@@ -49,16 +49,14 @@ namespace sight::viz::scene3d
 class VIZ_SCENE3D_CLASS_API ILight : public viz::scene3d::IAdaptor,
                                      public viz::scene3d::ITransformable
 {
-
 public:
-
     /**
      * @brief Class used to register a class factory in factory registry.
      * This class defines also the object factory ( 'create' ).
      *
      * @tparam T Factory product type.
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -93,8 +91,9 @@ public:
      * @param _specular specular color of the light.
      * @return A new ligh adaptor with registered inputs.
      */
-    VIZ_SCENE3D_API static ILight::sptr createLightAdaptor(data::Color::sptr _diffuse,
-                                                           data::Color::sptr _specular);
+    VIZ_SCENE3D_API static ILight::sptr createLightAdaptor(
+        data::Color::sptr _diffuse,
+        data::Color::sptr _specular);
 
     /**
      * @brief Destroys a light adaptor.
@@ -205,7 +204,6 @@ public:
      * @return True if the visual feedback is activated.
      */
     VIZ_SCENE3D_API virtual bool isVisualFeedbackOn() const = 0;
-
 };
 
 } // namespace sight::viz::scene3d

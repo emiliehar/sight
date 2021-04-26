@@ -45,22 +45,24 @@
 
 namespace sight::utestData
 {
+
 namespace generator
 {
+
 /**
  * @brief   This class contains helper to generate data objects.
  */
 class Object
 {
 public:
-
     /// Creates a color with random values
     UTESTDATA_API static data::Color::sptr randomizeColor();
 
     /// Creates a TransferFunction with random values and specified nbPoints, window and level
-    UTESTDATA_API static data::TransferFunction::sptr createTFColor(unsigned char nbPoints,
-                                                                    double window,
-                                                                    double level );
+    UTESTDATA_API static data::TransferFunction::sptr createTFColor(
+        unsigned char nbPoints,
+        double window,
+        double level);
 
     /// Creates a TransferFunction with few values
     UTESTDATA_API static data::TransferFunction::sptr createTFColor();
@@ -86,7 +88,7 @@ public:
     UTESTDATA_API static data::Port::sptr createPort();
 
     /// Creates a Material with ambient and diffuse color.
-    UTESTDATA_API static data::Material::sptr createMaterial( );
+    UTESTDATA_API static data::Material::sptr createMaterial();
 
     /// Creates a ProcessObject with 3 inputs and 1 output
     UTESTDATA_API static data::ProcessObject::sptr createProcessObject();
@@ -105,4 +107,5 @@ public:
 };
 
 } // namespace generator
+
 } // namespace sight::utestData

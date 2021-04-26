@@ -28,26 +28,27 @@
 #include "../../../../../modules/ui/viz/helper/Utils.cpp"
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::module::ui::viz::ut::UtilsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::module::ui::viz::ut::UtilsTest);
 
 namespace sight::module::ui::viz
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UtilsTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UtilsTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UtilsTest::convertOgreColorToQColor()
 {
@@ -60,7 +61,7 @@ void UtilsTest::convertOgreColorToQColor()
     CPPUNIT_ASSERT(resultColor.alpha() == refColor.alpha());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UtilsTest::convertQColorToOgreColor()
 {
@@ -73,7 +74,8 @@ void UtilsTest::convertQColorToOgreColor()
     CPPUNIT_ASSERT(static_cast<int>(resultColor.a) == static_cast<int>(refColor.a));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::module::ui::viz
+} // namespace ut
+
+} // namespace sight::module::ui::viz

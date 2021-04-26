@@ -25,11 +25,12 @@
 #include "data/Exception.hpp"
 #include "data/registry/macros.hpp"
 
-SIGHT_REGISTER_DATA( sight::data::Port );
+SIGHT_REGISTER_DATA(sight::data::Port);
 
 namespace sight::data
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 Port::Port(data::Object::Key) :
     m_identifier("IDNOTdefined"),
@@ -37,40 +38,44 @@ Port::Port(data::Object::Key) :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Port::~Port()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Port::shallowCopy(const Object::csptr& _source )
+void Port::shallowCopy(const Object::csptr& _source)
 {
     Port::csptr other = Port::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldShallowCopy( _source );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldShallowCopy(_source);
 
     m_identifier = other->m_identifier;
     m_type       = other->m_type;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Port::cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Port::csptr other = Port::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( _source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(_source, cache);
 
     m_identifier = other->m_identifier;
     m_type       = other->m_type;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

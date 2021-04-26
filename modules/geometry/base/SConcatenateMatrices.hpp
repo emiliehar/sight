@@ -33,6 +33,7 @@
 
 namespace sight::module::geometry::base
 {
+
 /**
  * @brief   This service concatenates N matrices together.
  *
@@ -61,9 +62,7 @@ namespace sight::module::geometry::base
 
 class MODULE_GEOMETRY_BASE_CLASS_API SConcatenateMatrices : public service::IController
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SConcatenateMatrices, sight::service::IController)
 
     /**
@@ -100,11 +99,10 @@ protected:
     MODULE_GEOMETRY_BASE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
-    typedef std::vector< bool > InvertVectorType;
+    typedef std::vector<bool> InvertVectorType;
 
     /// Vector to specify if matrix must be inverted.
     InvertVectorType m_invertVector;
 };
 
-} //namespace sight::module::geometry::base
+} // namespace sight::module::geometry::base

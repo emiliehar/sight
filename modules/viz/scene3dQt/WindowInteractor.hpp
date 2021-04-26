@@ -36,10 +36,14 @@
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
+
 class QtContainer;
+
 }
+
 }
 
 namespace sight::module::viz::scene3dQt
@@ -49,11 +53,9 @@ namespace sight::module::viz::scene3dQt
 class MODULE_VIZ_SCENE3DQT_CLASS_API WindowInteractor final : public QObject,
                                                               public sight::viz::scene3d::IWindowInteractor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_CLASS(WindowInteractor, sight::viz::scene3d::IWindowInteractor)
 
     /// Initialize members.
@@ -74,9 +76,10 @@ public:
      * @param _renderOnDemand if true, the rendering will be done only when it's requested.
      * @param _fullscreen enable the fullscreen.
      */
-    MODULE_VIZ_SCENE3DQT_API void createContainer(ui::base::container::fwContainer::sptr _parent,
-                                                  bool _renderOnDemand,
-                                                  bool _fullscreen) final;
+    MODULE_VIZ_SCENE3DQT_API void createContainer(
+        ui::base::container::fwContainer::sptr _parent,
+        bool _renderOnDemand,
+        bool _fullscreen) final;
 
     /// Connects the widget and the SRender signals and slots.
     MODULE_VIZ_SCENE3DQT_API void connectToContainer() final;
@@ -114,7 +117,6 @@ public:
     MODULE_VIZ_SCENE3DQT_API void setFullscreen(bool _fullscreen, int _screenNumber) final;
 
 private Q_SLOTS:
-
     /// Called when the user interacts with the scene using the mouse and keyboard, connected to @ref m_qOgreWidget.
     void onInteracted(sight::viz::scene3d::IWindowInteractor::InteractionInfo _info);
 
@@ -122,26 +124,25 @@ private Q_SLOTS:
     void onCameraClippingComputation();
 
 private:
-
     /// Disables fullscreen rendering.
     void disableFullscreen();
 
     /// Contains Qt element of the Widget.
-    QPointer< module::viz::scene3dQt::Window > m_qOgreWidget;
+    QPointer<module::viz::scene3dQt::Window> m_qOgreWidget;
 
     /// Contains the parent of the widget.
     SPTR(ui::qt::container::QtContainer) m_parentContainer;
 
     /// Contains the window container.
-    QWidget* m_windowContainer {nullptr};
-
+    QWidget* m_windowContainer{nullptr};
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline ::Ogre::TexturePtr WindowInteractor::getRenderTexture()
 {
     SIGHT_ERROR("'WindowInteractor' doesn't render in a texture.");
+
     return ::Ogre::TexturePtr();
 }
 

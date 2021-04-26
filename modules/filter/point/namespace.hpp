@@ -24,7 +24,7 @@
 
 /**
  * @brief The namespace sight::module::filter::point contains services to perfom a basic registration between images
- *and meshes.
+ * and meshes.
  **/
 
 namespace sight::module::filter::point

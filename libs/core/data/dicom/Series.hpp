@@ -28,13 +28,17 @@
 
 namespace sight::data
 {
+
 class DicomSeries;
+
 }
 
 namespace sight::data
 {
+
 class ImageSeries;
 class ModelSeries;
+
 }
 
 namespace sight::data::dicom
@@ -51,15 +55,14 @@ public:
      * @param[in] series DicomSeries that must be converted
      */
     DATA_API static SPTR(data::ImageSeries) convertToImageSeries(
-        const CSPTR(data::DicomSeries)& series);
+        const CSPTR(data::DicomSeries) & series);
 
     /**
      * @brief Convert a DicomSeries to a ModelSeries
      * @param[in] series DicomSeries that must be converted
      */
     DATA_API static SPTR(data::ModelSeries) convertToModelSeries(
-        const CSPTR(data::DicomSeries)& series);
-
+        const CSPTR(data::DicomSeries) & series);
 };
 
-} //fwDicomTools
+} // fwDicomTools

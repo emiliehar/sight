@@ -27,12 +27,12 @@
 
 #include <core/base.hpp>
 
-SIGHT_REGISTER_DATA( sight::data::Point );
+SIGHT_REGISTER_DATA(sight::data::Point);
 
 namespace sight::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Point::Point(data::Object::Key)
 {
@@ -41,7 +41,7 @@ Point::Point(data::Object::Key)
     m_vCoord[2] = 0.0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Point::sptr Point::New(float x, float y, float z)
 {
@@ -49,10 +49,11 @@ Point::sptr Point::New(float x, float y, float z)
     point->m_vCoord[0] = x;
     point->m_vCoord[1] = y;
     point->m_vCoord[2] = z;
+
     return point;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Point::sptr Point::New(double x, double y, double z)
 {
@@ -60,59 +61,66 @@ Point::sptr Point::New(double x, double y, double z)
     point->m_vCoord[0] = x;
     point->m_vCoord[1] = y;
     point->m_vCoord[2] = z;
+
     return point;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Point::sptr Point::New(const PointCoordArrayType& coord)
 {
     Point::sptr point = data::Point::New();
     point->m_vCoord = coord;
+
     return point;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Point::sptr Point::New(const Point::sptr& p )
+Point::sptr Point::New(const Point::sptr& p)
 {
     Point::sptr point = data::Point::New();
     point->m_vCoord[0] = p->m_vCoord[0];
     point->m_vCoord[1] = p->m_vCoord[1];
     point->m_vCoord[2] = p->m_vCoord[2];
+
     return point;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Point::~Point ()
+Point::~Point()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Point::shallowCopy(const Object::csptr& _source )
+void Point::shallowCopy(const Object::csptr& _source)
 {
     Point::csptr other = Point::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldShallowCopy( _source );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldShallowCopy(_source);
     m_vCoord = other->m_vCoord;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Point::cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Point::csptr other = Point::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( _source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(_source, cache);
     m_vCoord = other->m_vCoord;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

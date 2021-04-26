@@ -25,4 +25,5 @@
 /// The namespace sight::module::viz::sample supplies simple rendering services for meshes and images.
 namespace sight::module::viz::sample
 {
+
 }

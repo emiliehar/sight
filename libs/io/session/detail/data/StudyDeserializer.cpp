@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -34,18 +35,20 @@ namespace detail::data
 StudyDeserializer::sptr StudyDeserializer::shared()
 {
     struct make_shared_enabler final : public StudyDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 StudyDeserializer::uptr StudyDeserializer::unique()
 {
     struct make_unique_enabler final : public StudyDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr StudyDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -55,8 +58,8 @@ sight::data::Object::sptr StudyDeserializer::deserialize(
     const core::crypto::secure_string& password)
 {
     // Create or reuse the object
-    const auto& study =
-        object ? sight::data::Study::dynamicCast(object) : sight::data::Study::New();
+    const auto& study
+        = object ? sight::data::Study::dynamicCast(object) : sight::data::Study::New();
 
     SIGHT_ASSERT(
         "Object '" << study->getClassname() << "' is not a '" << sight::data::Study::classname() << "'",
@@ -77,7 +80,7 @@ sight::data::Object::sptr StudyDeserializer::deserialize(
     return study;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr StudyDeserializer::create()
 {
@@ -86,4 +89,5 @@ sight::data::Object::sptr StudyDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

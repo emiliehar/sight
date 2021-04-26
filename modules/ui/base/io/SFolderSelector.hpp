@@ -30,6 +30,7 @@
 
 namespace sight::module::ui::base
 {
+
 namespace io
 {
 
@@ -58,7 +59,7 @@ public:
      * @name Signals API
      * @{
      */
-    typedef core::com::Signal< void ( std::filesystem::path ) > FolderSelectedSignalType;
+    typedef core::com::Signal<void (std::filesystem::path)> FolderSelectedSignalType;
     static const core::com::Signals::SignalKeyType s_FOLDER_SELECTED_SIG;
     /// @}
 
@@ -66,7 +67,6 @@ public:
     MODULE_UI_BASE_API virtual ~SFolderSelector() noexcept;
 
 protected:
-
     /// Do nothing
     MODULE_UI_BASE_API void configuring() override;
 
@@ -80,10 +80,10 @@ protected:
     MODULE_UI_BASE_API void stopping() override;
 
 private:
-
     /// Optional title for the dialog
     std::string m_dialogTitle;
 };
 
 } // namespace io
+
 } // namespace sight::module::ui::base

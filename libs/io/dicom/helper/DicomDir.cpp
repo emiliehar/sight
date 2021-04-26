@@ -42,8 +42,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
+
 // ----------------------------------------------------------------------------
 
 std::filesystem::path DicomDir::findDicomDir(const std::filesystem::path& root)
@@ -53,12 +55,14 @@ std::filesystem::path DicomDir::findDicomDir(const std::filesystem::path& root)
     while(std::filesystem::exists(current) && current != current.root_path())
     {
         std::filesystem::path dicomDirPath = current / "dicomdir";
+
         if(std::filesystem::exists(dicomDirPath) && !std::filesystem::is_directory(dicomDirPath))
         {
             return dicomDirPath;
         }
 
         dicomDirPath = current / "DICOMDIR";
+
         if(std::filesystem::exists(dicomDirPath) && !std::filesystem::is_directory(dicomDirPath))
         {
             return dicomDirPath;
@@ -68,28 +72,31 @@ std::filesystem::path DicomDir::findDicomDir(const std::filesystem::path& root)
     }
 
     return std::filesystem::path();
-
 }
 
 // ----------------------------------------------------------------------------
 
-void processDirInformation(const std::filesystem::path& dicomdir,
-                           const std::filesystem::path& rootDicomDirPath,
-                           data::DicomSeries::sptr currentSeries,
-                           std::map < std::string, data::DicomSeries::sptr >& dicomSeriesMap,
-                           const core::log::Logger::sptr& logger,
-                           std::function< void(std::uint64_t) >& progress,
-                           std::function< bool() >& cancel,
-                           double& p,
-                           double& ptotal)
+void processDirInformation(
+    const std::filesystem::path& dicomdir,
+    const std::filesystem::path& rootDicomDirPath,
+    data::DicomSeries::sptr currentSeries,
+    std::map<std::string, data::DicomSeries::sptr>& dicomSeriesMap,
+    const core::log::Logger::sptr& logger,
+    std::function<void(std::uint64_t)>& progress,
+    std::function<bool()>& cancel,
+    double& p,
+    double& ptotal)
 {
-    SIGHT_ASSERT("You must specify a valid dicomdir.", std::filesystem::exists(dicomdir)
-                 && !std::filesystem::is_directory(dicomdir));
+    SIGHT_ASSERT(
+        "You must specify a valid dicomdir.",
+        std::filesystem::exists(dicomdir)
+        && !std::filesystem::is_directory(dicomdir));
 
     // Try to read the file
     ::gdcm::Reader reader;
     reader.SetFileName(dicomdir.string().c_str());
-    if( !reader.Read() )
+
+    if(!reader.Read())
     {
         return;
     }
@@ -100,20 +107,23 @@ void processDirInformation(const std::filesystem::path& dicomdir,
     // Check if the file is a DICOMDIR
     ::gdcm::MediaStorage mediaStorage;
     mediaStorage.SetFromFile(gdcmFile);
-    if(mediaStorage != ::gdcm::MediaStorage::MediaStorageDirectoryStorage )
+
+    if(mediaStorage != ::gdcm::MediaStorage::MediaStorageDirectoryStorage)
     {
         SIGHT_ERROR("This file is not a DICOMDIR");
+
         return;
     }
 
     // Check the MediaStorageSOPClass
     const ::gdcm::FileMetaInformation& fileMetaInformation = gdcmFile.GetHeader();
-    const std::string& mediaStorageSOP                     =
-        io::dicom::helper::DicomDataReader::getTagValue< 0x0002, 0x0002 >(fileMetaInformation);
+    const std::string& mediaStorageSOP
+        = io::dicom::helper::DicomDataReader::getTagValue<0x0002, 0x0002>(fileMetaInformation);
 
-    if (mediaStorageSOP != ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::MediaStorageDirectoryStorage))
+    if(mediaStorageSOP != ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::MediaStorageDirectoryStorage))
     {
         SIGHT_ERROR("This file is not a DICOMDIR");
+
         return;
     }
 
@@ -121,33 +131,33 @@ void processDirInformation(const std::filesystem::path& dicomdir,
     typedef std::set<gdcm::DataElement> DataElementSet;
     typedef DataElementSet::const_iterator ConstIterator;
 
-    for(ConstIterator it = dataset.GetDES().begin(); it != dataset.GetDES().end(); ++it)
+    for(ConstIterator it = dataset.GetDES().begin() ; it != dataset.GetDES().end() ; ++it)
     {
         // Directory Record Sequence
-        if (it->GetTag() == ::gdcm::Tag(0x0004, 0x1220))
+        if(it->GetTag() == ::gdcm::Tag(0x0004, 0x1220))
         {
-            ::gdcm::SmartPointer< ::gdcm::SequenceOfItems > sequence = it->GetValueAsSQ();
+            ::gdcm::SmartPointer< ::gdcm::SequenceOfItems> sequence = it->GetValueAsSQ();
             ptotal += static_cast<double>(sequence->GetNumberOfItems());
 
-            for(unsigned int index = 1; index <= sequence->GetNumberOfItems(); ++index)
+            for(unsigned int index = 1 ; index <= sequence->GetNumberOfItems() ; ++index)
             {
                 // Retrieve item
                 ::gdcm::Item& item = sequence->GetItem(index);
 
                 // Directory Record Type
-                const std::string recordType =
-                    io::dicom::helper::DicomDataReader::getTagValue< 0x0004, 0x1430 >(item.GetNestedDataSet());
+                const std::string recordType
+                    = io::dicom::helper::DicomDataReader::getTagValue<0x0004, 0x1430>(item.GetNestedDataSet());
 
                 // Check Referenced File ID
-                std::string refFileID =
-                    io::dicom::helper::DicomDataReader::getTagValue< 0x0004, 0x1500 >(item.GetNestedDataSet());
+                std::string refFileID
+                    = io::dicom::helper::DicomDataReader::getTagValue<0x0004, 0x1500>(item.GetNestedDataSet());
 
                 if(recordType == "IMAGE")
                 {
                     // Read file path
-                    std::string file = io::dicom::helper::DicomDataReader::getTagValue< 0x0004, 0x1500 >(
+                    std::string file = io::dicom::helper::DicomDataReader::getTagValue<0x0004, 0x1500>(
                         item.GetNestedDataSet());
-                    std::replace( file.begin(), file.end(), '\\', '/');
+                    std::replace(file.begin(), file.end(), '\\', '/');
                     SIGHT_WARN_IF("Dicom instance doesn't have a referenced file id.", file.empty());
 
                     const std::filesystem::path path = rootDicomDirPath / file;
@@ -161,8 +171,8 @@ void processDirInformation(const std::filesystem::path& dicomdir,
                     else if(std::filesystem::exists(path))
                     {
                         auto instanceNumber = ::boost::lexical_cast<unsigned int>(
-                            io::dicom::helper::DicomDataReader::getTagValue< 0x0020,
-                                                                             0x0013 >(item.GetNestedDataSet()));
+                            io::dicom::helper::DicomDataReader::getTagValue<0x0020,
+                                                                            0x0013>(item.GetNestedDataSet()));
                         currentSeries->addDicomPath(instanceNumber, path);
                     }
                     else
@@ -175,8 +185,9 @@ void processDirInformation(const std::filesystem::path& dicomdir,
                     // If the record is a series, we select the current series
                     if(recordType == "SERIES")
                     {
-                        const std::string& seriesUID =
-                            io::dicom::helper::DicomDataReader::getTagValue< 0x0020, 0x000e >(item.GetNestedDataSet());
+                        const std::string& seriesUID
+                            = io::dicom::helper::DicomDataReader::getTagValue<0x0020, 0x000e>(item.GetNestedDataSet());
+
                         if(dicomSeriesMap.find(seriesUID) == dicomSeriesMap.end())
                         {
                             data::DicomSeries::sptr series = data::DicomSeries::New();
@@ -189,10 +200,19 @@ void processDirInformation(const std::filesystem::path& dicomdir,
 
                     std::replace(refFileID.begin(), refFileID.end(), '\\', '/');
                     auto refFilePath = dicomdir.parent_path() / refFileID;
+
                     if(refFileID != "" && std::filesystem::exists(refFilePath))
                     {
-                        processDirInformation(refFilePath, rootDicomDirPath, currentSeries,
-                                              dicomSeriesMap, logger, progress, cancel, p, ptotal);
+                        processDirInformation(
+                            refFilePath,
+                            rootDicomDirPath,
+                            currentSeries,
+                            dicomSeriesMap,
+                            logger,
+                            progress,
+                            cancel,
+                            p,
+                            ptotal);
                     }
                 }
 
@@ -201,11 +221,10 @@ void processDirInformation(const std::filesystem::path& dicomdir,
                     progress(++p);
                 }
 
-                if( cancel && cancel() )
+                if(cancel && cancel())
                 {
                     break;
                 }
-
             }
         }
     }
@@ -213,19 +232,23 @@ void processDirInformation(const std::filesystem::path& dicomdir,
 
 // ----------------------------------------------------------------------------
 
-void DicomDir::retrieveDicomSeries(const std::filesystem::path& dicomdir,
-                                   std::vector< SPTR(data::DicomSeries) >& seriesDB,
-                                   const core::log::Logger::sptr& logger,
-                                   std::function< void(std::uint64_t) > progress,
-                                   std::function< bool() > cancel)
+void DicomDir::retrieveDicomSeries(
+    const std::filesystem::path& dicomdir,
+    std::vector<SPTR(data::DicomSeries)>& seriesDB,
+    const core::log::Logger::sptr& logger,
+    std::function<void(std::uint64_t)> progress,
+    std::function<bool()> cancel)
 {
-    SIGHT_ASSERT("You must specify a valid dicomdir.", std::filesystem::exists(dicomdir)
-                 && !std::filesystem::is_directory(dicomdir));
+    SIGHT_ASSERT(
+        "You must specify a valid dicomdir.",
+        std::filesystem::exists(dicomdir)
+        && !std::filesystem::is_directory(dicomdir));
 
     // Try to read the file
     ::gdcm::Reader reader;
     reader.SetFileName(dicomdir.string().c_str());
-    if( !reader.Read() )
+
+    if(!reader.Read())
     {
         return;
     }
@@ -236,20 +259,23 @@ void DicomDir::retrieveDicomSeries(const std::filesystem::path& dicomdir,
     // Check if the file is a DICOMDIR
     ::gdcm::MediaStorage mediaStorage;
     mediaStorage.SetFromFile(gdcmFile);
-    if(mediaStorage != ::gdcm::MediaStorage::MediaStorageDirectoryStorage )
+
+    if(mediaStorage != ::gdcm::MediaStorage::MediaStorageDirectoryStorage)
     {
         SIGHT_ERROR("This file is not a DICOMDIR");
+
         return;
     }
 
     // Check the MediaStorageSOPClass
     const ::gdcm::FileMetaInformation& fileMetaInformation = gdcmFile.GetHeader();
-    const std::string& mediaStorageSOP                     =
-        io::dicom::helper::DicomDataReader::getTagValue< 0x0002, 0x0002 >(fileMetaInformation);
+    const std::string& mediaStorageSOP
+        = io::dicom::helper::DicomDataReader::getTagValue<0x0002, 0x0002>(fileMetaInformation);
 
-    if (mediaStorageSOP != ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::MediaStorageDirectoryStorage))
+    if(mediaStorageSOP != ::gdcm::MediaStorage::GetMSString(::gdcm::MediaStorage::MediaStorageDirectoryStorage))
     {
         SIGHT_ERROR("This file is not a DICOMDIR");
+
         return;
     }
 
@@ -263,28 +289,36 @@ void DicomDir::retrieveDicomSeries(const std::filesystem::path& dicomdir,
     if(progress)
     {
         // Compute total progress
-        for(ConstIterator it = dataset.GetDES().begin(); it != dataset.GetDES().end(); ++it)
+        for(ConstIterator it = dataset.GetDES().begin() ; it != dataset.GetDES().end() ; ++it)
         {
             // Directory Record Sequence
-            if (it->GetTag() == ::gdcm::Tag(0x0004, 0x1220))
+            if(it->GetTag() == ::gdcm::Tag(0x0004, 0x1220))
             {
-                ::gdcm::SmartPointer< ::gdcm::SequenceOfItems > sequence = it->GetValueAsSQ();
+                ::gdcm::SmartPointer< ::gdcm::SequenceOfItems> sequence = it->GetValueAsSQ();
 
                 ptotal += static_cast<double>(sequence->GetNumberOfItems());
             }
         }
     }
 
-    if( 0. == ptotal )
+    if(0. == ptotal)
     {
         ptotal = 1.;
     }
 
-    std::map < std::string, data::DicomSeries::sptr > dicomSeriesMap;
-    processDirInformation(dicomdir, dicomdir.parent_path(), nullptr, dicomSeriesMap,
-                          logger, progress, cancel, p, ptotal);
+    std::map<std::string, data::DicomSeries::sptr> dicomSeriesMap;
+    processDirInformation(
+        dicomdir,
+        dicomdir.parent_path(),
+        nullptr,
+        dicomSeriesMap,
+        logger,
+        progress,
+        cancel,
+        p,
+        ptotal);
 
-    if( cancel && cancel() )
+    if(cancel && cancel())
     {
         return;
     }
@@ -293,6 +327,7 @@ void DicomDir::retrieveDicomSeries(const std::filesystem::path& dicomdir,
     {
         auto series       = entry.second;
         const size_t size = series->getDicomContainer().size();
+
         if(size)
         {
             series->setNumberOfInstances(size);
@@ -307,5 +342,6 @@ void DicomDir::retrieveDicomSeries(const std::filesystem::path& dicomdir,
 
 // ----------------------------------------------------------------------------
 
-} //helper
-} //fwGdcmIO
+} // helper
+
+} // fwGdcmIO

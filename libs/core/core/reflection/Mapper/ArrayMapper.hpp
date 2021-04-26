@@ -30,64 +30,69 @@
 
 namespace camp_ext
 {
+
 /*
  * Specialization of ArrayMapper for std::set
  */
-template <typename T>
+template<typename T>
 struct ArrayMapper<std::set<T> >
 {
     typedef T ElementType;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static bool dynamic()
     {
         return true;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static std::size_t size(const std::set<T>& arr)
     {
         return arr.size();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static const T& get(const std::set<T>& arr, std::size_t index)
     {
         typename std::set<T>::const_iterator cIt = arr.begin();
-        for(std::size_t i = 0; i < index; i++)
+
+        for(std::size_t i = 0 ; i < index ; i++)
         {
             ++cIt;
         }
+
         return *cIt;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static void set(std::set<T>&, std::size_t, const T&)
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static void insert(std::set<T>& arr, std::size_t, const T& value)
     {
         arr.insert(value);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static void remove(std::set<T>& arr, std::size_t index)
     {
         typename std::set<T>::const_iterator cIt = arr.begin();
-        for(std::size_t i = 0; i < index; ++i)
+
+        for(std::size_t i = 0 ; i < index ; ++i)
         {
             ++cIt;
         }
+
         arr.erase(cIt);
     }
 };
 
-} //camp_ext
+} // camp_ext

@@ -27,16 +27,17 @@
 namespace sight::viz::scene3d::interactor
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-ClippingBoxInteractor::ClippingBoxInteractor(Layer::sptr _layer,
-                                             bool _layerOrderDependant,
-                                             const std::string& _id,
-                                             ::Ogre::SceneNode* _parentSceneNode,
-                                             const ::Ogre::Matrix4& _clippingMatrix,
-                                             const widget::ClippingBox::ClippingUpdateCallbackType& _clippingUpdateCb,
-                                             const std::string& _boxMtlName,
-                                             const std::string& _handleMtlName) noexcept :
+ClippingBoxInteractor::ClippingBoxInteractor(
+    Layer::sptr _layer,
+    bool _layerOrderDependant,
+    const std::string& _id,
+    ::Ogre::SceneNode* _parentSceneNode,
+    const ::Ogre::Matrix4& _clippingMatrix,
+    const widget::ClippingBox::ClippingUpdateCallbackType& _clippingUpdateCb,
+    const std::string& _boxMtlName,
+    const std::string& _handleMtlName) noexcept :
     IInteractor(_layer, _layerOrderDependant),
     m_widget(_id, _parentSceneNode, _layer->getDefaultCamera(), _layer->getSceneManager(),
              _clippingMatrix, _clippingUpdateCb, _boxMtlName, _handleMtlName)
@@ -46,20 +47,19 @@ ClippingBoxInteractor::ClippingBoxInteractor(Layer::sptr _layer,
     m_picker.setSceneManager(_layer->getSceneManager());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ClippingBoxInteractor::~ClippingBoxInteractor() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Ogre::MovableObject* ClippingBoxInteractor::pickObject(int x, int y)
 {
     if(auto layer = m_layer.lock())
     {
-        const bool pickSuccess = m_picker.executeRaySceneQuery( x, y, 0xFFFFFFFF );
+        const bool pickSuccess = m_picker.executeRaySceneQuery(x, y, 0xFFFFFFFF);
 
         return pickSuccess ? m_picker.getSelectedObject() : nullptr;
     }
@@ -67,7 +67,7 @@ Ogre::MovableObject* ClippingBoxInteractor::pickObject(int x, int y)
     return nullptr;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ClippingBoxInteractor::mouseMoveEvent(MouseButton button, Modifier, int x, int y, int dx, int dy)
 {
@@ -95,7 +95,7 @@ void ClippingBoxInteractor::mouseMoveEvent(MouseButton button, Modifier, int x, 
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ClippingBoxInteractor::buttonReleaseEvent(MouseButton, Modifier, int, int)
 {
@@ -106,18 +106,20 @@ void ClippingBoxInteractor::buttonReleaseEvent(MouseButton, Modifier, int, int)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ClippingBoxInteractor::buttonPressEvent(MouseButton button, Modifier, int x, int y)
 {
     if(m_widget.getVisibility())
     {
         bool interacted = false;
+
         if(button == LEFT)
         {
             m_pickedObject = pickObject(x, y);
 
             interacted = m_widget.belongsToWidget(m_pickedObject);
+
             if(interacted)
             {
                 m_widget.widgetPicked(m_pickedObject, x, y);
@@ -143,39 +145,40 @@ void ClippingBoxInteractor::buttonPressEvent(MouseButton button, Modifier, int x
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ClippingBoxInteractor::setBoxVisibility(bool _visibility)
 {
     m_widget.setVisibility(_visibility);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::AxisAlignedBox ClippingBoxInteractor::getClippingBox() const
 {
     return m_widget.getClippingBox();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::Matrix4 ClippingBoxInteractor::getClippingTransform() const
 {
     return m_widget.getClippingTransform();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ClippingBoxInteractor::updateFromTransform(const ::Ogre::Matrix4& _clippingTrf)
 {
     m_widget.updateFromTransform(_clippingTrf);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ClippingBoxInteractor::cancelFurtherLayerInteractions()
 {
     const auto layer = m_layer.lock();
+
     if(layer)
     {
         layer->cancelFurtherInteraction();

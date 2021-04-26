@@ -48,9 +48,7 @@ namespace sight::filter::image
  */
 class FILTER_IMAGE_CLASS_API ImageExtruder final
 {
-
 public:
-
     /**
      * @brief Sets all voxels of the image that are inside the mesh to an empty value.
      * @param _image image to extrude.
@@ -79,7 +77,6 @@ public:
     void operator()(Parameters& _param);
 
 private:
-
     /// Represents a 3D triangle by three points.
     struct Triangle
     {
@@ -87,7 +84,6 @@ private:
         const ::glm::vec3 b;
         const ::glm::vec3 c;
     };
-
 };
 
-}// namespace sight::filter::image
+} // namespace sight::filter::image

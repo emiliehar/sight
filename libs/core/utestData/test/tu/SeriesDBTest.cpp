@@ -36,14 +36,15 @@
 #include <utestData/generator/SeriesDB.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::utestData::ut::SeriesDBTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::utestData::ut::SeriesDBTest);
 
 namespace sight::utestData
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::setUp()
 {
@@ -51,14 +52,14 @@ void SeriesDBTest::setUp()
     srand(time(NULL));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::generationTest()
 {
@@ -84,14 +85,16 @@ void SeriesDBTest::generationTest()
 
     unsigned int count = 1;
     std::stringstream str;
-    for(data::Series::sptr series :  seriesContainer)
+
+    for(data::Series::sptr series : seriesContainer)
     {
         str.str("");
         str.width(4);
         str.fill('0');
         str << count++;
-        CPPUNIT_ASSERT_EQUAL(std::string("1.2.826.0.1.3680043.2.1125.102906542887009256605006409108689" + str.str()),
-                             series->getInstanceUID());
+        CPPUNIT_ASSERT_EQUAL(
+            std::string("1.2.826.0.1.3680043.2.1125.102906542887009256605006409108689" + str.str()),
+            series->getInstanceUID());
         CPPUNIT_ASSERT_EQUAL(std::string("CT"), series->getModality());
         CPPUNIT_ASSERT_EQUAL(std::string("20130418"), series->getDate());
         CPPUNIT_ASSERT_EQUAL(std::string("101010.101010 "), series->getTime());
@@ -105,8 +108,9 @@ void SeriesDBTest::generationTest()
         CPPUNIT_ASSERT_EQUAL(std::string("O "), patient->getSex());
 
         data::Study::sptr study = series->getStudy();
-        CPPUNIT_ASSERT_EQUAL(std::string("1.2.826.0.1.3680043.2.1125.44278200849347599055201494082232" + str.str()),
-                             study->getInstanceUID());
+        CPPUNIT_ASSERT_EQUAL(
+            std::string("1.2.826.0.1.3680043.2.1125.44278200849347599055201494082232" + str.str()),
+            study->getInstanceUID());
         CPPUNIT_ASSERT_EQUAL(std::string("20130418"), study->getDate());
         CPPUNIT_ASSERT_EQUAL(std::string("095948.689872 "), study->getTime());
         CPPUNIT_ASSERT_EQUAL(std::string("Dr^Jekyl"), study->getReferringPhysicianName());
@@ -120,17 +124,17 @@ void SeriesDBTest::generationTest()
         data::ModelSeries::sptr modelSeries       = data::ModelSeries::dynamicCast(series);
         data::ActivitySeries::sptr activitySeries = data::ActivitySeries::dynamicCast(series);
 
-        if (imgSeries)
+        if(imgSeries)
         {
             ++nbIS;
             CPPUNIT_ASSERT(imgSeries->getImage());
         }
-        else if (modelSeries)
+        else if(modelSeries)
         {
             ++nbMS;
             CPPUNIT_ASSERT(!modelSeries->getReconstructionDB().empty());
         }
-        else if (activitySeries)
+        else if(activitySeries)
         {
             ++nbAS;
             CPPUNIT_ASSERT_EQUAL(std::string("IdOfTheConfig"), activitySeries->getActivityConfigId());
@@ -148,7 +152,8 @@ void SeriesDBTest::generationTest()
     CPPUNIT_ASSERT_EQUAL(nbActivitySeries, nbAS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::utestData
+} // namespace ut
+
+} // namespace sight::utestData

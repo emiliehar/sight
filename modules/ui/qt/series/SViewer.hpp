@@ -68,7 +68,6 @@ namespace sight::module::ui::qt::series
  */
 class MODULE_UI_QT_CLASS_API SViewer : public service::IController
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SViewer, service::IController)
 
@@ -79,7 +78,6 @@ public:
     MODULE_UI_QT_API virtual ~SViewer() noexcept;
 
 protected:
-
     /// Calls updating on starting.
     void starting() override;
 
@@ -108,10 +106,9 @@ protected:
      */
     MODULE_UI_QT_API KeyConnectionsMap getAutoConnections() const override;
 
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 private:
-
     typedef std::map<std::string, std::string> ReplaceValuesMapType;
 
     /// Stucture to register configuration informations.
@@ -138,4 +135,5 @@ private:
     /// Stores the association between data type and associated configuration.
     SeriesConfigMapType m_seriesConfigs;
 };
+
 } // namespace sight::module::ui::qt::series

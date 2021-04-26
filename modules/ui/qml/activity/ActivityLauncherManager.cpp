@@ -41,27 +41,26 @@ static const std::string s_ACTIVITY_CREATED_CHANNEL = "activityCreatedChannel";
 static const std::string s_GO_TO_CHANNEL            = "GoToChannel";
 static const std::string s_VALIDATION_CHANNEL       = "validationChannel";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ActivityLauncherManager::ActivityLauncherManager() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ActivityLauncherManager::~ActivityLauncherManager() noexcept
 {
     this->uninitialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivityLauncherManager::initialize()
 {
     this->create();
 
-    m_seriesDB = data::factory::New< data::SeriesDB >();
+    m_seriesDB = data::factory::New<data::SeriesDB>();
 
     this->addObject(m_seriesDB, this->getInputID(s_SERIESDB_INOUT));
 
@@ -78,7 +77,7 @@ void ActivityLauncherManager::initialize()
     this->startServices();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivityLauncherManager::uninitialize()
 {
@@ -86,14 +85,15 @@ void ActivityLauncherManager::uninitialize()
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivityLauncherManager::onServiceCreated(const QVariant& obj)
 {
-    sight::ui::qml::IQmlEditor::sptr srv(obj.value< sight::ui::qml::IQmlEditor* >());
-    if (srv)
+    sight::ui::qml::IQmlEditor::sptr srv(obj.value<sight::ui::qml::IQmlEditor*>());
+
+    if(srv)
     {
-        if (srv->isA("sight::module::ui::qml::activity::SView"))
+        if(srv->isA("sight::module::ui::qml::activity::SView"))
         {
             srv->configure(m_activityViewConfig);
             // connect to launch the activity when it is created/updated.
@@ -104,7 +104,7 @@ void ActivityLauncherManager::onServiceCreated(const QVariant& obj)
 
             this->addService(srv, true);
         }
-        else if (srv->isA("sight::module::ui::qml::activity::SSequencer"))
+        else if(srv->isA("sight::module::ui::qml::activity::SSequencer"))
         {
             // create the services;
             m_activitySequencer = srv;
@@ -131,7 +131,7 @@ void ActivityLauncherManager::onServiceCreated(const QVariant& obj)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivityLauncherManager::open()
 {
@@ -139,8 +139,9 @@ void ActivityLauncherManager::open()
     auto reader          = service::add("::sight::module::ui::base::io::SSelector");
     reader->registerInOut(seriesDB, "data");
     const auto srvCfgFactory = service::extension::Config::getDefault();
-    const auto cfgElem       = srvCfgFactory->getServiceConfig( "ActivityReaderConfig",
-                                                                "::sight::module::ui::base::io::SSelector");
+    const auto cfgElem       = srvCfgFactory->getServiceConfig(
+        "ActivityReaderConfig",
+        "::sight::module::ui::base::io::SSelector");
     reader->setConfiguration(core::runtime::ConfigurationElement::constCast(cfgElem));
     reader->configure();
 
@@ -149,11 +150,11 @@ void ActivityLauncherManager::open()
     reader->stop();
     service::OSR::unregisterService(reader);
 
-    auto sig = seriesDB->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+    auto sig = seriesDB->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivityLauncherManager::save()
 {
@@ -161,8 +162,9 @@ void ActivityLauncherManager::save()
     auto writer          = service::add("::sight::module::ui::base::io::SSelector");
     writer->registerInOut(seriesDB, "data");
     const auto srvCfgFactory = service::extension::Config::getDefault();
-    const auto cfgElem       = srvCfgFactory->getServiceConfig( "ActivityWriterConfig",
-                                                                "::sight::module::ui::base::io::SSelector");
+    const auto cfgElem       = srvCfgFactory->getServiceConfig(
+        "ActivityWriterConfig",
+        "::sight::module::ui::base::io::SSelector");
     writer->setConfiguration(core::runtime::ConfigurationElement::constCast(cfgElem));
     writer->configure();
     writer->start();
@@ -171,6 +173,6 @@ void ActivityLauncherManager::save()
     service::OSR::unregisterService(writer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qml::activity

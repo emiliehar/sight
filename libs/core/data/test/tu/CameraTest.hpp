@@ -26,12 +26,13 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class CameraTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( CameraTest );
+CPPUNIT_TEST_SUITE(CameraTest);
 CPPUNIT_TEST(paramTest);
 CPPUNIT_TEST(shallowCopyTest);
 CPPUNIT_TEST(deepCopyTest);
@@ -45,8 +46,8 @@ public:
     void paramTest();
     void shallowCopyTest();
     void deepCopyTest();
-
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

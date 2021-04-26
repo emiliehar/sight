@@ -57,7 +57,6 @@ class MODULE_UI_VIZ_CLASS_API SCoreCompositorEditor : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SCoreCompositorEditor, sight::ui::base::IEditor)
 
     /// Constructor.
@@ -67,7 +66,6 @@ public:
     MODULE_UI_VIZ_API virtual ~SCoreCompositorEditor() noexcept;
 
 protected:
-
     /**
      * @brief method description:
      * @code{.xml}
@@ -91,11 +89,10 @@ protected:
     /// FILL ME.
     MODULE_UI_VIZ_API void refreshRenderers();
 
-    std::vector< sight::viz::scene3d::Layer::wptr > m_layers;
+    std::vector<sight::viz::scene3d::Layer::wptr> m_layers;
     sight::viz::scene3d::Layer::wptr m_currentLayer;
 
 protected Q_SLOTS:
-
     void onSelectedLayerItem(int index);
     void onEditTransparencyDepth(int depth);
     void onEditTransparency(int index);

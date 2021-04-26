@@ -34,14 +34,14 @@
 namespace sight::data
 {
 
-SIGHT_REGISTER_DATA( sight::data::CalibrationInfo );
+SIGHT_REGISTER_DATA(sight::data::CalibrationInfo);
 
 const core::com::Signals::SignalKeyType CalibrationInfo::s_ADDED_RECORD_SIG   = "addedRecord";
 const core::com::Signals::SignalKeyType CalibrationInfo::s_REMOVED_RECORD_SIG = "removedRecord";
 const core::com::Signals::SignalKeyType CalibrationInfo::s_RESET_RECORD_SIG   = "resetRecord";
 const core::com::Signals::SignalKeyType CalibrationInfo::s_GET_RECORD_SIG     = "getRecord";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CalibrationInfo::CalibrationInfo(data::Object::Key)
 {
@@ -56,21 +56,22 @@ CalibrationInfo::CalibrationInfo(data::Object::Key)
     core::com::HasSignals::m_signals(s_GET_RECORD_SIG, m_sigGetRecord);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CalibrationInfo::~CalibrationInfo()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void CalibrationInfo::shallowCopy( const data::Object::csptr& _source )
+void CalibrationInfo::shallowCopy(const data::Object::csptr& _source)
 {
     CalibrationInfo::csptr other = CalibrationInfo::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
     this->fieldShallowCopy(other);
 
@@ -78,21 +79,24 @@ void CalibrationInfo::shallowCopy( const data::Object::csptr& _source )
     m_pointListContainer = other->m_pointListContainer;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfo::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& cache)
 {
     CalibrationInfo::csptr other = CalibrationInfo::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->fieldDeepCopy( other );
+    this->fieldDeepCopy(other);
 
     this->resetRecords();
     SIGHT_ASSERT("Lists have not the same size", other->m_pointListContainer.size() == other->m_imageContainer.size());
 
     ImageContainerType::const_iterator imgIter = other->m_imageContainer.begin();
+
     for(const data::PointList::sptr& pl : other->m_pointListContainer)
     {
         data::Image::sptr otherImg    = data::Object::copy(*imgIter, cache);
@@ -103,19 +107,19 @@ void CalibrationInfo::cachedDeepCopy(const data::Object::csptr& _source, DeepCop
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void CalibrationInfo::addRecord( const data::Image::sptr& img, const data::PointList::sptr& pl )
+void CalibrationInfo::addRecord(const data::Image::sptr& img, const data::PointList::sptr& pl)
 {
     m_imageContainer.push_back(img);
     m_pointListContainer.push_back(pl);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfo::removeRecord(size_t idx)
 {
-    SIGHT_ASSERT("index out of bound ", idx < m_pointListContainer.size() );
+    SIGHT_ASSERT("index out of bound ", idx < m_pointListContainer.size());
 
     PointListContainerType::iterator plIt = m_pointListContainer.begin();
     ImageContainerType::iterator imgIt    = m_imageContainer.begin();
@@ -127,7 +131,7 @@ void CalibrationInfo::removeRecord(size_t idx)
     m_imageContainer.erase(imgIt);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CalibrationInfo::resetRecords()
 {
@@ -135,30 +139,31 @@ void CalibrationInfo::resetRecords()
     m_imageContainer.clear();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CalibrationInfo::ImageContainerType CalibrationInfo::getImageContainer() const
 {
     return m_imageContainer;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CalibrationInfo::PointListContainerType CalibrationInfo::getPointListContainer() const
 {
     return m_pointListContainer;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::PointList::sptr CalibrationInfo::getPointList( const data::Image::sptr& img) const
+data::PointList::sptr CalibrationInfo::getPointList(const data::Image::sptr& img) const
 {
     data::PointList::sptr pl;
 
-    SIGHT_ASSERT("Lists have not the same size", m_imageContainer.size() == m_pointListContainer.size() );
+    SIGHT_ASSERT("Lists have not the same size", m_imageContainer.size() == m_pointListContainer.size());
     size_t dist = 0;
     ImageContainerType::const_iterator it;
-    for(it = m_imageContainer.begin(); it != m_imageContainer.end() && *(it) != img; ++it, ++dist)
+
+    for(it = m_imageContainer.begin() ; it != m_imageContainer.end() && *(it) != img ; ++it, ++dist)
     {
     }
 
@@ -173,17 +178,18 @@ data::PointList::sptr CalibrationInfo::getPointList( const data::Image::sptr& im
     return pl;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::Image::sptr CalibrationInfo::getImage( const data::PointList::sptr& pl) const
+data::Image::sptr CalibrationInfo::getImage(const data::PointList::sptr& pl) const
 {
     data::Image::sptr img;
 
-    SIGHT_ASSERT("Lists have not the same size", m_imageContainer.size() == m_pointListContainer.size() );
+    SIGHT_ASSERT("Lists have not the same size", m_imageContainer.size() == m_pointListContainer.size());
 
     size_t dist = 0;
     PointListContainerType::const_iterator it;
-    for(it = m_pointListContainer.begin(); it != m_pointListContainer.end() && *(it) != pl; ++it, ++dist)
+
+    for(it = m_pointListContainer.begin() ; it != m_pointListContainer.end() && *(it) != pl ; ++it, ++dist)
     {
     }
 
@@ -198,11 +204,11 @@ data::Image::sptr CalibrationInfo::getImage( const data::PointList::sptr& pl) co
     return img;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Image::sptr CalibrationInfo::getImage(size_t idx) const
 {
-    SIGHT_ASSERT("index out of bound ", idx < m_imageContainer.size() );
+    SIGHT_ASSERT("index out of bound ", idx < m_imageContainer.size());
 
     ImageContainerType::const_iterator imgIt = m_imageContainer.begin();
 
@@ -211,6 +217,6 @@ data::Image::sptr CalibrationInfo::getImage(size_t idx) const
     return *(imgIt);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sight::data
+} // namespace sight::data

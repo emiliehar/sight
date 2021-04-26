@@ -27,11 +27,13 @@
  */
 namespace sight::io::http
 {
+
 /**
  * @brief       The namespace exceptions contains exceptions associated with network
  */
 namespace exceptions
 {
+
 }
 
 /**
@@ -39,6 +41,7 @@ namespace exceptions
  */
 namespace http
 {
+
 }
 
 }

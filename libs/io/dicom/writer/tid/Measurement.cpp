@@ -47,39 +47,46 @@
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
+
 namespace tid
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Measurement::Measurement(const SPTR(::gdcm::Writer)& writer,
-                         const SPTR(io::dicom::container::DicomInstance)& instance,
-                         const data::Image::csptr& image) :
-    io::dicom::writer::tid::TemplateID< data::Image >(writer, instance, image)
+Measurement::Measurement(
+    const SPTR(::gdcm::Writer)& writer,
+    const SPTR(io::dicom::container::DicomInstance)& instance,
+    const data::Image::csptr& image) :
+    io::dicom::writer::tid::TemplateID<data::Image>(writer, instance, image)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Measurement::~Measurement()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Measurement::createNodes(const SPTR(io::dicom::container::sr::DicomSRNode)& parent,
-                              bool useSCoord3D)
+void Measurement::createNodes(
+    const SPTR(io::dicom::container::sr::DicomSRNode)& parent,
+    bool useSCoord3D)
 {
-    data::Vector::sptr distanceVector =
-        m_object->getField< data::Vector >(data::fieldHelper::Image::m_imageDistancesId);
-    if (distanceVector)
+    data::Vector::sptr distanceVector
+        = m_object->getField<data::Vector>(data::fieldHelper::Image::m_imageDistancesId);
+
+    if(distanceVector)
     {
         unsigned int id = 1;
+
         for(data::Object::sptr object : distanceVector->getContainer())
         {
             data::PointList::sptr pointList = data::PointList::dynamicCast(object);
+
             if(pointList)
             {
                 this->createMeasurement(parent, pointList, id++, useSCoord3D);
@@ -88,12 +95,13 @@ void Measurement::createNodes(const SPTR(io::dicom::container::sr::DicomSRNode)&
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Measurement::createMeasurement(const SPTR(io::dicom::container::sr::DicomSRNode)& parent,
-                                    const data::PointList::csptr& pointList,
-                                    unsigned int id,
-                                    bool useSCoord3D)
+void Measurement::createMeasurement(
+    const SPTR(io::dicom::container::sr::DicomSRNode)& parent,
+    const data::PointList::csptr& pointList,
+    unsigned int id,
+    bool useSCoord3D)
 {
     const data::Point::sptr point1 = pointList->getPoints()[0];
     const data::Point::sptr point2 = pointList->getPoints()[1];
@@ -106,18 +114,21 @@ void Measurement::createMeasurement(const SPTR(io::dicom::container::sr::DicomSR
     coordinates[4] = point2->getCoord()[1];
     coordinates[5] = point2->getCoord()[2];
 
-    const double distance = sqrt( (coordinates[0] - coordinates[3]) * (coordinates[0] - coordinates[3]) +
-                                  (coordinates[1] - coordinates[4]) * (coordinates[1] - coordinates[4]) +
-                                  (coordinates[2] - coordinates[5]) * (coordinates[2] - coordinates[5]) );
+    const double distance = sqrt(
+        (coordinates[0] - coordinates[3]) * (coordinates[0] - coordinates[3])
+        + (coordinates[1] - coordinates[4]) * (coordinates[1] - coordinates[4])
+        + (coordinates[2] - coordinates[5]) * (coordinates[2] - coordinates[5]));
 
     // Retrieve Frame Numbers
     const std::size_t frameNumber1 = io::dicom::helper::DicomDataTools::convertPointToFrameNumber(m_object, point1);
 
     // Create Measurement Node
-    SPTR(io::dicom::container::sr::DicomSRNumNode) numNode =
-        std::make_shared< io::dicom::container::sr::DicomSRNumNode >(
-            io::dicom::container::DicomCodedAttribute("121206", "DCM", "Distance"), "CONTAINS", distance,
-            io::dicom::container::DicomCodedAttribute("mm", "UCUM", "millimeter", "1.4"));
+    SPTR(io::dicom::container::sr::DicomSRNumNode) numNode
+        = std::make_shared<io::dicom::container::sr::DicomSRNumNode>(
+              io::dicom::container::DicomCodedAttribute("121206", "DCM", "Distance"),
+              "CONTAINS",
+              distance,
+              io::dicom::container::DicomCodedAttribute("mm", "UCUM", "millimeter", "1.4"));
     parent->addSubNode(numNode);
 
     if(useSCoord3D)
@@ -132,16 +143,20 @@ void Measurement::createMeasurement(const SPTR(io::dicom::container::sr::DicomSR
             static_cast<float>(point2->getCoord()[2])
         };
         std::vector<float> scoordVector(scoord, scoord + 6);
-        SPTR(io::dicom::container::sr::DicomSRSCoord3DNode) scoordNode =
-            std::make_shared< io::dicom::container::sr::DicomSRSCoord3DNode >(
-                io::dicom::container::DicomCodedAttribute("121230", "DCM", "Path"),
-                "INFERRED FROM", "POLYLINE", scoordVector, m_instance->getSOPInstanceUIDContainer()[0]);
+        SPTR(io::dicom::container::sr::DicomSRSCoord3DNode) scoordNode
+            = std::make_shared<io::dicom::container::sr::DicomSRSCoord3DNode>(
+                  io::dicom::container::DicomCodedAttribute("121230", "DCM", "Path"),
+                  "INFERRED FROM",
+                  "POLYLINE",
+                  scoordVector,
+                  m_instance->getSOPInstanceUIDContainer()[0]);
         numNode->addSubNode(scoordNode);
     }
     else
     {
-        SIGHT_ASSERT("Unable to save a 3D distance using a SCOORD object.",
-                     frameNumber1 == io::dicom::helper::DicomDataTools::convertPointToFrameNumber(m_object, point2));
+        SIGHT_ASSERT(
+            "Unable to save a 3D distance using a SCOORD object.",
+            frameNumber1 == io::dicom::helper::DicomDataTools::convertPointToFrameNumber(m_object, point2));
 
         // Create SCoord Node
         const float scoord[] = {
@@ -151,24 +166,30 @@ void Measurement::createMeasurement(const SPTR(io::dicom::container::sr::DicomSR
             static_cast<float>(point2->getCoord()[1])
         };
         std::vector<float> scoordVector(scoord, scoord + 4);
-        SPTR(io::dicom::container::sr::DicomSRSCoordNode) scoordNode =
-            std::make_shared< io::dicom::container::sr::DicomSRSCoordNode >(
-                io::dicom::container::DicomCodedAttribute("121230", "DCM", "Path"),
-                "INFERRED FROM", "POLYLINE", scoordVector);
+        SPTR(io::dicom::container::sr::DicomSRSCoordNode) scoordNode
+            = std::make_shared<io::dicom::container::sr::DicomSRSCoordNode>(
+                  io::dicom::container::DicomCodedAttribute("121230", "DCM", "Path"),
+                  "INFERRED FROM",
+                  "POLYLINE",
+                  scoordVector);
         numNode->addSubNode(scoordNode);
 
         // Create Image Node
-        SPTR(io::dicom::container::sr::DicomSRImageNode) imageNode =
-            std::make_shared< io::dicom::container::sr::DicomSRImageNode >(
-                io::dicom::container::DicomCodedAttribute(), "SELECTED FROM", m_instance->getSOPClassUID(),
-                m_instance->getSOPInstanceUIDContainer()[frameNumber1-1], frameNumber1);
+        SPTR(io::dicom::container::sr::DicomSRImageNode) imageNode
+            = std::make_shared<io::dicom::container::sr::DicomSRImageNode>(
+                  io::dicom::container::DicomCodedAttribute(),
+                  "SELECTED FROM",
+                  m_instance->getSOPClassUID(),
+                  m_instance->getSOPInstanceUIDContainer()[frameNumber1 - 1],
+                  frameNumber1);
         scoordNode->addSubNode(imageNode);
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace tid
+
 } // namespace writer
+
 } // namespace sight::io::dicom

@@ -47,21 +47,20 @@ static const std::string s_X_CONFIG           = "x";
 static const std::string s_Y_CONFIG           = "y";
 static const std::string s_COLOR_CONFIG       = "color";
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 SText::SText() noexcept
 {
     newSlot(s_SET_TEXT_SLOT, &SText::setText, this);
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 SText::~SText() noexcept
 {
-
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::configuring()
 {
@@ -76,29 +75,31 @@ void SText::configuring()
     m_fontSize   = config.get<size_t>(s_FONT_SIZE_CONFIG, m_fontSize);
 
     m_horizontalAlignment = config.get<std::string>(s_H_ALIGN_CONFIG, "left");
-    SIGHT_ASSERT("'hAlign' must be 'left', 'center' or 'right'",
-                 m_horizontalAlignment == "left"
-                 || m_horizontalAlignment == "center"
-                 || m_horizontalAlignment == "right" );
+    SIGHT_ASSERT(
+        "'hAlign' must be 'left', 'center' or 'right'",
+        m_horizontalAlignment == "left"
+        || m_horizontalAlignment == "center"
+        || m_horizontalAlignment == "right");
 
     m_verticalAlignment = config.get<std::string>(s_V_ALIGN_CONFIG, "bottom");
-    SIGHT_ASSERT("'vAlign' must be 'top', 'center' or 'bottom'",
-                 m_verticalAlignment == "top"
-                 || m_verticalAlignment == "center"
-                 || m_verticalAlignment == "bottom");
+    SIGHT_ASSERT(
+        "'vAlign' must be 'top', 'center' or 'bottom'",
+        m_verticalAlignment == "top"
+        || m_verticalAlignment == "center"
+        || m_verticalAlignment == "bottom");
 
     m_position.x = config.get<float>(s_X_CONFIG, m_position.x);
     m_position.y = config.get<float>(s_Y_CONFIG, m_position.y);
 
     const auto hexaTextColor = config.get<std::string>(s_COLOR_CONFIG, "#FFFFFF");
-    std::array< std::uint8_t, 4 > textColor;
+    std::array<std::uint8_t, 4> textColor;
     data::tools::Color::hexaStringToRGBA(hexaTextColor, textColor.data());
 
     const auto divideBy255 = std::bind(std::divides<float>(), std::placeholders::_1, 255.f);
     std::transform(textColor.begin(), textColor.end(), m_textColor.ptr(), divideBy255);
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::starting()
 {
@@ -110,27 +111,31 @@ void SText::starting()
 
     const float dpi = this->getRenderService()->getInteractorManager()->getLogicalDotsPerInch();
 
-    m_text = sight::viz::scene3d::Text::New(this->getID() + "_text",
-                                            this->getSceneManager(),
-                                            textContainer,
-                                            m_fontSource, m_fontSize, dpi,
-                                            this->getLayer()->getDefaultCamera());
+    m_text = sight::viz::scene3d::Text::New(
+        this->getID() + "_text",
+        this->getSceneManager(),
+        textContainer,
+        m_fontSource,
+        m_fontSize,
+        dpi,
+        this->getLayer()->getDefaultCamera());
 
     m_text->setTextColor(m_textColor);
 
     this->updateText();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SText::getAutoConnections() const
 {
     KeyConnectionsMap connections;
     connections.push(s_OBJECT_INPUT, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::updating()
 {
@@ -138,7 +143,7 @@ void SText::updating()
     this->updateText();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::stopping()
 {
@@ -150,7 +155,7 @@ void SText::stopping()
     m_text = nullptr;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::setText(std::string str)
 {
@@ -163,32 +168,32 @@ void SText::setText(std::string str)
     this->requestRender();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::updatePositionFromAlignment()
 {
-    const std::map< std::string, ::Ogre::TextAreaOverlayElement::Alignment > stringToHorizAlignmentMap {
-        { "left",  ::Ogre::TextAreaOverlayElement::Left },
-        { "center", ::Ogre::TextAreaOverlayElement::Center },
-        { "right", ::Ogre::TextAreaOverlayElement::Right }
+    const std::map<std::string, ::Ogre::TextAreaOverlayElement::Alignment> stringToHorizAlignmentMap{
+        {"left", ::Ogre::TextAreaOverlayElement::Left},
+        {"center", ::Ogre::TextAreaOverlayElement::Center},
+        {"right", ::Ogre::TextAreaOverlayElement::Right}
     };
 
-    const std::map< std::string, float > horizAlignToX {
-        { "left", m_position.x },
-        { "center", 0.5f + m_position.x },
-        { "right", 1.f - m_position.x }
+    const std::map<std::string, float> horizAlignToX{
+        {"left", m_position.x},
+        {"center", 0.5f + m_position.x},
+        {"right", 1.f - m_position.x}
     };
 
-    const std::map< std::string, ::Ogre::GuiVerticalAlignment > stringToVertAlignmentMap {
-        { "bottom", ::Ogre::GVA_BOTTOM },
-        { "center", ::Ogre::GVA_CENTER },
-        { "top", ::Ogre::GVA_TOP }
+    const std::map<std::string, ::Ogre::GuiVerticalAlignment> stringToVertAlignmentMap{
+        {"bottom", ::Ogre::GVA_BOTTOM},
+        {"center", ::Ogre::GVA_CENTER},
+        {"top", ::Ogre::GVA_TOP}
     };
 
-    const std::map< std::string, float > vertAlignToY {
-        { "bottom", 1.f - m_position.y },
-        { "center", 0.5f + m_position.y },
-        { "top", m_position.y }
+    const std::map<std::string, float> vertAlignToY{
+        {"bottom", 1.f - m_position.y},
+        {"center", 0.5f + m_position.y},
+        {"top", m_position.y}
     };
 
     const auto hAlign = stringToHorizAlignmentMap.at(m_horizontalAlignment);
@@ -200,13 +205,13 @@ void SText::updatePositionFromAlignment()
     m_text->setPosition(x, y);
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SText::updateText()
 {
     std::string textString = m_textString;
 
-    const auto objW = this->getWeakInput< data::Object >(s_OBJECT_INPUT);
+    const auto objW = this->getWeakInput<data::Object>(s_OBJECT_INPUT);
     const auto obj  = objW.lock();
 
     if(obj)

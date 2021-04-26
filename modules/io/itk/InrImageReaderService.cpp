@@ -43,40 +43,41 @@
 namespace sight::module::io::itk
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InrImageReaderService::InrImageReaderService() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InrImageReaderService::~InrImageReaderService() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType InrImageReaderService::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
+
 //
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageReaderService::configuring()
 {
     sight::io::base::service::IReader::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageReaderService::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageReaderService::openLocationDialog()
 {
@@ -90,7 +91,8 @@ void InrImageReaderService::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::FILE_MUST_EXIST);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         this->setFile(result->getFile());
         defaultDirectory->setFolder(result->getFile().parent_path());
@@ -102,17 +104,18 @@ void InrImageReaderService::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InrImageReaderService::info(std::ostream& _sstream )
+void InrImageReaderService::info(std::ostream& _sstream)
 {
     _sstream << "InrImageReaderService::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-bool InrImageReaderService::createImage( const std::filesystem::path& inrFileDir,
-                                         const data::Image::sptr& _pImg )
+bool InrImageReaderService::createImage(
+    const std::filesystem::path& inrFileDir,
+    const data::Image::sptr& _pImg)
 {
     auto myLoader = sight::io::itk::ImageReader::New();
     bool ok       = true;
@@ -123,39 +126,41 @@ bool InrImageReaderService::createImage( const std::filesystem::path& inrFileDir
     try
     {
         sight::ui::base::dialog::ProgressDialog progressMeterGUI("Loading Image ");
-        myLoader->addHandler( progressMeterGUI );
+        myLoader->addHandler(progressMeterGUI);
         myLoader->read();
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         std::stringstream ss;
         ss << "Warning during loading : " << e.what();
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     ss.str(),
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
         ok = false;
     }
-    catch( ... )
+    catch(...)
     {
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     "Warning during loading",
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            "Warning during loading",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
         ok = false;
     }
+
     return ok;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageReaderService::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
-        data::Image::sptr image = this->getInOut< data::Image >(sight::io::base::service::s_DATA_KEY);
+        data::Image::sptr image = this->getInOut<data::Image>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The inout key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", image);
 
-        if ( this->createImage( this->getFile(), image) )
+        if(this->createImage(this->getFile(), image))
         {
             sight::ui::base::Cursor cursor;
             cursor.setCursor(ui::base::ICursor::BUSY);
@@ -173,20 +178,20 @@ void InrImageReaderService::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageReaderService::notificationOfDBUpdate()
 {
-    data::Image::sptr image = this->getInOut< data::Image >(sight::io::base::service::s_DATA_KEY);
+    data::Image::sptr image = this->getInOut<data::Image>(sight::io::base::service::s_DATA_KEY);
     SIGHT_ASSERT("The inout key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", image);
 
-    auto sig = image->signal< data::Object::ModifiedSignalType >(data::Object::s_MODIFIED_SIG);
+    auto sig = image->signal<data::Object::ModifiedSignalType>(data::Object::s_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::itk

@@ -26,17 +26,18 @@
 
 namespace sight::core::jobs
 {
+
 namespace ut
 {
 
 class JobTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( JobTest );
-CPPUNIT_TEST( APIAndStateTest );
-CPPUNIT_TEST( GenericCallbackTest );
-CPPUNIT_TEST( ObserverTest );
-CPPUNIT_TEST( LogTest );
-CPPUNIT_TEST( AggregationTest );
+CPPUNIT_TEST_SUITE(JobTest);
+CPPUNIT_TEST(APIAndStateTest);
+CPPUNIT_TEST(GenericCallbackTest);
+CPPUNIT_TEST(ObserverTest);
+CPPUNIT_TEST(LogTest);
+CPPUNIT_TEST(AggregationTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -49,8 +50,8 @@ public:
     void LogTest();
     void AggregationTest();
     void ObserverTest();
-
 };
 
-} //namespace ut
-} //namespace sight::core::jobs
+} // namespace ut
+
+} // namespace sight::core::jobs

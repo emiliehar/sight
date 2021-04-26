@@ -30,6 +30,7 @@
 
 namespace sight::ui::dicom
 {
+
 namespace splitter
 {
 
@@ -40,9 +41,10 @@ class UI_DICOM_CLASS_API TagValueInstanceRemoveConfigurableSplitter :
     public filter::dicom::splitter::TagValueInstanceRemoveSplitter
 {
 public:
-    SIGHT_DECLARE_CLASS(TagValueInstanceRemoveConfigurableSplitter,
-                        filter::dicom::splitter::TagValueInstanceRemoveSplitter,
-                        filter::dicom::factory::New< TagValueInstanceRemoveConfigurableSplitter >);
+    SIGHT_DECLARE_CLASS(
+        TagValueInstanceRemoveConfigurableSplitter,
+        filter::dicom::splitter::TagValueInstanceRemoveSplitter,
+        filter::dicom::factory::New<TagValueInstanceRemoveConfigurableSplitter>);
 
     /// Constructor
     UI_DICOM_API TagValueInstanceRemoveConfigurableSplitter(filter::dicom::IFilter::Key key);
@@ -71,8 +73,8 @@ protected:
 
     /// Filter description
     UI_DICOM_API static const std::string s_FILTER_DESCRIPTION;
-
 };
 
 } // namespace splitter
+
 } // namespace sight::ui::dicom

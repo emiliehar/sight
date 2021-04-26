@@ -31,21 +31,21 @@ const core::com::Signals::SignalKeyType TimeLine::s_OBJECT_PUSHED_SIG  = "object
 const core::com::Signals::SignalKeyType TimeLine::s_OBJECT_REMOVED_SIG = "objectRemoved";
 const core::com::Signals::SignalKeyType TimeLine::s_CLEARED_SIG        = "objectCleared";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-TimeLine::TimeLine ( data::Object::Key )
+TimeLine::TimeLine(data::Object::Key)
 {
     newSignal<ObjectPushedSignalType>(s_OBJECT_PUSHED_SIG);
     newSignal<ObjectRemovedSignalType>(s_OBJECT_REMOVED_SIG);
     newSignal<ObjectClearedSignalType>(s_CLEARED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-TimeLine::~TimeLine ()
+TimeLine::~TimeLine()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

@@ -31,69 +31,75 @@
 namespace sight::core::runtime
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::ostream& operator<<(std::ostream& _sstream, ConfigurationElement& _configurationElement)
 {
-    _sstream << "Configuration element " << _configurationElement.getName() << " value = " <<
-        _configurationElement.getValue() << std::endl;
-    for(ConfigurationElement::AttributeContainer::iterator iter = _configurationElement.m_attributes.begin();
-        iter != _configurationElement.m_attributes.end(); ++iter )
+    _sstream << "Configuration element " << _configurationElement.getName() << " value = "
+             << _configurationElement.getValue() << std::endl;
+
+    for(ConfigurationElement::AttributeContainer::iterator iter = _configurationElement.m_attributes.begin() ;
+        iter != _configurationElement.m_attributes.end() ; ++iter)
     {
         _sstream << "Id = " << iter->first << " with value " << iter->second << std::endl;
     }
-    _sstream << "Subelement : " << std::endl;
-    for(ConfigurationElementContainer::Container::iterator iter = _configurationElement.begin();
-        iter != _configurationElement.end(); ++iter )
-    {
 
+    _sstream << "Subelement : " << std::endl;
+
+    for(ConfigurationElementContainer::Container::iterator iter = _configurationElement.begin() ;
+        iter != _configurationElement.end() ; ++iter)
+    {
         _sstream << std::endl << *(*iter) << std::endl;
     }
 
     return _sstream;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-ConfigurationElement::ConfigurationElement( const std::shared_ptr< Module > module, const std::string& name ) :
+ConfigurationElement::ConfigurationElement(const std::shared_ptr<Module> module, const std::string& name) :
     m_name(name),
     m_module(module)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::shared_ptr<Module> ConfigurationElement::getModule() const noexcept
 {
     return m_module.lock();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string ConfigurationElement::getAttributeValue(const std::string& name) const noexcept
 {
     AttributeContainer::const_iterator foundPos = m_attributes.find(name);
+
     return foundPos == m_attributes.end() ? std::string() : foundPos->second;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string ConfigurationElement::getExistingAttributeValue(const std::string& name) const
 {
     AttributeContainer::const_iterator foundPos = m_attributes.find(name);
+
     if(foundPos == m_attributes.end())
     {
         SIGHT_THROW_EXCEPTION(NoSuchAttribute(name));
     }
+
     return foundPos->second;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const ConfigurationElement::AttributePair ConfigurationElement::getSafeAttributeValue(const std::string& name) const
 noexcept
 {
     AttributeContainer::const_iterator foundPos = m_attributes.find(name);
+
     if(foundPos == m_attributes.end())
     {
         return AttributePair(false, std::string());
@@ -104,84 +110,86 @@ noexcept
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string ConfigurationElement::getName() const noexcept
 {
     return m_name;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string ConfigurationElement::getValue() const noexcept
 {
     return m_value;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool ConfigurationElement::hasAttribute(const std::string& name) const noexcept
 {
     AttributeContainer::const_iterator foundPos = m_attributes.find(name);
+
     return foundPos != m_attributes.end();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::map<std::string, std::string> ConfigurationElement::getAttributes() const noexcept
 {
     return m_attributes;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ConfigurationElement::setAttributeValue(const std::string& name, const std::string& value) noexcept
 {
     m_attributes[name] = value;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ConfigurationElement::setValue(const std::string& value) noexcept
 {
     m_value = value;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ConfigurationElement::operator=(const ConfigurationElement&) noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::vector < ConfigurationElement::sptr > ConfigurationElement::find(
+std::vector<ConfigurationElement::sptr> ConfigurationElement::find(
     std::string name,
     std::string attribute,
     std::string attributeValue,
-    int depth
-    )
+    int depth)
 {
-    typedef std::vector < ConfigurationElement::sptr > ConfVector;
+    typedef std::vector<ConfigurationElement::sptr> ConfVector;
     ConfVector result;
 
-    bool nameOk           = (name.empty() || this->getName() == name);
-    bool attributeOk      = (attribute.empty() || this->hasAttribute(attribute));
-    bool attributeValueOk =
-        (attributeValue.empty() ||
-         (this->hasAttribute(attribute) && this->getAttributeValue(attribute) == attributeValue));
-    if (nameOk && attributeOk && attributeValueOk)
+    bool nameOk      = (name.empty() || this->getName() == name);
+    bool attributeOk = (attribute.empty() || this->hasAttribute(attribute));
+    bool attributeValueOk
+        = (attributeValue.empty()
+           || (this->hasAttribute(attribute) && this->getAttributeValue(attribute) == attributeValue));
+
+    if(nameOk && attributeOk && attributeValueOk)
     {
         result.push_back(this->shared_from_this());
     }
 
-    if (depth != 0)
+    if(depth != 0)
     {
         ConfigurationElement::Iterator iter;
-        for (iter = this->begin(); iter != this->end(); ++iter)
+
+        for(iter = this->begin() ; iter != this->end() ; ++iter)
         {
             ConfVector deepConf;
-            deepConf = (*iter)->find(name, attribute, attributeValue, depth-1);
+            deepConf = (*iter)->find(name, attribute, attributeValue, depth - 1);
             result.insert(result.end(), deepConf.begin(), deepConf.end());
         }
     }
@@ -189,19 +197,19 @@ std::vector < ConfigurationElement::sptr > ConfigurationElement::find(
     return result;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ConfigurationElement::~ConfigurationElement()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ConfigurationElement::NoSuchAttribute::NoSuchAttribute(const std::string& attr) :
     core::Exception(std::string("No such attribute: ") + attr)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::core::runtime

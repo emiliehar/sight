@@ -50,7 +50,7 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -98,7 +98,7 @@ public:
      */
     bool isBoolean() const
     {
-        return (type() == BOOLEAN);
+        return type() == BOOLEAN;
     }
 
     /**
@@ -107,7 +107,7 @@ public:
      */
     bool isNumeric() const
     {
-        return (type() == NUMERIC);
+        return type() == NUMERIC;
     }
 
     /**
@@ -116,7 +116,7 @@ public:
      */
     bool isString() const
     {
-        return (type() == STRING);
+        return type() == STRING;
     }
 
     /**
@@ -125,7 +125,7 @@ public:
      */
     bool isSequence() const
     {
-        return (type() == SEQUENCE);
+        return type() == SEQUENCE;
     }
 
     /**
@@ -134,7 +134,7 @@ public:
      */
     bool isMapping() const
     {
-        return (type() == MAP);
+        return type() == MAP;
     }
 
     /**
@@ -143,7 +143,7 @@ public:
      */
     bool isBlob() const
     {
-        return (type() == BLOB);
+        return type() == BLOB;
     }
 
     /**
@@ -152,7 +152,7 @@ public:
      */
     bool isObject() const
     {
-        return (type() == OBJECT);
+        return type() == OBJECT;
     }
 
     /**
@@ -173,7 +173,6 @@ protected:
     Base()
     {
     }
-
 };
 
-}
+} // namespace sight::atoms

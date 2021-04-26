@@ -30,8 +30,8 @@
 #include <OGRE/OgreRenderWindow.h>
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreViewport.h>
-//#include <OGRE/OgreRenderTargetListener.h>
-//#include <OGRE/OgreRenderObjectListener.h>
+// #include <OGRE/OgreRenderTargetListener.h>
+// #include <OGRE/OgreRenderObjectListener.h>
 
 #include <memory>
 
@@ -44,18 +44,16 @@ namespace compositor
 /**
  * Manages principal compositor for a layer's 3D scene
  */
-class VIZ_SCENE3D_CLASS_API Core   //TODO : Manage occlusion query
-    //    The current commented ligns in this class are standing for occlusion query
+class VIZ_SCENE3D_CLASS_API Core // TODO : Manage occlusion query
+    // The current commented ligns in this class are standing for occlusion query
     // purposes
-    //    An example of working occlusion query is used in the experimental branch
+    // An example of working occlusion query is used in the experimental branch
     // flavien_sg rev 76
-    //public ::Ogre::FrameListener,
-    //public ::Ogre::RenderTargetListener,
-    //public ::Ogre::RenderObjectListener
-
+    // public ::Ogre::FrameListener,
+    // public ::Ogre::RenderTargetListener,
+    // public ::Ogre::RenderObjectListener
 {
 public:
-
     enum class StereoModeType : std::uint8_t
     {
         NONE,
@@ -71,7 +69,7 @@ public:
     /// surfaces and volumes for some effects.
     static constexpr std::uint8_t s_VOLUME_RQ_GROUP_ID = s_SURFACE_RQ_GROUP_ID + 2;
 
-    typedef std::shared_ptr < Core > sptr;
+    typedef std::shared_ptr<Core> sptr;
 
     /// Default Compositor, one per "default" layer
     VIZ_SCENE3D_API Core(::Ogre::Viewport* viewport);
@@ -103,10 +101,9 @@ public:
     VIZ_SCENE3D_API void update();
 
 private:
-
-    //virtual void notifyRenderSingleObject(::Ogre::Renderable* rend, const ::Ogre::Pass* pass,
-    //                                      const ::Ogre::AutoParamDataSource* source,
-    //                                      const ::Ogre::LightList* pLightList, bool suppressRenderStateChanges);
+    // virtual void notifyRenderSingleObject(::Ogre::Renderable* rend, const ::Ogre::Pass* pass,
+    // const ::Ogre::AutoParamDataSource* source,
+    // const ::Ogre::LightList* pLightList, bool suppressRenderStateChanges);
 
     /// Set number of ping pong peels for Depth Peeling compositor
     VIZ_SCENE3D_API void setTransparencyDepthOfDepthPeeling(int depth);
@@ -124,11 +121,11 @@ private:
     /// Setup OIT current compositor
     VIZ_SCENE3D_API void setupTransparency();
 
-    //VIZ_SCENE3D_API void setupQueries();
+    // VIZ_SCENE3D_API void setupQueries();
 
-    //VIZ_SCENE3D_API virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    // VIZ_SCENE3D_API virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
-    //int m_transparencyTechniqueMaxDepth;
+    // int m_transparencyTechniqueMaxDepth;
 
     /// OIT used
     transparencyTechnique m_transparencyTechnique;
@@ -142,24 +139,24 @@ private:
     /// Cel shading activated
     ::Ogre::String m_celShadingName;
 
-    StereoModeType m_stereoMode { StereoModeType::NONE };
+    StereoModeType m_stereoMode{StereoModeType::NONE};
 
-    //bool m_useOcclusionQuery;
+    // bool m_useOcclusionQuery;
 
-    //bool m_doOcclusionQuery;
+    // bool m_doOcclusionQuery;
 
-    //::Ogre::HardwareOcclusionQuery* m_OITQuery;
+    //: :Ogre::HardwareOcclusionQuery* m_OITQuery;
 
-    //::Ogre::HardwareOcclusionQuery* m_activeQuery;
+    //: :Ogre::HardwareOcclusionQuery* m_activeQuery;
 
     /// Number of peels computed for Depth Peeling or 2x Dual Depth Peeling
     int m_numPass;
 
-    //int m_currNumPass;
+    // int m_currNumPass;
 
-    //bool m_isPing;
+    // bool m_isPing;
 
-    //bool m_isPong;
+    // bool m_isPong;
 
     /// Viewport linked to compositor
     ::Ogre::Viewport* m_viewport;

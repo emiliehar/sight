@@ -33,18 +33,19 @@
 #include <dcmtk/dcmimgle/dcmimage.h>
 #include <dcmtk/dcmnet/diutil.h>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::SOPClassUIDSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::SOPClassUIDSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string SOPClassUIDSplitter::s_FILTER_NAME        = "SOPClassUID splitter";
-const std::string SOPClassUIDSplitter::s_FILTER_DESCRIPTION =
-    "Split instances according to <i>SOPClassUID</i> tag.";
+const std::string SOPClassUIDSplitter::s_FILTER_NAME = "SOPClassUID splitter";
+const std::string SOPClassUIDSplitter::s_FILTER_DESCRIPTION
+    = "Split instances according to <i>SOPClassUID</i> tag.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SOPClassUIDSplitter::SOPClassUIDSplitter(filter::dicom::IFilter::Key key) :
     filter::dicom::splitter::TagValueSplitter(key)
@@ -52,34 +53,34 @@ SOPClassUIDSplitter::SOPClassUIDSplitter(filter::dicom::IFilter::Key key) :
     this->setTag(DCM_SOPClassUID);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SOPClassUIDSplitter::~SOPClassUIDSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string SOPClassUIDSplitter::getName() const
 {
     return SOPClassUIDSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string SOPClassUIDSplitter::getDescription() const
 {
     return SOPClassUIDSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool SOPClassUIDSplitter::isConfigurationRequired() const
 {
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SOPClassUIDSplitter::DicomSeriesContainerType SOPClassUIDSplitter::apply(
     const data::DicomSeries::sptr& series,
@@ -87,7 +88,7 @@ SOPClassUIDSplitter::DicomSeriesContainerType SOPClassUIDSplitter::apply(
 {
     const DicomSeriesContainerType result = filter::dicom::splitter::TagValueSplitter::apply(series, logger);
 
-    for(const data::DicomSeries::sptr& dicomSeries :  result)
+    for(const data::DicomSeries::sptr& dicomSeries : result)
     {
         DcmFileFormat fileFormat;
         OFCondition status;
@@ -100,17 +101,19 @@ SOPClassUIDSplitter::DicomSeriesContainerType SOPClassUIDSplitter::apply(
         const size_t buffSize                            = bufferObj->getSize();
         const std::string dicomPath                      = bufferObj->getStreamInfo().fsFile.string();
         core::memory::BufferObject::Lock lock(bufferObj);
-        char* buffer = static_cast< char* >( lock.getBuffer() );
+        char* buffer = static_cast<char*>(lock.getBuffer());
 
         DcmInputBufferStream is;
         is.setBuffer(buffer, offile_off_t(buffSize));
         is.setEos();
 
         fileFormat.transferInit();
-        if (!fileFormat.read(is).good())
+
+        if(!fileFormat.read(is).good())
         {
-            SIGHT_THROW("Unable to read Dicom file '"<< dicomPath <<"' "<<
-                        "(slice: '" << firstItem->first << "')");
+            SIGHT_THROW(
+                "Unable to read Dicom file '" << dicomPath << "' "
+                                              << "(slice: '" << firstItem->first << "')");
         }
 
         fileFormat.loadAllDataIntoMemory();
@@ -121,7 +124,7 @@ SOPClassUIDSplitter::DicomSeriesContainerType SOPClassUIDSplitter::apply(
         // Read SOPClassUID
         dataset = fileFormat.getDataset();
         status  = dataset->findAndGetOFStringArray(DCM_SOPClassUID, data);
-        SIGHT_THROW_IF("Unable to read tags: \""+dicomPath+"\"", status.bad());
+        SIGHT_THROW_IF("Unable to read tags: \"" + dicomPath + "\"", status.bad());
 
         data::DicomSeries::SOPClassUIDContainerType sopClassUIDContainer;
         sopClassUIDContainer.insert(data.c_str());
@@ -130,12 +133,14 @@ SOPClassUIDSplitter::DicomSeriesContainerType SOPClassUIDSplitter::apply(
 
     if(result.size() > 1)
     {
-        logger->warning("The same series instance UID has been used for several instances "
-                        "with different SOP class UID. The series has been split.");
+        logger->warning(
+            "The same series instance UID has been used for several instances "
+            "with different SOP class UID. The series has been split.");
     }
 
     return result;
 }
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

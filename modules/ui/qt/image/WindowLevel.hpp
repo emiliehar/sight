@@ -45,10 +45,14 @@ class QSignalMapper;
 
 namespace sight::ui::qt
 {
+
 namespace widget
 {
+
 class QRangeSlider;
+
 }
+
 }
 
 namespace sight::module::ui::qt::image
@@ -83,11 +87,9 @@ namespace sight::module::ui::qt::image
 class MODULE_UI_QT_CLASS_API WindowLevel final : public QObject,
                                                  public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(WindowLevel, sight::ui::base::IEditor)
 
     /// Initialize signals and slots.
@@ -97,7 +99,6 @@ public:
     MODULE_UI_QT_API virtual ~WindowLevel() noexcept;
 
 protected:
-
     /// Configures the service.
     void configuring() final;
 
@@ -132,7 +133,6 @@ protected:
     MODULE_UI_QT_API virtual void updateTF();
 
 protected Q_SLOTS:
-
     void onTextEditingFinished();
 
     void onToggleTF(bool squareTF);
@@ -144,7 +144,6 @@ protected Q_SLOTS:
     void onDynamicRangeSelectionChanged(QAction* action);
 
 protected:
-
     typedef data::TransferFunction::TFValuePairType WindowLevelMinMaxType;
 
     double toWindowLevel(double _val);
@@ -166,16 +165,15 @@ protected:
     void setWidgetDynamicRange(double min, double max);
 
 private:
+    QPointer<QLineEdit> m_valueTextMin;
+    QPointer<QLineEdit> m_valueTextMax;
+    QPointer<QToolButton> m_toggleTFButton;
+    QPointer<QToolButton> m_toggleAutoButton;
+    QPointer<QToolButton> m_dynamicRangeSelection;
+    QPointer<QMenu> m_dynamicRangeMenu;
+    QPointer<QSignalMapper> m_dynamicRangeSignalMapper;
 
-    QPointer< QLineEdit >   m_valueTextMin;
-    QPointer< QLineEdit >   m_valueTextMax;
-    QPointer< QToolButton > m_toggleTFButton;
-    QPointer< QToolButton > m_toggleAutoButton;
-    QPointer< QToolButton >   m_dynamicRangeSelection;
-    QPointer< QMenu >         m_dynamicRangeMenu;
-    QPointer< QSignalMapper > m_dynamicRangeSignalMapper;
-
-    QPointer< sight::ui::qt::widget::QRangeSlider > m_rangeSlider;
+    QPointer<sight::ui::qt::widget::QRangeSlider> m_rangeSlider;
 
     double m_widgetDynamicRangeMin;
     double m_widgetDynamicRangeWidth;
@@ -186,7 +184,6 @@ private:
     data::TransferFunction::sptr m_previousTF;
 
     data::helper::TransferFunction m_helperTF;
-
 };
 
 } // uiImageQt

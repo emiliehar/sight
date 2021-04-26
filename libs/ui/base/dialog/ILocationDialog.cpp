@@ -34,6 +34,7 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
 
@@ -43,40 +44,40 @@ const std::string ILocationDialog::SOFTWARE_UI           = "SOFTWARE_UI";
 const std::string ILocationDialog::DLG_DEFAULT_FILE      = "DLG_DEFAULT_FILE";
 const std::string ILocationDialog::DLG_DEFAULT_DIRECTORY = "DLG_DEFAULT_DIRECTORY";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ILocationDialog::ILocationDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ILocationDialog::~ILocationDialog()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ILocationDialog::setTitle(const std::string& title)
 {
     m_title = title;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string& ILocationDialog::getTitle()
 {
     return m_title;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ILocationDialog::setDefaultLocation(core::location::ILocation::sptr loc)
 {
     m_defaultLocaction = loc;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const core::location::ILocation::sptr ILocationDialog::getDefaultLocation()
 {
@@ -87,18 +88,18 @@ const core::location::ILocation::sptr ILocationDialog::getDefaultLocation()
     {
         // This code is temporary
         // @TODO: find a better way to serialize in preferences
-        if( prefUI->find( ILocationDialog::DLG_DEFAULT_FILE ) != prefUI->end() )
+        if(prefUI->find(ILocationDialog::DLG_DEFAULT_FILE) != prefUI->end())
         {
-            const auto stringLocation =
-                data::String::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_FILE ] );
+            const auto stringLocation
+                = data::String::dynamicCast((*prefUI)[ILocationDialog::DLG_DEFAULT_FILE]);
             core::location::SingleFile::sptr singleFile = core::location::SingleFile::New();
             singleFile->setFile(stringLocation->getValue());
             location = singleFile;
         }
-        else if( prefUI->find( ILocationDialog::DLG_DEFAULT_DIRECTORY ) != prefUI->end() )
+        else if(prefUI->find(ILocationDialog::DLG_DEFAULT_DIRECTORY) != prefUI->end())
         {
-            const auto stringLocation =
-                data::String::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_DIRECTORY ] );
+            const auto stringLocation
+                = data::String::dynamicCast((*prefUI)[ILocationDialog::DLG_DEFAULT_DIRECTORY]);
             core::location::SingleFolder::sptr singleDirectory = core::location::SingleFolder::New();
             singleDirectory->setFolder(stringLocation->getValue());
             location = singleDirectory;
@@ -113,11 +114,12 @@ const core::location::ILocation::sptr ILocationDialog::getDefaultLocation()
     return location;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void ILocationDialog::saveDefaultLocation(core::location::ILocation::sptr loc)
 {
     data::Composite::sptr prefUI = this->getPreferenceUI();
+
     if(prefUI && loc)
     {
         // This code is temporary
@@ -127,17 +129,17 @@ void ILocationDialog::saveDefaultLocation(core::location::ILocation::sptr loc)
         if(auto singleFile = core::location::SingleFile::dynamicCast(loc))
         {
             stringLocation->setValue(singleFile->getFile().string());
-            (*prefUI)[ ILocationDialog::DLG_DEFAULT_FILE ] = stringLocation;
+            (*prefUI)[ILocationDialog::DLG_DEFAULT_FILE] = stringLocation;
         }
         else if(auto singleDirectory = core::location::SingleFolder::dynamicCast(loc))
         {
             stringLocation->setValue(singleDirectory->getFolder().string());
-            (*prefUI)[ ILocationDialog::DLG_DEFAULT_DIRECTORY ] = stringLocation;
+            (*prefUI)[ILocationDialog::DLG_DEFAULT_DIRECTORY] = stringLocation;
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Composite::sptr ILocationDialog::getPreferenceUI()
 {
@@ -145,34 +147,39 @@ data::Composite::sptr ILocationDialog::getPreferenceUI()
 
     // Get preferences
     data::Composite::sptr prefs = ui::base::preferences::getPreferences();
+
     if(prefs)
     {
         data::Composite::sptr framesUI;
+
         // Retrieves software UI pref
-        if ( prefs->find( ILocationDialog::SOFTWARE_UI ) != prefs->end() )
+        if(prefs->find(ILocationDialog::SOFTWARE_UI) != prefs->end())
         {
-            framesUI = data::Composite::dynamicCast( (*prefs)[ ILocationDialog::SOFTWARE_UI ]);
+            framesUI = data::Composite::dynamicCast((*prefs)[ILocationDialog::SOFTWARE_UI]);
         }
         else
         {
-            framesUI                                 = data::Composite::New();
-            (*prefs)[ ILocationDialog::SOFTWARE_UI ] = framesUI;
+            framesUI                               = data::Composite::New();
+            (*prefs)[ILocationDialog::SOFTWARE_UI] = framesUI;
         }
+
         // Retrieves associated dialog UI pref
-        if ( framesUI->find( this->getTitle() ) != framesUI->end() )
+        if(framesUI->find(this->getTitle()) != framesUI->end())
         {
-            prefUI = data::Composite::dynamicCast( (*framesUI)[ this->getTitle() ] );
+            prefUI = data::Composite::dynamicCast((*framesUI)[this->getTitle()]);
         }
         else
         {
-            prefUI                          = data::Composite::New();
-            (*framesUI)[ this->getTitle() ] = prefUI;
+            prefUI                        = data::Composite::New();
+            (*framesUI)[this->getTitle()] = prefUI;
         }
     }
+
     return prefUI;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

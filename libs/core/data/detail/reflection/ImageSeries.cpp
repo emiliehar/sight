@@ -29,9 +29,9 @@
 
 #include <data/Image.hpp>
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(ImageSeries))
+SIGHT_IMPLEMENT_DATA_REFLECTION((sight) (data) (ImageSeries))
 {
     builder
     .tag("object_version", "3")
@@ -48,8 +48,9 @@ SIGHT_IMPLEMENT_DATA_REFLECTION((sight)(data)(ImageSeries))
     .property("contrast_bolus_flow_rate", &::sight::data::ImageSeries::m_contrastBolusFlowRate)
     .property("contrast_bolus_flow_duration", &::sight::data::ImageSeries::m_contrastBolusFlowDuration)
     .property("contrast_bolus_ingredient", &::sight::data::ImageSeries::m_contrastBolusIngredient)
-    .property("contrast_bolus_ingredient_concentration",
-              &::sight::data::ImageSeries::m_contrastBolusIngredientConcentration)
+    .property(
+        "contrast_bolus_ingredient_concentration",
+        &::sight::data::ImageSeries::m_contrastBolusIngredientConcentration)
     .property("acquisition_date", &::sight::data::ImageSeries::m_acquisitionDate)
     .property("acquisition_time", &::sight::data::ImageSeries::m_acquisitionTime)
     ;

@@ -34,6 +34,7 @@
 
 namespace sight::ui::base
 {
+
 namespace registry
 {
 
@@ -42,22 +43,20 @@ namespace registry
  */
 class UI_BASE_CLASS_API ToolBar : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(ToolBar, ui::base::GuiBaseObject)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::string& sid)
     {
         return std::make_shared<ToolBar>(sid);
     }
 
-    typedef std::vector< ui::base::IMenuItemCallback::sptr > CallbacksType;
+    typedef std::vector<ui::base::IMenuItemCallback::sptr> CallbacksType;
 
     /// Constructor.
-    UI_BASE_API ToolBar( const std::string& sid);
+    UI_BASE_API ToolBar(const std::string& sid);
 
     /// Destructor. Do nothing
     UI_BASE_API virtual ~ToolBar();
@@ -70,8 +69,9 @@ public:
      * @param actionSid sid of the action service
      * @param menuItems  vector containing the fwMenuItem manages by this registry.
      */
-    UI_BASE_API virtual ui::base::container::fwMenuItem::sptr getFwMenuItem(std::string actionSid,
-                                                                            std::vector< ui::base::container::fwMenuItem::sptr > menuItems);
+    UI_BASE_API virtual ui::base::container::fwMenuItem::sptr getFwMenuItem(
+        std::string actionSid,
+        std::vector<ui::base::container::fwMenuItem::sptr> menuItems);
 
     /**
      * @brief Initialize registry managers.
@@ -119,7 +119,7 @@ public:
      *   with \<parent wid="editorWindow" /\>.
      *   - \b wid  (mandatory): the window identifier.
      */
-    UI_BASE_API virtual void initialize( core::runtime::ConfigurationElement::sptr configuration);
+    UI_BASE_API virtual void initialize(core::runtime::ConfigurationElement::sptr configuration);
 
     /**
      * @brief manages action service associated with menuItem of toolbar.
@@ -137,7 +137,7 @@ public:
      * @pre ToolBar must be initialized before.
      * @pre sub toolBar items must be instanced before.
      */
-    UI_BASE_API virtual void manage(std::vector< ui::base::container::fwMenuItem::sptr > toolBarItems );
+    UI_BASE_API virtual void manage(std::vector<ui::base::container::fwMenuItem::sptr> toolBarItems);
 
     /**
      * @brief manages menu service associated with item of toolbar.
@@ -147,7 +147,7 @@ public:
      * @pre ToolBar must be initialized before.
      * @pre sub toolBar items must be instanced before.
      */
-    UI_BASE_API virtual void manage(std::vector< ui::base::container::fwMenu::sptr > toolBarItems );
+    UI_BASE_API virtual void manage(std::vector<ui::base::container::fwMenu::sptr> toolBarItems);
 
     /**
      * @brief manages editor service associated with item of toolbar.
@@ -157,7 +157,7 @@ public:
      * @pre ToolBar must be initialized before.
      * @pre sub toolBar items must be instanced before.
      */
-    UI_BASE_API virtual void manage(std::vector< ui::base::container::fwContainer::sptr > toolBarItems );
+    UI_BASE_API virtual void manage(std::vector<ui::base::container::fwContainer::sptr> toolBarItems);
 
     /**
      * @brief Stopping toolBar items manager.
@@ -179,10 +179,9 @@ public:
     }
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
-    typedef std::map< std::string, std::pair<unsigned int, bool> > SIDToolBarMapType;
-    typedef std::map< std::string, unsigned int > WIDToolBarMapType;
+    typedef std::map<std::string, std::pair<unsigned int, bool> > SIDToolBarMapType;
+    typedef std::map<std::string, unsigned int> WIDToolBarMapType;
 
     /**
      * @brief All toolBar services ID managed and associated with pair containing:
@@ -213,4 +212,5 @@ protected:
 };
 
 } // namespace registry
+
 } // namespace sight::ui::base

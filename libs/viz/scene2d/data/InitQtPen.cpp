@@ -26,15 +26,17 @@
 
 namespace sight::viz::scene2d
 {
+
 namespace data
 {
 
-//---------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
 
 void InitQtPen::setPenColor(QPen& _pen, std::string _color)
 {
     QColor color(QString::fromStdString(_color));
-    if (color.isValid())
+
+    if(color.isValid())
     {
         _pen.setColor(color);
     }
@@ -43,19 +45,21 @@ void InitQtPen::setPenColor(QPen& _pen, std::string _color)
         // Default value: black (if the color id cannot be parsed)
         _pen.setColor(Qt::GlobalColor(Qt::black));
     }
+
     _pen.setCosmetic(true);
 }
 
-//---------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
 
 void InitQtPen::setPenColor(QPen& _pen, std::string _color, float _opacity)
 {
-    InitQtPen::setPenColor( _pen, _color );
+    InitQtPen::setPenColor(_pen, _color);
 
     QColor color = _pen.color();
-    color.setAlphaF( _opacity );
-    _pen.setColor( color );
+    color.setAlphaF(_opacity);
+    _pen.setColor(color);
 }
 
 } // namespace data
+
 } // namespace sight::viz::scene2d

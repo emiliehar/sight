@@ -62,8 +62,8 @@ class MODULE_UI_QT_CLASS_API SOpticalCenterEditor : public QObject,
                                                     public sight::ui::base::IEditor
 {
 Q_OBJECT
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(SOpticalCenterEditor, sight::ui::base::IEditor)
 
     /// Constructor.
@@ -73,7 +73,6 @@ public:
     MODULE_UI_QT_API virtual ~SOpticalCenterEditor() noexcept;
 
 protected:
-
     /// Does nothing
     MODULE_UI_QT_API void configuring() override;
 
@@ -90,19 +89,17 @@ protected:
     MODULE_UI_QT_API KeyConnectionsMap getAutoConnections() const override;
 
 private Q_SLOTS:
-
     void onCxSliderChanged(int value);
     void onCySliderChanged(int value);
     void onFySliderChanged(int value);
 
 private:
-
     QPointer<QSlider> m_cxSlider; ///< Slider to modify cx
     QPointer<QSlider> m_cySlider; ///< Slider to modify cy
     QPointer<QSlider> m_fySlider; ///< Slider to modify fy
-    QPointer<QLabel> m_cxLabel;   ///< Label for cx value
-    QPointer<QLabel> m_cyLabel;   ///< Label for cy value
-    QPointer<QLabel> m_fyLabel;   ///< Label for fy value
+    QPointer<QLabel> m_cxLabel; ///< Label for cx value
+    QPointer<QLabel> m_cyLabel; ///< Label for cy value
+    QPointer<QLabel> m_fyLabel; ///< Label for fy value
 };
 
 } // uiCalibration

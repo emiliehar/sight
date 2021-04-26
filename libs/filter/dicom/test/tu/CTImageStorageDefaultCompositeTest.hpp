@@ -30,6 +30,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace ut
 {
 
@@ -38,8 +39,8 @@ namespace ut
  */
 class CTImageStorageDefaultCompositeTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( CTImageStorageDefaultCompositeTest );
-CPPUNIT_TEST( simpleApplication );
+CPPUNIT_TEST_SUITE(CTImageStorageDefaultCompositeTest);
+CPPUNIT_TEST(simpleApplication);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -49,8 +50,8 @@ public:
 
     /// Apply the patch and verify that the DicomSeries has been correctly modified
     void simpleApplication();
-
 };
 
 } // namespace ut
+
 } // namespace sight::filter::dicom

@@ -24,17 +24,18 @@
 
 /**
  * @brief       The namespace sight::ui::qml contains classes which provide the implementation of the Gui using Qml
- *library.
+ * library.
  */
 namespace sight::ui::qml
 {
 
 /**
  * @brief       The namespace sight::ui::qml::dialog contains the classes used for dialog implementation with Qml
- *Library.
+ * Library.
  */
 namespace dialog
 {
+
 }
 
 /**
@@ -42,6 +43,7 @@ namespace dialog
  */
 namespace model
 {
+
 }
 
 }

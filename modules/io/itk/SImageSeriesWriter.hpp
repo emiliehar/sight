@@ -51,7 +51,6 @@ namespace sight::module::io::itk
  */
 class MODULE_IO_ITK_CLASS_API SImageSeriesWriter : public sight::io::base::service::IWriter
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SImageSeriesWriter, sight::io::base::service::IWriter)
 
@@ -60,7 +59,6 @@ public:
     MODULE_IO_ITK_API virtual ~SImageSeriesWriter() noexcept;
 
 protected:
-
     /// Override
     MODULE_IO_ITK_API void starting() override;
 
@@ -74,7 +72,7 @@ protected:
     MODULE_IO_ITK_API void updating() override;
 
     /// Override
-    MODULE_IO_ITK_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_ITK_API void info(std::ostream& _sstream) override;
 
     /**
      * @brief Configure using GUI.
@@ -88,7 +86,6 @@ protected:
 
     /// Return managed file type, here FILE
     MODULE_IO_ITK_API sight::io::base::service::IOPathType getIOPathType() const override;
-
 };
 
 } // namespace sight::module::io::itk

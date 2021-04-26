@@ -37,6 +37,7 @@ QT_END_NAMESPACE
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
 
@@ -46,10 +47,8 @@ namespace container
  */
 class UI_QT_CLASS_API QtMenuContainer : public ui::base::container::fwMenu
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(QtMenuContainer, ui::base::container::fwMenu, ui::base::factory::New< QtMenuContainer >)
+    SIGHT_DECLARE_CLASS(QtMenuContainer, ui::base::container::fwMenu, ui::base::factory::New<QtMenuContainer>)
 
     UI_QT_API QtMenuContainer(ui::base::GuiBaseObject::Key key) noexcept;
 
@@ -62,9 +61,9 @@ public:
     UI_QT_API virtual QMenu* getQtMenu();
 
 private:
-
     QPointer<QMenu> m_menu;
 };
 
 } // namespace container
+
 } // namespace sight::ui::qt

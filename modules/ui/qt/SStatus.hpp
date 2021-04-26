@@ -94,9 +94,7 @@ namespace sight::module::ui::qt
 class MODULE_UI_QT_CLASS_API SStatus : public QObject,
                                        public sight::ui::base::IEditor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SStatus, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -117,10 +115,9 @@ public:
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_ORANGE_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_NTH_GREEN_RED_SLOT;
-    /** @} */
+/** @} */
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /**
@@ -143,7 +140,7 @@ protected:
     void configuring() override;
 
     /// Overrides
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
     /// SLOT : change label color
     void changeToGreen();
@@ -170,12 +167,11 @@ protected:
     void toggleNthGreenRed(const int index, const bool green);
 
 private:
-
     /// Number of status
     size_t m_count;
 
-    QVector< QPointer< QLabel > > m_indicator;
-    QVector< QPointer< QLabel > > m_labelStatus;
+    QVector<QPointer<QLabel> > m_indicator;
+    QVector<QPointer<QLabel> > m_labelStatus;
 
     std::string m_greenTooltip; ///< Tooltip for green status
     std::string m_redTooltip; ///< Tooltip for red status

@@ -42,11 +42,14 @@ public:
     virtual ~MaterialMgrListener();
 
     /// Callback called each time a scheme is not found
-    virtual ::Ogre::Technique* handleSchemeNotFound(unsigned short _schemeIndex, const ::Ogre::String& _schemeName,
-                                                    ::Ogre::Material* _originalMaterial, unsigned short _lodIndex,
-                                                    const ::Ogre::Renderable* _renderable);
-private:
+    virtual ::Ogre::Technique* handleSchemeNotFound(
+        unsigned short _schemeIndex,
+        const ::Ogre::String& _schemeName,
+        ::Ogre::Material* _originalMaterial,
+        unsigned short _lodIndex,
+        const ::Ogre::Renderable* _renderable);
 
+private:
     /**
      * @brief Ensure that a given fragment program is created.
      *
@@ -55,11 +58,11 @@ private:
      * @param[in] _algoPassName new suffix to use
      * @param[in] _baseName new suffix to use
      */
-    static ::Ogre::GpuProgramPtr ensureFPCreated(const std::string& _name,
-                                                 const std::string& _algoName,
-                                                 const std::string& _algoPassName,
-                                                 const std::string& _baseName);
-
+    static ::Ogre::GpuProgramPtr ensureFPCreated(
+        const std::string& _name,
+        const std::string& _algoName,
+        const std::string& _algoPassName,
+        const std::string& _baseName);
 };
 
 } // namespace compositor

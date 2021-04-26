@@ -81,8 +81,10 @@
 
 namespace sight::data
 {
+
 namespace detail
 {
+
 namespace reflection
 {
 
@@ -152,6 +154,9 @@ struct runner
 
     static runner r;
 };
+
 } // namespace reflection
+
 } // namespace detail
+
 } // namespace sight::data

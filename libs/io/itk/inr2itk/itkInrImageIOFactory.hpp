@@ -27,6 +27,7 @@
 
 namespace itk
 {
+
 /**
  * \class InrImageIOFactory
  * \brief Create instances of InrImageIO objects using an object factory.
@@ -37,8 +38,8 @@ public:
     /** Standard class typedefs. */
     typedef InrImageIOFactory Self;
     typedef ObjectFactoryBase Superclass;
-    typedef SmartPointer<Self>  Pointer;
-    typedef SmartPointer<const Self>  ConstPointer;
+    typedef SmartPointer<Self> Pointer;
+    typedef SmartPointer<const Self> ConstPointer;
 
     /** Class methods used to interface with the registered factories. */
     const char* GetITKSourceVersion(void) const override;
@@ -63,9 +64,8 @@ protected:
     void PrintSelf(std::ostream& os, Indent indent) const override;
 
 private:
-    InrImageIOFactory(const Self&); //purposely not implemented
-    void operator=(const Self&); //purposely not implemented
-
+    InrImageIOFactory(const Self&); // purposely not implemented
+    void operator=(const Self&); // purposely not implemented
 };
 
 } // end namespace itk

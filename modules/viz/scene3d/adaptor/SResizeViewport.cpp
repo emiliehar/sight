@@ -43,7 +43,7 @@ static const std::string s_V_OFFSET_CONFIG = "vOffset";
 static const std::string s_H_ALIGN_CONFIG  = "hAlign";
 static const std::string s_V_ALIGN_CONFIG  = "vAlign";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SResizeViewport::SResizeViewport() noexcept
 {
@@ -51,14 +51,13 @@ SResizeViewport::SResizeViewport() noexcept
     newSlot(s_RESIZE_SLOT, &SResizeViewport::resize, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SResizeViewport::~SResizeViewport() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::configuring()
 {
@@ -73,16 +72,16 @@ void SResizeViewport::configuring()
     const float width  = config.get<float>(s_WIDTH_CONFIG, 1.f);
     const float height = config.get<float>(s_HEIGHT_CONFIG, 1.f);
 
-    const std::map< std::string, float > horizAlignToX {
-        { "left", xPos },
-        { "center", 0.5f - width * 0.5f + xPos},
-        { "right", 1.f - width - xPos }
+    const std::map<std::string, float> horizAlignToX{
+        {"left", xPos},
+        {"center", 0.5f - width * 0.5f + xPos},
+        {"right", 1.f - width - xPos}
     };
 
-    const std::map< std::string, float > vertAlignToY {
-        { "bottom", 1.f -height - yPos },
-        { "center", 0.5f - height * 0.5f + yPos },
-        { "top", yPos }
+    const std::map<std::string, float> vertAlignToY{
+        {"bottom", 1.f - height - yPos},
+        {"center", 0.5f - height * 0.5f + yPos},
+        {"top", yPos}
     };
 
     const std::string hAlign = config.get(s_H_ALIGN_CONFIG, "left");
@@ -94,7 +93,7 @@ void SResizeViewport::configuring()
     m_newViewportDimensions = std::tie(xPos, yPos, width, height);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::starting()
 {
@@ -105,21 +104,19 @@ void SResizeViewport::starting()
     m_previousViewportDimensions = std::make_tuple(vp->getLeft(), vp->getTop(), vp->getWidth(), vp->getHeight());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::updating() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::stopping() noexcept
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::resizeViewport(bool _resize)
 {
@@ -135,14 +132,14 @@ void SResizeViewport::resizeViewport(bool _resize)
     this->requestRender();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::resize()
 {
     this->resizeViewport(true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SResizeViewport::revert()
 {

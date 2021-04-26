@@ -32,13 +32,17 @@
 
 namespace sight::data
 {
+
 class Mesh;
+
 }
 
 namespace sight::core::jobs
 {
+
 class Observer;
 class IJob;
+
 }
 
 namespace sight::io::vtk
@@ -48,14 +52,14 @@ namespace sight::io::vtk
  * @brief Writes a Mesh in .obj format using VTK library.
  */
 
-class ObjMeshWriter : public base::writer::GenericObjectWriter< data::Mesh >,
+class ObjMeshWriter : public base::writer::GenericObjectWriter<data::Mesh>,
                       public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(ObjMeshWriter, io::base::writer::GenericObjectWriter< data::Mesh >,
-                        io::base::writer::factory::New< ObjMeshWriter >)
+    SIGHT_DECLARE_CLASS(
+        ObjMeshWriter,
+        io::base::writer::GenericObjectWriter<data::Mesh>,
+        io::base::writer::factory::New<ObjMeshWriter>)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
     /// @brief Constructor.
@@ -74,8 +78,7 @@ public:
     IO_VTK_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 };
 

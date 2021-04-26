@@ -24,11 +24,13 @@
 
 namespace sight::data
 {
+
 /**
  * @brief       This namespace sight::data::fieldHelper contains several helpers for using field.
  */
 namespace fieldHelper
 {
+
 }
 
 }

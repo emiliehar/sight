@@ -41,15 +41,15 @@ Q_OBJECT
 public:
     UI_QT_API FuncSlot();
 
-    template< typename CALLABLE >
+    template<typename CALLABLE>
     FuncSlot(CALLABLE c) :
         m_func(c)
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    template< typename CALLABLE >
+    template<typename CALLABLE>
     void setFunction(CALLABLE c)
     {
         m_func = c;
@@ -59,7 +59,7 @@ public Q_SLOTS:
     void trigger();
 
 protected:
-    std::function< void() > m_func;
+    std::function<void()> m_func;
 };
 
 } // namespace util

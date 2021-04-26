@@ -26,10 +26,11 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IDataSerializer::writeToTree(
     boost::property_tree::ptree& tree,
@@ -43,4 +44,5 @@ void IDataSerializer::writeToTree(
 }
 
 } // namespace detail::data
+
 } // namespace sight::io::session

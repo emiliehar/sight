@@ -37,7 +37,7 @@ namespace ut
 
 class DefaultActivityTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( DefaultActivityTest );
+CPPUNIT_TEST_SUITE(DefaultActivityTest);
 
 CPPUNIT_TEST(requirementsTest);
 CPPUNIT_TEST(parametersTest);
@@ -59,5 +59,6 @@ public:
     void bigActivityTest();
 };
 
-} //namespace ut
-} //namespace sight::activity
+} // namespace ut
+
+} // namespace sight::activity

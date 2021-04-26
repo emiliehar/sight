@@ -99,7 +99,7 @@ public:
      *
      *  @return Message
      */
-    IO_IGTL_API ::igtl::MessageBase::Pointer receiveBody (::igtl::MessageHeader::Pointer header);
+    IO_IGTL_API ::igtl::MessageBase::Pointer receiveBody(::igtl::MessageHeader::Pointer header);
 
     /**
      * @brief get socket
@@ -149,7 +149,7 @@ protected:
     bool m_filteringByDeviceName;
 
     /// Set of authorized device names
-    std::set< std::string > m_deviceNamesIn;
+    std::set<std::string> m_deviceNamesIn;
 
     /// device name in the sent message
     std::string m_deviceNameOut;

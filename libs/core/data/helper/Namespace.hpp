@@ -24,12 +24,14 @@
 
 namespace sight::data
 {
+
 /**
  * @brief    This namespace sight::data::helper contains several helpers for using data like Image, Composite,
  * Message.
  */
 namespace helper
 {
+
 }
 
 }

@@ -25,14 +25,15 @@
 #include <data/Composite.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::ActivitySeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::ActivitySeriesTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesTest::setUp()
 {
@@ -40,7 +41,7 @@ void ActivitySeriesTest::setUp()
     m_series = data::ActivitySeries::New();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesTest::tearDown()
 {
@@ -48,7 +49,7 @@ void ActivitySeriesTest::tearDown()
     m_series.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesTest::activityConfigIdTest()
 {
@@ -58,7 +59,7 @@ void ActivitySeriesTest::activityConfigIdTest()
     CPPUNIT_ASSERT_EQUAL(activityConfigId, m_series->getActivityConfigId());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ActivitySeriesTest::dataTest()
 {
@@ -69,7 +70,8 @@ void ActivitySeriesTest::dataTest()
     CPPUNIT_ASSERT_EQUAL(data, m_series->getData());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

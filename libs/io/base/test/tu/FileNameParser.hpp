@@ -28,9 +28,9 @@
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template <typename T>
+template<typename T>
 bool parseMeshFileName(const std::string& name, T& points, T& cells)
 {
     using boost::spirit::qi::ulong_long;
@@ -44,12 +44,14 @@ bool parseMeshFileName(const std::string& name, T& points, T& cells)
     std::string::const_iterator first = name.begin();
     std::string::const_iterator last  = name.end();
 
-    bool r = phrase_parse(first, last,
-                          ("Mesh-" >> ulong_long >> "-" >> ulong_long >> "pts-" >> ulong_long >>
-                           "cells.trian")[ phx::ref(points) = _2, phx::ref(cells) = _3 ],
-                          space);
+    bool r = phrase_parse(
+        first,
+        last,
+        ("Mesh-" >> ulong_long >> "-" >> ulong_long >> "pts-" >> ulong_long
+         >> "cells.trian")[phx::ref(points) = _2, phx::ref(cells) = _3],
+        space);
 
-    if (first != last) // fail if we didn't get a full match
+    if(first != last) // fail if we didn't get a full match
     {
         return false;
     }

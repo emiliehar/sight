@@ -36,15 +36,18 @@ class IValidator;
 
 namespace validator
 {
+
 namespace registry
 {
 
 typedef std::string KeyType;
 
-typedef core::FactoryRegistry< SPTR(activity::IValidator) (), KeyType > Type;
+typedef core::FactoryRegistry<SPTR(activity::IValidator)(), KeyType> Type;
 
 ACTIVITY_API SPTR(Type) get();
 
 } // namespace registry
+
 } // namespace validator
+
 } // namespace sight::activity

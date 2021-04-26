@@ -47,11 +47,11 @@ namespace container
  */
 class UI_QT_CLASS_API QtMenuBarContainer : public ui::base::container::fwMenuBar
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(QtMenuBarContainer, ui::base::container::fwMenuBar,
-                        ui::base::factory::New< QtMenuBarContainer >)
+    SIGHT_DECLARE_CLASS(
+        QtMenuBarContainer,
+        ui::base::container::fwMenuBar,
+        ui::base::factory::New<QtMenuBarContainer>)
 
     UI_QT_API QtMenuBarContainer(ui::base::GuiBaseObject::Key key) noexcept;
 
@@ -64,9 +64,9 @@ public:
     UI_QT_API virtual QMenuBar* getQtMenuBar();
 
 private:
-
     QPointer<QMenuBar> m_menuBar;
 };
 
 } // namespace container
+
 } // namespace sight::ui::qt

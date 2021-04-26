@@ -25,7 +25,7 @@
 #include "data/Exception.hpp"
 #include "data/registry/macros.hpp"
 
-SIGHT_REGISTER_DATA( sight::data::Edge );
+SIGHT_REGISTER_DATA(sight::data::Edge);
 
 namespace sight::data
 {
@@ -33,22 +33,22 @@ namespace sight::data
 std::string Edge::NATURE_FLOW = "flow";
 std::string Edge::NATURE_DATA = "data";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Edge::Edge( data::Object::Key ) :
+Edge::Edge(data::Object::Key) :
     m_fromPortIdentifier("not defined"),
     m_toPortIdentifier("not defined"),
     m_nature("not defined")
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Edge::~Edge()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Edge::setIdentifiers(const std::string& fromPortIndentifier, const std::string& toPortIndentifier)
 {
@@ -56,77 +56,80 @@ void Edge::setIdentifiers(const std::string& fromPortIndentifier, const std::str
     m_toPortIdentifier   = toPortIndentifier;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::pair<std::string, std::string> Edge::getIdentifiers() const
 {
     return make_pair(m_fromPortIdentifier, m_toPortIdentifier);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string Edge::getFromPortID() const
 {
     return m_fromPortIdentifier;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string Edge::getToPortID() const
 {
     return m_toPortIdentifier;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string Edge::getPortID(bool upStream) const
 {
     return upStream ? m_fromPortIdentifier : m_toPortIdentifier;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Edge::setNature(std::string nature)
 {
     m_nature = nature;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string& Edge::getNature() const
 {
     return m_nature;
 }
 
-//------------------------------------------------------------------------------
-void Edge::shallowCopy(const Object::csptr& _source )
+// ------------------------------------------------------------------------------
+void Edge::shallowCopy(const Object::csptr& _source)
 {
     Edge::csptr other = Edge::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->fieldShallowCopy( _source );
+    this->fieldShallowCopy(_source);
     m_fromPortIdentifier = other->m_fromPortIdentifier;
     m_toPortIdentifier   = other->m_toPortIdentifier;
     m_nature             = other->m_nature;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Edge::cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Edge::csptr other = Edge::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( _source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(_source, cache);
     m_fromPortIdentifier = other->m_fromPortIdentifier;
     m_toPortIdentifier   = other->m_toPortIdentifier;
     m_nature             = other->m_nature;
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

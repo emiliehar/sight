@@ -35,7 +35,9 @@
 
 namespace sight::data
 {
+
 class DicomSeries;
+
 }
 
 namespace sight::module::io::dicomweb
@@ -71,13 +73,12 @@ namespace sight::module::io::dicomweb
 class MODULE_IO_DICOMWEB_CLASS_API SSeriesPuller : public service::IController
 {
 public:
-
-    SIGHT_DECLARE_SERVICE(SSeriesPuller, ::sight::service::IController )
+    SIGHT_DECLARE_SERVICE(SSeriesPuller, ::sight::service::IController)
 
     typedef data::SeriesDB::ContainerType DicomSeriesContainerType;
-    typedef std::vector< std::string > InstanceUIDContainerType;
-    typedef std::map < std::string, unsigned int > InstanceCountMapType;
-    typedef std::map < std::string, WPTR(data::DicomSeries) > DicomSeriesMapType;
+    typedef std::vector<std::string> InstanceUIDContainerType;
+    typedef std::map<std::string, unsigned int> InstanceCountMapType;
+    typedef std::map<std::string, WPTR(data::DicomSeries)> DicomSeriesMapType;
 
     /**
      * @brief Constructor
@@ -90,7 +91,6 @@ public:
     MODULE_IO_DICOMWEB_API virtual ~SSeriesPuller() noexcept;
 
 protected:
-
     /// Gets the configuration.
     MODULE_IO_DICOMWEB_API void configuring() override;
 
@@ -104,7 +104,6 @@ protected:
     MODULE_IO_DICOMWEB_API void updating() override;
 
 private:
-
     /// Pull the Series from the Pacs.
     void pullSeries();
 
@@ -167,7 +166,6 @@ private:
 
     /// DICOM Folder path
     std::filesystem::path m_path;
-
 };
 
 } // namespace sight::module::io::dicomweb

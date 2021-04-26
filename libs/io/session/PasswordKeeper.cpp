@@ -46,7 +46,6 @@ class PasswordKeeperImpl final : public PasswordKeeper
 {
 public:
     SIGHT_DECLARE_CLASS(PasswordKeeperImpl, PasswordKeeper)
-
     /// Delete default copy constructors and assignment operators
     PasswordKeeperImpl(const PasswordKeeperImpl&)            = delete;
     PasswordKeeperImpl(PasswordKeeperImpl&&)                 = delete;
@@ -59,28 +58,28 @@ public:
     /// Default destructor
     ~PasswordKeeperImpl() override = default;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     core::crypto::secure_string getPasswordHash() const override
     {
         return core::crypto::hash(this->getPassword());
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     core::crypto::secure_string getPassword() const override
     {
         return core::crypto::decrypt(m_password, computePasswordKey());
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setPassword(const core::crypto::secure_string& password) override
     {
         m_password = core::crypto::encrypt(password, computePasswordKey());
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     bool checkPassword(const core::crypto::secure_string& password) const override
     {
@@ -88,7 +87,6 @@ public:
     }
 
 private:
-
     /// Generate a pseudo random password key to store the password obfuscated
     inline core::crypto::secure_string computePasswordKey() const
     {
@@ -105,29 +103,30 @@ PasswordKeeper::sptr PasswordKeeper::shared()
     return std::make_shared<PasswordKeeperImpl>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 PasswordKeeper::uptr PasswordKeeper::unique()
 {
     return std::make_unique<PasswordKeeperImpl>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::crypto::secure_string PasswordKeeper::getGlobalPasswordHash()
 {
     return core::crypto::hash(PasswordKeeper::getGlobalPassword());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::crypto::secure_string PasswordKeeper::getGlobalPassword()
 {
     std::lock_guard<std::mutex> guard(s_password_mutex);
+
     return core::crypto::decrypt(s_password, computeGlobalPasswordKey());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PasswordKeeper::setGlobalPassword(const core::crypto::secure_string& password)
 {
@@ -135,11 +134,12 @@ void PasswordKeeper::setGlobalPassword(const core::crypto::secure_string& passwo
     s_password = core::crypto::encrypt(password, computeGlobalPasswordKey());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool PasswordKeeper::checkGlobalPassword(const core::crypto::secure_string& password)
 {
     std::lock_guard<std::mutex> guard(s_password_mutex);
+
     return core::crypto::decrypt(s_password, computeGlobalPasswordKey()) == password;
 }
 

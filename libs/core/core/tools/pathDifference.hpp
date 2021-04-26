@@ -28,6 +28,7 @@
 
 namespace sight::core::tools
 {
+
 /**
  * @brief   Return the relative difference within two paths
  *
@@ -61,6 +62,6 @@ namespace sight::core::tools
  *
  * \li  etc..
  */
-CORE_API std::filesystem::path getPathDifference( std::filesystem::path path1, std::filesystem::path path2 );
+CORE_API std::filesystem::path getPathDifference(std::filesystem::path path1, std::filesystem::path path2);
 
 }

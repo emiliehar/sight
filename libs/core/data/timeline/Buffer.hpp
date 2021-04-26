@@ -38,11 +38,14 @@ class DATA_CLASS_API Buffer : public data::timeline::Object
 {
 public:
     typedef uint8_t* BufferDataType;
-    typedef std::function< void (void*) > DeleterType;
+    typedef std::function<void (void*)> DeleterType;
 
     /// Constructor
-    DATA_API Buffer(core::HiResClock::HiResClockType timestamp = 0,
-                    BufferDataType buffer = 0, size_t size = 0, DeleterType d = 0);
+    DATA_API Buffer(
+        core::HiResClock::HiResClockType timestamp = 0,
+        BufferDataType buffer                      = 0,
+        size_t size                                = 0,
+        DeleterType d                              = 0);
 
     /// Destructor
     DATA_API virtual ~Buffer();
@@ -57,16 +60,14 @@ public:
     }
 
 protected:
-
-    ///Buffer size
+    /// Buffer size
     size_t m_size;
 
-    ///Buffer
+    /// Buffer
     BufferDataType m_buffer;
 
-    ///Deleter
+    /// Deleter
     DeleterType m_deleter;
-
 };
 
 } // namespace timeline

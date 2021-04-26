@@ -33,7 +33,7 @@
 
 #include <boost/multi_array.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(Mesh));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (Mesh));
 
 namespace sight::data
 {
@@ -280,14 +280,12 @@ namespace sight::data
 class DATA_CLASS_API Mesh : public data::Object,
                             public core::memory::IBuffered
 {
-
 public:
+    SIGHT_DECLARE_CLASS(Mesh, data::Object, data::factory::New<Mesh>)
 
-    SIGHT_DECLARE_CLASS(Mesh, data::Object, data::factory::New< Mesh >)
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (Mesh))
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(Mesh))
-
-    typedef std::map< std::string, data::Array::sptr > ArrayMapType;
+    typedef std::map<std::string, data::Array::sptr> ArrayMapType;
 
     [[deprecated("replaced by CellType (sight 22.0)")]] typedef enum
     {
@@ -334,7 +332,7 @@ public:
     typedef data::iterator::PointId PointId;
     typedef data::iterator::Size Size;
 
-    typedef std::vector< core::memory::BufferObject::Lock > LocksType;
+    typedef std::vector<core::memory::BufferObject::Lock> LocksType;
     /**
      * @brief Constructor
      * @param key Private construction key
@@ -345,7 +343,7 @@ public:
     DATA_API ~Mesh() override;
 
     /// Defines shallow copy
-    DATA_API void shallowCopy( const Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const Object::csptr& _source) override;
 
     /// Defines deep copy
     DATA_API void cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache) override;
@@ -369,8 +367,11 @@ public:
      *
      * @throw Raise data::Exception if the memory can not be allocated.
      */
-    DATA_API size_t reserve(Size nbPts, Size nbCells, CellType cellType = CellType::TRIANGLE,
-                            Attributes arrayMask = Attributes::NONE);
+    DATA_API size_t reserve(
+        Size nbPts,
+        Size nbCells,
+        CellType cellType    = CellType::TRIANGLE,
+        Attributes arrayMask = Attributes::NONE);
 
     /**
      * @brief Allocate Mesh memory
@@ -389,8 +390,11 @@ public:
      *
      * @throw Raise data::Exception if the memory can not be allocated.
      */
-    DATA_API size_t reserve(Size nbPts, Size nbCells, Size nbCellsData,
-                            Attributes arrayMask = Attributes::NONE);
+    DATA_API size_t reserve(
+        Size nbPts,
+        Size nbCells,
+        Size nbCellsData,
+        Attributes arrayMask = Attributes::NONE);
 
     /**
      * @brief Allocate Mesh memory and initialize the number of points and cells
@@ -409,8 +413,11 @@ public:
      *
      * @throw Raise data::Exception if the memory can not be allocated.
      */
-    DATA_API size_t resize(Size nbPts, Size nbCells, CellType cellType = CellType::TRIANGLE,
-                           Attributes arrayMask = Attributes::NONE);
+    DATA_API size_t resize(
+        Size nbPts,
+        Size nbCells,
+        CellType cellType    = CellType::TRIANGLE,
+        Attributes arrayMask = Attributes::NONE);
 
     /**
      * @brief Allocate Mesh memory and initialize the number of points and cells
@@ -428,8 +435,11 @@ public:
      *
      * @throw Raise data::Exception if the memory can not be allocated.
      */
-    DATA_API size_t resize(Size nbPts, Size nbCells, Size nbCellsData,
-                           Attributes arrayMask = Attributes::NONE);
+    DATA_API size_t resize(
+        Size nbPts,
+        Size nbCells,
+        Size nbCellsData,
+        Attributes arrayMask = Attributes::NONE);
 
     /**
      * @brief Adjust mesh memory usage
@@ -525,43 +535,43 @@ public:
      */
 
     /// Type of signal when vertex are modified
-    typedef core::com::Signal< void () > VertexModifiedSignalType;
+    typedef core::com::Signal<void ()> VertexModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigVertexModified
     DATA_API static const core::com::Signals::SignalKeyType s_VERTEX_MODIFIED_SIG;
 
     /// Type of signal when point colors are modified
-    typedef core::com::Signal< void () > PointColorsModifiedSignalType;
+    typedef core::com::Signal<void ()> PointColorsModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigPointColorsModified
     DATA_API static const core::com::Signals::SignalKeyType s_POINT_COLORS_MODIFIED_SIG;
 
     /// Type of signal when cell colors are modified
-    typedef core::com::Signal< void () > CellColorsModifiedSignalType;
+    typedef core::com::Signal<void ()> CellColorsModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigCellColorsModified
     DATA_API static const core::com::Signals::SignalKeyType s_CELL_COLORS_MODIFIED_SIG;
 
     /// Type of signal when point normals are modified
-    typedef core::com::Signal< void () > PointNormalsModifiedSignalType;
+    typedef core::com::Signal<void ()> PointNormalsModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigPointNormalsModified
     DATA_API static const core::com::Signals::SignalKeyType s_POINT_NORMALS_MODIFIED_SIG;
 
     /// Type of signal when cell normals are modified
-    typedef core::com::Signal< void () > CellNormalsModifiedSignalType;
+    typedef core::com::Signal<void ()> CellNormalsModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigCellNormalsModified
     DATA_API static const core::com::Signals::SignalKeyType s_CELL_NORMALS_MODIFIED_SIG;
 
     /// Type of signal when point tex coords are modified
-    typedef core::com::Signal< void () > PointTexCoordsModifiedSignalType;
+    typedef core::com::Signal<void ()> PointTexCoordsModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigPointTexCoorddModified
     DATA_API static const core::com::Signals::SignalKeyType s_POINT_TEX_COORDS_MODIFIED_SIG;
 
     /// Type of signal when cell tex coords are modified
-    typedef core::com::Signal< void () > CellTexCoordsModifiedSignalType;
+    typedef core::com::Signal<void ()> CellTexCoordsModifiedSignalType;
 
     /// Key in m_signals map of signal m_sigCellTexCoorddModified
     DATA_API static const core::com::Signals::SignalKeyType s_CELL_TEX_COORDS_MODIFIED_SIG;
@@ -577,9 +587,10 @@ public:
      * @throw data::Exception if the allocation failed
      */
     DATA_API PointId pushPoint(const PointValueType p[3]);
-    DATA_API PointId pushPoint(PointValueType x,
-                               PointValueType y,
-                               PointValueType z);
+    DATA_API PointId pushPoint(
+        PointValueType x,
+        PointValueType y,
+        PointValueType z);
     /// @}
     /**
      * @{
@@ -594,13 +605,19 @@ public:
     DATA_API CellId pushCell(PointId idPt);
     DATA_API CellId pushCell(PointId idP1, PointId idP2);
     DATA_API CellId pushCell(PointId idP1, PointId idP2, PointId idP3);
-    DATA_API CellId pushCell(PointId idP1, PointId idP2, PointId idP3, PointId idP4,
-                             CellType type = CellType::QUAD);
-    DATA_API CellId pushCell(CellType type,
-                             const std::vector<PointId> pointIds);
-    DATA_API CellId pushCell(CellType type,
-                             const PointId* pointIds,
-                             Size nbPoints );
+    DATA_API CellId pushCell(
+        PointId idP1,
+        PointId idP2,
+        PointId idP3,
+        PointId idP4,
+        CellType type = CellType::QUAD);
+    DATA_API CellId pushCell(
+        CellType type,
+        const std::vector<PointId> pointIds);
+    DATA_API CellId pushCell(
+        CellType type,
+        const PointId* pointIds,
+        Size nbPoints);
     /// @}
 
     /**
@@ -636,11 +653,15 @@ public:
     DATA_API void setCell(CellId id, PointId idPt);
     DATA_API void setCell(CellId id, PointId idP1, PointId idP2);
     DATA_API void setCell(CellId id, PointId idP1, PointId idP2, PointId idP3);
-    DATA_API void setCell(CellId id, PointId idP1, PointId idP2, PointId idP3,
-                          PointId idP4,
-                          CellType type = CellType::QUAD);
+    DATA_API void setCell(
+        CellId id,
+        PointId idP1,
+        PointId idP2,
+        PointId idP3,
+        PointId idP4,
+        CellType type = CellType::QUAD);
     DATA_API void setCell(CellId id, CellType type, const std::vector<PointId>& pointIds);
-    DATA_API void setCell(CellId id, CellType type, const PointId* pointIds, Size nbPoints );
+    DATA_API void setCell(CellId id, CellType type, const PointId* pointIds, Size nbPoints);
     /// @}
 
     /**
@@ -652,7 +673,7 @@ public:
      * @param id point index
      * @param c color
      */
-    DATA_API void setPointColor(PointId id, const std::array< ColorValueType, 4>& c);
+    DATA_API void setPointColor(PointId id, const std::array<ColorValueType, 4>& c);
     DATA_API void setPointColor(PointId id, ColorValueType r, ColorValueType g, ColorValueType b, ColorValueType a);
     /// @}
     ///
@@ -665,8 +686,8 @@ public:
      * @param id cell index
      * @param c color
      */
-    DATA_API void setCellColor( CellId id, const std::array< ColorValueType, 4>& c);
-    DATA_API void setCellColor( CellId id, ColorValueType r, ColorValueType g, ColorValueType b, ColorValueType a);
+    DATA_API void setCellColor(CellId id, const std::array<ColorValueType, 4>& c);
+    DATA_API void setCellColor(CellId id, ColorValueType r, ColorValueType g, ColorValueType b, ColorValueType a);
     /// @}
 
     /**
@@ -678,7 +699,7 @@ public:
      * @param id point index
      * @param n normal
      */
-    DATA_API void setPointNormal(PointId id, const std::array< NormalValueType, 3>& n);
+    DATA_API void setPointNormal(PointId id, const std::array<NormalValueType, 3>& n);
     DATA_API void setPointNormal(PointId id, NormalValueType nx, NormalValueType ny, NormalValueType nz);
     ///@}
     /**
@@ -690,9 +711,12 @@ public:
      * @param id cell index
      * @param n normal
      */
-    DATA_API void setCellNormal(CellId id, const std::array< NormalValueType, 3>& n);
-    DATA_API void setCellNormal(CellId id, NormalValueType nx,
-                                NormalValueType ny, NormalValueType nz);
+    DATA_API void setCellNormal(CellId id, const std::array<NormalValueType, 3>& n);
+    DATA_API void setCellNormal(
+        CellId id,
+        NormalValueType nx,
+        NormalValueType ny,
+        NormalValueType nz);
     /// @}
     /**
      * @{
@@ -703,9 +727,11 @@ public:
      * @param id point index
      * @param t texCoord
      */
-    DATA_API void setPointTexCoord(PointId id, const std::array< TexCoordValueType, 2>& t);
-    DATA_API void setPointTexCoord(PointId id, TexCoordValueType u,
-                                   TexCoordValueType v);
+    DATA_API void setPointTexCoord(PointId id, const std::array<TexCoordValueType, 2>& t);
+    DATA_API void setPointTexCoord(
+        PointId id,
+        TexCoordValueType u,
+        TexCoordValueType v);
     /// @}
 
     /**
@@ -717,9 +743,11 @@ public:
      * @param id cell index
      * @param t texCoord
      */
-    DATA_API void setCellTexCoord(CellId id, const std::array< TexCoordValueType, 2>& t);
-    DATA_API void setCellTexCoord(CellId id, TexCoordValueType u,
-                                  TexCoordValueType v);
+    DATA_API void setCellTexCoord(CellId id, const std::array<TexCoordValueType, 2>& t);
+    DATA_API void setCellTexCoord(
+        CellId id,
+        TexCoordValueType u,
+        TexCoordValueType v);
     /// @}
 
     /**
@@ -736,10 +764,14 @@ public:
      * @note These iterators lock the buffers for dump (see lock())
      * @{
      */
-    template< typename ITERATOR > ITERATOR begin();
-    template< typename ITERATOR > ITERATOR end();
-    template< typename ITERATOR > ITERATOR begin() const;
-    template< typename ITERATOR > ITERATOR end() const;
+    template<typename ITERATOR>
+    ITERATOR begin();
+    template<typename ITERATOR>
+    ITERATOR end();
+    template<typename ITERATOR>
+    ITERATOR begin() const;
+    template<typename ITERATOR>
+    ITERATOR end() const;
     /// @}
 
     /**
@@ -786,7 +818,7 @@ public:
     /// Sets current Attributes of the Mesh as binary mask @see data::Mesh::Attributes
     /// @warning: Attributes are set automatically or using resize()/reserve methode, usually it is not recommended to
     /// call this method.
-    ///  This is only used when converting from/to fwAtoms
+    /// This is only used when converting from/to fwAtoms
     void setAttributes(const Attributes& _attributes);
 
     /**
@@ -880,65 +912,65 @@ public:
 
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setPointsArray (const data::Array::sptr& array);
+    DATA_API void setPointsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setCellTypesArray        (const data::Array::sptr& array);
+    DATA_API void setCellTypesArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setCellDataArray         (const data::Array::sptr& array);
+    DATA_API void setCellDataArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setCellDataOffsetsArray  (const data::Array::sptr& array);
+    DATA_API void setCellDataOffsetsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setPointColorsArray      (const data::Array::sptr& array);
+    DATA_API void setPointColorsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setCellColorsArray       (const data::Array::sptr& array);
+    DATA_API void setCellColorsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setPointNormalsArray     (const data::Array::sptr& array);
+    DATA_API void setPointNormalsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setCellNormalsArray      (const data::Array::sptr& array);
+    DATA_API void setCellNormalsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setPointTexCoordsArray   (const data::Array::sptr& array);
+    DATA_API void setPointTexCoordsArray(const data::Array::sptr& array);
     /// Sets the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API void setCellTexCoordsArray    (const data::Array::sptr& array);
+    DATA_API void setCellTexCoordsArray(const data::Array::sptr& array);
 
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getPointsArray           () const;
+    DATA_API data::Array::sptr getPointsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getCellTypesArray        () const;
+    DATA_API data::Array::sptr getCellTypesArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getCellDataArray         () const;
+    DATA_API data::Array::sptr getCellDataArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getCellDataOffsetsArray  () const;
+    DATA_API data::Array::sptr getCellDataOffsetsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getPointColorsArray      () const;
+    DATA_API data::Array::sptr getPointColorsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getCellColorsArray       () const;
+    DATA_API data::Array::sptr getCellColorsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getPointNormalsArray     () const;
+    DATA_API data::Array::sptr getPointNormalsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getCellNormalsArray      () const;
+    DATA_API data::Array::sptr getCellNormalsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getPointTexCoordsArray   () const;
+    DATA_API data::Array::sptr getPointTexCoordsArray() const;
     /// Returns the internal corresponding array
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
-    DATA_API data::Array::sptr getCellTexCoordsArray    () const;
+    DATA_API data::Array::sptr getCellTexCoordsArray() const;
 
     /// Add an array in the mesh array-map
     [[deprecated("The mesh arrays can no longer be accessed(sight 22.0)")]]
@@ -957,14 +989,13 @@ public:
     DATA_API std::vector<std::string> getDataArrayNames() const;
 
 protected:
-
     // make iterator friend in order to access mesh arrays
     friend class data::iterator::PointIterator;
     friend class data::iterator::ConstPointIterator;
     friend class data::iterator::CellIterator;
     friend class data::iterator::ConstCellIterator;
 
-    template< class DATATYPE >
+    template<class DATATYPE>
     friend class data::mt::locked_ptr;
 
     /**
@@ -972,7 +1003,7 @@ protected:
      *
      * This is needed for IBuffered interface implementation
      */
-    DATA_API void lockBuffer(std::vector< core::memory::BufferObject::Lock >& locks) const override;
+    DATA_API void lockBuffer(std::vector<core::memory::BufferObject::Lock>& locks) const override;
 
     /// Number of points defined for the mesh
     Size m_nbPoints;
@@ -1066,142 +1097,144 @@ protected:
     [[deprecated("sight 22.0")]] ArrayMapType m_arrayMap;
 
     /// Stores current attributes.
-    Attributes m_attributes { Attributes::NONE };
+    Attributes m_attributes{Attributes::NONE};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline Mesh::Attributes operator|(const Mesh::Attributes& lhs, const Mesh::Attributes& rhs)
 {
-    return static_cast<Mesh::Attributes> (
-        static_cast<std::underlying_type<Mesh::Attributes>::type>(lhs) |
-        static_cast<std::underlying_type<Mesh::Attributes>::type>(rhs)
+    return static_cast<Mesh::Attributes>(
+        static_cast<std::underlying_type<Mesh::Attributes>::type>(lhs)
+        | static_cast<std::underlying_type<Mesh::Attributes>::type>(rhs)
         );
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline Mesh::Attributes operator&(const Mesh::Attributes& lhs, const Mesh::Attributes& rhs)
 {
-    return static_cast<Mesh::Attributes> (
-        static_cast<std::underlying_type<Mesh::Attributes>::type>(lhs) &
-        static_cast<std::underlying_type<Mesh::Attributes>::type>(rhs)
+    return static_cast<Mesh::Attributes>(
+        static_cast<std::underlying_type<Mesh::Attributes>::type>(lhs)
+        & static_cast<std::underlying_type<Mesh::Attributes>::type>(rhs)
         );
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline Mesh::Attributes operator~(const Mesh::Attributes& lhs)
 {
-    return static_cast<Mesh::Attributes> ( ~static_cast<std::underlying_type<Mesh::Attributes>::type>(lhs));
+    return static_cast<Mesh::Attributes>(~static_cast<std::underlying_type<Mesh::Attributes>::type>(lhs));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename ITERATOR >
+template<typename ITERATOR>
 inline ITERATOR Mesh::begin()
 {
     return ITERATOR(this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename ITERATOR >
+template<typename ITERATOR>
 inline ITERATOR Mesh::end()
 {
     auto itr = ITERATOR(this);
-    itr += static_cast< typename ITERATOR::difference_type>(itr.m_numberOfElements);
+    itr += static_cast<typename ITERATOR::difference_type>(itr.m_numberOfElements);
+
     return itr;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename ITERATOR >
+template<typename ITERATOR>
 inline ITERATOR Mesh::begin() const
 {
     return ITERATOR(this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-template< typename ITERATOR >
+template<typename ITERATOR>
 inline ITERATOR Mesh::end() const
 {
     auto itr = ITERATOR(this);
-    itr += static_cast< typename ITERATOR::difference_type>(itr.m_numberOfElements);
+    itr += static_cast<typename ITERATOR::difference_type>(itr.m_numberOfElements);
+
     return itr;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasPointColors() const
 {
     return static_cast<bool>(m_attributes & Mesh::Attributes::POINT_COLORS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasCellColors() const
 {
     return static_cast<bool>(m_attributes & Mesh::Attributes::CELL_COLORS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasPointNormals() const
 {
     return static_cast<bool>(m_attributes & Mesh::Attributes::POINT_NORMALS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasCellNormals() const
 {
     return static_cast<bool>(m_attributes & Mesh::Attributes::CELL_NORMALS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasPointTexCoords() const
 {
     return static_cast<bool>(m_attributes & Mesh::Attributes::POINT_TEX_COORDS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasCellTexCoords() const
 {
     return static_cast<bool>(m_attributes & Mesh::Attributes::CELL_TEX_COORDS);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasRGBPointColors() const
 {
     return m_pointColors->getNumberOfComponents() == 3;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline bool Mesh::hasRGBCellColors() const
 {
     return m_cellColors->getNumberOfComponents() == 3;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline Mesh::Attributes Mesh::getAttributes() const
 {
     return m_attributes;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void Mesh::setAttributes(const Mesh::Attributes& _attributes)
 {
     m_attributes = _attributes;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

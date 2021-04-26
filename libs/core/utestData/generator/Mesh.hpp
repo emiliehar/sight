@@ -30,6 +30,7 @@
 
 namespace sight::utestData
 {
+
 namespace generator
 {
 
@@ -38,10 +39,8 @@ namespace generator
  */
 class Mesh
 {
-
 public:
-
-    typedef std::map< std::array<float, 3>, data::Mesh::PointId> PointsMapType;
+    typedef std::map<std::array<float, 3>, data::Mesh::PointId> PointsMapType;
 
     /**
      * @brief Initialize 'rand' seed
@@ -52,7 +51,7 @@ public:
      * @brief Generate a mesh.
      * @param mesh mesh to generate
      */
-    UTESTDATA_API static void generateMesh( const data::Mesh::sptr& mesh );
+    UTESTDATA_API static void generateMesh(const data::Mesh::sptr& mesh);
 
     /**
      * @brief Generate a quad mesh.
@@ -91,7 +90,6 @@ public:
         data::Mesh::Attributes attributes = data::Mesh::Attributes::NONE);
 
 private:
-
     /**
      * @brief Add quad cells in mesh, this method generates synthetic data (two face of a cube).
      *
@@ -101,10 +99,11 @@ private:
      * @param[in]   edgeDim float Edge dimension in 3D world.
      */
 
-    static void addQuadMesh(const data::Mesh::sptr& mesh,
-                            PointsMapType& points,
-                            size_t nbPointsByEdge = 10,
-                            float edgeDim         = 100.f);
+    static void addQuadMesh(
+        const data::Mesh::sptr& mesh,
+        PointsMapType& points,
+        size_t nbPointsByEdge = 10,
+        float edgeDim         = 100.f);
 
     /**
      * @brief Add triangle cells in mesh, this method generates synthetic data (two face of a cube).
@@ -114,14 +113,16 @@ private:
      * @param[in]   nbPointsByEdge size_t Number of points by edge.
      * @param[in]   edgeDim float Edge dimension in 3D world.
      */
-    static void addTriangleMesh(const data::Mesh::sptr& mesh,
-                                PointsMapType& points,
-                                size_t nbPointsByEdge = 10,
-                                float edgeDim         = 100.f);
+    static void addTriangleMesh(
+        const data::Mesh::sptr& mesh,
+        PointsMapType& points,
+        size_t nbPointsByEdge = 10,
+        float edgeDim         = 100.f);
 
-    static data::Mesh::PointId addPoint(const data::Mesh::PointValueType* pt,
-                                        const data::Mesh::sptr& mesh,
-                                        PointsMapType& points);
+    static data::Mesh::PointId addPoint(
+        const data::Mesh::PointValueType* pt,
+        const data::Mesh::sptr& mesh,
+        PointsMapType& points);
     /**
      * @brief Shake points of the mesh.
      *
@@ -131,4 +132,5 @@ private:
 };
 
 } // namespace generator
+
 } // namespace sight::utestData

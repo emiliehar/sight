@@ -37,6 +37,7 @@ static std::mutex s_generator_mutex;
 std::string UUID::generateUUID()
 {
     std::lock_guard<std::mutex> guard(s_generator_mutex);
+
     return boost::uuids::to_string(s_generator());
 }
 

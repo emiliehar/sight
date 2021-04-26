@@ -52,9 +52,9 @@ int main(int argc, char** argv)
     ::boost::program_options::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "produce help message")
-        ("output,o", ::boost::program_options::value< std::string >(), "set output file")
-        ("context,f", ::boost::program_options::value< std::string >(), "set context name")
-        ("version,v", ::boost::program_options::value< std::string >(), "set version name")
+        ("output,o", ::boost::program_options::value<std::string>(), "set output file")
+        ("context,f", ::boost::program_options::value<std::string>(), "set context name")
+        ("version,v", ::boost::program_options::value<std::string>(), "set version name")
     ;
 
     // Manage the options
@@ -62,31 +62,37 @@ int main(int argc, char** argv)
     ::boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
     ::boost::program_options::notify(vm);
 
-    if (vm.count("help"))
+    if(vm.count("help"))
     {
         std::cout << desc << "\n";
+
         return EXIT_SUCCESS;
     }
     else if(!vm.count("context"))
     {
         std::cout << "You must specify a context name." << "\n";
+
         return EXIT_FAILURE;
     }
     else if(!vm.count("version"))
     {
         std::cout << "You must specify a version name." << "\n";
+
         return EXIT_FAILURE;
     }
     else if(!vm.count("output"))
     {
         std::cout << "You must specify a output file." << "\n";
+
         return EXIT_FAILURE;
     }
 
     // Generate the result
-    std::filesystem::path versionFile(vm["output"].as< std::string >());
-    sight::io::atoms::patch::VersionsManager::generateNewFile(versionFile, vm["context"].as< std::string >(),
-                                                              vm["version"].as< std::string >());
+    std::filesystem::path versionFile(vm["output"].as<std::string>());
+    sight::io::atoms::patch::VersionsManager::generateNewFile(
+        versionFile,
+        vm["context"].as<std::string>(),
+        vm["version"].as<std::string>());
 
     return EXIT_SUCCESS;
 }

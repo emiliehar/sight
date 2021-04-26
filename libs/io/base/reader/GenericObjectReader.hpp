@@ -43,9 +43,7 @@ namespace reader
 template<class DATATYPE>
 class GenericObjectReader : virtual public io::base::reader::IObjectReader
 {
-
 public:
-
     /// the object type related
     typedef DATATYPE DataType;
 
@@ -56,11 +54,11 @@ public:
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     std::string extension() override
     {
-        return ("");
+        return "";
     }
 
     /// Destructor. Do nothing.
@@ -74,9 +72,9 @@ public:
      *
      * This method overload setObject to ensure that given object correspond to DATATYPE
      */
-    void setObject( core::tools::Object::sptr obj ) override
+    void setObject(core::tools::Object::sptr obj) override
     {
-        assert( std::dynamic_pointer_cast< DataType >( obj ) );
+        assert(std::dynamic_pointer_cast<DataType>(obj));
         m_object = obj;
     }
 
@@ -86,11 +84,10 @@ public:
      *
      * This method automatic cast object in correct DataType.
      */
-    virtual std::shared_ptr< DataType > getConcreteObject()
+    virtual std::shared_ptr<DataType> getConcreteObject()
     {
-        return std::dynamic_pointer_cast< DataType >( getObject() );
+        return std::dynamic_pointer_cast<DataType>(getObject());
     }
-
 };
 
 } // namespace reader

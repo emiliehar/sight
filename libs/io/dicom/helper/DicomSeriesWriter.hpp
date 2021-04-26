@@ -32,18 +32,24 @@
 
 namespace sight::core::jobs
 {
+
 class Observer;
 class IJob;
+
 }
 
 namespace sight::data
 {
+
 class DicomSeries;
+
 }
 
 namespace sight::io::zip
 {
+
 class IWriteArchive;
+
 }
 
 namespace sight::io::dicom
@@ -51,6 +57,7 @@ namespace sight::io::dicom
 
 namespace helper
 {
+
 class DicomAnonymizer;
 
 /**
@@ -62,14 +69,14 @@ class DicomAnonymizer;
  * If the DicomSeries contains the binaries of the DICOM files, the files are extracted (or zipped).
  * If the DicomSeries contains the paths of the DICOM files, a simple copy (or zip) is performed.
  */
-class DicomSeriesWriter : public io::base::writer::GenericObjectWriter< data::DicomSeries >,
+class DicomSeriesWriter : public io::base::writer::GenericObjectWriter<data::DicomSeries>,
                           public core::location::SingleFolder
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(DicomSeriesWriter, io::base::writer::GenericObjectWriter< data::DicomSeries>,
-                        io::base::writer::factory::New< DicomSeriesWriter >);
+    SIGHT_DECLARE_CLASS(
+        DicomSeriesWriter,
+        io::base::writer::GenericObjectWriter<data::DicomSeries>,
+        io::base::writer::factory::New<DicomSeriesWriter>);
 
     SIGHT_ALLOW_SHARED_FROM_THIS();
 
@@ -94,11 +101,11 @@ public:
      * @param archive Archive instance
      * @param subPath Path within archive where DICOM files are saved (only if an anonymizer instance is defined)
      */
-    IO_DICOM_API void setOutputArchive(const SPTR(io::zip::IWriteArchive)& archive,
-                                       const std::string& subPath = "");
+    IO_DICOM_API void setOutputArchive(
+        const SPTR(io::zip::IWriteArchive)& archive,
+        const std::string& subPath = "");
 
 protected:
-
     /// Compute DICOM filename according to anonymizer or return default filename.
     std::string getFilename(const size_t& instanceIndex);
 
@@ -128,4 +135,5 @@ protected:
 };
 
 } // namespace helper
+
 } // namespace sight::io::dicom

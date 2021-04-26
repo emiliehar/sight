@@ -62,7 +62,6 @@ namespace adaptor
  */
 class MODULE_VIZ_SCENE2D_CLASS_API SAxis : public sight::viz::scene2d::IAdaptor
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SAxis, sight::viz::scene2d::IAdaptor)
 
@@ -70,18 +69,17 @@ public:
     MODULE_VIZ_SCENE2D_API virtual ~SAxis() noexcept;
 
 protected:
-
     void starting() override;
     void stopping() override;
     void updating() override;
     void configuring() override;
 
     /// Manage the given events
-    MODULE_VIZ_SCENE2D_API void processInteraction( sight::viz::scene2d::data::Event& _event ) override;
+    MODULE_VIZ_SCENE2D_API void processInteraction(sight::viz::scene2d::data::Event& _event) override;
 
     MODULE_VIZ_SCENE2D_API KeyConnectionsMap getAutoConnections() const override;
-private:
 
+private:
     /// Builds axis graphic items.
     void buildAxis();
 
@@ -120,8 +118,9 @@ private:
     QGraphicsLineItem* m_line{nullptr};
 
     /// The graphic items that refer to ticks of the axis.
-    std::vector< QGraphicsLineItem* > m_ticks;
+    std::vector<QGraphicsLineItem*> m_ticks;
 };
 
-}   // namespace adaptor
-}   // namespace sight::module::viz::scene2d
+} // namespace adaptor
+
+} // namespace sight::module::viz::scene2d

@@ -26,28 +26,29 @@
 #include <data/Landmarks.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::LandmarksTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::LandmarksTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::copyTest()
 {
@@ -92,7 +93,7 @@ void LandmarksTest::copyTest()
 
         const data::Landmarks::GroupNameContainer names = landmarks->getGroupNames();
 
-        for (const auto& name : names)
+        for(const auto& name : names)
         {
             CPPUNIT_ASSERT_NO_THROW(landmarksCopy->getGroup(name));
 
@@ -118,7 +119,8 @@ void LandmarksTest::copyTest()
         CPPUNIT_ASSERT_EQUAL(landmarks->getNumberOfPoints(), landmarksCopy->getNumberOfPoints());
 
         const data::Landmarks::GroupNameContainer names = landmarks->getGroupNames();
-        for (const auto& name : names)
+
+        for(const auto& name : names)
         {
             CPPUNIT_ASSERT_NO_THROW(landmarksCopy->getGroup(name));
 
@@ -135,7 +137,7 @@ void LandmarksTest::copyTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::groupTest()
 {
@@ -268,7 +270,7 @@ void LandmarksTest::groupTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void LandmarksTest::pointsTest()
 {
@@ -360,7 +362,8 @@ void LandmarksTest::pointsTest()
     CPPUNIT_ASSERT_EQUAL(size_t(0), landmarks->getNumberOfPoints());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

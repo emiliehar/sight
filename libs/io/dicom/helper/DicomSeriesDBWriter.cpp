@@ -43,7 +43,7 @@ namespace sight::io::dicom
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomSeriesDBWriter::DicomSeriesDBWriter(io::base::writer::IObjectWriter::Key key) :
     m_aggregator(core::jobs::Aggregator::New("Writing Dicom series")),
@@ -51,56 +51,58 @@ DicomSeriesDBWriter::DicomSeriesDBWriter(io::base::writer::IObjectWriter::Key ke
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomSeriesDBWriter::~DicomSeriesDBWriter()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string DicomSeriesDBWriter::extension()
 {
     return "";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::jobs::Aggregator::sptr DicomSeriesDBWriter::getAggregator()
 {
     return m_aggregator;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesDBWriter::setAnonymizer(const DicomAnonymizer::sptr& anonymizer)
 {
     m_anonymizer = anonymizer;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesDBWriter::setProducer(std::string producer)
 {
     m_producer = producer;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesDBWriter::enableZippedArchive(bool enable)
 {
     m_enableZippedArchive = enable;
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 std::string getSubPath(int index)
 {
     std::stringstream ss;
     ss << std::setfill('0') << std::setw(3) << index;
+
     return ss.str();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSeriesDBWriter::write()
 {
@@ -123,12 +125,14 @@ void DicomSeriesDBWriter::write()
     const auto nbSeries = seriesDB->getContainer().size();
     int processedSeries = 0;
 
-    for(data::Series::sptr series: seriesDB->getContainer())
+    for(data::Series::sptr series : seriesDB->getContainer())
     {
         const data::DicomSeries::sptr& dicomSeries = data::DicomSeries::dynamicCast(series);
 
-        core::jobs::Job::sptr job =
-            core::jobs::Job::New("Write Dicom series", [&, dicomSeries](core::jobs::Job& runningJob)
+        core::jobs::Job::sptr job
+            = core::jobs::Job::New(
+                  "Write Dicom series",
+                  [&, dicomSeries](core::jobs::Job& runningJob)
                 {
                     if(!runningJob.cancelRequested())
                     {
@@ -139,13 +143,14 @@ void DicomSeriesDBWriter::write()
                         writer->setAnonymizer(m_anonymizer);
                         writer->setOutputArchive(writeArchive, nbSeries > 1 ? getSubPath(processedSeries++) : "");
 
-                        runningJob.addCancelHook([&](core::jobs::IJob& subJob)
+                        runningJob.addCancelHook(
+                            [&](core::jobs::IJob& subJob)
                         {
                             writer->getJob()->cancel();
-                        }
-                                                 );
+                        });
 
-                        writer->getJob()->addDoneWorkHook([&](core::jobs::IJob& subJob, std::uint64_t oldWork)
+                        writer->getJob()->addDoneWorkHook(
+                            [&](core::jobs::IJob& subJob, std::uint64_t oldWork)
                         {
                             runningJob.doneWork(subJob.getDoneWorkUnits());
                         });
@@ -164,13 +169,13 @@ void DicomSeriesDBWriter::write()
                         }
                     }
                 },
-                                 core::thread::ActiveWorkers::getDefaultWorker());
+                  core::thread::ActiveWorkers::getDefaultWorker());
 
-        m_aggregator->addCancelHook([&](core::jobs::IJob& subJob)
+        m_aggregator->addCancelHook(
+            [&](core::jobs::IJob& subJob)
                 {
                     job->cancel();
-                }
-                                    );
+                });
         m_aggregator->add(job);
     }
 
@@ -179,6 +184,8 @@ void DicomSeriesDBWriter::write()
     futureAG.wait();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+
 } // namespace helper
+
 } // namespace sight::io::dicom

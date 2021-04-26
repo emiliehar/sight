@@ -32,6 +32,7 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -40,9 +41,7 @@ namespace ut
  */
 class TestService : public service::IService
 {
-
 public:
-
     static unsigned int s_START_COUNTER;
     static unsigned int s_UPDATE_COUNTER;
     static const std::string s_OPTION_KEY;
@@ -58,7 +57,7 @@ public:
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual void configuring() final
     {
@@ -66,14 +65,15 @@ public:
 
         m_option = cfg.get(s_OPTION_KEY, s_NOT_DEFINED);
     }
+
     void starting() override;
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual void stopping() final;
     void updating() override;
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    void info(std::ostream& _sstream ) override
+    void info(std::ostream& _sstream) override
     {
         _sstream << "TestService";
     }
@@ -108,28 +108,28 @@ public:
         m_isUpdated2 = false;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     unsigned int getStartOrder() const
     {
         return m_startOrder;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     unsigned int getUpdateOrder() const
     {
         return m_updateOrder;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void setRaiseException(bool raiseException)
     {
         m_raiseException = raiseException;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     const std::string& getOption() const
     {
@@ -137,12 +137,12 @@ public:
     }
 
 protected:
-    bool m_isUpdated { false };
-    bool m_isUpdated2 { false };
-    bool m_isUpdatedMessage { false };
-    bool m_raiseException { false };
-    unsigned int m_startOrder { 0 };
-    unsigned int m_updateOrder { 0 };
+    bool m_isUpdated{false};
+    bool m_isUpdated2{false};
+    bool m_isUpdatedMessage{false};
+    bool m_raiseException{false};
+    unsigned int m_startOrder{0};
+    unsigned int m_updateOrder{0};
     std::string m_option{s_UNCONFIGURED};
 };
 
@@ -151,7 +151,6 @@ protected:
  */
 class TestServiceImplementation : public TestService
 {
-
 public:
     SIGHT_DECLARE_SERVICE(TestServiceImplementation, service::ut::TestService)
 
@@ -161,41 +160,41 @@ public:
     static const core::com::Slots::SlotKeyType s_UPDATE2_SLOT;
 
     /// Type os signal
-    typedef core::com::Signal< void (const std::string&)> MsgSentSignalType;
+    typedef core::com::Signal<void (const std::string&)> MsgSentSignalType;
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     TestServiceImplementation() noexcept;
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     virtual ~TestServiceImplementation() noexcept;
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     virtual void starting() final
     {
         TestService::starting();
     }
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     void updating() override
     {
         TestService::updating();
         m_isUpdated = true;
     }
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     void update2()
     {
         m_isUpdated2 = true;
     }
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     void swapping(const KeyType& key) override
     {
         m_swappedObjectKey = key;
-        m_swappedObject    = this->getInput< data::Object>(key);
+        m_swappedObject    = this->getInput<data::Object>(key);
     }
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     KeyConnectionsMap getAutoConnections() const override
     {
         KeyConnectionsMap connections;
@@ -206,30 +205,31 @@ public:
         connections.push("data4", data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
         connections.push("data5", data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
         connections.push("dataGroup", data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
         return connections;
     }
 
-    //-------------------------------------------------------------------------
-    void info(std::ostream& _sstream ) override
+    // -------------------------------------------------------------------------
+    void info(std::ostream& _sstream) override
     {
         _sstream << "TestServiceImplementation";
     }
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     const std::string& getSwappedObjectKey() const
     {
         return m_swappedObjectKey;
     }
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     data::Object::csptr getSwappedObject() const
     {
         return m_swappedObject;
     }
 
-    //-------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
 private:
     std::string m_swappedObjectKey;
@@ -241,15 +241,15 @@ private:
  */
 class TestServiceImplementation2 : public TestService
 {
-
 public:
     SIGHT_DECLARE_SERVICE(TestServiceImplementation2, service::ut::TestService)
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     TestServiceImplementation2() noexcept
     {
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     virtual ~TestServiceImplementation2() noexcept
     {
     }
@@ -260,7 +260,6 @@ public:
  */
 class TestSrvAutoconnect : public TestService
 {
-
 public:
     SIGHT_DECLARE_SERVICE(TestSrvAutoconnect, service::ut::TestService)
 
@@ -270,9 +269,9 @@ public:
     static const core::com::Slots::SlotKeyType s_SLOT_1;
 
     /// Type os signal
-    typedef core::com::Signal< void (int)> MsgSentSignalType;
+    typedef core::com::Signal<void (int)> MsgSentSignalType;
 
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     TestSrvAutoconnect() noexcept :
         m_received(false)
@@ -280,40 +279,47 @@ public:
         newSignal<MsgSentSignalType>(s_SIG_1);
         newSlot(s_SLOT_1, &TestSrvAutoconnect::receiveSlot, this);
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     virtual ~TestSrvAutoconnect() noexcept
     {
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
 
     void updating() override
     {
         m_isUpdated = true;
     }
-    //-------------------------------------------------------------------------
 
-    void info(std::ostream& _sstream ) override
+    // -------------------------------------------------------------------------
+
+    void info(std::ostream& _sstream) override
     {
         _sstream << "TestSrvAutoconnect";
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     void receiveSlot()
     {
         m_received = true;
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
 
     void resetReceive()
     {
         m_received = false;
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
 
     bool getReceived() const
     {
         return m_received;
     }
-    //-------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
 
     IService::KeyConnectionsMap getAutoConnections() const override
     {
@@ -326,10 +332,10 @@ public:
 
         return connections;
     }
-    //-------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
 
 private:
-
     int m_received;
 };
 
@@ -339,7 +345,6 @@ private:
 class TestServiceWithData : public service::IService
 {
 public:
-
     static const KeyType s_INPUT;
     static const KeyType s_INOUT_GROUP;
     static const KeyType s_OUTPUT;
@@ -355,30 +360,31 @@ public:
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void registerGroup()
     {
         this->registerObjectGroup(s_INOUT_GROUP, AccessType::INOUT, 2, true);
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void configuring() override
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void starting() override
     {
-
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     void stopping() override;
     void updating() override;
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

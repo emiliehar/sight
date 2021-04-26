@@ -32,6 +32,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -39,15 +40,17 @@ namespace detail::data
 MeshSerializer::sptr MeshSerializer::shared()
 {
     struct make_shared_enabler final : public MeshSerializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MeshSerializer::uptr MeshSerializer::unique()
 {
     struct make_unique_enabler final : public MeshSerializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
 /// Serialization function
@@ -96,4 +99,5 @@ void MeshSerializer::serialize(
 }
 
 } // detail::data
+
 } // namespace sight::io::session

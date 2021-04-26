@@ -40,7 +40,6 @@ namespace sight::io::atoms::patch
  **/
 class IO_ATOMS_CLASS_API VersionsGraph : public core::BaseObject
 {
-
 public:
     SIGHT_DECLARE_CLASS(VersionsGraph, io::atoms::patch::VersionsGraph, new VersionsGraph)
     SIGHT_ALLOW_SHARED_FROM_THIS();
@@ -55,7 +54,7 @@ public:
     typedef ::boost::graph_traits<GraphType>::edge_descriptor EdgeIDType;
     typedef std::map<NodeType, NodeIDType, io::atoms::patch::VersionDescriptor::Compare> ExistingNodesType;
     typedef std::map<EdgeType, EdgeIDType, io::atoms::patch::LinkDescriptor::Compare> ExistingEdgesType;
-    typedef std::vector< NodeIDType > VersionSeriesType;
+    typedef std::vector<NodeIDType> VersionSeriesType;
     typedef std::pair<LinkDescriptor::VersionIDType, bool> LinkedVersionType;
     /**  @} */
 
@@ -108,15 +107,16 @@ public:
      * (Do not rely on the versionID if returned bool is set to false).
      */
     IO_ATOMS_API LinkedVersionType getLinkedVersion(
-        const NodeIDType& originID, const NodeIDType& targetID, LinkDescriptor::VersionIDType current);
+        const NodeIDType& originID,
+        const NodeIDType& targetID,
+        LinkDescriptor::VersionIDType current);
 
     /**
      * @brief Get connected versions
      */
-    IO_ATOMS_API std::vector< std::string > getConnectedVersions(const std::string& currentVersion);
+    IO_ATOMS_API std::vector<std::string> getConnectedVersions(const std::string& currentVersion);
 
 private:
-
     /**
      * @brief Create or update a node
      * @param node the created/updated node

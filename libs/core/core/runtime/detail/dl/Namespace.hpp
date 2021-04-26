@@ -24,8 +24,10 @@
 
 namespace sight::core::runtime
 {
+
 namespace detail
 {
+
 /**
  * @brief       The namespace sightcore::runtime::dl contains classes to manage library module.
  */

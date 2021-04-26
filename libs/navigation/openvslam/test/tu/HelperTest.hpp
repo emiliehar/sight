@@ -40,8 +40,7 @@ namespace ut
 class HelperTest : public CPPUNIT_NS::TestFixture
 {
 public:
-
-    CPPUNIT_TEST_SUITE( HelperTest );
+    CPPUNIT_TEST_SUITE(HelperTest);
     CPPUNIT_TEST(toSight);
     CPPUNIT_TEST(fromSight);
     CPPUNIT_TEST(createConfig);
@@ -58,9 +57,10 @@ public:
     void writeReadConfig();
 
     /// Comparision of camera, set _sightExpected to true if the expected values are sight camera, false otherwise.
-    void compareCam(const data::Camera::csptr _sightCam, const ::openvslam::camera::perspective& _ovsCam,
-                    bool _sightExpected = true);
-
+    void compareCam(
+        const data::Camera::csptr _sightCam,
+        const ::openvslam::camera::perspective& _ovsCam,
+        bool _sightExpected = true);
 };
 
 }

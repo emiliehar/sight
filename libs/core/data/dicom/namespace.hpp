@@ -26,4 +26,4 @@
 namespace sight::data::dicom
 {
 
-} //namespace sight::data::dicom
+} // namespace sight::data::dicom

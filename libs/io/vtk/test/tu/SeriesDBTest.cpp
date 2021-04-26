@@ -40,35 +40,36 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::vtk::ut::SeriesDBTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::vtk::ut::SeriesDBTest);
 
 namespace sight::io::vtk
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::testImportSeriesDB()
 {
     data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
 
-    const std::filesystem::path imagePath( utestData::Data::dir() / "sight/image/vtk/img.vtk" );
-    const std::filesystem::path meshPath( utestData::Data::dir() / "sight/mesh/vtk/sphere.vtk" );
+    const std::filesystem::path imagePath(utestData::Data::dir() / "sight/image/vtk/img.vtk");
+    const std::filesystem::path meshPath(utestData::Data::dir() / "sight/mesh/vtk/sphere.vtk");
 
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + imagePath.string(), std::filesystem::exists(imagePath));
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + meshPath.string(), std::filesystem::exists(meshPath));
@@ -103,20 +104,22 @@ void SeriesDBTest::testImportSeriesDB()
     data::Mesh::sptr mesh1 = rec1->getMesh();
     data::Mesh::sptr mesh2 = rec2->getMesh();
 
-    CPPUNIT_ASSERT_EQUAL(mesh1->getNumberOfCells(), (data::Mesh::Size)720);
-    CPPUNIT_ASSERT_EQUAL(mesh1->getNumberOfPoints(), (data::Mesh::Size)362);
+    CPPUNIT_ASSERT_EQUAL(mesh1->getNumberOfCells(), (data::Mesh::Size) 720);
+    CPPUNIT_ASSERT_EQUAL(mesh1->getNumberOfPoints(), (data::Mesh::Size) 362);
 
     data::reflection::visitor::CompareObjects visitor;
     visitor.compare(mesh1, mesh2);
     SPTR(data::reflection::visitor::CompareObjects::PropsMapType) props = visitor.getDifferences();
-    for( data::reflection::visitor::CompareObjects::PropsMapType::value_type prop :  (*props) )
+
+    for(data::reflection::visitor::CompareObjects::PropsMapType::value_type prop : (*props))
     {
-        SIGHT_ERROR( "new object difference found : " << prop.first << " '" << prop.second << "'" );
+        SIGHT_ERROR("new object difference found : " << prop.first << " '" << prop.second << "'");
     }
-    CPPUNIT_ASSERT_MESSAGE("Object Not equal", props->size() == 0 );
+
+    CPPUNIT_ASSERT_MESSAGE("Object Not equal", props->size() == 0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool isLoaded(core::memory::BufferObject::sptr bo)
 {
@@ -130,20 +133,20 @@ bool isLoaded(core::memory::BufferObject::sptr bo)
     return info.loaded;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesDBTest::testLazyImportSeriesDB()
 {
     core::memory::BufferManager::sptr manager = core::memory::BufferManager::getDefault();
     {
-        core::mt::WriteLock lock( manager->getMutex() );
+        core::mt::WriteLock lock(manager->getMutex());
         manager->setLoadingMode(core::memory::BufferManager::LAZY);
     }
 
     data::SeriesDB::sptr seriesDB = data::SeriesDB::New();
 
-    const std::filesystem::path imagePath( utestData::Data::dir() / "sight/image/vtk/img.vtk" );
-    const std::filesystem::path meshPath( utestData::Data::dir() / "sight/mesh/vtk/sphere.vtk" );
+    const std::filesystem::path imagePath(utestData::Data::dir() / "sight/image/vtk/img.vtk");
+    const std::filesystem::path meshPath(utestData::Data::dir() / "sight/mesh/vtk/sphere.vtk");
 
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + imagePath.string(), std::filesystem::exists(imagePath));
     CPPUNIT_ASSERT_MESSAGE(std::string("Missing file: ") + meshPath.string(), std::filesystem::exists(meshPath));
@@ -160,7 +163,7 @@ void SeriesDBTest::testLazyImportSeriesDB()
 
     CPPUNIT_ASSERT_EQUAL(size_t(2), seriesDB->getContainer().size());
 
-    //check ImageSeries
+    // check ImageSeries
     {
         data::ImageSeries::sptr imgSeries = data::ImageSeries::dynamicCast(seriesDB->at(0));
         CPPUNIT_ASSERT_MESSAGE("ImageSeries dynamicCast failed", imgSeries);
@@ -173,7 +176,7 @@ void SeriesDBTest::testLazyImportSeriesDB()
         CPPUNIT_ASSERT_MESSAGE("ImageSeries is still lazy-loaded", isLoaded(bo));
     }
 
-    //check ModelSeries
+    // check ModelSeries
     {
         data::ModelSeries::sptr modelSeries = data::ModelSeries::dynamicCast(seriesDB->at(1));
         CPPUNIT_ASSERT_MESSAGE("ModelSeries dynamicCast failed", modelSeries);
@@ -187,12 +190,13 @@ void SeriesDBTest::testLazyImportSeriesDB()
     }
 
     {
-        core::mt::WriteLock lock( manager->getMutex() );
+        core::mt::WriteLock lock(manager->getMutex());
         manager->setLoadingMode(core::memory::BufferManager::DIRECT);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::io::vtk

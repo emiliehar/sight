@@ -26,28 +26,29 @@
 
 #include <limits>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::atoms::ut::BooleanTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::atoms::ut::BooleanTest);
 
 namespace sight::atoms
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BooleanTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void BooleanTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void BooleanTest::conversion()
 {
@@ -55,7 +56,7 @@ void BooleanTest::conversion()
 
     atoms::Boolean::sptr meta;
 
-    for ( bool BOOL : VALUES )
+    for(bool BOOL : VALUES)
     {
         std::string res = BOOL ? "true" : "false";
 
@@ -65,5 +66,6 @@ void BooleanTest::conversion()
     }
 }
 
-}  // namespace ut
-}  // namespace sight::atoms
+} // namespace ut
+
+} // namespace sight::atoms

@@ -28,8 +28,10 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief   Defines the generic input dialog for IHM.
  * Use the Delegate design pattern
@@ -45,9 +47,7 @@ namespace dialog
  */
 class UI_BASE_CLASS_API InputDialog : public ui::base::dialog::IInputDialog
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(InputDialog, ui::base::dialog::IInputDialog, new InputDialog)
 
     /**
@@ -58,8 +58,10 @@ public:
      * @param text the input text in the input field
      * @return Returns text in the input field
      */
-    UI_BASE_API static std::string showInputDialog(const std::string& title, const std::string& message,
-                                                   const std::string& text = "");
+    UI_BASE_API static std::string showInputDialog(
+        const std::string& title,
+        const std::string& message,
+        const std::string& text = "");
 
     /** @brief Constructor. Create the implementation of the specific input dialog box.
      *
@@ -99,10 +101,10 @@ public:
     UI_BASE_API std::string getInput() override;
 
 protected:
-
     /// Implementation of an input dialog in a specific IHM (wx/Qt)
     ui::base::dialog::IInputDialog::sptr m_implementation;
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

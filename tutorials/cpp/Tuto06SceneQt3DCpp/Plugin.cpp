@@ -31,29 +31,29 @@ namespace Tuto06SceneQt3DCpp
 
 SIGHT_REGISTER_PLUGIN("::Tuto06SceneQt3DCpp::Plugin");
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Plugin::Plugin() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Plugin::~Plugin() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::start()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::initialize()
 {
-    m_appManager = std::make_unique< service::AppManager >();
+    m_appManager = std::make_unique<service::AppManager>();
     m_appManager->create();
 
     /* **************************************************************************************
@@ -61,26 +61,34 @@ void Plugin::initialize()
     ****************************************************************************************/
 
     const auto frameSrv = m_appManager->addService("::sight::module::ui::base::SFrame", true, false);
-    const auto menuBar  = m_appManager->addService("::sight::module::ui::base::SMenuBar", "menuBar",
-                                                   true,
-                                                   false);
-    const auto menu =
-        m_appManager->addService("::sight::module::ui::base::SMenu", "menuFile", true, false);
-    const auto actionOpenMesh = m_appManager->addService("::sight::module::ui::base::com::SStarter",
-                                                         "actionOpenMesh",
-                                                         true,
-                                                         false);
-    const auto actionQuit = m_appManager->addService("::sight::module::ui::base::SQuit", "actionQuit", true,
-                                                     false);
-    const auto mainView =
-        m_appManager->addService("::sight::module::ui::base::SView", "mainView", true, false);
+    const auto menuBar  = m_appManager->addService(
+        "::sight::module::ui::base::SMenuBar",
+        "menuBar",
+        true,
+        false);
+    const auto menu
+        = m_appManager->addService("::sight::module::ui::base::SMenu", "menuFile", true, false);
+    const auto actionOpenMesh = m_appManager->addService(
+        "::sight::module::ui::base::com::SStarter",
+        "actionOpenMesh",
+        true,
+        false);
+    const auto actionQuit = m_appManager->addService(
+        "::sight::module::ui::base::SQuit",
+        "actionQuit",
+        true,
+        false);
+    const auto mainView
+        = m_appManager->addService("::sight::module::ui::base::SView", "mainView", true, false);
 
-    const auto meshReaderSrv = m_appManager->addService("::sight::module::ui::base::io::SSelector", "meshReader",
-                                                        true,
-                                                        false);
-    const auto renderSrv   = m_appManager->addService("::sight::viz::qt3d::SRender", "genericScene", true, false);
-    const auto meshAdaptor =
-        m_appManager->addService("::sight::module::viz::qt3d::adaptor::SMesh", "meshAdaptor", true, false);
+    const auto meshReaderSrv = m_appManager->addService(
+        "::sight::module::ui::base::io::SSelector",
+        "meshReader",
+        true,
+        false);
+    const auto renderSrv = m_appManager->addService("::sight::viz::qt3d::SRender", "genericScene", true, false);
+    const auto meshAdaptor
+        = m_appManager->addService("::sight::module::viz::qt3d::adaptor::SMesh", "meshAdaptor", true, false);
 
     /* **************************************************************************************
     *              GUI configuration
@@ -196,13 +204,13 @@ void Plugin::initialize()
     m_appManager->startServices();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::stop() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Plugin::uninitialize() noexcept
 {
@@ -210,6 +218,6 @@ void Plugin::uninitialize() noexcept
     m_appManager.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace Tuto06SceneQt3DCpp.

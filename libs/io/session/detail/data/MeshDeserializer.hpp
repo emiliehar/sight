@@ -27,6 +27,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -35,7 +36,6 @@ class MeshDeserializer : public IDataDeserializer
 {
 public:
     SIGHT_DECLARE_CLASS(MeshDeserializer, IDataDeserializer)
-
     /// Delete default copy constructors and assignment operators
     MeshDeserializer(const MeshDeserializer&)            = delete;
     MeshDeserializer(MeshDeserializer&&)                 = delete;
@@ -62,10 +62,10 @@ public:
     sight::data::Object::sptr create() override;
 
 protected:
-
     /// Default constructor
     MeshDeserializer() = default;
 };
 
 } // namespace detail::data
+
 } // namespace sight::io::session

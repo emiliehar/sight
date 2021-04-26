@@ -33,7 +33,6 @@ namespace sight::filter::dicom
 class Plugin
 {
 public:
-
     /// Constructor
     FILTER_DICOM_API Plugin();
 

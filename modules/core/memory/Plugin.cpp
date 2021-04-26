@@ -28,17 +28,17 @@
 namespace sight::module::memory
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SIGHT_REGISTER_PLUGIN("::sight::module::memory::Plugin");
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Plugin::~Plugin() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Plugin::start()
 {
@@ -46,16 +46,17 @@ void Plugin::start()
 
     const std::string modeKey = "loading_mode";
 
-    if ( this->getModule()->hasParameter(modeKey) )
+    if(this->getModule()->hasParameter(modeKey))
     {
-        core::mt::WriteLock lock( manager->getMutex() );
+        core::mt::WriteLock lock(manager->getMutex());
         std::string mode = this->getModule()->getParameterValue(modeKey);
-        if (mode == "lazy")
+
+        if(mode == "lazy")
         {
             manager->setLoadingMode(core::memory::BufferManager::LAZY);
             SIGHT_INFO("Enabled lazy loading mode");
         }
-        else if (mode == "direct")
+        else if(mode == "direct")
         {
             manager->setLoadingMode(core::memory::BufferManager::DIRECT);
             SIGHT_INFO("Enabled direct loading mode");
@@ -67,12 +68,12 @@ void Plugin::start()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Plugin::stop() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::memory

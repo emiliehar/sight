@@ -35,7 +35,7 @@ namespace exception
 /// Bad call exception.
 struct BadCall : core::Exception
 {
-    CORE_API BadCall ( const std::string& err );
+    CORE_API BadCall(const std::string& err);
 };
 
 } // namespace exception

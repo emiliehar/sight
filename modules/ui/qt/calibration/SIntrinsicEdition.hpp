@@ -57,7 +57,6 @@ namespace sight::module::ui::qt::calibration
 class MODULE_UI_QT_CLASS_API SIntrinsicEdition : public QObject,
                                                  public service::IService
 {
-
 Q_OBJECT;
 
 public:
@@ -99,26 +98,24 @@ public:
     MODULE_UI_QT_API void swapping() override;
 
 private Q_SLOTS:
-
     /**
      * @brief onNewCalibration
      * @param cal
      */
-    void onNewCalibration( std::array< double, 12 >& cal);
+    void onNewCalibration(std::array<double, 12>& cal);
 
 private:
-
     void updateCalibration();
 
     void readCalibration();
 
-    std::array<double, 4>    m_intrinsic;
-    std::array<double, 5>    m_distParameters;
+    std::array<double, 4> m_intrinsic;
+    std::array<double, 5> m_distParameters;
 
     double m_skew;
-    std::array< double, 2 > m_resolution;
+    std::array<double, 2> m_resolution;
 
-    std::array< double, 12 > m_calibration;
+    std::array<double, 12> m_calibration;
 
     SUpdateIntrinsicDialog* m_dialog;
 };

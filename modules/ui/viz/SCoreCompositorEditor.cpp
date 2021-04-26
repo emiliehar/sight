@@ -50,28 +50,27 @@
 namespace sight::module::ui::viz
 {
 
-
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCoreCompositorEditor::SCoreCompositorEditor() noexcept :
     m_isLayerSelected(false)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SCoreCompositorEditor::~SCoreCompositorEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::starting()
 {
     this->create();
 
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(
-        this->getContainer() );
+        this->getContainer());
 
     QVBoxLayout* layout = new QVBoxLayout();
 
@@ -102,7 +101,7 @@ void SCoreCompositorEditor::starting()
 
         m_transparencyButtonGroup = new QButtonGroup(groupBox);
 
-        m_buttonDefault = new QRadioButton( tr("Default"), groupBox );
+        m_buttonDefault = new QRadioButton(tr("Default"), groupBox);
         m_buttonDefault->setMinimumSize(m_buttonDefault->sizeHint());
         m_buttonDefault->setEnabled(false);
         m_transparencyButtonGroup->addButton(m_buttonDefault, 0);
@@ -111,7 +110,7 @@ void SCoreCompositorEditor::starting()
         m_labelDefault->setEnabled(false);
         layoutGroupBox->addWidget(m_labelDefault);
 
-        m_buttonDepthPeeling = new QRadioButton( tr("Depth Peeling"), groupBox );
+        m_buttonDepthPeeling = new QRadioButton(tr("Depth Peeling"), groupBox);
         m_buttonDepthPeeling->setMinimumSize(m_buttonDepthPeeling->sizeHint());
         m_buttonDepthPeeling->setEnabled(false);
         m_transparencyButtonGroup->addButton(m_buttonDepthPeeling, 1);
@@ -120,8 +119,8 @@ void SCoreCompositorEditor::starting()
         m_labelDepthPeeling->setEnabled(false);
         layoutGroupBox->addWidget(m_labelDepthPeeling);
 
-        m_buttonDualDepthPeeling =
-            new QRadioButton( tr("Dual Depth Peeling"), groupBox );
+        m_buttonDualDepthPeeling
+            = new QRadioButton(tr("Dual Depth Peeling"), groupBox);
         m_buttonDualDepthPeeling->setMinimumSize(m_buttonDualDepthPeeling->sizeHint());
         m_buttonDualDepthPeeling->setEnabled(false);
         m_transparencyButtonGroup->addButton(m_buttonDualDepthPeeling, 2);
@@ -130,8 +129,8 @@ void SCoreCompositorEditor::starting()
         m_labelDualDepthPeeling->setEnabled(false);
         layoutGroupBox->addWidget(m_labelDualDepthPeeling);
 
-        m_buttonWeightedBlendedOIT =
-            new QRadioButton( tr("Weighted Blended OIT"), groupBox );
+        m_buttonWeightedBlendedOIT
+            = new QRadioButton(tr("Weighted Blended OIT"), groupBox);
         m_buttonWeightedBlendedOIT->setMinimumSize(m_buttonWeightedBlendedOIT->sizeHint());
         m_buttonWeightedBlendedOIT->setEnabled(false);
         m_transparencyButtonGroup->addButton(m_buttonWeightedBlendedOIT, 3);
@@ -140,55 +139,57 @@ void SCoreCompositorEditor::starting()
         m_labelWeightedBlendedOIT->setEnabled(false);
         layoutGroupBox->addWidget(m_labelWeightedBlendedOIT);
 
-        m_buttonHybridTransparency =
-            new QRadioButton( tr("Hybrid transparency"), groupBox );
+        m_buttonHybridTransparency
+            = new QRadioButton(tr("Hybrid transparency"), groupBox);
         m_buttonHybridTransparency->setMinimumSize(m_buttonHybridTransparency->sizeHint());
         m_buttonHybridTransparency->setEnabled(false);
         m_transparencyButtonGroup->addButton(m_buttonHybridTransparency, 4);
         layoutGroupBox->addWidget(m_buttonHybridTransparency);
-        m_labelHybridTransparency =
-            new QLabel(tr("<i>Depth Peeling + Weighted Blended OIT = half exact half fast</i>"));
+        m_labelHybridTransparency
+            = new QLabel(tr("<i>Depth Peeling + Weighted Blended OIT = half exact half fast</i>"));
         m_labelHybridTransparency->setEnabled(false);
         layoutGroupBox->addWidget(m_labelHybridTransparency);
 
-        m_buttonCelShadingDepthPeeling = new QRadioButton( tr("CelShading + Depth Peeling"), groupBox );
+        m_buttonCelShadingDepthPeeling = new QRadioButton(tr("CelShading + Depth Peeling"), groupBox);
         m_buttonCelShadingDepthPeeling->setMinimumSize(m_buttonDepthPeeling->sizeHint());
         m_buttonCelShadingDepthPeeling->setEnabled(false);
         m_transparencyButtonGroup->addButton(m_buttonCelShadingDepthPeeling, 5);
         layoutGroupBox->addWidget(m_buttonCelShadingDepthPeeling);
-        m_labelCelShadingDepthPeeling = new QLabel(tr(
-                                                       "<i>Depth peeling with an edge detection per layer.</i>"));
+        m_labelCelShadingDepthPeeling = new QLabel(
+            tr(
+                "<i>Depth peeling with an edge detection per layer.</i>"));
         m_labelCelShadingDepthPeeling->setEnabled(false);
         layoutGroupBox->addWidget(m_labelCelShadingDepthPeeling);
     }
 
-    qtContainer->setLayout( layout );
+    qtContainer->setLayout(layout);
 
     this->refreshRenderers();
 
     QObject::connect(m_layersBox, SIGNAL(activated(int)), this, SLOT(onSelectedLayerItem(int)));
-    QObject::connect( m_transparencyDepthSlider, SIGNAL(valueChanged(int)), this, SLOT(onEditTransparencyDepth(int)) );
+    QObject::connect(m_transparencyDepthSlider, SIGNAL(valueChanged(int)), this, SLOT(onEditTransparencyDepth(int)));
     QObject::connect(m_transparencyButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(onEditTransparency(int)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::refreshRenderers()
 {
     m_layersBox->clear();
 
     // Fill layer box with all enabled layers
-    service::registry::ObjectService::ServiceVectorType renderers =
-        service::OSR::getServices("::sight::viz::scene3d::SRender");
+    service::registry::ObjectService::ServiceVectorType renderers
+        = service::OSR::getServices("::sight::viz::scene3d::SRender");
 
     bool is3DLayer = false;
+
     for(auto srv : renderers)
     {
         sight::viz::scene3d::SRender::sptr render = sight::viz::scene3d::SRender::dynamicCast(srv);
@@ -210,20 +211,20 @@ void SCoreCompositorEditor::refreshRenderers()
     m_layersBox->setCurrentIndex(-1);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::configuring()
 {
     this->initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::onSelectedLayerItem(int index)
 {
@@ -251,71 +252,86 @@ void SCoreCompositorEditor::onSelectedLayerItem(int index)
 
     // If the layer is not yet started, we can't use its default compositor
     auto layer = m_currentLayer.lock();
+
     if(layer)
     {
-        switch (layer->getTransparencyTechnique())
+        switch(layer->getTransparencyTechnique())
         {
             case DEFAULT:
                 m_transparencyButtonGroup->button(0)->setChecked(true);
                 break;
+
             case DEPTHPEELING:
                 m_transparencyButtonGroup->button(1)->setChecked(true);
                 break;
+
             case DUALDEPTHPEELING:
                 m_transparencyButtonGroup->button(2)->setChecked(true);
                 break;
+
             case WEIGHTEDBLENDEDOIT:
                 m_transparencyButtonGroup->button(3)->setChecked(true);
                 break;
+
             case HYBRIDTRANSPARENCY:
                 m_transparencyButtonGroup->button(4)->setChecked(true);
                 break;
+
             case CELSHADING_DEPTHPEELING:
                 m_transparencyButtonGroup->button(5)->setChecked(true);
                 break;
         }
+
         m_transparencyDepthSlider->setValue(layer->getTransparencyDepth());
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::onEditTransparencyDepth(int depth)
 {
     auto layer = m_currentLayer.lock();
+
     if(layer)
     {
         layer->setTransparencyDepth(depth);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SCoreCompositorEditor::onEditTransparency(int index)
 {
     using namespace sight::viz::scene3d::compositor;
 
     auto layer = m_currentLayer.lock();
+
     if(layer)
     {
         bool transparencyUpdated = false;
-        switch (index)
+
+        switch(index)
         {
             case 0:
                 transparencyUpdated = layer->setTransparencyTechnique(DEFAULT);
                 break;
+
             case 1:
                 transparencyUpdated = layer->setTransparencyTechnique(DEPTHPEELING);
                 break;
+
             case 2:
                 transparencyUpdated = layer->setTransparencyTechnique(DUALDEPTHPEELING);
                 break;
+
             case 3:
                 transparencyUpdated = layer->setTransparencyTechnique(WEIGHTEDBLENDEDOIT);
                 break;
+
             case 4:
                 transparencyUpdated = layer->setTransparencyTechnique(HYBRIDTRANSPARENCY);
                 break;
+
             case 5:
                 transparencyUpdated = layer->setTransparencyTechnique(CELSHADING_DEPTHPEELING);
                 break;
@@ -328,6 +344,6 @@ void SCoreCompositorEditor::onEditTransparency(int index)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::viz

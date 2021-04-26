@@ -85,8 +85,8 @@ class MODULE_UI_QT_CLASS_API SCameraConfigLauncher : public QObject,
                                                      public sight::ui::base::IEditor
 {
 Q_OBJECT
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(SCameraConfigLauncher, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -96,13 +96,12 @@ public:
     MODULE_UI_QT_API virtual ~SCameraConfigLauncher() noexcept;
 
 protected:
-
     void configuring() override;
 
-    ///This method launches the IEditor::starting method.
+    /// This method launches the IEditor::starting method.
     void starting() override;
 
-    ///This method launches the IEditor::stopping method.
+    /// This method launches the IEditor::stopping method.
     void stopping() override;
 
     void updating() override;
@@ -117,7 +116,6 @@ private Q_SLOTS:
     void onCameraChanged(int index);
 
 private:
-
     /// Start the configuration for the intrinsic calibration
     void startIntrinsicConfig(size_t index);
 
@@ -138,7 +136,6 @@ private:
 
     data::CameraSeries::sptr m_cameraSeries;
     data::ActivitySeries::sptr m_activitySeries;
-
 };
 
 } // namespace sight::module::ui::qt::calibration

@@ -40,27 +40,27 @@ MeshPickerInteractor::MeshPickerInteractor(Layer::sptr _layer, bool _layerOrderD
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 MeshPickerInteractor::~MeshPickerInteractor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MeshPickerInteractor::setPointClickedSig(const PointClickedSigType::sptr& _sig)
 {
     m_pointClickedSig = _sig;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MeshPickerInteractor::setQueryMask(std::uint32_t _queryMask)
 {
     m_queryMask = _queryMask;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MeshPickerInteractor::pick(MouseButton _button, Modifier _mod, int _x, int _y, bool _pressed)
 {
@@ -84,17 +84,21 @@ void MeshPickerInteractor::pick(MouseButton _button, Modifier _mod, int _x, int 
             info.m_worldPos[2] = static_cast<double>(click.z);
 
             using PickingEventType = data::tools::PickingInfo::Event;
+
             switch(_button)
             {
                 case MouseButton::LEFT:
                     info.m_eventId = _pressed ? PickingEventType::MOUSE_LEFT_DOWN : PickingEventType::MOUSE_LEFT_UP;
                     break;
+
                 case MouseButton::RIGHT:
                     info.m_eventId = _pressed ? PickingEventType::MOUSE_RIGHT_DOWN : PickingEventType::MOUSE_RIGHT_UP;
                     break;
+
                 case MouseButton::MIDDLE:
                     info.m_eventId = _pressed ? PickingEventType::MOUSE_MIDDLE_DOWN : PickingEventType::MOUSE_MIDDLE_UP;
                     break;
+
                 default:
                     SIGHT_ERROR("Unknow button");
                     break;
@@ -104,6 +108,7 @@ void MeshPickerInteractor::pick(MouseButton _button, Modifier _mod, int _x, int 
             {
                 info.m_modifierMask |= data::tools::PickingInfo::CTRL;
             }
+
             if(static_cast<bool>(_mod & Modifier::SHIFT))
             {
                 info.m_modifierMask |= data::tools::PickingInfo::SHIFT;
@@ -115,8 +120,9 @@ void MeshPickerInteractor::pick(MouseButton _button, Modifier _mod, int _x, int 
             }
             else
             {
-                SIGHT_ERROR("You must first set the signal sent using 'MeshPickerInteractor::setPointClickedSig'"
-                            " for this interactor to work.");
+                SIGHT_ERROR(
+                    "You must first set the signal sent using 'MeshPickerInteractor::setPointClickedSig'"
+                    " for this interactor to work.");
             }
         }
     }
@@ -126,20 +132,20 @@ void MeshPickerInteractor::pick(MouseButton _button, Modifier _mod, int _x, int 
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MeshPickerInteractor::buttonPressEvent(MouseButton _button, Modifier _mod, int _x, int _y)
 {
     this->pick(_button, _mod, _x, _y, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MeshPickerInteractor::buttonReleaseEvent(MouseButton _button, Modifier _mod, int _x, int _y)
 {
     this->pick(_button, _mod, _x, _y, false);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sight::viz::scene3d::interactor.
+} // namespace sight::viz::scene3d::interactor.

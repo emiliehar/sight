@@ -37,19 +37,19 @@
 namespace sight::module::data
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SExtractMeshByType::SExtractMeshByType()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SExtractMeshByType::~SExtractMeshByType()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractMeshByType::configuring()
 {
@@ -58,26 +58,28 @@ void SExtractMeshByType::configuring()
     const ConfigType inoutCfg = m_configuration->findConfigurationElement("inout");
     SIGHT_ASSERT("At one 'inout' tag is required.", inoutCfg);
 
-    const std::vector< ConfigType > extractCfg = inoutCfg->find("extract");
+    const std::vector<ConfigType> extractCfg = inoutCfg->find("extract");
     SIGHT_ASSERT("At least one 'extract' tag is required.", !extractCfg.empty());
 
     bool ok = false;
 
-    const std::vector< ConfigType > outCfg = m_configuration->find("out");
-    for (const auto& cfg : outCfg)
+    const std::vector<ConfigType> outCfg = m_configuration->find("out");
+
+    for(const auto& cfg : outCfg)
     {
         if(cfg->hasAttribute("group"))
         {
             if(cfg->getAttributeValue("group") == "target")
             {
-                const std::vector< ConfigType > keyCfg = cfg->find("key");
+                const std::vector<ConfigType> keyCfg = cfg->find("key");
                 SIGHT_ASSERT(
-                    "You must have as many 'extract' tags as 'out' keys." << extractCfg.size() << " " <<  keyCfg.size(),
+                    "You must have as many 'extract' tags as 'out' keys." << extractCfg.size() << " " << keyCfg.size(),
                         extractCfg.size() == keyCfg.size());
                 ok = true;
             }
         }
     }
+
     SIGHT_ASSERT("Missing 'target' output keys", ok);
 
     for(ConfigType cfg : extractCfg)
@@ -89,22 +91,23 @@ void SExtractMeshByType::configuring()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractMeshByType::starting()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractMeshByType::updating()
 {
-    sight::data::ModelSeries::sptr modelSeries = this->getInOut< sight::data::ModelSeries>("source");
+    sight::data::ModelSeries::sptr modelSeries = this->getInOut<sight::data::ModelSeries>("source");
     SIGHT_ASSERT("ModelSeries not found", modelSeries);
 
     sight::data::mt::ObjectReadLock lock(modelSeries);
 
     size_t index = 0;
+
     for(const auto& elt : m_extract)
     {
         const std::string type  = elt.first;
@@ -112,6 +115,7 @@ void SExtractMeshByType::updating()
 
         bool found                                                    = false;
         const sight::data::ModelSeries::ReconstructionVectorType recs = modelSeries->getReconstructionDB();
+
         for(const sight::data::Reconstruction::csptr element : recs)
         {
             if(element->getStructureType() == type)
@@ -132,23 +136,24 @@ void SExtractMeshByType::updating()
                 }
             }
         }
+
         SIGHT_ERROR_IF(
             "Mesh with organ name matching '" << regex << "' and structure type'" << type << "' didn't find",
                 !found);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SExtractMeshByType::stopping()
 {
     // Unregister outputs
-    for (size_t i = 0; i < this->getKeyGroupSize("target"); ++i)
+    for(size_t i = 0 ; i < this->getKeyGroupSize("target") ; ++i)
     {
         this->setOutput("target", nullptr, i);
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::data

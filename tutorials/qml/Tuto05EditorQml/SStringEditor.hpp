@@ -36,10 +36,9 @@ namespace Tuto05EditorQml
  */
 class TUTO05EDITORQML_CLASS_API SStringEditor : public sight::ui::qml::IQmlEditor
 {
-
 Q_OBJECT;
-public:
 
+public:
     SIGHT_DECLARE_SERVICE(SStringEditor, ::sight::ui::qml::IQmlEditor)
 
     /// Constructor.
@@ -52,7 +51,6 @@ Q_SIGNALS:
     void edited(const QString& str);
 
 protected:
-
     /// Do nothing
     void configuring() override;
 
@@ -74,7 +72,6 @@ protected:
     KeyConnectionsMap getAutoConnections() const override;
 
 protected Q_SLOTS:
-
     /// Qt slot: update the data with the current string
     void updateString(const QString& str);
 

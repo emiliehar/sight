@@ -28,6 +28,7 @@
 
 namespace sight::core::location
 {
+
 /// Class to define a location that holds one single file path.
 class CORE_CLASS_API SingleFile : public ILocation
 {
@@ -47,7 +48,6 @@ public:
     inline std::filesystem::path getFile() const;
 
 protected:
-
     /// Constructor
     CORE_API SingleFile() = default;
 
@@ -55,34 +55,34 @@ protected:
     CORE_API virtual ~SingleFile() = default;
 
 private:
-
     /// The filesystem path to the target file
     std::filesystem::path m_file;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline SingleFile::sptr SingleFile::New()
 {
     struct MakeSharedEnabler : public SingleFile {};
+
     return std::make_shared<MakeSharedEnabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::string SingleFile::toString() const
 {
     return m_file.string();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline void SingleFile::setFile(const std::filesystem::path& filePath)
 {
     m_file = filePath;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 inline std::filesystem::path SingleFile::getFile() const
 {

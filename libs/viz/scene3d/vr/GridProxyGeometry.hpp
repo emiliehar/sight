@@ -37,6 +37,7 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace vr
 {
 
@@ -59,11 +60,12 @@ namespace vr
 class VIZ_SCENE3D_CLASS_API GridProxyGeometry : public R2VBRenderable
 {
 public:
-
-    static VIZ_SCENE3D_API GridProxyGeometry* New(const std::string& _name, ::Ogre::SceneManager* _sceneManager,
-                                                  ::Ogre::TexturePtr _3DImageTexture,
-                                                  const TransferFunction::sptr& _tf,
-                                                  const std::string& _mtlName);
+    static VIZ_SCENE3D_API GridProxyGeometry* New(
+        const std::string& _name,
+        ::Ogre::SceneManager* _sceneManager,
+        ::Ogre::TexturePtr _3DImageTexture,
+        const TransferFunction::sptr& _tf,
+        const std::string& _mtlName);
 
     /// Constructor, should never be called directly.
     VIZ_SCENE3D_API GridProxyGeometry(const ::Ogre::String& name);
@@ -88,7 +90,6 @@ public:
     VIZ_SCENE3D_API void set3DImageTexture(const ::Ogre::TexturePtr& _texture);
 
 private:
-
     /// Initializes the structures used for geometry generation.
     void initialize();
 
@@ -102,13 +103,13 @@ private:
     void initializeGridMaterials();
 
     /// Entity holding the source geometry used for proxy geometry rendering.
-    ::Ogre::Entity* m_r2vbSource { nullptr };
+    ::Ogre::Entity* m_r2vbSource{nullptr};
 
     /// GPU pass generating the geometry from the grid.
-    ::Ogre::Pass* m_geomGeneratorPass { nullptr };
+    ::Ogre::Pass* m_geomGeneratorPass{nullptr};
 
     /// GPU pass filling the 3D texture grid.
-    ::Ogre::Pass* m_gridComputingPass { nullptr };
+    ::Ogre::Pass* m_gridComputingPass{nullptr};
 
     /// Render operation used to compute the brick grid.
     ::Ogre::RenderOperation m_gridRenderOp;
@@ -117,10 +118,10 @@ private:
     ::Ogre::TexturePtr m_gridTexture;
 
     /// Grid volume dimensions. (i.e. the number of bricks along each dimension)
-    std::array< int, 3 > m_gridSize {{ 2, 2, 2 }};
+    std::array<int, 3> m_gridSize{{2, 2, 2}};
 
     /// Size of a volume brick.
-    const std::array< int, 3 > m_brickSize {{ 8, 8, 8 }};
+    const std::array<int, 3> m_brickSize{{8, 8, 8}};
 
     /// Image from which we define a grid.
     ::Ogre::TexturePtr m_3DImageTexture;
@@ -129,11 +130,10 @@ private:
     TransferFunction::wptr m_gpuTF;
 
     /// Camera used to compute the grid volume image.
-    ::Ogre::Camera* m_gridViewportCamera { nullptr };
-
+    ::Ogre::Camera* m_gridViewportCamera{nullptr};
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 /**
  * @brief Factory class generating GridProxyGeometry objects.
  *
@@ -143,7 +143,6 @@ private:
 class GridProxyGeometryFactory : public viz::scene3d::factory::R2VBRenderable
 {
 public:
-
     /// Constructor, does nothing.
     VIZ_SCENE3D_API GridProxyGeometryFactory()
     {
@@ -164,25 +163,26 @@ public:
     }
 
 #if OGRE_VERSION_PATCH < 9
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    VIZ_SCENE3D_API void destroyInstance( ::Ogre::MovableObject* obj) override
+    VIZ_SCENE3D_API void destroyInstance(::Ogre::MovableObject* obj) override
     {
         delete obj;
     }
 #endif
 
 protected:
-
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     /// Produces a "GridGeometryObject" object.
-    VIZ_SCENE3D_API ::Ogre::MovableObject* createInstanceImpl(const ::Ogre::String& name,
-                                                              const ::Ogre::NameValuePairList* ) override
+    VIZ_SCENE3D_API ::Ogre::MovableObject* createInstanceImpl(
+        const ::Ogre::String& name,
+        const ::Ogre::NameValuePairList*) override
     {
         return new viz::scene3d::vr::GridProxyGeometry(name);
     }
 };
 
 } // namespace vr
+
 } // namespace sight::viz::scene3d

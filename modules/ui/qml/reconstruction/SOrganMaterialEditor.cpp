@@ -30,45 +30,44 @@ namespace sight::module::ui::qml::reconstruction
 
 static const service::IService::KeyType s_RECONSTRUCTION_INOUT = "reconstruction";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SOrganMaterialEditor::SOrganMaterialEditor() noexcept
 {
     this->registerObject(s_RECONSTRUCTION_INOUT, AccessType::INOUT, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SOrganMaterialEditor::~SOrganMaterialEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrganMaterialEditor::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrganMaterialEditor::starting()
 {
     sight::ui::qml::IQmlEditor::starting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrganMaterialEditor::stopping()
 {
     sight::ui::qml::IQmlEditor::stopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrganMaterialEditor::updating()
 {
-    data::Reconstruction::sptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::sptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("'" + s_RECONSTRUCTION_INOUT + "' must be set as 'inout'", reconstruction);
 
     data::Material::sptr material = reconstruction->getMaterial();
@@ -76,15 +75,15 @@ void SOrganMaterialEditor::updating()
     QColor color;
     color.setRgbF(material->diffuse()->red(), material->diffuse()->green(), material->diffuse()->blue());
 
-    int alpha = static_cast<int>(material->diffuse()->alpha()*100);
+    int alpha = static_cast<int>(material->diffuse()->alpha() * 100);
     Q_EMIT materialChanged(color, alpha);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrganMaterialEditor::onColor(QColor color)
 {
-    data::Reconstruction::sptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::sptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("'" + s_RECONSTRUCTION_INOUT + "' must be set as 'inout'", reconstruction);
 
     data::Material::sptr material = reconstruction->getMaterial();
@@ -94,41 +93,41 @@ void SOrganMaterialEditor::onColor(QColor color)
     this->materialNotification();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SOrganMaterialEditor::onOpacitySlider(int value )
+void SOrganMaterialEditor::onOpacitySlider(int value)
 {
-
-    data::Reconstruction::csptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::csptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("'" + s_RECONSTRUCTION_INOUT + "' must be set as 'inout'", reconstruction);
 
     data::Material::sptr material = reconstruction->getMaterial();
-    material->diffuse()->alpha() = value/100.0f;
+    material->diffuse()->alpha() = value / 100.0f;
     this->materialNotification();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SOrganMaterialEditor::materialNotification()
 {
-    data::Reconstruction::csptr reconstruction = this->getInOut< data::Reconstruction >(s_RECONSTRUCTION_INOUT);
+    data::Reconstruction::csptr reconstruction = this->getInOut<data::Reconstruction>(s_RECONSTRUCTION_INOUT);
     SIGHT_ASSERT("'" + s_RECONSTRUCTION_INOUT + "' must be set as 'inout'", reconstruction);
 
     data::Object::ModifiedSignalType::sptr sig;
-    sig = reconstruction->getMaterial()->signal< data::Object::ModifiedSignalType >(
+    sig = reconstruction->getMaterial()->signal<data::Object::ModifiedSignalType>(
         data::Object::s_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SOrganMaterialEditor::getAutoConnections() const
 {
     KeyConnectionsMap connections;
     connections.push(s_RECONSTRUCTION_INOUT, data::Object::s_MODIFIED_SIG, s_UPDATE_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-}
+} // namespace sight::module

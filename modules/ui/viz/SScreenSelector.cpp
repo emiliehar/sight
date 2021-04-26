@@ -38,20 +38,20 @@ namespace sight::module::ui::viz
 
 static const core::com::Signals::SignalKeyType s_SCREEN_SELECTED_SIG = "screenSelected";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SScreenSelector::SScreenSelector()
 {
     m_screenSelectedSig = newSignal<ScreenSelectedSignalType>(s_SCREEN_SELECTED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SScreenSelector::~SScreenSelector()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SScreenSelector::configuring()
 {
@@ -61,22 +61,24 @@ void SScreenSelector::configuring()
 
     m_mode = configTree.get("config.<xmlattr>.mode", m_mode);
 
-    SIGHT_ERROR_IF("Unknown selection mode '" + m_mode + "'.",
-                   m_mode != "current" && m_mode != "neighbor" && m_mode != "select");
+    SIGHT_ERROR_IF(
+        "Unknown selection mode '" + m_mode + "'.",
+        m_mode != "current" && m_mode != "neighbor" && m_mode != "select");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SScreenSelector::starting()
 {
     this->actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SScreenSelector::updating()
 {
     int screenNum = -1;
+
     if(m_mode == "select")
     {
         screenNum = this->selectScreen();
@@ -104,14 +106,14 @@ void SScreenSelector::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SScreenSelector::stopping()
 {
     this->actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 int SScreenSelector::selectScreen() const
 {
@@ -130,8 +132,9 @@ int SScreenSelector::selectScreen() const
         // Compute the screen's diagonal length in inches.
         constexpr qreal inchesPerMillimeter = 0.03937008;
         const auto screenSize               = screen->physicalSize();
-        const qreal diagonalLengthMm        = std::sqrt(screenSize.width() * screenSize.width() +
-                                                        screenSize.height() * screenSize.height());
+        const qreal diagonalLengthMm        = std::sqrt(
+            screenSize.width() * screenSize.width()
+            + screenSize.height() * screenSize.height());
         const qreal diagonalLengthInches = diagonalLengthMm * inchesPerMillimeter;
 
         const QString diagonal = QString::number(diagonalLengthInches, 'f', 1) + "\"";
@@ -140,6 +143,7 @@ int SScreenSelector::selectScreen() const
         const QString resolution = "[" + QString::number(geom.width()) + "x" + QString::number(geom.height()) + "]";
 
         QString displayName = screen->manufacturer() + " " + screen->model();
+
         if(displayName.size() == 1)
         {
             displayName = screen->name();
@@ -149,10 +153,17 @@ int SScreenSelector::selectScreen() const
     }
 
     bool okClicked       = false;
-    QString selectedItem = QInputDialog::getItem(nullptr, "Select a screen.", "Screen:", screenNames, 0,
-                                                 false, &okClicked);
+    QString selectedItem = QInputDialog::getItem(
+        nullptr,
+        "Select a screen.",
+        "Screen:",
+        screenNames,
+        0,
+        false,
+        &okClicked);
 
     std::int64_t retScreen = -1;
+
     if(okClicked)
     {
         auto nameIt = std::find(screenNames.cbegin(), screenNames.cend(), selectedItem);
@@ -166,6 +177,6 @@ int SScreenSelector::selectScreen() const
     return static_cast<int>(retScreen);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::viz

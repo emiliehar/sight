@@ -30,6 +30,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -37,15 +38,17 @@ namespace detail::data
 SeriesSerializer::sptr SeriesSerializer::shared()
 {
     struct make_shared_enabler final : public SeriesSerializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SeriesSerializer::uptr SeriesSerializer::unique()
 {
     struct make_unique_enabler final : public SeriesSerializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
 /// Serialization function
@@ -91,12 +94,15 @@ void SeriesSerializer::serialize(
     writeToTree(tree, "PerformedProcedureComments", series->getPerformedProcedureComments());
 
     boost::property_tree::ptree namesTree;
+
     for(const auto& name : series->getPerformingPhysiciansName())
     {
         namesTree.add("PerformingPhysiciansName", core::crypto::to_base64(name));
     }
+
     tree.add_child("PerformingPhysiciansNames", namesTree);
 }
 
 } // detail::data
+
 } // namespace sight::io::session

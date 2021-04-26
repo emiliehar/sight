@@ -38,7 +38,7 @@ namespace sight::atoms
 class ATOMS_CLASS_API String : public Base
 {
 public:
-    SIGHT_DECLARE_CLASS(String, atoms::Base, atoms::factory::New< String >)
+    SIGHT_DECLARE_CLASS(String, atoms::Base, atoms::factory::New<String>)
 
     /**
      * @brief Constructor
@@ -55,21 +55,21 @@ public:
     {
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     const std::string& getValue() const
     {
         return m_value;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    void setValue( const std::string& value )
+    void setValue(const std::string& value)
     {
         m_value = value;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     std::string getString() const override
     {
@@ -97,7 +97,6 @@ public:
     }
 
 protected:
-
     std::string m_value;
 };
 

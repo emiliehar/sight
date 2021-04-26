@@ -44,10 +44,11 @@ SIGHT_REGISTER_IO_WRITER(::sight::io::dicom::writer::SurfaceSegmentation);
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SurfaceSegmentation::SurfaceSegmentation(io::base::writer::IObjectWriter::Key key) :
     m_logger(core::log::Logger::New()),
@@ -55,13 +56,13 @@ SurfaceSegmentation::SurfaceSegmentation(io::base::writer::IObjectWriter::Key ke
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SurfaceSegmentation::~SurfaceSegmentation()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SurfaceSegmentation::write()
 {
@@ -75,34 +76,42 @@ void SurfaceSegmentation::write()
         m_logger->critical("Unable to retrieve information from the associated image series.");
         m_writerJob->done();
         m_writerJob->finish();
+
         return;
     }
 
     // Verify matching Patient's names
     const std::string& modelPatientName = srcModelSeries->getPatient()->getName();
     const std::string& imagePatientName = associatedDicomSeries->getPatient()->getName();
+
     if(modelPatientName != imagePatientName)
     {
-        m_logger->warning("The patient's name of the model (\"" + modelPatientName + "\") "
-                          "does not match the patient's name of the image (\"" + imagePatientName + "\").");
+        m_logger->warning(
+            "The patient's name of the model (\"" + modelPatientName + "\") "
+                                                                       "does not match the patient's name of the image (\"" + imagePatientName + "\").");
     }
 
     // Verify matching Patient ID
     const std::string& modelPatientID = srcModelSeries->getPatient()->getPatientId();
     const std::string& imagePatientID = associatedDicomSeries->getPatient()->getPatientId();
+
     if(modelPatientID != imagePatientID)
     {
-        m_logger->warning("The patient ID of the model (\"" + modelPatientID + "\") "
-                          "does not match the patient ID of the image (\"" + imagePatientID + "\").");
+        m_logger->warning(
+            "The patient ID of the model (\"" + modelPatientID + "\") "
+                                                                 "does not match the patient ID of the image (\"" + imagePatientID + "\").");
     }
 
     // Verify matching Study Instance UID
     const std::string& modelStudyInstanceUID = srcModelSeries->getStudy()->getInstanceUID();
     const std::string& imageStudyInstanceUID = associatedDicomSeries->getStudy()->getInstanceUID();
+
     if(modelStudyInstanceUID != imageStudyInstanceUID)
     {
-        m_logger->warning("The study instance UID of the model (\"" + modelStudyInstanceUID + "\") "
-                          "does not match the study instance UID of the image (\"" + imageStudyInstanceUID + "\").");
+        m_logger->warning(
+            "The study instance UID of the model (\"" + modelStudyInstanceUID + "\") "
+                                                                                "does not match the study instance UID of the image (\"" + imageStudyInstanceUID
+            + "\").");
     }
 
     // Complete Model Series with information from associated Image Series
@@ -111,11 +120,11 @@ void SurfaceSegmentation::write()
     modelSeries->setPatient(associatedDicomSeries->getPatient());
     modelSeries->setStudy(associatedDicomSeries->getStudy());
 
-    SPTR(io::dicom::container::DicomInstance) associatedDicomInstance =
-        std::make_shared< io::dicom::container::DicomInstance >(associatedDicomSeries, m_logger);
+    SPTR(io::dicom::container::DicomInstance) associatedDicomInstance
+        = std::make_shared<io::dicom::container::DicomInstance>(associatedDicomSeries, m_logger);
 
-    SPTR(io::dicom::container::DicomInstance) modelInstance =
-        std::make_shared< io::dicom::container::DicomInstance >(modelSeries, m_logger, false);
+    SPTR(io::dicom::container::DicomInstance) modelInstance
+        = std::make_shared<io::dicom::container::DicomInstance>(modelSeries, m_logger, false);
 
     m_writerJob->doneWork(0);
     m_writerJob->setTotalWorkUnits(modelSeries->getReconstructionDB().size());
@@ -130,7 +139,7 @@ void SurfaceSegmentation::write()
     {
         iod.write(modelSeries);
     }
-    catch (const io::dicom::exception::Failed& e)
+    catch(const io::dicom::exception::Failed& e)
     {
         m_logger->critical(e.what());
     }
@@ -139,28 +148,29 @@ void SurfaceSegmentation::write()
     m_writerJob->finish();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SurfaceSegmentation::extension()
 {
     return std::string("");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(core::jobs::IJob) SurfaceSegmentation::getJob() const
 {
     return m_writerJob;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SPTR(core::log::Logger) SurfaceSegmentation::getLogger() const
 {
     return m_logger;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace writer
+
 } // namespace sight::io::dicom

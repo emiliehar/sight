@@ -37,11 +37,10 @@ struct LazyInstantiatorDefaultTag {};
  * @tparam INSTANCE_TYPE Type of object to instantiate.
  * @tparam TAG Tag used to allow several LazyInstantiator for one INSTANCE_TYPE.
  */
-template< typename INSTANCE_TYPE, typename TAG = LazyInstantiatorDefaultTag >
+template<typename INSTANCE_TYPE, typename TAG = LazyInstantiatorDefaultTag>
 class LazyInstantiator : ::boost::noncopyable
 {
 public:
-
     typedef INSTANCE_TYPE InstanceType;
     typedef TAG TagType;
     typedef std::shared_ptr<InstanceType> InstanceSptrType;
@@ -51,11 +50,11 @@ public:
     {
         static ::boost::once_flag flag = BOOST_ONCE_INIT;
         ::boost::call_once(&initInstance, flag);
+
         return instance();
     }
 
 protected:
-
     /// Initializes the singleton instance
     static void initInstance()
     {
@@ -66,12 +65,14 @@ protected:
     static InstanceSptrType instance()
     {
         static InstanceSptrType s_instance;
+
         if(!s_instance)
         {
-            s_instance = std::make_shared< InstanceType >();
+            s_instance = std::make_shared<InstanceType>();
         }
+
         return s_instance;
     }
 };
 
-} //namespace sight::core
+} // namespace sight::core

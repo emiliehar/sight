@@ -35,7 +35,6 @@ namespace sight::io::session
 class SessionWriter::SessionWriterImpl
 {
 public:
-
     /// Delete default constructors and assignment operators
     SessionWriterImpl()                                    = delete;
     SessionWriterImpl(const SessionWriterImpl&)            = delete;
@@ -46,7 +45,7 @@ public:
     /// Constructor
     inline SessionWriterImpl(SessionWriter* const session_writer) :
         m_session_writer(session_writer),
-        m_password( PasswordKeeper::unique() )
+        m_password(PasswordKeeper::unique())
     {
     }
 
@@ -79,7 +78,6 @@ public:
     }
 
 private:
-
     /// Pointer to the public interface
     SessionWriter* const m_session_writer;
 
@@ -95,25 +93,25 @@ SessionWriter::SessionWriter(base::writer::IObjectWriter::Key key) :
 // Defining the destructor here, allows us to use PImpl with a unique_ptr
 SessionWriter::~SessionWriter() = default;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionWriter::write()
 {
     m_pimpl->write();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::string SessionWriter::extension()
 {
     return m_pimpl->extension();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SessionWriter::setPassword(const core::crypto::secure_string& password)
 {
     m_pimpl->setPassword(password);
 }
 
-} //namespace sight::io::session
+} // namespace sight::io::session

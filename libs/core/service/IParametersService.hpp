@@ -56,9 +56,7 @@ namespace sight::service
  */
 class SERVICE_CLASS_API IParametersService : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IParametersService, service::IService)
 
     SERVICE_API static const core::com::Slots::SlotKeyType s_SET_BOOL_PARAMETER_SLOT;
@@ -72,7 +70,6 @@ public:
     SERVICE_API static const core::com::Slots::SlotKeyType s_SET_ENUM_PARAMETER_SLOT;
 
 protected:
-
     /// Constructor. Create all slots.
     SERVICE_API IParametersService();
 

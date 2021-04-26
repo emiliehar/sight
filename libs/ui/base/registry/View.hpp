@@ -32,11 +32,14 @@
 
 namespace sight::ui::base
 {
+
 namespace container
 {
+
 class fwContainer;
 class fwMenuBar;
 class fwToolBar;
+
 }
 
 namespace registry
@@ -48,12 +51,10 @@ namespace registry
  */
 class UI_BASE_CLASS_API View : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(View, ui::base::GuiBaseObject)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::string& sid)
     {
@@ -61,7 +62,7 @@ public:
     }
 
     /// Constructor.
-    UI_BASE_API View( const std::string& sid);
+    UI_BASE_API View(const std::string& sid);
 
     /// Destructor. Do nothing
     UI_BASE_API virtual ~View();
@@ -120,7 +121,7 @@ public:
      * could also be a wid).
      *
      */
-    UI_BASE_API virtual void initialize( core::runtime::ConfigurationElement::sptr configuration);
+    UI_BASE_API virtual void initialize(core::runtime::ConfigurationElement::sptr configuration);
 
     /**
      * @brief Starting view manager.
@@ -129,19 +130,19 @@ public:
      * @pre View must be initialized before.
      * @pre sub containers must be instanced before.
      */
-    UI_BASE_API virtual void manage(std::vector< SPTR(ui::base::container::fwContainer) > subViews );
+    UI_BASE_API virtual void manage(std::vector<SPTR(ui::base::container::fwContainer)> subViews);
 
     /**
      * @brief Register menu bar.
      * If start="yes" in configuration the menu bar services will be started.
      */
-    UI_BASE_API virtual void manageMenuBar(SPTR(ui::base::container::fwMenuBar) menuBar );
+    UI_BASE_API virtual void manageMenuBar(SPTR(ui::base::container::fwMenuBar) menuBar);
 
     /**
      * @brief Register tool bar.
      * If start="yes" in configuration the tool bar services will be started.
      */
-    UI_BASE_API virtual void manageToolBar(SPTR(ui::base::container::fwToolBar) toolBar );
+    UI_BASE_API virtual void manageToolBar(SPTR(ui::base::container::fwToolBar) toolBar);
 
     /**
      * @brief Stopping view manager.
@@ -162,12 +163,11 @@ public:
     UI_BASE_API virtual void unmanageMenuBar();
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
-    typedef std::map< std::string, std::pair<unsigned int, bool> > SIDContainerMapType;
-    typedef std::map< std::string, unsigned int > WIDContainerMapType;
-    typedef std::pair< std::string, bool > SIDMenuBarPairType;
-    typedef std::pair< std::string, bool > SIDToolBarPairType;
+    typedef std::map<std::string, std::pair<unsigned int, bool> > SIDContainerMapType;
+    typedef std::map<std::string, unsigned int> WIDContainerMapType;
+    typedef std::pair<std::string, bool> SIDMenuBarPairType;
+    typedef std::pair<std::string, bool> SIDToolBarPairType;
 
     /**
      * @brief All services ID managed and associated with pair containing:
@@ -192,4 +192,5 @@ protected:
 };
 
 } // namespace registry
+
 } // namespace sight::ui::base

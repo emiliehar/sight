@@ -24,7 +24,7 @@
 
 /**
  * @brief The namespace sight::module::io::realsense contains services related to video grabbing with Intel RealSense
- *cameras
+ * cameras
  */
 namespace sight::module::io::realsense
 {

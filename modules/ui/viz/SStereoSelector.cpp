@@ -43,27 +43,26 @@
 namespace sight::module::ui::viz
 {
 
-
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SStereoSelector::SStereoSelector() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SStereoSelector::~SStereoSelector() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoSelector::starting()
 {
     this->create();
 
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(
-        this->getContainer() );
+        this->getContainer());
 
     m_layersBox = new QComboBox();
     m_modeBox   = new QComboBox();
@@ -72,7 +71,7 @@ void SStereoSelector::starting()
     layout->addWidget(m_layersBox);
     layout->addWidget(m_modeBox);
 
-    qtContainer->setLayout( layout );
+    qtContainer->setLayout(layout);
 
     this->refreshRenderers();
 
@@ -81,6 +80,7 @@ void SStereoSelector::starting()
     m_modeBox->addItem("Stereo 8 views");
 
     auto layer = m_currentLayer.lock();
+
     if(layer)
     {
         m_modeBox->setCurrentIndex(static_cast<int>(m_currentLayer.lock()->getStereoMode()));
@@ -90,27 +90,27 @@ void SStereoSelector::starting()
     QObject::connect(m_modeBox, SIGNAL(activated(int)), this, SLOT(onSelectedModeItem(int)));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoSelector::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoSelector::configuring()
 {
     this->initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoSelector::updating()
 {
 }
 
-//--------------------------------------------------------------------------C---
+// --------------------------------------------------------------------------C---
 
 void SStereoSelector::onSelectedLayerItem(int index)
 {
@@ -118,25 +118,26 @@ void SStereoSelector::onSelectedLayerItem(int index)
     m_currentLayer = m_layers[static_cast<size_t>(index)];
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoSelector::onSelectedModeItem(int index)
 {
     using sight::viz::scene3d::compositor::Core;
-    m_currentLayer.lock()->setStereoMode(index == 1 ? Core::StereoModeType::AUTOSTEREO_5 :
-                                         index == 2 ? Core::StereoModeType::AUTOSTEREO_8 :
-                                         Core::StereoModeType::NONE);
+    m_currentLayer.lock()->setStereoMode(
+        index == 1 ? Core::StereoModeType::AUTOSTEREO_5
+                   : index == 2 ? Core::StereoModeType::AUTOSTEREO_8
+                                : Core::StereoModeType::NONE);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStereoSelector::refreshRenderers()
 {
     m_layersBox->clear();
 
     // Fill layer box with all enabled layers
-    service::registry::ObjectService::ServiceVectorType renderers =
-        service::OSR::getServices("::sight::viz::scene3d::SRender");
+    service::registry::ObjectService::ServiceVectorType renderers
+        = service::OSR::getServices("::sight::viz::scene3d::SRender");
 
     for(auto srv : renderers)
     {
@@ -145,6 +146,7 @@ void SStereoSelector::refreshRenderers()
         for(auto& layerMap : render->getLayers())
         {
             const std::string& id = layerMap.first;
+
             if(id != sight::viz::scene3d::SRender::s_OGREBACKGROUNDID)
             {
                 m_layersBox->addItem(QString::fromStdString(id));
@@ -159,6 +161,6 @@ void SStereoSelector::refreshRenderers()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::viz

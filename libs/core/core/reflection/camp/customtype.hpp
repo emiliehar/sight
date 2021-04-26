@@ -31,4 +31,4 @@ enum CustomType
     pairType
 };
 
-} //camp
+} // camp

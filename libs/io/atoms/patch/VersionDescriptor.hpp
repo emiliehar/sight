@@ -37,16 +37,15 @@ namespace sight::io::atoms::patch
  */
 class IO_ATOMS_CLASS_API VersionDescriptor
 {
-
 public:
-
     /**
      * @brief Struct used to compare two VersionDescriptor
      */
-    struct Compare {
-        //------------------------------------------------------------------------------
+    struct Compare
+    {
+        // ------------------------------------------------------------------------------
 
-        bool operator() (VersionDescriptor a, VersionDescriptor b) const
+        bool operator()(VersionDescriptor a, VersionDescriptor b) const
         {
             return a.getVersionName() < b.getVersionName();
         }
@@ -55,7 +54,7 @@ public:
     /**
      * @brief VersionIDs used to link type and version
      */
-    typedef std::map< std::string, std::string > VersionsType;
+    typedef std::map<std::string, std::string> VersionsType;
 
     /**
      * @brief Constructor
@@ -91,7 +90,6 @@ public:
     }
 
 private:
-
     /// Context name.
     std::string m_context;
 

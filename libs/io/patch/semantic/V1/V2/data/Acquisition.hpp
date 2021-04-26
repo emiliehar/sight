@@ -31,8 +31,10 @@ namespace sight::io::patch::semantic
 
 namespace V1
 {
+
 namespace V2
 {
+
 namespace data
 {
 
@@ -49,7 +51,7 @@ public:
     IO_PATCH_API ~Acquisition();
 
     /// Copy constructor
-    IO_PATCH_API Acquisition( const Acquisition& cpy );
+    IO_PATCH_API Acquisition(const Acquisition& cpy);
 
     /**
      * @brief Applies patch
@@ -61,10 +63,12 @@ public:
         const sight::atoms::Object::sptr& previous,
         const sight::atoms::Object::sptr& current,
         io::atoms::patch::IPatch::NewVersionsType& newVersions) override;
-
 };
 
 } // namespace data
+
 } // namespace V2
+
 } // namespace V1
+
 } // namespace sight::io::patch::semantic

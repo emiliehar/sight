@@ -38,19 +38,19 @@ namespace sight::module::viz::scene3d::adaptor
 
 static const std::string s_MATERIAL_NAME_CONFIG = "materialName";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SShaderParameter::SShaderParameter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SShaderParameter::~SShaderParameter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShaderParameter::configuring()
 {
@@ -63,19 +63,20 @@ void SShaderParameter::configuring()
     SIGHT_ERROR_IF("'" + s_MATERIAL_NAME_CONFIG + "' attribute not set", m_materialName.empty());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShaderParameter::starting()
 {
     this->initialize();
 
     // Retrieves the associated material
-    ::Ogre::MaterialPtr material = ::Ogre::MaterialManager::getSingleton().getByName(m_materialName,
-                                                                                     sight::viz::scene3d::RESOURCE_GROUP);
+    ::Ogre::MaterialPtr material = ::Ogre::MaterialManager::getSingleton().getByName(
+        m_materialName,
+        sight::viz::scene3d::RESOURCE_GROUP);
     this->setMaterial(material);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShaderParameter::updating()
 {
@@ -85,19 +86,19 @@ void SShaderParameter::updating()
     this->IParameter::updating();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShaderParameter::stopping()
 {
     this->IParameter::stopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SShaderParameter::swapping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

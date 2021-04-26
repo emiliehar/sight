@@ -40,7 +40,8 @@
 
 namespace sight::module::viz::scene3d::adaptor
 {
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 static const core::com::Slots::SlotKeyType s_CHANGE_FIELD_SLOT = "changeField";
 
@@ -52,20 +53,20 @@ static const std::string s_DYNAMIC_CONFIG          = "dynamic";
 static const std::string s_DYNAMIC_VERTICES_CONFIG = "dynamicVertices";
 static const std::string s_QUERY_CONFIG            = "queryFlags";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SModelSeries::SModelSeries() noexcept
 {
     newSlot(s_CHANGE_FIELD_SLOT, &SModelSeries::showReconstructionsOnFieldChanged, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SModelSeries::~SModelSeries() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeries::configuring()
 {
@@ -74,8 +75,10 @@ void SModelSeries::configuring()
     const ConfigType configType = this->getConfigTree();
     const ConfigType config     = configType.get_child("config.<xmlattr>");
 
-    this->setTransformId(config.get<std::string>( sight::viz::scene3d::ITransformable::s_TRANSFORM_CONFIG,
-                                                  this->getID() + "_transform"));
+    this->setTransformId(
+        config.get<std::string>(
+            sight::viz::scene3d::ITransformable::s_TRANSFORM_CONFIG,
+            this->getID() + "_transform"));
 
     m_autoResetCamera = config.get<std::string>(s_AUTORESET_CAMERA_CONFIG, "yes") == "yes";
 
@@ -89,9 +92,9 @@ void SModelSeries::configuring()
         SIGHT_ASSERT(
             "Hexadecimal values should start with '0x'"
             "Given value : " + hexaMask,
-            hexaMask.length() > 2 &&
-            hexaMask.substr(0, 2) == "0x");
-        m_queryFlags = static_cast< std::uint32_t >(std::stoul(hexaMask, nullptr, 16));
+            hexaMask.length() > 2
+            && hexaMask.substr(0, 2) == "0x");
+        m_queryFlags = static_cast<std::uint32_t>(std::stoul(hexaMask, nullptr, 16));
     }
 
     if(config.get_optional<bool>("visible"))
@@ -100,7 +103,7 @@ void SModelSeries::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeries::starting()
 {
@@ -109,7 +112,7 @@ void SModelSeries::starting()
     this->updating();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SModelSeries::getAutoConnections() const
 {
@@ -120,15 +123,16 @@ service::IService::KeyConnectionsMap SModelSeries::getAutoConnections() const
     connections.push(s_MODEL_INPUT, data::ModelSeries::s_ADDED_FIELDS_SIG, s_CHANGE_FIELD_SLOT);
     connections.push(s_MODEL_INPUT, data::ModelSeries::s_REMOVED_FIELDS_SIG, s_CHANGE_FIELD_SLOT);
     connections.push(s_MODEL_INPUT, data::ModelSeries::s_CHANGED_FIELDS_SIG, s_CHANGE_FIELD_SLOT);
+
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeries::updating()
 {
     // Retrieves the associated Sight ModelSeries object
-    const auto modelSeries = this->getLockedInput< data::ModelSeries >(s_MODEL_INPUT);
+    const auto modelSeries = this->getLockedInput<data::ModelSeries>(s_MODEL_INPUT);
 
     this->stopping();
 
@@ -137,7 +141,7 @@ void SModelSeries::updating()
 
     for(auto reconstruction : modelSeries->getReconstructionDB())
     {
-        auto adaptor = this->registerService< module::viz::scene3d::adaptor::SReconstruction>(
+        auto adaptor = this->registerService<module::viz::scene3d::adaptor::SReconstruction>(
             "::sight::module::viz::scene3d::adaptor::SReconstruction");
         adaptor->registerInput(reconstruction, "reconstruction", true);
 
@@ -169,18 +173,19 @@ void SModelSeries::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeries::stopping()
 {
     this->unregisterServices();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeries::setVisible(bool _visible)
 {
     auto adaptors = this->getRegisteredServices();
+
     for(auto adaptor : adaptors)
     {
         auto recAdaptor = module::viz::scene3d::adaptor::SReconstruction::dynamicCast(adaptor.lock());
@@ -188,15 +193,16 @@ void SModelSeries::setVisible(bool _visible)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SModelSeries::showReconstructionsOnFieldChanged()
 {
-    const auto modelSeries = this->getLockedInput< data::ModelSeries >(s_MODEL_INPUT);
+    const auto modelSeries = this->getLockedInput<data::ModelSeries>(s_MODEL_INPUT);
 
     const bool showRec = modelSeries->getField("ShowReconstructions", data::Boolean::New(true))->value();
 
     auto adaptors = this->getRegisteredServices();
+
     for(auto adaptor : adaptors)
     {
         auto recAdaptor = module::viz::scene3d::adaptor::SReconstruction::dynamicCast(adaptor.lock());

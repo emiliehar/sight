@@ -29,9 +29,11 @@
 #include <core/reflection/camp/ExtendedClassVisitor.hpp>
 namespace sight::data
 {
+
 class Object;
 namespace reflection
 {
+
 namespace visitor
 {
 
@@ -40,11 +42,9 @@ namespace visitor
  */
 class DATA_CLASS_API CompareObjects : public ::camp::ExtendedClassVisitor
 {
-
 public:
-
     /// Associates property path (within its parent object) to its value.
-    typedef std::map< std::string, std::string > PropsMapType;
+    typedef std::map<std::string, std::string> PropsMapType;
 
     /**
      * @brief Constructor.
@@ -118,7 +118,6 @@ public:
     DATA_API static const std::string s_MISSING_PROPERTY;
 
 private:
-
     friend struct PropertyVisitor;
 
     /**
@@ -156,9 +155,10 @@ private:
 
     /// Object to be compared with m_objRef.
     SPTR(data::Object) m_objComp;
-
 };
 
 } // namespace visitor
+
 } // namespace reflection
+
 } // namespace sight::data

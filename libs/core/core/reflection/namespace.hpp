@@ -27,11 +27,13 @@
 
 namespace sight::core::reflection
 {
+
 /**
  * @brief       Contains core::reflection::registry details
  */
 namespace registry
 {
+
 } // namespace registry
 
 /**
@@ -39,6 +41,7 @@ namespace registry
  */
 namespace factory
 {
+
 } // namespace factory
 
-}  // namespace sight::core::reflection
+} // namespace sight::core::reflection

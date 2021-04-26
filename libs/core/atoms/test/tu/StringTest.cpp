@@ -26,35 +26,36 @@
 
 #include <limits>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::atoms::ut::StringTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::atoms::ut::StringTest);
 
 namespace sight::atoms
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StringTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void StringTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StringTest::conversion()
 {
     const std::string VALUES[] = {"", "azerty"};
     atoms::String::sptr metaString;
 
-    for ( std::string str: VALUES )
+    for(std::string str : VALUES)
     {
         metaString = atoms::String::New(str);
 
@@ -62,5 +63,6 @@ void StringTest::conversion()
     }
 }
 
-}  // namespace ut
-}  // namespace sight::atoms
+} // namespace ut
+
+} // namespace sight::atoms

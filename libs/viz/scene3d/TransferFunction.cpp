@@ -25,7 +25,7 @@
 #include <viz/scene3d/ogre.hpp>
 #include <viz/scene3d/Utils.hpp>
 
-#if defined (__APPLE__)
+#if defined(__APPLE__)
     #include <OpenGL/gl.h>
 #else
 #ifdef WIN32
@@ -40,7 +40,7 @@
 #include <OgreHardwarePixelBuffer.h>
 
 #include <algorithm>
-#include <cstdint>  // for std::uint_8
+#include <cstdint> // for std::uint_8
 
 namespace sight::viz::scene3d
 {
@@ -48,7 +48,7 @@ namespace sight::viz::scene3d
 std::uint32_t TransferFunction::TEXTURE_SIZE;
 std::uint32_t TransferFunction::TEXTURE_PIXEL_COUNT;
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TransferFunction::TransferFunction()
 {
@@ -62,32 +62,34 @@ TransferFunction::TransferFunction()
     SIGHT_INFO("Use a 1D texture of size : " << TEXTURE_SIZE);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 TransferFunction::~TransferFunction()
 {
     this->removeTexture();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void TransferFunction::createTexture(const ::Ogre::String& _parentId)
 {
     m_texture = ::Ogre::TextureManager::getSingleton().getByName(_parentId + "_tfTexture", RESOURCE_GROUP);
+
     if(!m_texture)
     {
         m_texture = ::Ogre::TextureManager::getSingleton().createManual(
-            _parentId + "_tfTexture",                                   // name
-            viz::scene3d::RESOURCE_GROUP,  // resource groupe
-            ::Ogre::TEX_TYPE_1D,                                        // type
-            TEXTURE_SIZE, 1,                                            // width, height
-            0,                                                          // number of mipmaps (depth)
-            ::Ogre::PF_A8R8G8B8,                                        // pixel format
-            ::Ogre::TU_DYNAMIC_WRITE_ONLY_DISCARDABLE);                 // usage
+            _parentId + "_tfTexture", // name
+            viz::scene3d::RESOURCE_GROUP, // resource groupe
+            ::Ogre::TEX_TYPE_1D, // type
+            TEXTURE_SIZE,
+            1,                                                          // width, height
+            0, // number of mipmaps (depth)
+            ::Ogre::PF_A8R8G8B8, // pixel format
+            ::Ogre::TU_DYNAMIC_WRITE_ONLY_DISCARDABLE); // usage
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void TransferFunction::removeTexture()
 {
@@ -95,10 +97,11 @@ void TransferFunction::removeTexture()
     {
         ::Ogre::TextureManager::getSingleton().remove(m_texture);
     }
+
     m_texture.reset();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void TransferFunction::updateTexture(const data::TransferFunction::csptr& _tf)
 {
@@ -111,7 +114,7 @@ void TransferFunction::updateTexture(const data::TransferFunction::csptr& _tf)
     // Discards the entire buffer while locking so that we can easily refill it from scratch
     pixBuffer->lock(::Ogre::HardwareBuffer::HBL_DISCARD);
     ::Ogre::PixelBox pixBox = pixBuffer->getCurrentLock();
-    std::uint8_t* pDest = static_cast<std::uint8_t*>(pixBox.data);
+    std::uint8_t* pDest     = static_cast<std::uint8_t*>(pixBox.data);
 
     // Retrieves the transfer function's intensity window
     const TFValuePairType intensityMinMax = _tf->getWLMinMax();
@@ -119,16 +122,17 @@ void TransferFunction::updateTexture(const data::TransferFunction::csptr& _tf)
     const TFValuePairType tfMinMax = _tf->getMinMaxTFValues();
 
     // Counter used to iterate through the texture buffer without exceeding its limit
-    const TFValueType invWindow     = 1./_tf->getWindow();
-    const TFValueType intensityStep = (intensityMinMax.second - intensityMinMax.first) /
-                                      TEXTURE_PIXEL_COUNT;
+    const TFValueType invWindow     = 1. / _tf->getWindow();
+    const TFValueType intensityStep = (intensityMinMax.second - intensityMinMax.first)
+                                      / TEXTURE_PIXEL_COUNT;
 
     TFValueType i = intensityMinMax.first;
-    for( std::uint32_t k = 0; k < TEXTURE_PIXEL_COUNT; ++k)
+
+    for(std::uint32_t k = 0 ; k < TEXTURE_PIXEL_COUNT ; ++k)
     {
         // Tf intensity to mapped color.
-        const TFValueType value = (i - intensityMinMax.first) * (tfMinMax.second - tfMinMax.first) *
-                                  invWindow + tfMinMax.first;
+        const TFValueType value = (i - intensityMinMax.first) * (tfMinMax.second - tfMinMax.first)
+                                  * invWindow + tfMinMax.first;
 
         data::TransferFunction::TFColor interpolatedColor = _tf->getInterpolatedColor(value);
 
@@ -148,6 +152,6 @@ void TransferFunction::updateTexture(const data::TransferFunction::csptr& _tf)
     m_tfWindow = ::Ogre::Vector2(float(tfWLMinMax.first), float(tfWLMinMax.second));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // Namespace fwRenderOgre

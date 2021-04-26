@@ -56,6 +56,6 @@ CORE_API HiResClockType getTimeInMilliSec();
  */
 CORE_API HiResClockType getTimeInSec();
 
-} //namespace HiResClock
+} // namespace HiResClock
 
-} //namespace sight::core
+} // namespace sight::core

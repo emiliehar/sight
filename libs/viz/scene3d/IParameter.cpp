@@ -48,7 +48,7 @@
 namespace sight::viz::scene3d
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const core::com::Slots::SlotKeyType IParameter::s_SET_BOOL_PARAMETER_SLOT    = "setBoolParameter";
 const core::com::Slots::SlotKeyType IParameter::s_SET_COLOR_PARAMETER_SLOT   = "setColorParameter";
@@ -61,7 +61,7 @@ const core::com::Slots::SlotKeyType IParameter::s_SET_INT3_PARAMETER_SLOT    = "
 
 const std::string IParameter::s_PARAMETER_INOUT = "parameter";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IParameter::IParameter() noexcept :
     m_shaderType(::Ogre::GPT_FRAGMENT_PROGRAM),
@@ -77,34 +77,34 @@ IParameter::IParameter() noexcept :
     newSlot(s_SET_INT3_PARAMETER_SLOT, &IParameter::setInt3Parameter, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IParameter::~IParameter() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setShaderType(::Ogre::GpuProgramType shaderType)
 {
     m_shaderType = shaderType;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setParamName(const std::string& paramName)
 {
     m_paramName = paramName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string& IParameter::getParamName() const
 {
     return m_paramName;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap IParameter::getAutoConnections() const
 {
@@ -114,7 +114,7 @@ service::IService::KeyConnectionsMap IParameter::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::configuring()
 {
@@ -127,18 +127,19 @@ void IParameter::configuring()
 
     m_techniqueName = config.get<std::string>("technique", "");
 
-    if ( config.count("shaderType"))
+    if(config.count("shaderType"))
     {
         const std::string shaderType = config.get<std::string>("shaderType");
-        if (shaderType == "vertex")
+
+        if(shaderType == "vertex")
         {
             m_shaderType = ::Ogre::GPT_VERTEX_PROGRAM;
         }
-        else if (shaderType == "fragment")
+        else if(shaderType == "fragment")
         {
             m_shaderType = ::Ogre::GPT_FRAGMENT_PROGRAM;
         }
-        else if (shaderType == "geometry")
+        else if(shaderType == "geometry")
         {
             m_shaderType = ::Ogre::GPT_GEOMETRY_PROGRAM;
         }
@@ -149,7 +150,7 @@ void IParameter::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::updating()
 {
@@ -157,7 +158,9 @@ void IParameter::updating()
     {
         return;
     }
+
     this->getRenderService()->makeCurrent();
+
     if(m_techniqueName.empty())
     {
         bool bSet                                      = false;
@@ -170,10 +173,11 @@ void IParameter::updating()
             bSet |= this->setParameter(*tech);
         }
 
-        if( !bSet )
+        if(!bSet)
         {
-            SIGHT_DEBUG("Couldn't set parameter '" + m_paramName + "' in any technique of material '"
-                        + m_material->getName() + "'");
+            SIGHT_DEBUG(
+                "Couldn't set parameter '" + m_paramName + "' in any technique of material '"
+                + m_material->getName() + "'");
         }
         else
         {
@@ -185,20 +189,22 @@ void IParameter::updating()
         ::Ogre::Technique* tech = m_material->getTechnique(m_techniqueName);
         SIGHT_FATAL_IF("Can't find technique " << m_techniqueName, !tech);
 
-        if( this->setParameter(*tech) )
+        if(this->setParameter(*tech))
         {
-            SIGHT_DEBUG("Couldn't set parameter '" + m_paramName + "' in technique '" + m_techniqueName +
-                        "' from material '" + m_material->getName() + "'");
+            SIGHT_DEBUG(
+                "Couldn't set parameter '" + m_paramName + "' in technique '" + m_techniqueName
+                + "' from material '" + m_material->getName() + "'");
         }
         else
         {
             this->requestRender();
         }
     }
+
     m_dirty = false;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::stopping()
 {
@@ -212,7 +218,7 @@ void IParameter::stopping()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool IParameter::setParameter(::Ogre::Technique& technique)
 {
@@ -221,15 +227,16 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
 
     // Get the parameters
     auto pass = technique.getPass(0);
-    if (m_shaderType == ::Ogre::GPT_VERTEX_PROGRAM)
+
+    if(m_shaderType == ::Ogre::GPT_VERTEX_PROGRAM)
     {
         params = pass->getVertexProgramParameters();
     }
-    else if (m_shaderType == ::Ogre::GPT_FRAGMENT_PROGRAM && pass->hasFragmentProgram())
+    else if(m_shaderType == ::Ogre::GPT_FRAGMENT_PROGRAM && pass->hasFragmentProgram())
     {
         params = pass->getFragmentProgramParameters();
     }
-    else if (m_shaderType == ::Ogre::GPT_GEOMETRY_PROGRAM)
+    else if(m_shaderType == ::Ogre::GPT_GEOMETRY_PROGRAM)
     {
         params = pass->getGeometryProgramParameters();
     }
@@ -243,10 +250,11 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
         return false;
     }
 
-    data::Object::sptr obj = this->getInOut< data::Object>(s_PARAMETER_INOUT);
+    data::Object::sptr obj = this->getInOut<data::Object>(s_PARAMETER_INOUT);
 
     // Set shader parameters
     std::string objClass = obj->getClassname();
+
     if(objClass == "sight::data::Integer")
     {
         data::Integer::sptr intValue = data::Integer::dynamicCast(obj);
@@ -259,7 +267,7 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
         data::Float::sptr floatValue = data::Float::dynamicCast(obj);
         SIGHT_ASSERT("The given float object is null", floatValue);
 
-        params->setNamedConstant(m_paramName,  floatValue->value());
+        params->setNamedConstant(m_paramName, floatValue->value());
     }
     else if(objClass == "sight::data::Boolean")
     {
@@ -289,12 +297,12 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
         data::PointList::sptr pointListValue = data::PointList::dynamicCast(obj);
         SIGHT_ASSERT("The given pointList object is null", pointListValue);
 
-        std::vector< data::Point::sptr > points = pointListValue->getPoints();
-        int nbPoints                            = static_cast<int>(points.size());
+        std::vector<data::Point::sptr> points = pointListValue->getPoints();
+        int nbPoints                          = static_cast<int>(points.size());
 
-        float* paramValues = new float[static_cast<unsigned long long>(nbPoints * 3)];
+        float* paramValues = new float [static_cast<unsigned long long>(nbPoints * 3)];
 
-        for(int i = 0; i < nbPoints * 3; )
+        for(int i = 0 ; i < nbPoints * 3 ; )
         {
             paramValues[i] = static_cast<float>(points[static_cast<size_t>(i)]->getCoord()[0]);
             i++;
@@ -308,7 +316,7 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
 
         params->setNamedConstant(m_paramName, paramValues, points.size(), static_cast<size_t>(3));
 
-        delete [] paramValues;
+        delete[] paramValues;
     }
     else if(objClass == "sight::data::Matrix4")
     {
@@ -317,7 +325,7 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
 
         float paramValues[16];
 
-        for(int i = 0; i < 16; i++)
+        for(int i = 0 ; i < 16 ; i++)
         {
             paramValues[i] = static_cast<float>(transValue->getCoefficients()[static_cast<size_t>(i)]);
         }
@@ -330,21 +338,22 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
         SIGHT_ASSERT("The object is nullptr", arrayObject);
 
         const size_t numComponents = arrayObject->getSize()[0];
+
         if(numComponents <= 3)
         {
             const auto dumpLock = arrayObject->lock();
 
-            if( arrayObject->getType() == core::tools::Type::s_FLOAT)
+            if(arrayObject->getType() == core::tools::Type::s_FLOAT)
             {
                 const float* floatValue = static_cast<const float*>(arrayObject->getBuffer());
                 params->setNamedConstant(m_paramName, floatValue, 1, numComponents);
             }
-            else if( arrayObject->getType() == core::tools::Type::s_DOUBLE)
+            else if(arrayObject->getType() == core::tools::Type::s_DOUBLE)
             {
                 const double* doubleValue = static_cast<const double*>(arrayObject->getBuffer());
                 params->setNamedConstant(m_paramName, doubleValue, 1, numComponents);
             }
-            else if( arrayObject->getType() == core::tools::Type::s_INT32)
+            else if(arrayObject->getType() == core::tools::Type::s_INT32)
             {
                 const int* intValue = static_cast<const int*>(arrayObject->getBuffer());
                 params->setNamedConstant(m_paramName, intValue, 1, numComponents);
@@ -396,14 +405,14 @@ bool IParameter::setParameter(::Ogre::Technique& technique)
     return true;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setMaterial(const ::Ogre::MaterialPtr& material)
 {
     m_material = material;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setBoolParameter(bool value, std::string name)
 {
@@ -411,14 +420,14 @@ void IParameter::setBoolParameter(bool value, std::string name)
     {
         m_dirty = true;
 
-        data::Boolean::sptr paramObject = this->getInOut< data::Boolean>(s_PARAMETER_INOUT);
+        data::Boolean::sptr paramObject = this->getInOut<data::Boolean>(s_PARAMETER_INOUT);
         paramObject->setValue(value);
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setColorParameter(std::array<uint8_t, 4> color, std::string name)
 {
@@ -426,14 +435,14 @@ void IParameter::setColorParameter(std::array<uint8_t, 4> color, std::string nam
     {
         m_dirty = true;
 
-        data::Color::sptr paramObject = this->getInOut< data::Color>(s_PARAMETER_INOUT);
+        data::Color::sptr paramObject = this->getInOut<data::Color>(s_PARAMETER_INOUT);
         paramObject->setRGBA(color[0] / 255.f, color[1] / 255.f, color[2] / 255.f, color[3] / 255.f);
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setIntParameter(int value, std::string name)
 {
@@ -441,14 +450,14 @@ void IParameter::setIntParameter(int value, std::string name)
     {
         m_dirty = true;
 
-        data::Integer::sptr paramObject = this->getInOut< data::Integer>(s_PARAMETER_INOUT);
+        data::Integer::sptr paramObject = this->getInOut<data::Integer>(s_PARAMETER_INOUT);
         paramObject->setValue(value);
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setInt2Parameter(int value1, int value2, std::string name)
 {
@@ -456,7 +465,7 @@ void IParameter::setInt2Parameter(int value1, int value2, std::string name)
     {
         m_dirty = true;
 
-        data::Array::sptr arrayObject = this->getInOut< data::Array>(s_PARAMETER_INOUT);
+        data::Array::sptr arrayObject = this->getInOut<data::Array>(s_PARAMETER_INOUT);
 
         if(arrayObject->empty())
         {
@@ -464,14 +473,14 @@ void IParameter::setInt2Parameter(int value1, int value2, std::string name)
         }
 
         const auto dumpLock = arrayObject->lock();
-        arrayObject->at< std::uint32_t >(0) = static_cast<std::uint32_t>(value1);
-        arrayObject->at< std::uint32_t >(1) = static_cast<std::uint32_t>(value2);
+        arrayObject->at<std::uint32_t>(0) = static_cast<std::uint32_t>(value1);
+        arrayObject->at<std::uint32_t>(1) = static_cast<std::uint32_t>(value2);
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setInt3Parameter(int value1, int value2, int value3, std::string name)
 {
@@ -479,7 +488,7 @@ void IParameter::setInt3Parameter(int value1, int value2, int value3, std::strin
     {
         m_dirty = true;
 
-        data::Array::sptr arrayObject = this->getInOut< data::Array>(s_PARAMETER_INOUT);
+        data::Array::sptr arrayObject = this->getInOut<data::Array>(s_PARAMETER_INOUT);
 
         if(arrayObject->empty())
         {
@@ -487,15 +496,15 @@ void IParameter::setInt3Parameter(int value1, int value2, int value3, std::strin
         }
 
         const auto dumpLock = arrayObject->lock();
-        arrayObject->at< std::uint32_t >(0) = static_cast<std::uint32_t>(value1);
-        arrayObject->at< std::uint32_t >(1) = static_cast<std::uint32_t>(value2);
-        arrayObject->at< std::uint32_t >(2) = static_cast<std::uint32_t>(value3);
+        arrayObject->at<std::uint32_t>(0) = static_cast<std::uint32_t>(value1);
+        arrayObject->at<std::uint32_t>(1) = static_cast<std::uint32_t>(value2);
+        arrayObject->at<std::uint32_t>(2) = static_cast<std::uint32_t>(value3);
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setDoubleParameter(double value, std::string name)
 {
@@ -503,14 +512,14 @@ void IParameter::setDoubleParameter(double value, std::string name)
     {
         m_dirty = true;
 
-        data::Float::sptr paramObject = this->getInOut< data::Float>(s_PARAMETER_INOUT);
+        data::Float::sptr paramObject = this->getInOut<data::Float>(s_PARAMETER_INOUT);
         paramObject->setValue(static_cast<float>(value));
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setDouble2Parameter(double value1, double value2, std::string name)
 {
@@ -518,31 +527,32 @@ void IParameter::setDouble2Parameter(double value1, double value2, std::string n
     {
         m_dirty = true;
 
-        data::Array::sptr arrayObject = this->getInOut< data::Array>(s_PARAMETER_INOUT);
+        data::Array::sptr arrayObject = this->getInOut<data::Array>(s_PARAMETER_INOUT);
+
         if(arrayObject->empty())
         {
-            core::tools::Type type = core::tools::Type::create< core::tools::Type::DoubleType>();
+            core::tools::Type type = core::tools::Type::create<core::tools::Type::DoubleType>();
             arrayObject->resize({2}, core::tools::Type::s_DOUBLE);
         }
 
         const auto dumpLock = arrayObject->lock();
 
-        if( arrayObject->getType() == core::tools::Type::s_FLOAT)
+        if(arrayObject->getType() == core::tools::Type::s_FLOAT)
         {
-            arrayObject->at< float >(0) = static_cast<float>(value1);
-            arrayObject->at< float >(1) = static_cast<float>(value2);
+            arrayObject->at<float>(0) = static_cast<float>(value1);
+            arrayObject->at<float>(1) = static_cast<float>(value2);
         }
-        else if( arrayObject->getType() == core::tools::Type::s_DOUBLE)
+        else if(arrayObject->getType() == core::tools::Type::s_DOUBLE)
         {
-            arrayObject->at< double >(0) = value1;
-            arrayObject->at< double >(1) = value2;
+            arrayObject->at<double>(0) = value1;
+            arrayObject->at<double>(1) = value2;
         }
 
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IParameter::setDouble3Parameter(double value1, double value2, double value3, std::string name)
 {
@@ -550,32 +560,33 @@ void IParameter::setDouble3Parameter(double value1, double value2, double value3
     {
         m_dirty = true;
 
-        data::Array::sptr arrayObject = this->getInOut< data::Array>(s_PARAMETER_INOUT);
+        data::Array::sptr arrayObject = this->getInOut<data::Array>(s_PARAMETER_INOUT);
 
         if(arrayObject->empty())
         {
-            core::tools::Type type = core::tools::Type::create< core::tools::Type::DoubleType>();
+            core::tools::Type type = core::tools::Type::create<core::tools::Type::DoubleType>();
             arrayObject->resize({3}, core::tools::Type::s_DOUBLE);
         }
 
         const auto dumpLock = arrayObject->lock();
 
-        if( arrayObject->getType() == core::tools::Type::s_FLOAT)
+        if(arrayObject->getType() == core::tools::Type::s_FLOAT)
         {
-            arrayObject->at< float >(0) = static_cast<float>(value1);
-            arrayObject->at< float >(1) = static_cast<float>(value2);
-            arrayObject->at< float >(2) = static_cast<float>(value3);
+            arrayObject->at<float>(0) = static_cast<float>(value1);
+            arrayObject->at<float>(1) = static_cast<float>(value2);
+            arrayObject->at<float>(2) = static_cast<float>(value3);
         }
-        else if( arrayObject->getType() == core::tools::Type::s_DOUBLE)
+        else if(arrayObject->getType() == core::tools::Type::s_DOUBLE)
         {
-            arrayObject->at< double >(0) = value1;
-            arrayObject->at< double >(1) = value2;
-            arrayObject->at< double >(2) = value3;
+            arrayObject->at<double>(0) = value1;
+            arrayObject->at<double>(1) = value2;
+            arrayObject->at<double>(2) = value3;
         }
+
         this->updating();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d

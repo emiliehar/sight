@@ -32,8 +32,10 @@
 
 namespace sight::service
 {
+
 namespace parser
 {
+
 /**
  * @brief   Specific service for the construction of a Matrix4 and its associated services from an
  * XML-based description.
@@ -41,9 +43,7 @@ namespace parser
  */
 class SERVICE_CLASS_API Matrix4 : public service::IXMLParser
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(Matrix4, service::IXMLParser)
 
     /// Constructor : does nothing.
@@ -56,18 +56,18 @@ public:
     {
     }
 
-    SERVICE_API void createConfig( core::tools::Object::sptr _obj ) override;
-protected:
+    SERVICE_API void createConfig(core::tools::Object::sptr _obj) override;
 
+protected:
     /**
      * @brief Updating method : create the process object.
      *
      * Parse the configuration element to configure inputs and outputs and add
      * them in the process object.
      */
-    SERVICE_API void updating( ) override;
-
+    SERVICE_API void updating() override;
 };
 
-} //namespace parser
-} //namespace sight::service
+} // namespace parser
+
+} // namespace sight::service

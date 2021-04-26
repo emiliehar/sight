@@ -32,6 +32,7 @@
 
 namespace sight::ui::base
 {
+
 namespace registry
 {
 
@@ -40,22 +41,20 @@ namespace registry
  */
 class UI_BASE_CLASS_API Menu : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(Menu, ui::base::GuiBaseObject)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::string& sid)
     {
         return std::make_shared<Menu>(sid);
     }
 
-    typedef std::vector< ui::base::IMenuItemCallback::sptr > CallbacksType;
+    typedef std::vector<ui::base::IMenuItemCallback::sptr> CallbacksType;
 
     /// Constructor.
-    UI_BASE_API Menu( const std::string& sid);
+    UI_BASE_API Menu(const std::string& sid);
 
     /// Destructor. Do nothing
     UI_BASE_API virtual ~Menu();
@@ -68,8 +67,9 @@ public:
      * @param actionSid sid of the action service
      * @param menuItems  vector containing the fwMenuItem manages by this registry.
      */
-    UI_BASE_API virtual ui::base::container::fwMenuItem::sptr getFwMenuItem(std::string actionSid,
-                                                                            std::vector< ui::base::container::fwMenuItem::sptr > menuItems);
+    UI_BASE_API virtual ui::base::container::fwMenuItem::sptr getFwMenuItem(
+        std::string actionSid,
+        std::vector<ui::base::container::fwMenuItem::sptr> menuItems);
 
     /**
      * @brief Initialize registry managers.
@@ -104,7 +104,7 @@ public:
      *   - \b sid  (mandatory): the service identifier.
      *   - \b start = {yes| no} (default value no): indicate if the service must be started by the menu service.
      */
-    UI_BASE_API virtual void initialize( core::runtime::ConfigurationElement::sptr configuration);
+    UI_BASE_API virtual void initialize(core::runtime::ConfigurationElement::sptr configuration);
 
     /**
      * @brief manages action service associated with menuItem of menu.
@@ -124,7 +124,7 @@ public:
      * @pre Menu must be initialized before.
      * @pre sub menu items must be instanced before.
      */
-    UI_BASE_API virtual void manage(std::vector< ui::base::container::fwMenuItem::sptr > menuItems );
+    UI_BASE_API virtual void manage(std::vector<ui::base::container::fwMenuItem::sptr> menuItems);
 
     /**
      * @brief manages menu service associated with fwMenu of menu.
@@ -135,7 +135,7 @@ public:
      * @pre Menu must be initialized before.
      * @pre sub menu items must be instanced before.
      */
-    UI_BASE_API virtual void manage(std::vector< ui::base::container::fwMenu::sptr > menus );
+    UI_BASE_API virtual void manage(std::vector<ui::base::container::fwMenu::sptr> menus);
 
     /**
      * @brief Stopping menu items manager.
@@ -157,9 +157,8 @@ public:
     }
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
-    typedef std::map< std::string, std::pair<unsigned int, bool> > SIDMenuMapType;
+    typedef std::map<std::string, std::pair<unsigned int, bool> > SIDMenuMapType;
 
     /**
      * @brief All menu services ID (sid) managed is associated with pair containing:
@@ -181,4 +180,5 @@ protected:
 };
 
 } // namespace registry
+
 } // namespace sight::ui::base

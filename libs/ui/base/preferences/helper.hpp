@@ -78,7 +78,8 @@ template<typename T>
 T getValue(const std::string& var, const char delimiter = '%')
 {
     const std::string value = getValue(var, delimiter);
-    return ::boost::lexical_cast< T >(value);
+
+    return ::boost::lexical_cast<T>(value);
 }
 
 /// Sets the password to use in the application. If null or empty, erase it.

@@ -34,9 +34,7 @@ namespace Tuto07SceneQt3DQml
  */
 class TUTO07SCENEQT3DQML_CLASS_API Plugin : public sight::core::runtime::Plugin
 {
-
 public:
-
     /// Constructor.
     TUTO07SCENEQT3DQML_API Plugin() noexcept;
 
@@ -44,7 +42,6 @@ public:
     TUTO07SCENEQT3DQML_API ~Plugin() noexcept;
 
 private:
-
     /// Registers fwRenderQt3D features to be used as QML types.
     void start() override;
 
@@ -56,7 +53,6 @@ private:
 
     /// Does nothing.
     void uninitialize() noexcept override;
-
 };
 
 } // namespace Tuto07SceneQt3DQml.

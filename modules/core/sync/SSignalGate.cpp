@@ -39,27 +39,26 @@ const core::com::Signals::SignalKeyType SSignalGate::s_ALL_RECEIVED_SIG = "allRe
 // Private slot
 static const core::com::Slots::SlotKeyType s_RECEIVE_SLOT = "receive";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSignalGate::SSignalGate()
 {
-    newSignal< AllReceivedSignalType>(s_ALL_RECEIVED_SIG);
-
+    newSignal<AllReceivedSignalType>(s_ALL_RECEIVED_SIG);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSignalGate::~SSignalGate()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalGate::configuring()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSignalGate::starting()
 {
@@ -69,10 +68,12 @@ void SSignalGate::starting()
     std::smatch match;
 
     auto signalsCfg = config.equal_range("signal");
-    for (auto itCfg = signalsCfg.first; itCfg != signalsCfg.second; ++itCfg)
+
+    for(auto itCfg = signalsCfg.first ; itCfg != signalsCfg.second ; ++itCfg)
     {
         const std::string& signal = itCfg->second.get_value<std::string>();
-        if( std::regex_match(signal, match, re) )
+
+        if(std::regex_match(signal, match, re))
         {
             SIGHT_ASSERT("Wrong value for attribute src: " + signal, match.size() >= 3);
 
@@ -80,10 +81,10 @@ void SSignalGate::starting()
             uid.assign(match[1].first, match[1].second);
             signalKey.assign(match[2].first, match[2].second);
 
-            if (core::tools::fwID::exist(uid))
+            if(core::tools::fwID::exist(uid))
             {
                 core::tools::Object::sptr obj             = core::tools::fwID::getObject(uid);
-                core::com::HasSignals::sptr signalsHolder = std::dynamic_pointer_cast< core::com::HasSignals >(obj);
+                core::com::HasSignals::sptr signalsHolder = std::dynamic_pointer_cast<core::com::HasSignals>(obj);
                 SIGHT_ASSERT("Object with id " << uid << " is not a HasSlots", signalsHolder);
 
                 const size_t index = m_flags.size();
@@ -106,7 +107,7 @@ void SSignalGate::starting()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalGate::stopping()
 {
@@ -114,22 +115,23 @@ void SSignalGate::stopping()
     m_flags.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalGate::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSignalGate::received(size_t _index)
 {
     SIGHT_DEBUG("'" << this->getID() << "' received a signal at position : " << _index);
-    SIGHT_ASSERT("Could not find a signal at index " <<_index, _index < m_flags.size() );
+    SIGHT_ASSERT("Could not find a signal at index " << _index, _index < m_flags.size());
 
     m_flags[_index] = true;
 
     bool allReceived = true;
+
     for(bool received : m_flags)
     {
         allReceived &= received;
@@ -146,6 +148,6 @@ void SSignalGate::received(size_t _index)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::sync

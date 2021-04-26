@@ -36,14 +36,14 @@
 namespace sight::core::jobs
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Job::sptr Job::New(const std::string& name, Job::Task task, const core::thread::Worker::sptr& worker)
 {
-    return std::make_shared<Job>( name, task, worker );
+    return std::make_shared<Job>(name, task, worker);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Job::Job(const std::string& name, Job::Task task, const core::thread::Worker::sptr& worker) :
     IJob(name),
@@ -53,7 +53,7 @@ Job::Job(const std::string& name, Job::Task task, const core::thread::Worker::sp
     m_totalWorkUnits = 100;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::SharedFuture Job::runImpl()
 {
@@ -75,9 +75,10 @@ IJob::SharedFuture Job::runImpl()
 
                            m_task(*this);
                        };
+
         if(m_worker)
         {
-            return m_worker->postTask< void >( jobTask );
+            return m_worker->postTask<void>(jobTask);
         }
         else
         {
@@ -89,23 +90,25 @@ IJob::SharedFuture Job::runImpl()
         this->finish();
     }
 
-    return ::std::async( []() {} );
+    return ::std::async([](){});
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::SharedFuture Job::cancel()
 {
     auto future = this->IJob::cancel();
     core::mt::WriteLock lock(m_mutex);
-    if (m_task)
+
+    if(m_task)
     {
         m_task = nullptr;
     }
+
     return future;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Job::ProgressCallback Job::progressCallback()
 {
@@ -115,7 +118,7 @@ Job::ProgressCallback Job::progressCallback()
            };
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 core::thread::Worker::sptr Job::getWorker()
 {
@@ -123,4 +126,4 @@ core::thread::Worker::sptr Job::getWorker()
     return m_worker;
 }
 
-} //namespace sight::core::jobs
+} // namespace sight::core::jobs

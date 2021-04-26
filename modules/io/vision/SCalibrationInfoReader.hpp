@@ -54,8 +54,7 @@ namespace sight::module::io::vision
 class MODULE_IO_VISION_CLASS_API SCalibrationInfoReader : public sight::io::base::service::IReader
 {
 public:
-
-    SIGHT_DECLARE_SERVICE(SCalibrationInfoReader, sight::io::base::service::IReader )
+    SIGHT_DECLARE_SERVICE(SCalibrationInfoReader, sight::io::base::service::IReader)
 
     /// Constructor.
     MODULE_IO_VISION_API SCalibrationInfoReader() noexcept;
@@ -74,7 +73,6 @@ public:
     MODULE_IO_VISION_API void openLocationDialog() override;
 
 protected:
-
     /// Returns the folder path type.
     MODULE_IO_VISION_API sight::io::base::service::IOPathType getIOPathType() const override;
 
@@ -91,7 +89,6 @@ protected:
     MODULE_IO_VISION_API void stopping() override;
 
 private:
-
     /// SLOT: updates the chessboard size from the preferences.
     void updateChessboardSize();
 
@@ -105,14 +102,13 @@ private:
     std::string m_scaleKey;
 
     /// Width of the chessboard we're looking for.
-    size_t m_width { 11 };
+    size_t m_width{11};
 
     /// Height of the chessboard we're looking for.
-    size_t m_height { 8 };
+    size_t m_height{8};
 
     /// Scale applied to the images before running the detection algorithm.
-    float m_scale { 1.f };
-
+    float m_scale{1.f};
 };
 
 } // namespace sight::module::io::vision

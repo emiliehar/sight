@@ -88,11 +88,9 @@ class MODULE_UI_QT_CLASS_API SMultipleTF final :
     public QObject,
     public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(module::ui::qt::image::SMultipleTF, sight::ui::base::IEditor)
 
@@ -103,7 +101,6 @@ public:
     MODULE_UI_QT_API ~SMultipleTF() noexcept override;
 
 protected:
-
     /// Configures the editor.
     MODULE_UI_QT_API void configuring() override;
 
@@ -133,7 +130,6 @@ protected:
     MODULE_UI_QT_API void stopping() override;
 
 private:
-
     /**
      * @brief Checks if the composite contains the specified key.
      * @param _name the name used to search.
@@ -170,7 +166,6 @@ private:
     void setCurrentPool();
 
 private Q_SLOTS:
-
     /// Changes the current selected TF pool.
     void presetChoice(int _index);
 
@@ -196,40 +191,39 @@ private Q_SLOTS:
     void exportPool();
 
 private:
-
     /// If true, all TF contains in each path will be merged in a TF pool, else, one TF pool will be create for each
     /// files.
-    bool m_tfPerPath { false };
+    bool m_tfPerPath{false};
 
     /// Stores path were looking for TF presets.
-    std::vector< std::filesystem::path > m_paths;
+    std::vector<std::filesystem::path> m_paths;
 
     /// Contains the list of all TF preset.
-    QComboBox* m_tfPoolsPreset { nullptr };
+    QComboBox* m_tfPoolsPreset{nullptr};
 
     /// Contains the delete TF pool button.
-    QPushButton* m_deleteButton { nullptr };
+    QPushButton* m_deleteButton{nullptr};
 
     /// Contains the new TF pool button.
-    QPushButton* m_newButton { nullptr };
+    QPushButton* m_newButton{nullptr};
 
     /// Contains the copy TF pool button.
-    QPushButton* m_copyButton { nullptr };
+    QPushButton* m_copyButton{nullptr};
 
     /// Contains the reset TF pool button.
-    QPushButton* m_reinitializeButton { nullptr };
+    QPushButton* m_reinitializeButton{nullptr};
 
     /// Contains the rename TF pool button.
-    QPushButton* m_renameButton { nullptr };
+    QPushButton* m_renameButton{nullptr};
 
     /// Contains the import TF button.
-    QPushButton* m_importButton { nullptr };
+    QPushButton* m_importButton{nullptr};
 
     /// Contains the export TF button.
-    QPushButton* m_exportButton { nullptr };
+    QPushButton* m_exportButton{nullptr};
 
     /// Contains the current selected TF pool.
-    data::Composite::sptr m_currentTFPool { nullptr };
+    data::Composite::sptr m_currentTFPool{nullptr};
 
     /// Defines the path of the delete button icon.
     std::filesystem::path m_deleteIcon;
@@ -253,11 +247,10 @@ private:
     std::filesystem::path m_exportIcon;
 
     /// Defines icons width.
-    unsigned int m_iconWidth { 16 };
+    unsigned int m_iconWidth{16};
 
     /// Defines icons height.
-    unsigned int m_iconHeight { 16 };
-
+    unsigned int m_iconHeight{16};
 };
 
 } // namespace sight::module::ui::qt::image.

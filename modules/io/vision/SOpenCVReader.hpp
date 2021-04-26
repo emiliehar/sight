@@ -46,14 +46,13 @@ class MODULE_IO_VISION_CLASS_API SOpenCVReader : public sight::io::base::service
 public:
     SIGHT_DECLARE_SERVICE(SOpenCVReader, sight::io::base::service::IReader)
 
-    ///Constructor
+    /// Constructor
     MODULE_IO_VISION_API SOpenCVReader();
 
-    //Destructor
+    // Destructor
     MODULE_IO_VISION_API ~SOpenCVReader();
 
 protected:
-
     /**
      * @brief configure the service using a GUI.
      * @deprecated Will be removed in sight 22.0. Use openLocationDialog() instead.
@@ -89,7 +88,6 @@ protected:
 
     /// Returns managed path type, here service manages only single file
     MODULE_IO_VISION_API sight::io::base::service::IOPathType getIOPathType() const override;
-
 };
 
-} //namespace sight::module::io::vision
+} // namespace sight::module::io::vision

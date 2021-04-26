@@ -36,31 +36,35 @@ namespace sight::io::atoms::patch
  **/
 class IO_ATOMS_CLASS_API LinkDescriptor
 {
-
 public:
-
     /// Struct used to compare two LinkDescriptor
-    struct Compare {
-        //------------------------------------------------------------------------------
+    struct Compare
+    {
+        // ------------------------------------------------------------------------------
 
-        bool operator() (LinkDescriptor a, LinkDescriptor b) const
+        bool operator()(LinkDescriptor a, LinkDescriptor b) const
         {
-            return (a.m_originVersion+a.m_targetVersion) < (b.m_originVersion+b.m_targetVersion);
+            return (a.m_originVersion + a.m_targetVersion) < (b.m_originVersion + b.m_targetVersion);
         }
     };
 
     /// VersionID used to link type and version
-    typedef std::pair< std::string, std::string > VersionIDType;
+    typedef std::pair<std::string, std::string> VersionIDType;
 
     /// Links used to link two versions.
-    typedef std::map< VersionIDType, VersionIDType > LinksType;
+    typedef std::map<VersionIDType, VersionIDType> LinksType;
 
     /// Constructor
     LinkDescriptor();
 
     /// Constructor
-    LinkDescriptor(const std::string& context, const std::string& originVersion, const std::string& targetVersion,
-                   const std::string& patcher, LinksType links, int weight = 1);
+    LinkDescriptor(
+        const std::string& context,
+        const std::string& originVersion,
+        const std::string& targetVersion,
+        const std::string& patcher,
+        LinksType links,
+        int weight = 1);
 
     /// Destructor
     ~LinkDescriptor();
@@ -102,7 +106,6 @@ public:
     }
 
 private:
-
     friend class VersionsGraph;
 
     /// Weight of the link

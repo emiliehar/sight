@@ -59,10 +59,8 @@ namespace sight::module::io::igtl
 
 class MODULE_IO_IGTL_CLASS_API SServerSender : public module::io::igtl::INetworkSender
 {
-
 public:
-
-    SIGHT_DECLARE_SERVICE(SServerSender,  module::io::igtl::INetworkSender )
+    SIGHT_DECLARE_SERVICE(SServerSender, module::io::igtl::INetworkSender)
 
     /// Constructor
     MODULE_IO_IGTL_API SServerSender();
@@ -71,7 +69,6 @@ public:
     MODULE_IO_IGTL_API virtual ~SServerSender();
 
 protected:
-
     /// Configure port and device name
     MODULE_IO_IGTL_API void configuring() override;
 
@@ -82,7 +79,6 @@ protected:
     MODULE_IO_IGTL_API void stopping() override;
 
 private:
-
     /**
      * @brief method to send data.
      *
@@ -101,8 +97,7 @@ private:
     std::string m_portConfig;
 
     /// Vector of device name if the group configuration exists.
-    std::vector< std::string > m_deviceNames;
-
+    std::vector<std::string> m_deviceNames;
 };
 
 } // namespace sight::module::io::igtl

@@ -31,8 +31,10 @@
 
 namespace thread
 {
+
 class Worker;
-} //namespace thread
+
+} // namespace thread
 
 namespace sight::core::jobs
 {
@@ -48,14 +50,14 @@ public:
     /**
      * @name Typedefs
      * @{ */
-    typedef SPTR (core::jobs::Job) sptr;
-    typedef WPTR (core::jobs::Job) wptr;
+    typedef SPTR(core::jobs::Job) sptr;
+    typedef WPTR(core::jobs::Job) wptr;
 
     /// Task type
-    typedef std::function< void (Job&) > Task;
+    typedef std::function<void (Job&)> Task;
 
     /// Progress callback type
-    typedef std::function< void (std::uint64_t) > ProgressCallback;
+    typedef std::function<void (std::uint64_t)> ProgressCallback;
     /**  @} */
 
     /**
@@ -67,7 +69,7 @@ public:
      *
      * @return
      */
-    CORE_API static sptr New(const std::string& name, Task task, const SPTR(core::thread::Worker)& worker = nullptr );
+    CORE_API static sptr New(const std::string& name, Task task, const SPTR(core::thread::Worker)& worker = nullptr);
 
     /**
      * @brief Construct a new job
@@ -76,7 +78,7 @@ public:
      * @param task The task managed by the job
      * @param core::thread::Worker An optional worker to run the task on
      */
-    CORE_API Job(const std::string& name, Task task, const SPTR(core::thread::Worker)& worker = nullptr );
+    CORE_API Job(const std::string& name, Task task, const SPTR(core::thread::Worker)& worker = nullptr);
 
     /**
      * @brief Return a job callback with the done work number as parameter
@@ -93,14 +95,13 @@ public:
     using IJob::done;
     /**  @} */
 
-    ///Getter on the current job worker or nullptr if no worker has been set.
+    /// Getter on the current job worker or nullptr if no worker has been set.
     CORE_API SPTR(core::thread::Worker) getWorker();
 
     /// Reimplements IJob's cancel
     CORE_API virtual SharedFuture cancel();
 
 protected:
-
     /**
      * @brief Run the task of the job and mark the job as finished
      *
@@ -109,13 +110,11 @@ protected:
     CORE_API SharedFuture runImpl();
 
 private:
-
     /// The task meant to be run
     Task m_task;
 
     /// The worker on wich the task is meant to be run
     SPTR(core::thread::Worker) m_worker;
-
 };
 
-} //namespace sight::core::jobs
+} // namespace sight::core::jobs

@@ -28,7 +28,7 @@
 namespace sight::utestData
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool File::contentEquals(const std::filesystem::path& lfile, const std::filesystem::path& rfile)
 {
@@ -42,17 +42,18 @@ bool File::contentEquals(const std::filesystem::path& lfile, const std::filesyst
     streambuf* rbuf = rstream.rdbuf();
 
     char lchar, rchar;
-    while (true)
+
+    while(true)
     {
         lchar = static_cast<char>(lbuf->sbumpc());
         rchar = static_cast<char>(rbuf->sbumpc());
 
-        if (lchar == eof && rchar == eof)
+        if(lchar == eof && rchar == eof)
         {
             return true;
         }
 
-        if (lchar != rchar || lchar == eof || rchar == eof )
+        if(lchar != rchar || lchar == eof || rchar == eof)
         {
             break;
         }
@@ -61,4 +62,4 @@ bool File::contentEquals(const std::filesystem::path& lfile, const std::filesyst
     return false;
 }
 
-}  //namespace sight::utestData
+} // namespace sight::utestData

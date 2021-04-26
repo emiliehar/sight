@@ -64,7 +64,6 @@ namespace sight::module::geometry::base
 class MODULE_GEOMETRY_BASE_CLASS_API SPointListFromMatrices final : public sight::service::IOperator
 {
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SPointListFromMatrices, sight::service::IOperator)
 
@@ -75,7 +74,6 @@ public:
     MODULE_GEOMETRY_BASE_API ~SPointListFromMatrices() override;
 
 protected:
-
     /// Sets the append mode on or off.
     MODULE_GEOMETRY_BASE_API void configuring() override;
 
@@ -89,7 +87,6 @@ protected:
     MODULE_GEOMETRY_BASE_API void stopping() override;
 
 private:
-
     /// Append mode
     bool m_append;
 };

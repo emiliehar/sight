@@ -20,7 +20,7 @@
  *
  ***********************************************************************/
 
-#if defined(linux) || defined(__linux) || defined (__APPLE__)
+#if defined(linux) || defined(__linux) || defined(__APPLE__)
 
 #include "core/runtime/detail/dl/Posix.hpp"
 
@@ -35,56 +35,61 @@ namespace detail
 namespace dl
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Posix::Posix( const std::filesystem::path& modulePath ) noexcept :
+Posix::Posix(const std::filesystem::path& modulePath) noexcept :
     Native(modulePath),
-    m_handle( 0 )
+    m_handle(0)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Posix::~Posix() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool Posix::isLoaded() const noexcept
 {
     return m_handle != 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void* Posix::getSymbol( const std::string& name ) const
+void* Posix::getSymbol(const std::string& name) const
 {
     void* result = 0;
+
     if(isLoaded() == true)
     {
         dlerror(); /* Clear existing error */
         result = dlsym(m_handle, name.c_str());
+
         if(result == 0) /* Check for possible errors */
         {
             std::string message(dlerror());
+
             if(message.empty() == false)
             {
                 throw RuntimeException("Symbol retrieval failed. " + message);
             }
         }
     }
+
     return result;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Posix::load()
 {
     if(m_handle == 0)
     {
         // Opens the dynamic library.
-        m_handle = dlopen(getFullPath().string().c_str(), RTLD_LAZY|RTLD_GLOBAL);
+        m_handle = dlopen(getFullPath().string().c_str(), RTLD_LAZY | RTLD_GLOBAL);
+
         if(m_handle == 0)
         {
             std::string message(dlerror());
@@ -93,7 +98,7 @@ void Posix::load()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Posix::unload()
 {
@@ -101,16 +106,18 @@ void Posix::unload()
     {
         int result;
         result = dlclose(m_handle);
+
         if(result != 0)
         {
             std::string message(dlerror());
             throw RuntimeException("Module unload failed. " + message);
         }
+
         m_handle = 0;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace dl
 

@@ -40,9 +40,10 @@ namespace sight::core::tools
 
 namespace
 {
+
 struct NumericCast
 {
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<class T>
     static std::string eval(const T& t)
@@ -55,7 +56,7 @@ struct NumericCast
 
 struct Default
 {
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<class T>
     static std::string eval(const T& t)
@@ -63,6 +64,7 @@ struct Default
         return "No getString for " + core::Demangler(typeid(t)).getClassname();
     }
 };
+
 }
 
 /**
@@ -80,10 +82,10 @@ struct Default
 template<class T>
 inline std::string getString(const T& t)
 {
-    typedef BOOST_DEDUCED_TYPENAME boost::mpl::if_c<  std::is_arithmetic<T>::value,
-                                                      NumericCast,
-                                                      Default
-                                                      >::type Choice;
+    typedef BOOST_DEDUCED_TYPENAME boost::mpl::if_c<std::is_arithmetic<T>::value,
+                                                    NumericCast,
+                                                    Default
+                                                    >::type Choice;
 
     return Choice::eval(t);
 }
@@ -101,6 +103,7 @@ inline std::string getString(const std::pair<T1, T2>& t)
 {
     std::string res = ("[");
     res += getString(t.first) + "," + getString(t.second) + "]";
+
     return res;
 }
 
@@ -117,15 +120,19 @@ template<class ForwardIterator>
 inline std::string getString(ForwardIterator begin, ForwardIterator end)
 {
     std::string result("[");
-    if (begin != end)
+
+    if(begin != end)
     {
-        result += getString( *begin );
-        while (++begin != end)
+        result += getString(*begin);
+
+        while(++begin != end)
         {
-            result += "," + getString( *begin );
+            result += "," + getString(*begin);
         }
     }
+
     result += "]";
+
     return result;
 }
 
@@ -156,4 +163,4 @@ CORE_API std::string getString(const std::string& aString);
 
 ///@}
 
-}
+} // namespace sight::core

@@ -28,8 +28,10 @@
 
 namespace sight::io::dicom
 {
+
 namespace writer
 {
+
 namespace iod
 {
 
@@ -38,7 +40,6 @@ namespace iod
  */
 class IO_DICOM_CLASS_API CTMRImageIOD : public io::dicom::writer::iod::InformationObjectDefinition
 {
-
 public:
     /**
      * @brief Constructor
@@ -48,20 +49,22 @@ public:
      * @param[in] progress Progress callback
      * @param[in] cancel Cancel requested callback
      */
-    IO_DICOM_API CTMRImageIOD(const SPTR(io::dicom::container::DicomInstance)& instance,
-                              const std::filesystem::path& destinationPath,
-                              const core::log::Logger::sptr& logger = nullptr,
-                              ProgressCallback progress             = nullptr,
-                              CancelRequestedCallback cancel        = nullptr);
+    IO_DICOM_API CTMRImageIOD(
+        const SPTR(io::dicom::container::DicomInstance)& instance,
+        const std::filesystem::path& destinationPath,
+        const core::log::Logger::sptr& logger = nullptr,
+        ProgressCallback progress             = nullptr,
+        CancelRequestedCallback cancel        = nullptr);
 
     /// Destructor
     IO_DICOM_API virtual ~CTMRImageIOD();
 
     /// Write DICOM file
     IO_DICOM_API void write(const data::Series::csptr& series) override;
-
 };
 
 } // namespace iod
+
 } // namespace writer
+
 } // namespace sight::io::dicom

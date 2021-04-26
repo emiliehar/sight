@@ -28,21 +28,19 @@ namespace sight::module::viz::scene3d::adaptor
 static const std::string s_PRIORITY_CONFIG              = "priority";
 static const std::string s_LAYER_ORDER_DEPENDANT_CONFIG = "layerOrderDependant";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 STrackballCamera::STrackballCamera() noexcept
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 STrackballCamera::~STrackballCamera() noexcept
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void STrackballCamera::configuring()
 {
@@ -55,27 +53,26 @@ void STrackballCamera::configuring()
     m_layerOrderDependant = config.get<bool>(s_LAYER_ORDER_DEPENDANT_CONFIG, m_layerOrderDependant);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void STrackballCamera::starting()
 {
     this->initialize();
 
     const auto layer = this->getLayer();
-    m_trackball =
-        std::make_shared< sight::viz::scene3d::interactor::TrackballInteractor >(layer, m_layerOrderDependant);
+    m_trackball
+        = std::make_shared<sight::viz::scene3d::interactor::TrackballInteractor>(layer, m_layerOrderDependant);
 
     layer->addInteractor(m_trackball, m_priority);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void STrackballCamera::updating() noexcept
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void STrackballCamera::stopping()
 {
@@ -83,6 +80,6 @@ void STrackballCamera::stopping()
     layer->removeInteractor(m_trackball);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::viz::scene3d::adaptor.

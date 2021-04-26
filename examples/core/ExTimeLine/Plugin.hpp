@@ -34,7 +34,6 @@ namespace ExTimeLine
 class EXTIMELINE_CLASS_API Plugin : public sight::core::runtime::Plugin
 {
 public:
-
     /// Destroys the plugin.
     EXTIMELINE_API ~Plugin() noexcept override;
 
@@ -45,9 +44,7 @@ public:
     EXTIMELINE_API void stop() noexcept override;
 
 private:
-
-    sight::core::thread::Worker::sptr m_worker { nullptr };
-
+    sight::core::thread::Worker::sptr m_worker{nullptr};
 };
 
 } // namespace ExTimeLine.

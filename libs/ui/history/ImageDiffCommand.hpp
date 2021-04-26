@@ -36,7 +36,6 @@ namespace sight::ui::history
 class UI_HISTORY_CLASS_API ImageDiffCommand : public ICommand
 {
 public:
-
     /// Constructor, uses an image and a change list for that image.
     UI_HISTORY_API ImageDiffCommand(const data::Image::sptr& img, filter::image::ImageDiff diff);
 
@@ -53,13 +52,11 @@ public:
     UI_HISTORY_API virtual const std::string getDescription() const;
 
 private:
-
     data::Image::sptr m_img;
 
     data::Image::BufferModifiedSignalType::sptr m_modifSig;
 
     filter::image::ImageDiff m_diff;
-
 };
 
 } // namespace sight::ui::history

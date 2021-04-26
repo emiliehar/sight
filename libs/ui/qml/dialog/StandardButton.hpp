@@ -31,6 +31,7 @@
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
 
@@ -44,7 +45,6 @@ Q_PROPERTY(ButtonList button MEMBER m_button WRITE setButton READ getButton NOTI
 Q_ENUMS(StandardButton::ButtonList)
 
 public:
-
     /// List of QmlButton
     enum ButtonList
     {
@@ -85,10 +85,10 @@ Q_SIGNALS:
     void buttonChanged();
 
 private:
-
     /// Button mask
     ButtonList m_button;
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

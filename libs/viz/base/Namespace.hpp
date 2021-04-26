@@ -27,4 +27,5 @@
 
 namespace sight::viz::base
 {
+
 }

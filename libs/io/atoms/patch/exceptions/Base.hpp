@@ -43,4 +43,5 @@ public:
 };
 
 } // namespace exceptions
+
 } // namespace sight::io::atoms::patch

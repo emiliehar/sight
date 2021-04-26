@@ -28,6 +28,7 @@
 
 namespace sight::core::memory
 {
+
 namespace exception
 {
 
@@ -36,11 +37,12 @@ namespace exception
  */
 struct CORE_CLASS_API BadCast : core::Exception
 {
-    BadCast( const std::string& err ) :
+    BadCast(const std::string& err) :
         core::Exception(err)
     {
     }
 };
 
 } // namespace exception
+
 } // namespace sight::core::memory

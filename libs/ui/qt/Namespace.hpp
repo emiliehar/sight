@@ -33,6 +33,7 @@ namespace sight::ui::qt
  */
 namespace util
 {
+
 }
 
 }

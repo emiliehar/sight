@@ -27,7 +27,7 @@
 namespace sight::navigation::openvslam
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ::openvslam::camera::perspective Helper::fromSight(const data::Camera::csptr _sightCam)
 {
@@ -43,22 +43,34 @@ namespace sight::navigation::openvslam
     const double fps        = static_cast<double>(_sightCam->getMaximumFrameRate());
 
     // Create a perspective camera (equirectangular and fisheye needs additional information).
-    const ::openvslam::camera::perspective oVSlamCamera =
-        ::openvslam::camera::perspective(name, cameraType, colorType, cols, rows,
-                                         fps, _sightCam->getFx(), _sightCam->getFy(),
-                                         _sightCam->getCx(),
-                                         _sightCam->getCy(), dist[0], dist[1], dist[2], dist[3], dist[4]);
+    const ::openvslam::camera::perspective oVSlamCamera
+        = ::openvslam::camera::perspective(
+              name,
+              cameraType,
+              colorType,
+              cols,
+              rows,
+              fps,
+              _sightCam->getFx(),
+              _sightCam->getFy(),
+              _sightCam->getCx(),
+              _sightCam->getCy(),
+              dist[0],
+              dist[1],
+              dist[2],
+              dist[3],
+              dist[4]);
 
     return oVSlamCamera;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 data::Camera::sptr Helper::toSight(const ::openvslam::camera::perspective _oVSlamCam)
 {
     data::Camera::sptr cam = data::Camera::New();
 
-    cam->setCameraID( _oVSlamCam.name_);
+    cam->setCameraID(_oVSlamCam.name_);
     cam->setWidth(_oVSlamCam.cols_);
     cam->setHeight(_oVSlamCam.rows_);
 
@@ -69,11 +81,11 @@ data::Camera::sptr Helper::toSight(const ::openvslam::camera::perspective _oVSla
 
     std::array<double, 5> dist;
 
-    dist[0] = _oVSlamCam.k1_; //k1
-    dist[1] = _oVSlamCam.k2_; //k2
-    dist[2] = _oVSlamCam.p1_; //p1
-    dist[3] = _oVSlamCam.p2_; //p2
-    dist[4] = _oVSlamCam.k3_; //k3
+    dist[0] = _oVSlamCam.k1_; // k1
+    dist[1] = _oVSlamCam.k2_; // k2
+    dist[2] = _oVSlamCam.p1_; // p1
+    dist[3] = _oVSlamCam.p2_; // p2
+    dist[4] = _oVSlamCam.k3_; // k3
 
     cam->setDistortionCoefficient(dist);
 
@@ -82,13 +94,14 @@ data::Camera::sptr Helper::toSight(const ::openvslam::camera::perspective _oVSla
     return cam;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-std::shared_ptr<::openvslam::config> Helper::createMonocularConfig(const data::Camera::csptr _sightCam,
-                                                                   const OrbParams& _orbParams,
-                                                                   const InitParams& _initParams)
+std::shared_ptr<::openvslam::config> Helper::createMonocularConfig(
+    const data::Camera::csptr _sightCam,
+    const OrbParams& _orbParams,
+    const InitParams& _initParams)
 {
-    //Create a YAML node for other parameters.
+    // Create a YAML node for other parameters.
     ::YAML::Node node;
     node["Camera.name"] = _sightCam->getCameraID();
     // Only Monocular
@@ -110,7 +123,7 @@ std::shared_ptr<::openvslam::config> Helper::createMonocularConfig(const data::C
     node["Camera.cols"] = _sightCam->getWidth();
     node["Camera.rows"] = _sightCam->getHeight();
     // Values can be RGB, BGR or GRAY.
-    //TODO: maybe use _sightCam->getPixelFormatName() and translate result to RGB-BGR or GRAY.
+    // TODO: maybe use _sightCam->getPixelFormatName() and translate result to RGB-BGR or GRAY.
     node["Camera.color_order"] = "RGB";
 
     // Features (ORB):
@@ -129,18 +142,19 @@ std::shared_ptr<::openvslam::config> Helper::createMonocularConfig(const data::C
     node["Initializer.scaling_factor"]               = _initParams.scalingFactor;
 
     // Create the config with YAML node (constructor was added on our version of openvslam).
-    std::shared_ptr< ::openvslam::config > conf = std::make_shared< ::openvslam::config >(node);
+    std::shared_ptr< ::openvslam::config> conf = std::make_shared< ::openvslam::config>(node);
+
     return conf;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Helper::writeOpenvslamConfig(const std::shared_ptr< ::openvslam::config > config, const std::string& _filepath)
+void Helper::writeOpenvslamConfig(const std::shared_ptr< ::openvslam::config> config, const std::string& _filepath)
 {
     writeOpenvslamConfig(config->yaml_node_, _filepath);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void Helper::writeOpenvslamConfig(const YAML::Node& _node, const std::string& _filepath)
 {
@@ -148,26 +162,25 @@ void Helper::writeOpenvslamConfig(const YAML::Node& _node, const std::string& _f
     fout << _node;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-std::shared_ptr< ::openvslam::config > Helper::readOpenvslamConfig(const std::string& _filepath)
+std::shared_ptr< ::openvslam::config> Helper::readOpenvslamConfig(const std::string& _filepath)
 {
-    std::shared_ptr< ::openvslam::config > conf;
+    std::shared_ptr< ::openvslam::config> conf;
     try
     {
         conf = std::make_shared< ::openvslam::config>(_filepath);
-
     }
-    catch (std::exception& e)
+    catch(std::exception& e)
     {
         SIGHT_ERROR("Something went wrong when tying to load '" + _filepath + "'. Error: " + e.what());
+
         return nullptr;
     }
 
     return conf;
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace sight::navigation::openvslam
+} // namespace sight::navigation::openvslam

@@ -34,9 +34,7 @@ namespace sight::module::viz::scene3dQt
 /// Defines a static class to manage the OpenGL context shared by all render windows.
 class OpenGLContext final
 {
-
 public:
-
     /// Retrieves a shared pointer to Ogre's OpenGL context, creates it if does not exist or has expired.
     static std::shared_ptr<QOpenGLContext> getGlobalOgreOpenGLContext();
 
@@ -49,10 +47,8 @@ public:
     static QOpenGLContext* createOgreGLContext(QOpenGLContext* const _sharedContext = nullptr);
 
 private:
-
     /// Contains a weak reference to the OpenGL context, expires when no more windows hold the context.
     static std::weak_ptr<QOpenGLContext> s_globalOgreOpenGLContext;
-
 };
 
 } // namespace sight::module::viz::scene3dQt.

@@ -33,6 +33,7 @@
 
 namespace sight::module::viz::scene3d::adaptor
 {
+
 /**
  * @brief This adaptor renders a video frame from a 2D-image.
  *
@@ -76,9 +77,7 @@ namespace sight::module::viz::scene3d::adaptor
  */
 class MODULE_VIZ_SCENE3D_CLASS_API SVideo final : public sight::viz::scene3d::IAdaptor
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SVideo, ::sight::viz::scene3d::IAdaptor)
 
@@ -89,7 +88,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SVideo() noexcept override;
 
 protected:
-
     /// Configures the adaptor.
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -121,7 +119,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void setVisible(bool _visible) override;
 
 private:
-
     /// SLOTS: updates the displayed transfer function.
     void updateTF();
 
@@ -141,62 +138,61 @@ private:
     ::Ogre::MeshPtr m_mesh;
 
     /// Contains the node where the plane is attached.
-    ::Ogre::SceneNode* m_sceneNode { nullptr };
+    ::Ogre::SceneNode* m_sceneNode{nullptr};
 
     /// Contains the Ogre entity used to display the video plane.
-    ::Ogre::Entity* m_entity { nullptr };
+    ::Ogre::Entity* m_entity{nullptr};
 
     /// Contains and manages the Ogre textures used to store the transfer function (GPU point of view).
-    std::unique_ptr< sight::viz::scene3d::TransferFunction> m_gpuTF;
+    std::unique_ptr<sight::viz::scene3d::TransferFunction> m_gpuTF;
 
     /// Defines if the texture is initialized.
-    bool m_isTextureInit { false };
+    bool m_isTextureInit{false};
 
     /// Defines the previous image size.
-    size_t m_previousWidth { 0 };
+    size_t m_previousWidth{0};
 
     /// Defines the previous image spacing.
-    size_t m_previousHeight { 0 };
+    size_t m_previousHeight{0};
 
     /// Defines the previous image type.
     core::tools::Type m_previousType;
 
     /// Contains the pointlist in the video space coordinates.
-    data::PointList::sptr m_pointList { nullptr };
+    data::PointList::sptr m_pointList{nullptr};
 
     /// Contains the adaptor used to display the 2D pointlist.
-    sight::viz::scene3d::IAdaptor::sptr m_pointListAdaptor { nullptr };
+    sight::viz::scene3d::IAdaptor::sptr m_pointListAdaptor{nullptr};
 
     /// Defines material's name used by the point list.
-    std::string m_materialTemplateName { "" };
+    std::string m_materialTemplateName{""};
 
     /// Defines the attached texture adaptor UID used by the point list.
-    std::string m_textureName { "" };
+    std::string m_textureName{""};
 
     /// Defines the billboards radius.
-    std::string m_radius { "" };
+    std::string m_radius{""};
 
     /// Defines if label numbers are displayed.
-    std::string m_displayLabel { "" };
+    std::string m_displayLabel{""};
 
     /// Defines the RGB color for the label point color.
-    std::string m_labelColor { "" };
+    std::string m_labelColor{""};
 
     /// Defines the color of points.
-    std::string m_color { "" };
+    std::string m_color{""};
 
     /// Defines if billboard will have a fixed size in screen space.
-    std::string m_fixedSize { "" };
+    std::string m_fixedSize{""};
 
     /// Defines the mask for picking requests in the point list.
-    std::string m_queryFlags { "" };
+    std::string m_queryFlags{""};
 
     /// Defines the TrueType font source file.
-    std::string m_fontSource { "" };
+    std::string m_fontSource{""};
 
     /// Defines the font size in points.
-    std::string m_fontSize { "" };
-
+    std::string m_fontSize{""};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

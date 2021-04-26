@@ -28,7 +28,7 @@
 #include <data/factory/new.hpp>
 #include <data/Object.hpp>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(Study))
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (Study))
 
 namespace sight::data
 {
@@ -38,12 +38,10 @@ namespace sight::data
  */
 class DATA_CLASS_API Study : public data::Object
 {
-
 public:
+    SIGHT_DECLARE_CLASS(Study, data::Object, data::factory::New<Study>)
 
-    SIGHT_DECLARE_CLASS(Study, data::Object, data::factory::New< Study >)
-
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(Study))
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (Study))
 
     /**
      * @brief Creates the study.
@@ -58,14 +56,14 @@ public:
      * @brief Defines shallow copy.
      * @param _source the source object where find data.
      */
-    DATA_API void shallowCopy( const data::Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const data::Object::csptr& _source) override;
 
     /**
      * @brief Defines deep copy.
      * @param _source the source object where find data.
      * @param _cache contains all copied objects to avoid duplication.
      */
-    DATA_API void cachedDeepCopy( const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
+    DATA_API void cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
 
     /// Gets the unique identifier of the study.
     const DicomValueType& getInstanceUID() const;
@@ -134,7 +132,6 @@ public:
     void setPatientBodyMassIndex(const DicomValueType& _val);
 
 private:
-
     /// Defines the study unique identifier.
     DicomValueType m_instanceUID;
 
@@ -168,160 +165,162 @@ private:
 
     /// Defines the patient's body mass during this study.
     DicomValueType m_patientBodyMassIndex;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getInstanceUID() const
 {
     return m_instanceUID;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setInstanceUID(const DicomValueType& _val)
 {
     m_instanceUID = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getStudyID() const
 {
     return m_studyID;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setStudyID(const DicomValueType& _val)
 {
     m_studyID = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getDate() const
 {
     return m_date;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setDate(const DicomValueType& _val)
 {
     m_date = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getTime() const
 {
     return m_time;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setTime(const DicomValueType& _val)
 {
     m_time = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getReferringPhysicianName() const
 {
     return m_referringPhysicianName;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setReferringPhysicianName(const DicomValueType& _val)
 {
     m_referringPhysicianName = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getConsultingPhysicianName() const
 {
     return m_consultingPhysicianName;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setConsultingPhysicianName(const DicomValueType& _val)
 {
     m_consultingPhysicianName = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getDescription() const
 {
     return m_description;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setDescription(const DicomValueType& _val)
 {
     m_description = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getPatientAge() const
 {
     return m_patientAge;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setPatientAge(const DicomValueType& _val)
 {
     m_patientAge = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getPatientSize() const
 {
     return m_patientSize;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setPatientSize(const DicomValueType& _val)
 {
     m_patientSize = _val;
 }
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getPatientWeight() const
 {
     return m_patientWeight;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setPatientWeight(const DicomValueType& _val)
 {
     m_patientWeight = _val;
 }
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 inline const DicomValueType& Study::getPatientBodyMassIndex() const
 {
     return m_patientBodyMassIndex;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline void Study::setPatientBodyMassIndex(const DicomValueType& _val)
 {
     m_patientBodyMassIndex = _val;
 }
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 } // Namespace fwMedData.

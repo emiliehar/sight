@@ -28,19 +28,20 @@
 
 namespace sight::core::thread
 {
+
 class Worker;
-} //namespace thread
+
+} // namespace thread
 
 namespace sight::module::ui::console
 {
+
 /**
  * @brief   This class is called when the console module is loaded.
  */
 class MODULE_UI_CONSOLE_CLASS_API Plugin : public core::runtime::Plugin
 {
-
 public:
-
     /// Destructor
     MODULE_UI_CONSOLE_API ~Plugin() noexcept;
 
@@ -54,9 +55,7 @@ public:
     MODULE_UI_CONSOLE_API int run() noexcept;
 
 private:
-
     SPTR(core::thread::Worker) m_worker;
-
 };
 
 } // namespace sight::module::ui::console

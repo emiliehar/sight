@@ -28,6 +28,7 @@
 
 namespace sight::core::tools
 {
+
 /**
  * @brief   Management of UUID on objects.
  */

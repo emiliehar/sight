@@ -30,6 +30,7 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -38,14 +39,14 @@ namespace ut
  */
 class AppManagerTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( AppManagerTest );
-CPPUNIT_TEST( managerCreationTest );
-CPPUNIT_TEST( managerWithObjectTest );
-CPPUNIT_TEST( managerWithObjectConnectionTest );
-CPPUNIT_TEST( managerWithServiceConnectionTest );
-CPPUNIT_TEST( managerWithOutputCreationTest );
-CPPUNIT_TEST( managerWithGroupTest );
-CPPUNIT_TEST( managerWithInputsTest );
+CPPUNIT_TEST_SUITE(AppManagerTest);
+CPPUNIT_TEST(managerCreationTest);
+CPPUNIT_TEST(managerWithObjectTest);
+CPPUNIT_TEST(managerWithObjectConnectionTest);
+CPPUNIT_TEST(managerWithServiceConnectionTest);
+CPPUNIT_TEST(managerWithOutputCreationTest);
+CPPUNIT_TEST(managerWithGroupTest);
+CPPUNIT_TEST(managerWithInputsTest);
 
 CPPUNIT_TEST_SUITE_END();
 
@@ -63,24 +64,23 @@ public:
     void managerWithInputsTest();
 
 private:
-
-    std::unique_ptr< service::AppManager > m_appMgr;
+    std::unique_ptr<service::AppManager> m_appMgr;
 };
 
 class AppManagerForTest : public service::AppManager
 {
 public:
-
     friend class AppManagerTest;
     AppManagerForTest()
     {
-
     }
+
     ~AppManagerForTest()
     {
         this->destroy();
     }
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

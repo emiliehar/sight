@@ -24,10 +24,13 @@
 
 namespace sight::module::ui::qt::metrics
 {
+
 /**
  * @brief The namespace sight::module::ui::qt::metrics::editor contains editors to add distances
  */
 namespace editor
 {
+
 }
+
 }

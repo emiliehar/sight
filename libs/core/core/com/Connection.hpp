@@ -38,7 +38,7 @@ struct CORE_CLASS_API Connection
         {
         }
 
-        Blocker( Connection connection ) :
+        Blocker(Connection connection) :
             m_blocker(connection.getBlocker())
         {
         }
@@ -66,6 +66,7 @@ struct CORE_CLASS_API Connection
     void disconnect()
     {
         SlotConnectionBase::sptr connection(m_connectionBase.lock());
+
         if(connection)
         {
             connection->disconnect();
@@ -79,21 +80,21 @@ struct CORE_CLASS_API Connection
     }
 
     protected:
-
         /// Returns a Blocker.
         SlotConnectionBase::BlockerSptrType getBlocker()
         {
             SlotConnectionBase::BlockerSptrType blocker;
             SlotConnectionBase::sptr connection(m_connectionBase.lock());
+
             if(connection)
             {
                 blocker = connection->getBlocker();
             }
+
             return blocker;
         }
 
         SlotConnectionBase::wptr m_connectionBase;
-
 };
 
 } // namespace sight::core::com

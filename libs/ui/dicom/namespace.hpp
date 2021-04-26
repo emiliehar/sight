@@ -33,6 +33,7 @@ namespace sight::ui::dicom
  */
 namespace sorter
 {
+
 } // namespace sorter
 
 /**
@@ -40,6 +41,7 @@ namespace sorter
  */
 namespace splitter
 {
+
 } // namespace splitter
 
 /**
@@ -47,6 +49,7 @@ namespace splitter
  */
 namespace widget
 {
+
 } // namespace widget
 
 } // namespace sight::ui::dicom

@@ -78,7 +78,6 @@ public:
     MODULE_UI_QT_API KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     /// Configures the title of the matrix viewer
     MODULE_UI_QT_API void configuring() override;
 
@@ -92,7 +91,6 @@ protected:
     MODULE_UI_QT_API void updating() override;
 
 private:
-
     /// Updates the view when the matrix changes
     void updateFromMatrix();
 
@@ -101,9 +99,9 @@ private:
 
     std::string m_title; ///< Title of the matrix that will be displayed
 
-    QVector< QPointer< QLabel > > m_matrixLabels; ///< Labels for matrix's elements
+    QVector<QPointer<QLabel> > m_matrixLabels; ///< Labels for matrix's elements
 };
 
-} //namespace viz
+} // namespace viz
 
 } // namespace sight::module::ui::qt

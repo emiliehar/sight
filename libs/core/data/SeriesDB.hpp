@@ -30,7 +30,7 @@
 
 #include <vector>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(SeriesDB))
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (SeriesDB))
 
 namespace sight::data
 {
@@ -42,13 +42,12 @@ class Series;
  */
 class DATA_CLASS_API SeriesDB : public data::Object
 {
-
 public:
-    SIGHT_DECLARE_CLASS(SeriesDB, data::Object, data::factory::New< SeriesDB >)
+    SIGHT_DECLARE_CLASS(SeriesDB, data::Object, data::factory::New<SeriesDB>)
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(SeriesDB))
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (SeriesDB))
 
-    typedef std::vector< SPTR(Series) > ContainerType;
+    typedef std::vector<SPTR(Series)> ContainerType;
 
     typedef ContainerType::value_type ValueType;
     typedef ContainerType::reference ReferenceType;
@@ -71,12 +70,12 @@ public:
     IteratorType begin();
     IteratorType end();
     ConstIteratorType begin() const;
-    ConstIteratorType end()   const;
+    ConstIteratorType end() const;
 
     ReverseIteratorType rbegin();
     ReverseIteratorType rend();
     ConstReverseIteratorType rbegin() const;
-    ConstReverseIteratorType rend()   const;
+    ConstReverseIteratorType rend() const;
 
     bool empty() const;
     SizeType size() const;
@@ -84,11 +83,11 @@ public:
     ValueType front();
     ValueType back();
 
-    ReferenceType operator[] ( size_type n );
-    ConstReferenceType operator[] ( size_type n ) const;
+    ReferenceType operator[](size_type n);
+    ConstReferenceType operator[](size_type n) const;
 
-    ReferenceType at ( SizeType n );
-    ConstReferenceType at ( SizeType n ) const;
+    ReferenceType at(SizeType n);
+    ConstReferenceType at(SizeType n) const;
     /// @}
 
     /**
@@ -104,14 +103,14 @@ public:
      * @brief Defines shallow copy.
      * @param _source the source object to copy into this one.
      */
-    DATA_API void shallowCopy( const data::Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const data::Object::csptr& _source) override;
 
     /**
      * @brief Defines deep copy.
      * @param _source the source object to copy into this one.
      * @param _cache contains all copied objects to avoid duplication.
      */
-    DATA_API void cachedDeepCopy( const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
+    DATA_API void cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& _cache) override;
 
     /// Gets the series container.
     ContainerType& getContainer();
@@ -120,163 +119,161 @@ public:
     const ContainerType& getContainer() const;
 
     /// Sets the series container.
-    void setContainer (const ContainerType& _val);
+    void setContainer(const ContainerType& _val);
 
     /**
      * @name Signals
      * @{
      */
     /// Defines the type of signal sent when series are added.
-    typedef core::com::Signal< void (ContainerType) > AddedSeriesSignalType;
+    typedef core::com::Signal<void (ContainerType)> AddedSeriesSignalType;
     DATA_API static const core::com::Signals::SignalKeyType s_ADDED_SERIES_SIG;
 
     /// Defines the type of signal sent when series are removed.
-    typedef core::com::Signal< void (ContainerType) > RemovedSeriesSignalType;
+    typedef core::com::Signal<void (ContainerType)> RemovedSeriesSignalType;
     DATA_API static const core::com::Signals::SignalKeyType s_REMOVED_SERIES_SIG;
-    /**
-     * @}
-     */
+/**
+ * @}
+ */
 
 protected:
-
     /// Stores all series.
     ContainerType m_container;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::IteratorType SeriesDB::begin()
 {
     return m_container.begin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::IteratorType SeriesDB::end()
 {
     return m_container.end();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ConstIteratorType SeriesDB::begin() const
 {
     return m_container.begin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ConstIteratorType SeriesDB::end() const
 {
     return m_container.end();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ReverseIteratorType SeriesDB::rbegin()
 {
     return m_container.rbegin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ReverseIteratorType SeriesDB::rend()
 {
     return m_container.rend();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ConstReverseIteratorType SeriesDB::rbegin() const
 {
     return m_container.rbegin();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ConstReverseIteratorType SeriesDB::rend() const
 {
     return m_container.rend();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline bool SeriesDB::empty() const
 {
     return m_container.empty();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::SizeType SeriesDB::size() const
 {
     return m_container.size();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ValueType SeriesDB::front()
 {
     return m_container.front();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ValueType SeriesDB::back()
 {
     return m_container.back();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ReferenceType SeriesDB::operator[](SeriesDB::size_type n)
 {
     return this->m_container[n];
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ConstReferenceType SeriesDB::operator[](SeriesDB::size_type n) const
 {
     return this->m_container[n];
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ReferenceType SeriesDB::at(SeriesDB::SizeType n)
 {
     return m_container.at(n);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ConstReferenceType SeriesDB::at(SeriesDB::SizeType n) const
 {
     return m_container.at(n);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 inline SeriesDB::ContainerType& SeriesDB::getContainer()
 {
     return m_container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline const SeriesDB::ContainerType& SeriesDB::getContainer () const
+inline const SeriesDB::ContainerType& SeriesDB::getContainer() const
 {
     return m_container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline void SeriesDB::setContainer (const SeriesDB::ContainerType& _val)
+inline void SeriesDB::setContainer(const SeriesDB::ContainerType& _val)
 {
     m_container = _val;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // Namespace fwMedData.

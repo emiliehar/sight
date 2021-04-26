@@ -28,8 +28,10 @@
 
 namespace sight::core::thread
 {
+
 class Worker;
-} //namespace thread
+
+} // namespace thread
 
 namespace sight::module::ui::qml
 {
@@ -39,9 +41,7 @@ namespace sight::module::ui::qml
  */
 class MODULE_UI_QML_CLASS_API Plugin : public core::runtime::Plugin
 {
-
 public:
-
     /**
      * @brief   destructor
      */
@@ -56,9 +56,7 @@ public:
     MODULE_UI_QML_API int run() noexcept;
 
 private:
-
     SPTR(core::thread::Worker) m_workerQt;
-
 };
 
 } // namespace sight::module::ui::qt

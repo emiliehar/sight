@@ -43,7 +43,7 @@ GenericScene::GenericScene(bool _isQml, Qt3DCore::QNode* _parent) :
 {
     // Defines the camera that will be used to render the scene.
     m_camera = new Qt3DRender::QCamera(this);
-    m_camera->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 10000.0f);
+    m_camera->lens()->setPerspectiveProjection(45.0f, 16.0f / 9.0f, 0.1f, 10000.0f);
     m_camera->setPosition(QVector3D(0.f, 0.f, 0.f));
     m_camera->setViewCenter(QVector3D(0.f, 0.f, 0.f));
 
@@ -72,48 +72,48 @@ GenericScene::GenericScene(bool _isQml, Qt3DCore::QNode* _parent) :
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GenericScene::~GenericScene()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Qt3DRender::QCamera* const GenericScene::getCamera() const
 {
     return m_camera;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Qt3DExtras::QAbstractCameraController* const GenericScene::getCameraController() const
 {
     return m_cameraController;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Qt3DInput::QInputSettings* const GenericScene::getInputSettings() const
 {
     return m_inputSettings;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Qt3DRender::QRenderSettings* const GenericScene::getRenderSettings() const
 {
     return m_renderSettings;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 FrameGraph* const GenericScene::getFrameGraph() const
 {
     return m_frameGraph;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GenericScene::setCamera(Qt3DRender::QCamera* _camera)
 {
@@ -122,28 +122,28 @@ void GenericScene::setCamera(Qt3DRender::QCamera* _camera)
     m_frameGraph->setCamera(_camera);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GenericScene::setCameraController(Qt3DExtras::QAbstractCameraController* _cameraController)
 {
     m_cameraController = _cameraController;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GenericScene::setInputSettings(Qt3DInput::QInputSettings* _inputSettings)
 {
     m_inputSettings = _inputSettings;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GenericScene::setRenderSettings(Qt3DRender::QRenderSettings* _renderSettings)
 {
     m_renderSettings = _renderSettings;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GenericScene::setFrameGraph(FrameGraph* _frameGraph)
 {

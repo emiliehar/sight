@@ -25,28 +25,29 @@
 #include <core/tools/Stringizer.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::StringizerTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::StringizerTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StringizerTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StringizerTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void StringizerTest::convertTest()
 {
@@ -67,4 +68,5 @@ void StringizerTest::convertTest()
 }
 
 } // namespace ut
+
 } // namespace sight::core::tools

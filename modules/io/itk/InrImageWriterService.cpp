@@ -41,40 +41,40 @@
 namespace sight::module::io::itk
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InrImageWriterService::InrImageWriterService() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 InrImageWriterService::~InrImageWriterService() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType InrImageWriterService::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageWriterService::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageWriterService::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageWriterService::openLocationDialog()
 {
@@ -86,10 +86,11 @@ void InrImageWriterService::openLocationDialog()
     dialogFile.addFilter("Inrimage", "*.inr.gz");
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
-    auto result = core::location::SingleFile::dynamicCast( dialogFile.show() );
+    auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
+
     if(result)
     {
-        this->setFile( result->getFile() );
+        this->setFile(result->getFile());
         defaultDirectory->setFolder(result->getFile().parent_path());
         dialogFile.saveDefaultLocation(defaultDirectory);
     }
@@ -99,28 +100,28 @@ void InrImageWriterService::openLocationDialog()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageWriterService::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageWriterService::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InrImageWriterService::info(std::ostream& _sstream )
+void InrImageWriterService::info(std::ostream& _sstream)
 {
     _sstream << "InrImageWriterService::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void InrImageWriterService::saveImage( const std::filesystem::path& inrFile, const data::Image::csptr& image )
+void InrImageWriterService::saveImage(const std::filesystem::path& inrFile, const data::Image::csptr& image)
 {
     auto myWriter = sight::io::itk::ImageWriter::New();
 
@@ -130,35 +131,35 @@ void InrImageWriterService::saveImage( const std::filesystem::path& inrFile, con
     try
     {
         sight::ui::base::dialog::ProgressDialog progressMeterGUI("Saving Image ");
-        myWriter->addHandler( progressMeterGUI );
+        myWriter->addHandler(progressMeterGUI);
         myWriter->write();
-
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         std::stringstream ss;
         ss << "Warning during saving : " << e.what();
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     ss.str(),
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            ss.str(),
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
-    catch( ... )
+    catch(...)
     {
-        sight::ui::base::dialog::MessageDialog::show("Warning",
-                                                     "Warning during saving",
-                                                     sight::ui::base::dialog::IMessageDialog::WARNING);
+        sight::ui::base::dialog::MessageDialog::show(
+            "Warning",
+            "Warning during saving",
+            sight::ui::base::dialog::IMessageDialog::WARNING);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void InrImageWriterService::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::Image::csptr image = this->getInput< data::Image >(sight::io::base::service::s_DATA_KEY);
+        data::Image::csptr image = this->getInput<data::Image>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", image);
 
         sight::ui::base::Cursor cursor;
@@ -172,6 +173,6 @@ void InrImageWriterService::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::itk

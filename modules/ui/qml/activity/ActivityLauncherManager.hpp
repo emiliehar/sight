@@ -39,6 +39,7 @@
 
 namespace sight::module::ui::qml::activity
 {
+
 /**
  * @brief Manager to lauch activities with a sequencer
  *
@@ -61,6 +62,7 @@ namespace sight::module::ui::qml::activity
 class MODULE_UI_QML_CLASS_API ActivityLauncherManager : public sight::ui::qml::IQmlAppManager
 {
 Q_OBJECT
+
 public:
     /// Constructor.
     MODULE_UI_QML_API ActivityLauncherManager() noexcept;
@@ -69,7 +71,6 @@ public:
     MODULE_UI_QML_API ~ActivityLauncherManager() noexcept override;
 
 public Q_SLOTS:
-
     /// Initialize the manager
     void initialize() override;
 
@@ -86,7 +87,6 @@ public Q_SLOTS:
     void save();
 
 private:
-
     service::IService::sptr m_activitySequencer;
 
     data::SeriesDB::sptr m_seriesDB;
@@ -95,4 +95,4 @@ private:
     service::IService::ConfigType m_sequencerConfig;
 };
 
-} //namespace sight::module::ui::qml::activity
+} // namespace sight::module::ui::qml::activity

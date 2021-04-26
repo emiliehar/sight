@@ -28,7 +28,7 @@
 #include <data/tools/ModelSeries.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::data::tools::ut::ModelSeriesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::data::tools::ut::ModelSeriesTest);
 
 namespace sight::data::tools
 {
@@ -36,19 +36,19 @@ namespace sight::data::tools
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::addReconstruction()
 {
@@ -78,10 +78,9 @@ void ModelSeriesTest::addReconstruction()
 
     data::Reconstruction::sptr nullRec;
     CPPUNIT_ASSERT_THROW(data::tools::ModelSeries::addReconstruction(modelSeries, nullRec), core::Exception);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::createReconstructionFromMesh()
 {
@@ -92,14 +91,18 @@ void ModelSeriesTest::createReconstructionFromMesh()
         const std::string organName     = "Liver1";
         const std::string structureType = "Liver";
 
-        auto rec = data::tools::ModelSeries::createReconstructionFromMesh( mesh, organName, structureType, color,
-                                                                           data::Material::SURFACE);
+        auto rec = data::tools::ModelSeries::createReconstructionFromMesh(
+            mesh,
+            organName,
+            structureType,
+            color,
+            data::Material::SURFACE);
 
         CPPUNIT_ASSERT_EQUAL(rec->getMesh(), mesh);
         CPPUNIT_ASSERT_EQUAL(rec->getOrganName(), organName);
         CPPUNIT_ASSERT_EQUAL(rec->getStructureType(), structureType);
         CPPUNIT_ASSERT_EQUAL(rec->getIsVisible(), true);
-        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(),  data::Material::SURFACE);
+        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(), data::Material::SURFACE);
 
         auto ambient = rec->getMaterial()->diffuse();
         CPPUNIT_ASSERT_EQUAL(ambient->red(), 1.0f);
@@ -112,15 +115,19 @@ void ModelSeriesTest::createReconstructionFromMesh()
         const std::string organName     = "Foo";
         const std::string structureType = "Foofoo";
 
-        auto rec = data::tools::ModelSeries::createReconstructionFromMesh( mesh, organName, structureType, color,
-                                                                           data::Material::WIREFRAME,
-                                                                           false);
+        auto rec = data::tools::ModelSeries::createReconstructionFromMesh(
+            mesh,
+            organName,
+            structureType,
+            color,
+            data::Material::WIREFRAME,
+            false);
 
         CPPUNIT_ASSERT_EQUAL(rec->getMesh(), mesh);
         CPPUNIT_ASSERT_EQUAL(rec->getOrganName(), organName);
         CPPUNIT_ASSERT_EQUAL(rec->getStructureType(), structureType);
         CPPUNIT_ASSERT_EQUAL(rec->getIsVisible(), false);
-        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(),  data::Material::WIREFRAME);
+        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(), data::Material::WIREFRAME);
 
         auto ambient = rec->getMaterial()->diffuse();
         CPPUNIT_ASSERT_EQUAL(ambient->red(), 1.0f);
@@ -130,7 +137,7 @@ void ModelSeriesTest::createReconstructionFromMesh()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ModelSeriesTest::addMesh()
 {
@@ -143,8 +150,13 @@ void ModelSeriesTest::addMesh()
         const std::string organName     = "Liver1";
         const std::string structureType = "Liver";
 
-        data::tools::ModelSeries::addMesh( modelSeries, mesh, organName, structureType, color,
-                                           data::Material::SURFACE);
+        data::tools::ModelSeries::addMesh(
+            modelSeries,
+            mesh,
+            organName,
+            structureType,
+            color,
+            data::Material::SURFACE);
 
         auto rec = recDB[0];
 
@@ -152,14 +164,13 @@ void ModelSeriesTest::addMesh()
         CPPUNIT_ASSERT_EQUAL(rec->getOrganName(), organName);
         CPPUNIT_ASSERT_EQUAL(rec->getStructureType(), structureType);
         CPPUNIT_ASSERT_EQUAL(rec->getIsVisible(), true);
-        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(),  data::Material::SURFACE);
+        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(), data::Material::SURFACE);
 
         auto ambient = rec->getMaterial()->diffuse();
         CPPUNIT_ASSERT_EQUAL(ambient->red(), 1.0f);
         CPPUNIT_ASSERT_EQUAL(ambient->green(), 0.3f);
         CPPUNIT_ASSERT_EQUAL(ambient->blue(), 0.7f);
         CPPUNIT_ASSERT_EQUAL(ambient->alpha(), 0.5f);
-
     }
 
     {
@@ -168,16 +179,21 @@ void ModelSeriesTest::addMesh()
         const std::string organName     = "Foo";
         const std::string structureType = "Foofoo";
 
-        data::tools::ModelSeries::addMesh( modelSeries, mesh, organName, structureType, color,
-                                           data::Material::WIREFRAME,
-                                           false);
+        data::tools::ModelSeries::addMesh(
+            modelSeries,
+            mesh,
+            organName,
+            structureType,
+            color,
+            data::Material::WIREFRAME,
+            false);
         auto rec = recDB[1];
 
         CPPUNIT_ASSERT_EQUAL(rec->getMesh(), mesh);
         CPPUNIT_ASSERT_EQUAL(rec->getOrganName(), organName);
         CPPUNIT_ASSERT_EQUAL(rec->getStructureType(), structureType);
         CPPUNIT_ASSERT_EQUAL(rec->getIsVisible(), false);
-        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(),  data::Material::WIREFRAME);
+        CPPUNIT_ASSERT_EQUAL(rec->getMaterial()->getRepresentationMode(), data::Material::WIREFRAME);
 
         auto ambient = rec->getMaterial()->diffuse();
         CPPUNIT_ASSERT_EQUAL(ambient->red(), 0.1f);
@@ -187,7 +203,7 @@ void ModelSeriesTest::addMesh()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
 

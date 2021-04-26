@@ -30,6 +30,7 @@
 
 namespace sight::atoms
 {
+
 /**
  * @brief Representation of a buffer
  *
@@ -38,7 +39,7 @@ namespace sight::atoms
 class ATOMS_CLASS_API Blob : public Base
 {
 public:
-    SIGHT_DECLARE_CLASS(Blob, atoms::Base, atoms::factory::New< Blob >)
+    SIGHT_DECLARE_CLASS(Blob, atoms::Base, atoms::factory::New<Blob>)
 
     /**
      * @brief Constructor
@@ -91,7 +92,6 @@ public:
     }
 
 protected:
-
     core::memory::BufferObject::sptr m_bufferObject;
 };
 

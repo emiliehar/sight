@@ -26,14 +26,15 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class ProcessObjectTest : public CPPUNIT_NS::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE( ProcessObjectTest );
-    CPPUNIT_TEST( constructeur );
+    CPPUNIT_TEST_SUITE(ProcessObjectTest);
+    CPPUNIT_TEST(constructeur);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -41,7 +42,8 @@ public:
     void setUp()
     {
     }
-    //------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
 
     void tearDown()
     {
@@ -49,5 +51,7 @@ public:
 
     void constructeur();
 };
-} //namespace ut
-} //namespace sight::data
+
+} // namespace ut
+
+} // namespace sight::data

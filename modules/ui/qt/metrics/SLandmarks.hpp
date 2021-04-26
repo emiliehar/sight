@@ -88,11 +88,9 @@ namespace sight::module::ui::qt::metrics
 class MODULE_UI_QT_CLASS_API SLandmarks final : public QObject,
                                                 public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SLandmarks, sight::ui::base::IEditor)
 
     /// Initializes slots.
@@ -341,17 +339,16 @@ public:
     QPointer<QPushButton> m_removeButton;
 
     /// Enables/disables the advanced mode.
-    bool m_advancedMode { false };
+    bool m_advancedMode{false};
 
     /// Sets the default landmark size.
-    float m_defaultLandmarkSize { 10.f };
+    float m_defaultLandmarkSize{10.f};
 
     /// Sets the default landmark opacity.
-    float m_defaultLandmarkOpacity { 1.f };
+    float m_defaultLandmarkOpacity{1.f};
 
     /// Sets the text displayed at the top of this editor.
-    std::string m_text { "Use 'Ctrl+Left Click' to add new landmarks" };
-
+    std::string m_text{"Use 'Ctrl+Left Click' to add new landmarks"};
 };
 
 } // sight::module::ui::qt::metrics

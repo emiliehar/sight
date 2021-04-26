@@ -27,6 +27,7 @@
 
 namespace sight::service
 {
+
 namespace parser
 {
 
@@ -39,5 +40,6 @@ public:
     SIGHT_DECLARE_SERVICE(Integer, service::IXMLParser)
 };
 
-} //namespace parser
-} //namespace sight::service
+} // namespace parser
+
+} // namespace sight::service

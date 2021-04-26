@@ -46,14 +46,18 @@
 
 namespace openvslam
 {
+
 class system;
 class config;
 
 namespace publish
 {
+
 class map_publisher;
 class frame_publisher;
+
 }
+
 }
 
 /// The module openvslamTracker contains SOpenvslam service to manage instance of OpenVSLAM.
@@ -137,9 +141,7 @@ namespace sight::module::navigation::openvslam
  */
 class MODULE_NAVIGATION_OPENVSLAM_CLASS_API SOpenvslam : public service::ITracker
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SOpenvslam, service::ITracker)
 
     /// Constructor. Initializes signals and slots.
@@ -162,7 +164,6 @@ public:
     };
 
 protected:
-
     /// Configures the service by parsing XML.
     MODULE_NAVIGATION_OPENVSLAM_API void configuring() final;
 
@@ -176,7 +177,6 @@ protected:
     MODULE_NAVIGATION_OPENVSLAM_API void updating() final;
 
 private:
-
     /**
      * @name Slots methods
      *
@@ -225,7 +225,7 @@ private:
     void resetPointCloud();
 
     /// Slot: call openvslam with the new frame.
-    void  tracking(core::HiResClock::HiResClockType&) final;
+    void tracking(core::HiResClock::HiResClockType&) final;
     /** @} */
 
     /**
@@ -234,7 +234,7 @@ private:
      */
     /// Type of the signals.
 
-    using SignalType = core::com::Signal<void()>;
+    using SignalType = core::com::Signal<void ()>;
     /** @} */
 
     /**
@@ -277,7 +277,6 @@ private:
     void updatePointCloud();
 
 private:
-
     /// Transformation matrix representing the movement of the 3D camera and thus of the real camera.
     data::MatrixTL::sptr m_cameraMatrixTL;
 
@@ -300,45 +299,45 @@ private:
     sight::navigation::openvslam::InitParams m_initializerParameters;
 
     /// Tracking mode : MONO, STEREO, DEPTH.
-    TrackingMode m_trackingMode {TrackingMode::MONO};
+    TrackingMode m_trackingMode{TrackingMode::MONO};
 
     /// Target width when downsampling is required.
-    size_t m_downSampleWidth {0};
+    size_t m_downSampleWidth{0};
 
     /// Mutex to lock m_slamSystem.
     std::mutex m_slamLock;
 
     /// If localization mode is enable
-    bool m_localization {false};
+    bool m_localization{false};
 
     /// Unique pointer to SLAM system.
-    std::unique_ptr< ::openvslam::system > m_slamSystem {nullptr};
+    std::unique_ptr< ::openvslam::system> m_slamSystem{nullptr};
 
     /// Pointer to a publisher class to get current frame.
-    std::shared_ptr< ::openvslam::publish::frame_publisher> m_ovsFramePublisher {nullptr};
+    std::shared_ptr< ::openvslam::publish::frame_publisher> m_ovsFramePublisher{nullptr};
     /// Pointer to a publisher class to get current map.
-    std::shared_ptr< ::openvslam::publish::map_publisher> m_ovsMapPublisher {nullptr};
+    std::shared_ptr< ::openvslam::publish::map_publisher> m_ovsMapPublisher{nullptr};
 
     /// Path to the vocabulary (could be set only once).
     std::string m_vocabularyPath;
 
     /// To show detected features in an external view (using cv::imshow).
-    bool m_showFeatures {false};
+    bool m_showFeatures{false};
 
     /// Switch between local or global map (pushed in m_pointcloud).
     bool m_localMap{false};
 
-    ///Calls asynchronously updatePointCloud each 1sec.
+    /// Calls asynchronously updatePointCloud each 1sec.
     core::thread::Timer::sptr m_timer;
 
     /// Matrix and points scale
-    std::atomic< float > m_scale{1.0f};
+    std::atomic<float> m_scale{1.0f};
 
     /// Worker for pointcloud update
     core::thread::Worker::sptr m_pointcloudWorker;
 
     /// Pause state.
-    bool m_isPaused {false};
+    bool m_isPaused{false};
 
     /// Stores the filepath to save map.
     std::string m_saveMapPath;
@@ -352,8 +351,7 @@ private:
     std::string m_trajectoriesFormat{"KITTI"};
 
     /// Stores the current number of landmarks in the map. (Only used in updatePointCloud thread).
-    unsigned int m_numberOfLandmarks {0};
-
+    unsigned int m_numberOfLandmarks{0};
 };
 
 } // openvslamTracker

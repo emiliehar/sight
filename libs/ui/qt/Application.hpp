@@ -36,9 +36,7 @@ namespace sight::ui::qt
  */
 class UI_QT_CLASS_API Application : public ui::base::Application
 {
-
 public:
-
     Application(ui::base::GuiBaseObject::Key key)
     {
     }
@@ -48,8 +46,7 @@ public:
     }
 
     /// Tells the application to exit with a returncode
-    UI_QT_API virtual void exit( int returncode = 0);
-
+    UI_QT_API virtual void exit(int returncode = 0);
 };
 
 } // namespace sight::ui::qt

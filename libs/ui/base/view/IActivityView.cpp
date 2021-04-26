@@ -42,13 +42,14 @@
 
 namespace sight::ui::base
 {
+
 namespace view
 {
 
 const core::com::Slots::SlotKeyType IActivityView::s_LAUNCH_ACTIVITY_SLOT        = "launchActivity";
 const core::com::Slots::SlotKeyType IActivityView::s_LAUNCH_ACTIVITY_SERIES_SLOT = "launchActivitySeries";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IActivityView::IActivityView()
 {
@@ -56,13 +57,13 @@ IActivityView::IActivityView()
     newSlot(s_LAUNCH_ACTIVITY_SERIES_SLOT, &IActivityView::launchActivitySeries, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 IActivityView::~IActivityView()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IActivityView::configuring()
 {
@@ -73,18 +74,19 @@ void IActivityView::configuring()
     this->parseConfiguration(config, this->getInOuts());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IActivityView::launchActivitySeries(data::Series::sptr series)
 {
     data::ActivitySeries::sptr activitySeries = data::ActivitySeries::dynamicCast(series);
-    if (activitySeries)
+
+    if(activitySeries)
     {
         this->launchActivity(activitySeries);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool IActivityView::validateActivity(data::ActivitySeries::sptr activitySeries) const
 {
@@ -93,28 +95,29 @@ bool IActivityView::validateActivity(data::ActivitySeries::sptr activitySeries) 
 
     std::tie(isValid, message) = this->activity::IActivityLauncher::validateActivity(activitySeries);
 
-    if (!isValid)
+    if(!isValid)
     {
-        ui::base::dialog::MessageDialog::show("Activity launch",
-                                              message,
-                                              ui::base::dialog::IMessageDialog::CRITICAL);
+        ui::base::dialog::MessageDialog::show(
+            "Activity launch",
+            message,
+            ui::base::dialog::IMessageDialog::CRITICAL);
     }
 
     return isValid;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::ActivitySeries::sptr IActivityView::createMainActivity() const
 {
     data::ActivitySeries::sptr actSeries = this->activity::IActivityLauncher::createMainActivity();
 
-    if (nullptr == actSeries)
+    if(nullptr == actSeries)
     {
         ui::base::dialog::MessageDialog::show(
             "Main activity",
             "The main activity " + m_mainActivityId + " can not be launched. \n"
-            "This activity needs parameters that cannot be defined",
+                                                      "This activity needs parameters that cannot be defined",
             ui::base::dialog::IMessageDialog::INFO);
     }
 
@@ -122,4 +125,5 @@ data::ActivitySeries::sptr IActivityView::createMainActivity() const
 }
 
 } // namespace view
+
 } // namespace sight::ui::base

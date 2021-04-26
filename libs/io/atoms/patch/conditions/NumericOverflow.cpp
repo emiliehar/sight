@@ -29,6 +29,7 @@
 
 namespace sight::io::atoms::patch
 {
+
 namespace conditions
 {
 
@@ -46,8 +47,9 @@ void NumericOverflow::setTreshold(sight::atoms::Numeric::sptr treshold)
 
 // ----------------------------------------------------------------------------
 
-bool NumericOverflow::test(sight::atoms::Base::sptr old,
-                           sight::atoms::Base::sptr newValue)
+bool NumericOverflow::test(
+    sight::atoms::Base::sptr old,
+    sight::atoms::Base::sptr newValue)
 {
     return this->test(newValue);
 }
@@ -59,11 +61,13 @@ bool NumericOverflow::test(sight::atoms::Base::sptr value)
     if(value->isNumeric())
     {
         sight::atoms::Numeric::sptr numeric = sight::atoms::Numeric::dynamicCast(value);
+
         return numeric->getValue<double>() <= m_treshold->getValue<double>();
     }
     else
     {
         fwAtomsPatchErrorLogMacro("the value is not a numeric");
+
         return false;
     }
 }
@@ -73,8 +77,10 @@ bool NumericOverflow::test(sight::atoms::Base::sptr value)
 NumericOverflow::sptr NumericOverflow::New(sight::atoms::Base::sptr defaultValue)
 {
     NumericOverflow::sptr valueSptr(new NumericOverflow(defaultValue));
+
     return valueSptr;
 }
 
-} //conditions
-} //fwAtomsPatch
+} // conditions
+
+} // fwAtomsPatch

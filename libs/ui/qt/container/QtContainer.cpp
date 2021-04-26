@@ -32,10 +32,11 @@
 
 namespace sight::ui::qt
 {
+
 namespace container
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QtContainer::QtContainer(ui::base::GuiBaseObject::Key key) noexcept :
     m_container(nullptr)
@@ -43,18 +44,18 @@ QtContainer::QtContainer(ui::base::GuiBaseObject::Key key) noexcept :
     SIGHT_NOT_USED(key);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QtContainer::~QtContainer() noexcept
 {
     SIGHT_ASSERT(
         "Error during destruction : The qt container included in this class is still allocated, please call destroyContainer() before.",
-        m_container == nullptr );
+        m_container == nullptr);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void QtContainer::setLayout( QLayout* const layout )
+void QtContainer::setLayout(QLayout* const layout)
 {
     SIGHT_ASSERT("The container must be initialized before invoking setLayout().", m_container);
 
@@ -74,7 +75,7 @@ void QtContainer::setLayout( QLayout* const layout )
     m_container->setLayout(layout);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtContainer::clean()
 {
@@ -88,7 +89,7 @@ void QtContainer::clean()
         // This block layouting when there is a lot of child
         m_container->setUpdatesEnabled(false);
 
-        for( QLayoutItem* child = oldLayout->takeAt(0); nullptr != child; child = oldLayout->takeAt(0))
+        for(QLayoutItem* child = oldLayout->takeAt(0) ; nullptr != child ; child = oldLayout->takeAt(0))
         {
             delete child;
         }
@@ -98,7 +99,7 @@ void QtContainer::clean()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtContainer::destroyContainer()
 {
@@ -111,29 +112,30 @@ void QtContainer::destroyContainer()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtContainer::setQtContainer(QWidget* container)
 {
     m_container = container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QWidget* QtContainer::getQtContainer() const
 {
     return m_container;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool QtContainer::isShownOnScreen()
 {
     SIGHT_ASSERT("The container must be initialized before invoking isShownOnScreen().", m_container);
+
     return m_container->isVisible();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtContainer::setVisible(bool isVisible)
 {
@@ -150,7 +152,7 @@ void QtContainer::setVisible(bool isVisible)
     m_container->setVisible(isVisible);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QtContainer::setEnabled(bool isEnabled)
 {
@@ -167,7 +169,8 @@ void QtContainer::setEnabled(bool isEnabled)
     m_container->setEnabled(isEnabled);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace container
+
 } // namespace sight::ui::qt

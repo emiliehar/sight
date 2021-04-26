@@ -36,10 +36,11 @@
 #include <map>
 #include <vector>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(CameraSeries));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (CameraSeries));
 
 namespace sight::data
 {
+
 /**
  * @brief  This class contains the information about cameras (container of camera and extrinsec matrix).
  */
@@ -47,11 +48,11 @@ namespace sight::data
 class DATA_CLASS_API CameraSeries : public data::Series
 {
 public:
-    SIGHT_DECLARE_CLASS(CameraSeries, data::Object, data::factory::New< CameraSeries >)
+    SIGHT_DECLARE_CLASS(CameraSeries, data::Object, data::factory::New<CameraSeries>)
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(CameraSeries));
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (CameraSeries));
 
-    typedef std::vector< data::Camera::sptr > CameraContainerType;
+    typedef std::vector<data::Camera::sptr> CameraContainerType;
 
     /**
      *@brief Constructor
@@ -66,7 +67,7 @@ public:
      * @brief Defines shallow copy
      * @throws data::Exception if an errors occurs during copy
      */
-    DATA_API void shallowCopy( const data::Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const data::Object::csptr& _source) override;
 
     /**
      * @brief Defines deep copy
@@ -87,7 +88,7 @@ public:
     typedef core::com::Signal<void ()> ExtrinsicCalibratedSignalType;
     /** @} */
 
-    typedef std::vector< data::Matrix4::sptr > MatricesContainer;
+    typedef std::vector<data::Matrix4::sptr> MatricesContainer;
 
     /**
      * @brief Adds a camera in the cameraSeries.
@@ -144,7 +145,6 @@ public:
     }
 
 protected:
-
     /// Contains camera
     CameraContainerType m_cameras;
 
@@ -159,7 +159,6 @@ protected:
 
     /// extrinsic matrices
     MatricesContainer m_extrinsicMatrices;
-
 };
 
-} //namespace sight::data
+} // namespace sight::data

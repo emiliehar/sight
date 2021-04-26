@@ -32,17 +32,21 @@
 #include <istream>
 #include <type_traits>
 
-SIGHT_DECLARE_REFLECTION((sight)(core)(memory)(BufferObject), CORE_API);
+SIGHT_DECLARE_REFLECTION((sight) (core) (memory) (BufferObject), CORE_API);
 
 namespace sight::core::memory
 {
 
 namespace stream
 {
+
 namespace in
 {
+
 class IFactory;
+
 }
+
 }
 
 /**
@@ -65,11 +69,9 @@ class IFactory;
  */
 class CORE_CLASS_API BufferObject : public sight::core::BaseObject
 {
-
 public:
-
-    typedef std::shared_ptr< void > CounterType;
-    typedef std::weak_ptr< void > WeakCounterType;
+    typedef std::shared_ptr<void> CounterType;
+    typedef std::weak_ptr<void> WeakCounterType;
 
     typedef size_t SizeType;
 
@@ -82,7 +84,7 @@ public:
         return this->getClassname();
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual core::memory::BufferManager::BufferType getBuffer() const
     {
@@ -99,12 +101,11 @@ public:
      * mechanism is actually not thread-safe.
      *
      */
-    template <typename T>
+    template<typename T>
     class LockBase
     {
     public:
-
-        typedef typename ::boost::conditional< std::is_const< T >::value, const void*, void* >::type BufferType;
+        typedef typename ::boost::conditional<std::is_const<T>::value, const void*, void*>::type BufferType;
 
         /**
          * @brief Build an empty lock.
@@ -120,19 +121,19 @@ public:
          *
          * @param bo BufferObject to lock
          */
-        LockBase( const SPTR(T)& bo ) :
+        LockBase(const SPTR(T)& bo) :
             m_bufferObject(bo)
         {
             SIGHT_ASSERT("Can't lock NULL object", bo);
 
             core::mt::ScopedLock lock(bo->m_lockDumpMutex);
             m_count = bo->m_count.lock();
-            if ( !m_count )
+
+            if(!m_count)
             {
                 m_count     = bo->m_bufferManager->lockBuffer(&(bo->m_buffer)).get();
                 bo->m_count = m_count;
             }
-
         }
 
         /**
@@ -142,6 +143,7 @@ public:
         {
             SPTR(T) bufferObject = m_bufferObject.lock();
             BufferType buffer = bufferObject->m_buffer;
+
             return buffer;
         }
 
@@ -155,7 +157,6 @@ public:
         }
 
     protected:
-
         BufferObject::CounterType m_count;
         WPTR(T) m_bufferObject;
     };
@@ -193,9 +194,10 @@ public:
      * @param policy Buffer allocation policy, default is Malloc policy
      *
      */
-    CORE_API virtual void allocate(SizeType size,
-                                   const core::memory::BufferAllocationPolicy::sptr& policy =
-                                       core::memory::BufferMallocPolicy::New());
+    CORE_API virtual void allocate(
+        SizeType size,
+        const core::memory::BufferAllocationPolicy::sptr& policy =
+        core::memory::BufferMallocPolicy::New());
 
     /**
      * @brief Buffer reallocation
@@ -228,9 +230,11 @@ public:
      * @param policy External buffer allocation policy, default is Malloc policy
      *
      */
-    CORE_API virtual void setBuffer(core::memory::BufferManager::BufferType buffer, SizeType size,
-                                    const core::memory::BufferAllocationPolicy::sptr& policy =
-                                        core::memory::BufferMallocPolicy::New());
+    CORE_API virtual void setBuffer(
+        core::memory::BufferManager::BufferType buffer,
+        SizeType size,
+        const core::memory::BufferAllocationPolicy::sptr& policy =
+        core::memory::BufferMallocPolicy::New());
 
     /**
      * @brief Return a lock on the BufferObject
@@ -286,7 +290,7 @@ public:
         return &m_buffer;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     core::mt::ReadWriteMutex& getMutex()
     {
@@ -294,7 +298,7 @@ public:
     }
 
     /// Exchanges the content of the BufferObject with the content of _source.
-    CORE_API void swap( const BufferObject::sptr& _source );
+    CORE_API void swap(const BufferObject::sptr& _source);
 
     CORE_API BufferManager::StreamInfo getStreamInfo() const;
 
@@ -308,15 +312,14 @@ public:
      * @param format file format (RAW,RAWZ,OTHER), if sourceFile is provided
      * @param policy Buffer allocation policy
      */
-    CORE_API void setIStreamFactory(const SPTR(core::memory::stream::in::IFactory)& factory,
-                                    SizeType size,
-                                    const std::filesystem::path& sourceFile                  = "",
-                                    core::memory::FileFormatType format                      = core::memory::OTHER,
-                                    const core::memory::BufferAllocationPolicy::sptr& policy = core::memory::BufferMallocPolicy::New()
-                                    );
+    CORE_API void setIStreamFactory(
+        const SPTR(core::memory::stream::in::IFactory)& factory,
+        SizeType size,
+        const std::filesystem::path& sourceFile                  = "",
+        core::memory::FileFormatType format                      = core::memory::OTHER,
+        const core::memory::BufferAllocationPolicy::sptr& policy = core::memory::BufferMallocPolicy::New());
 
 protected:
-
     core::memory::BufferManager::BufferType m_buffer;
 
     SizeType m_size;
@@ -330,4 +333,4 @@ protected:
     core::memory::BufferAllocationPolicy::sptr m_allocPolicy;
 };
 
-}
+} // namespace sight::core

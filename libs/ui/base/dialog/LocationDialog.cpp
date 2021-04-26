@@ -26,105 +26,109 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
-//-----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 
 LocationDialog::LocationDialog()
 {
-
-    core::thread::ActiveWorkers::getDefaultWorker()->postTask< void >(std::function< void() >(
-                                                                          [&]
+    core::thread::ActiveWorkers::getDefaultWorker()->postTask<void>(
+        std::function<void()>(
+            [&]
             {
                 ui::base::GuiBaseObject::sptr guiObj = ui::base::factory::New(ILocationDialog::REGISTRY_KEY);
-                m_implementation = ui::base::dialog::ILocationDialog::dynamicCast(guiObj);
+                m_implementation                     = ui::base::dialog::ILocationDialog::dynamicCast(guiObj);
             })
-                                                                      ).wait();
+        ).wait();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 LocationDialog::~LocationDialog()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 core::location::ILocation::sptr LocationDialog::show()
 {
-    typedef SPTR (core::location::ILocation) R;
+    typedef SPTR(core::location::ILocation) R;
 
-    std::function< R() > func = std::bind(&ILocationDialog::show, m_implementation);
-    std::shared_future< R > f = core::thread::ActiveWorkers::getDefaultWorker()->postTask< R >(func);
+    std::function<R()> func = std::bind(&ILocationDialog::show, m_implementation);
+    std::shared_future<R> f = core::thread::ActiveWorkers::getDefaultWorker()->postTask<R>(func);
 
     f.wait();
+
     return f.get();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void LocationDialog::setType( ui::base::dialog::ILocationDialog::Types type)
+void LocationDialog::setType(ui::base::dialog::ILocationDialog::Types type)
 {
-    m_implementation->setType( type );
+    m_implementation->setType(type);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void LocationDialog::addFilter(const std::string& filterName, const std::string& wildcardList )
+void LocationDialog::addFilter(const std::string& filterName, const std::string& wildcardList)
 {
     m_implementation->addFilter(filterName, wildcardList);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-ILocationDialog& LocationDialog::setOption( ui::base::dialog::ILocationDialog::Options option)
+ILocationDialog& LocationDialog::setOption(ui::base::dialog::ILocationDialog::Options option)
 {
     return m_implementation->setOption(option);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void LocationDialog::setTitle(const std::string& title)
 {
     m_implementation->setTitle(title);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::string& LocationDialog::getTitle()
 {
     return m_implementation->getTitle();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void LocationDialog::setDefaultLocation(core::location::ILocation::sptr loc)
 {
     m_implementation->setDefaultLocation(loc);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const core::location::ILocation::sptr LocationDialog::getDefaultLocation()
 {
     return m_implementation->getDefaultLocation();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void LocationDialog::saveDefaultLocation(core::location::ILocation::sptr loc)
 {
     m_implementation->saveDefaultLocation(loc);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string LocationDialog::getCurrentSelection() const
 {
     return m_implementation->getCurrentSelection();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-} //namespace dialog
-} //namespace sight::ui::base
+} // namespace dialog
+
+} // namespace sight::ui::base

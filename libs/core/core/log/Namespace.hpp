@@ -24,12 +24,14 @@
 
 namespace sight::core
 {
+
 /**
  * @brief       This namespace sightcore::log provides common foundations for log in Sight.
  *
  */
 namespace log
 {
+
 }
 
 }

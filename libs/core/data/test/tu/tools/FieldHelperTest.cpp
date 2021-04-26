@@ -31,28 +31,29 @@
 #include <data/helper/Field.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::data::tools::ut::FieldHelperTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::data::tools::ut::FieldHelperTest);
 
 namespace sight::data::tools
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FieldHelperTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FieldHelperTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void FieldHelperTest::testHelper()
 {
@@ -74,61 +75,61 @@ void FieldHelperTest::testHelper()
     std::condition_variable condition;
 
     data::Object::FieldsContainerType addedFields;
-    std::function<void ( data::Object::FieldsContainerType)> fnAdd =
-        [&](data::Object::FieldsContainerType f)
-        {
-            {
-                std::unique_lock<std::mutex> lock(mutex);
-                ++numAddedNotif;
-                addedFields = f;
-            }
-            condition.notify_one();
-        };
+    std::function<void(data::Object::FieldsContainerType)> fnAdd
+        = [&](data::Object::FieldsContainerType f)
+          {
+              {
+                  std::unique_lock<std::mutex> lock(mutex);
+                  ++numAddedNotif;
+                  addedFields = f;
+              }
+              condition.notify_one();
+          };
 
-    auto slotAdded = core::com::newSlot( fnAdd );
+    auto slotAdded = core::com::newSlot(fnAdd);
     slotAdded->setWorker(worker);
-    auto sigAdded = obj->signal< data::Object::AddedFieldsSignalType>(data::Object::s_ADDED_FIELDS_SIG);
+    auto sigAdded = obj->signal<data::Object::AddedFieldsSignalType>(data::Object::s_ADDED_FIELDS_SIG);
     sigAdded->connect(slotAdded);
 
     unsigned int numRemovedNotif = 0;
     data::Object::FieldsContainerType removedFields;
 
-    std::function<void ( data::Object::FieldsContainerType)> fnRemove =
-        [&](data::Object::FieldsContainerType f)
-        {
-            {
-                std::unique_lock<std::mutex> lock(mutex);
-                ++numRemovedNotif;
-                removedFields = f;
-            }
-            condition.notify_one();
-        };
-    auto slotRemoved = core::com::newSlot( fnRemove );
+    std::function<void(data::Object::FieldsContainerType)> fnRemove
+        = [&](data::Object::FieldsContainerType f)
+          {
+              {
+                  std::unique_lock<std::mutex> lock(mutex);
+                  ++numRemovedNotif;
+                  removedFields = f;
+              }
+              condition.notify_one();
+          };
+    auto slotRemoved = core::com::newSlot(fnRemove);
     slotRemoved->setWorker(worker);
-    auto sigRemoved = obj->signal< data::Object::RemovedFieldsSignalType>(data::Object::s_REMOVED_FIELDS_SIG);
+    auto sigRemoved = obj->signal<data::Object::RemovedFieldsSignalType>(data::Object::s_REMOVED_FIELDS_SIG);
     sigRemoved->connect(slotRemoved);
 
     unsigned int numChangedNotif = 0;
     data::Object::FieldsContainerType newFields;
     data::Object::FieldsContainerType oldFields;
 
-    std::function<void ( data::Object::FieldsContainerType, data::Object::FieldsContainerType)> fnChange =
-        [&](data::Object::FieldsContainerType newF, data::Object::FieldsContainerType oldF)
-        {
-            {
-                std::unique_lock<std::mutex> lock(mutex);
-                ++numChangedNotif;
-                newFields = newF;
-                oldFields = oldF;
-            }
-            condition.notify_one();
-        };
-    auto slotChanged = core::com::newSlot( fnChange );
+    std::function<void(data::Object::FieldsContainerType, data::Object::FieldsContainerType)> fnChange
+        = [&](data::Object::FieldsContainerType newF, data::Object::FieldsContainerType oldF)
+          {
+              {
+                  std::unique_lock<std::mutex> lock(mutex);
+                  ++numChangedNotif;
+                  newFields = newF;
+                  oldFields = oldF;
+              }
+              condition.notify_one();
+          };
+    auto slotChanged = core::com::newSlot(fnChange);
     slotChanged->setWorker(worker);
-    auto sigChanged = obj->signal< data::Object::ChangedFieldsSignalType>(data::Object::s_CHANGED_FIELDS_SIG);
+    auto sigChanged = obj->signal<data::Object::ChangedFieldsSignalType>(data::Object::s_CHANGED_FIELDS_SIG);
     sigChanged->connect(slotChanged);
 
-    auto clearArrays = [&]() { addedFields.clear(); removedFields.clear(); newFields.clear(); oldFields.clear(); };
+    auto clearArrays = [&](){addedFields.clear(); removedFields.clear(); newFields.clear(); oldFields.clear();};
 
     {
         // Test setField()
@@ -143,7 +144,7 @@ void FieldHelperTest::testHelper()
     {
         // Check notification
         std::unique_lock<std::mutex> lock(mutex);
-        condition.wait(lock, [&] { return numAddedNotif == 1; });
+        condition.wait(lock, [&]{return numAddedNotif == 1;});
 
         CPPUNIT_ASSERT_EQUAL(size_t(2), addedFields.size());
         CPPUNIT_ASSERT_EQUAL(size_t(0), removedFields.size());
@@ -156,7 +157,7 @@ void FieldHelperTest::testHelper()
 
     {
         // Test setFields()
-        data::Object::FieldMapType fieldsWithObj1 = { { FIELD_ID1, fieldObj3} };
+        data::Object::FieldMapType fieldsWithObj1 = {{FIELD_ID1, fieldObj3}};
         data::helper::Field fieldHelper(obj);
         fieldHelper.setFields(fieldsWithObj1);
         CPPUNIT_ASSERT_EQUAL(size_t(1), obj->getFields().size());
@@ -167,7 +168,7 @@ void FieldHelperTest::testHelper()
     {
         // Check notification
         std::unique_lock<std::mutex> lock(mutex);
-        condition.wait(lock, [&] { return numRemovedNotif == 1 && numChangedNotif == 1; });
+        condition.wait(lock, [&]{return numRemovedNotif == 1 && numChangedNotif == 1;});
 
         CPPUNIT_ASSERT_EQUAL(size_t(0), addedFields.size());
         CPPUNIT_ASSERT_EQUAL(size_t(1), removedFields.size());
@@ -194,7 +195,7 @@ void FieldHelperTest::testHelper()
     {
         // Check notification
         std::unique_lock<std::mutex> lock(mutex);
-        condition.wait(lock, [&] { return numChangedNotif == 2; });
+        condition.wait(lock, [&]{return numChangedNotif == 2;});
 
         CPPUNIT_ASSERT_EQUAL(size_t(0), addedFields.size());
         CPPUNIT_ASSERT_EQUAL(size_t(0), removedFields.size());
@@ -235,7 +236,7 @@ void FieldHelperTest::testHelper()
     {
         // Check notification
         std::unique_lock<std::mutex> lock(mutex);
-        condition.wait(lock, [&] { return numAddedNotif == 2 && numRemovedNotif == 2 && numChangedNotif == 3; });
+        condition.wait(lock, [&]{return numAddedNotif == 2 && numRemovedNotif == 2 && numChangedNotif == 3;});
 
         CPPUNIT_ASSERT_EQUAL(size_t(2), addedFields.size());
         CPPUNIT_ASSERT_EQUAL(size_t(1), removedFields.size());
@@ -261,7 +262,7 @@ void FieldHelperTest::testHelper()
     {
         // Check notification
         std::unique_lock<std::mutex> lock(mutex);
-        condition.wait(lock, [&] { return numRemovedNotif == 3; });
+        condition.wait(lock, [&]{return numRemovedNotif == 3;});
 
         CPPUNIT_ASSERT_EQUAL(size_t(2), removedFields.size());
         CPPUNIT_ASSERT(removedFields[FIELD_ID2] == fieldObj3);
@@ -272,7 +273,8 @@ void FieldHelperTest::testHelper()
     worker->stop();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::data::tools
+} // namespace ut
+
+} // namespace sight::data::tools

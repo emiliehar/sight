@@ -34,38 +34,39 @@
 namespace sight::core::jobs
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Aggregator::sptr Aggregator::New(const std::string& name)
 {
-    return std::make_shared<Aggregator>( name );
+    return std::make_shared<Aggregator>(name);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Aggregator::Aggregator()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Aggregator::Aggregator(const std::string& name) :
     IJob(name)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::SharedFuture Aggregator::runImpl()
 {
-    decltype(m_jobs)jobs;
+    decltype(m_jobs) jobs;
 
     {
         core::mt::ReadLock lock(m_mutex);
         jobs = m_jobs;
     }
 
-    std::vector< SharedFuture > futures;
+    std::vector<SharedFuture> futures;
+
     for(const core::jobs::IJob::sptr& iJob : jobs)
     {
         futures.push_back(iJob->run());
@@ -79,17 +80,16 @@ IJob::SharedFuture Aggregator::runImpl()
             this->finish();
 
             // forwards exceptions that might have been thrown
-            for( SharedFuture f : futures )
+            for(SharedFuture f : futures)
             {
                 f.get();
             }
-        }
-        );
+        });
 
     return std::move(future);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Aggregator::add(const core::jobs::IJob::sptr& iJob, double weight)
 {
@@ -106,14 +106,14 @@ void Aggregator::add(const core::jobs::IJob::sptr& iJob, double weight)
 
     SIGHT_ASSERT("Jobs can't be added when Aggregator is running", m_state == WAITING || m_state == RUNNING);
 
-    const auto normValue = std::uint64_t(weight*100);
+    const auto normValue = std::uint64_t(weight * 100);
 
-    if( m_state == WAITING || m_state == RUNNING )
+    if(m_state == WAITING || m_state == RUNNING)
     {
-        m_jobInfo[iJob.get()] = JobInfo( *iJob );
+        m_jobInfo[iJob.get()] = JobInfo(*iJob);
         auto& jobInfo = m_jobInfo[iJob.get()];
 
-        this->setTotalWorkUnitsUpgradeLock( m_totalWorkUnits + (jobInfo.totalWork ? normValue : 0), lock);
+        this->setTotalWorkUnitsUpgradeLock(m_totalWorkUnits + (jobInfo.totalWork ? normValue : 0), lock);
         lock.lock();
         // doneWork call after setTotalWorkUnitsUpgradeLock, because
         // doneWork value can be thresholded by setTotalWorkUnitsUpgradeLock
@@ -133,7 +133,7 @@ void Aggregator::add(const core::jobs::IJob::sptr& iJob, double weight)
                 core::mt::ReadToWriteLock sublock(m_mutex);
 
                 auto oldInfo = jobInfo;
-                jobInfo = Aggregator::JobInfo( subJob );
+                jobInfo      = Aggregator::JobInfo(subJob);
 
                 jobInfo.lastValue = std::uint64_t(normValue * jobInfo.progress());
 
@@ -141,9 +141,8 @@ void Aggregator::add(const core::jobs::IJob::sptr& iJob, double weight)
                 // minimize numerical uncertainty by substracting in a second time :
                 doneWork -= oldInfo.lastValue;
 
-                this->doneWork( static_cast<std::uint64_t>(doneWork), sublock );
-            }
-            );
+                this->doneWork(static_cast<std::uint64_t>(doneWork), sublock);
+            });
 
         iJob->addTotalWorkUnitsHook(
             [ = ](IJob& subJob, std::uint64_t oldTotalWorkUnits)
@@ -153,51 +152,53 @@ void Aggregator::add(const core::jobs::IJob::sptr& iJob, double weight)
                 auto workUnits         = m_totalWorkUnits;
                 auto newTotalWorkUnits = subJob.getTotalWorkUnits();
 
-                if( oldTotalWorkUnits != newTotalWorkUnits)
+                if(oldTotalWorkUnits != newTotalWorkUnits)
                 {
-                    if( oldTotalWorkUnits && 0 == newTotalWorkUnits)
+                    if(oldTotalWorkUnits && 0 == newTotalWorkUnits)
                     {
                         workUnits -= normValue;
                     }
-                    else if( 0 == oldTotalWorkUnits && newTotalWorkUnits)
+                    else if(0 == oldTotalWorkUnits && newTotalWorkUnits)
                     {
                         workUnits += normValue;
                     }
                 }
 
-                this->setTotalWorkUnitsUpgradeLock( workUnits, sublock );
-            }
-            );
+                this->setTotalWorkUnitsUpgradeLock(workUnits, sublock);
+            });
 
-        this->addCancelHookNoLock( [iJob]( IJob& /* cancelingJob */ )
+        this->addCancelHookNoLock(
+            [iJob](IJob& /* cancelingJob */)
             {
                 iJob->cancel();
-            } );
+            });
 
         auto iJobName = iJob->getName();
         iJobName = iJobName.empty() ? "" : "[" + iJobName + "] ";
-        iJob->addLogHook( [ = ]( IJob& /* job */, const std::string& message)
+        iJob->addLogHook(
+            [ = ](IJob& /* job */, const std::string& message)
             {
-                this->log( iJobName + message);
-            } );
+                this->log(iJobName + message);
+            });
 
         auto iJobLogs = iJob->getLogs();
-        std::for_each(iJobLogs.begin(), iJobLogs.end(),
-                      [&]( const Logs::value_type& message )
+        std::for_each(
+            iJobLogs.begin(),
+            iJobLogs.end(),
+            [&](const Logs::value_type& message)
             {
                 this->logNoLock(iJobName + message);
-            }
-                      );
+            });
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Aggregator::IJobSeq Aggregator::getSubJobs()
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_jobs;
 }
 
-} //namespace sight::core::jobs
+} // namespace sight::core::jobs

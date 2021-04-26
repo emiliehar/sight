@@ -28,7 +28,7 @@
 #include <core/com/Signal.hpp>
 #include <core/com/Signal.hxx>
 
-SIGHT_REGISTER_DATA( sight::data::Landmarks );
+SIGHT_REGISTER_DATA(sight::data::Landmarks);
 
 namespace sight::data
 {
@@ -44,7 +44,7 @@ const core::com::Signals::SignalKeyType Landmarks::s_GROUP_RENAMED_SIG    = "gro
 const core::com::Signals::SignalKeyType Landmarks::s_POINT_SELECTED_SIG   = "pointSelected";
 const core::com::Signals::SignalKeyType Landmarks::s_POINT_DESELECTED_SIG = "pointDeselected";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Landmarks::Landmarks(data::Object::Key)
 {
@@ -60,42 +60,50 @@ Landmarks::Landmarks(data::Object::Key)
     newSignal<PointDeselectedSignalType>(s_POINT_DESELECTED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Landmarks::~Landmarks ()
+Landmarks::~Landmarks()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Landmarks::shallowCopy(const Object::csptr& _source )
+void Landmarks::shallowCopy(const Object::csptr& _source)
 {
     Landmarks::csptr other = Landmarks::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldShallowCopy( _source );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldShallowCopy(_source);
 
     m_landmarks = other->m_landmarks;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache)
 {
     Landmarks::csptr other = Landmarks::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( _source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(_source, cache);
 
     m_landmarks = other->m_landmarks;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Landmarks::addGroup(const std::string& name, const Landmarks::ColorType& color, const Landmarks::SizeType size,
-                         const Landmarks::Shape shape, const bool visibility)
+void Landmarks::addGroup(
+    const std::string& name,
+    const Landmarks::ColorType& color,
+    const Landmarks::SizeType size,
+    const Landmarks::Shape shape,
+    const bool visibility)
 {
     LandmarksGroup group(color, size, shape, visibility);
     const auto iter = m_landmarks.find(name);
@@ -103,7 +111,7 @@ void Landmarks::addGroup(const std::string& name, const Landmarks::ColorType& co
     m_landmarks.insert(std::make_pair(name, group));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Landmarks::GroupNameContainer Landmarks::getGroupNames() const
 {
@@ -113,22 +121,23 @@ const Landmarks::GroupNameContainer Landmarks::getGroupNames() const
         m_landmarks.begin(),
         m_landmarks.end(),
         std::back_inserter(names),
-        [](const LandmarksContainer::value_type& pair){return pair.first; });
+        [](const LandmarksContainer::value_type& pair){return pair.first;});
 
     return names;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Landmarks::LandmarksGroup& Landmarks::getGroup(const std::string& name) const
 {
     const auto iter = m_landmarks.find(name);
     SIGHT_THROW_EXCEPTION_IF(data::Exception("Group '" + name + "' does not exist"), iter == m_landmarks.end());
     const Landmarks::LandmarksGroup& group = iter->second;
+
     return group;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Landmarks::LandmarksGroup& Landmarks::getGroup(const std::string& name)
 {
@@ -136,10 +145,11 @@ Landmarks::LandmarksGroup& Landmarks::getGroup(const std::string& name)
     SIGHT_THROW_EXCEPTION_IF(data::Exception("Group '" + name + "' does not exist"), iter == m_landmarks.end());
 
     Landmarks::LandmarksGroup& group = iter->second;
+
     return group;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::renameGroup(const std::string& oldName, const std::string& newName)
 {
@@ -153,7 +163,7 @@ void Landmarks::renameGroup(const std::string& oldName, const std::string& newNa
     m_landmarks.erase(oldName);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::removeGroup(const std::string& name)
 {
@@ -163,7 +173,7 @@ void Landmarks::removeGroup(const std::string& name)
     m_landmarks.erase(name);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::setGroupColor(const std::string& name, const Landmarks::ColorType& color)
 {
@@ -171,7 +181,7 @@ void Landmarks::setGroupColor(const std::string& name, const Landmarks::ColorTyp
     group.m_color = color;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::setGroupSize(const std::string& name, const Landmarks::SizeType size)
 {
@@ -179,7 +189,7 @@ void Landmarks::setGroupSize(const std::string& name, const Landmarks::SizeType 
     group.m_size = size;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::setGroupShape(const std::string& name, const Landmarks::Shape shape)
 {
@@ -187,7 +197,7 @@ void Landmarks::setGroupShape(const std::string& name, const Landmarks::Shape sh
     group.m_shape = shape;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::setGroupVisibility(const std::string& name, const bool visibility)
 {
@@ -195,7 +205,7 @@ void Landmarks::setGroupVisibility(const std::string& name, const bool visibilit
     group.m_visibility = visibility;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::addPoint(const std::string& name, const Landmarks::PointType& point)
 {
@@ -203,53 +213,57 @@ void Landmarks::addPoint(const std::string& name, const Landmarks::PointType& po
     group.m_points.push_back(point);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::insertPoint(const std::string& name, const size_t index, const Landmarks::PointType& point)
 {
     Landmarks::LandmarksGroup& group = this->getGroup(name);
-    auto iter                        = group.m_points.begin() + static_cast< PointContainer::difference_type >(index);
+    auto iter                        = group.m_points.begin() + static_cast<PointContainer::difference_type>(index);
     group.m_points.insert(iter, point);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Landmarks::PointType& Landmarks::getPoint(const std::string& name, size_t index) const
 {
     const Landmarks::LandmarksGroup& group = this->getGroup(name);
+
     return group.m_points.at(index);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Landmarks::PointType& Landmarks::getPoint(const std::string& name, size_t index)
 {
     Landmarks::LandmarksGroup& group = this->getGroup(name);
+
     return group.m_points.at(index);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Landmarks::PointContainer& Landmarks::getPoints(const std::string& name) const
 {
     const Landmarks::LandmarksGroup& group = this->getGroup(name);
+
     return group.m_points;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::removePoint(const std::string& name, size_t index)
 {
     Landmarks::LandmarksGroup& group = this->getGroup(name);
 
-    SIGHT_THROW_EXCEPTION_IF(std::out_of_range("index out of range in group '" + name + "'"),
-                             index >= group.m_points.size());
+    SIGHT_THROW_EXCEPTION_IF(
+        std::out_of_range("index out of range in group '" + name + "'"),
+        index >= group.m_points.size());
 
-    auto iter = group.m_points.begin() + static_cast< PointContainer::difference_type >(index);
+    auto iter = group.m_points.begin() + static_cast<PointContainer::difference_type>(index);
     group.m_points.erase(iter);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Landmarks::clearPoints(const std::string& name)
 {
@@ -257,27 +271,30 @@ void Landmarks::clearPoints(const std::string& name)
     group.m_points.clear();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 size_t Landmarks::getNumberOfPoints() const
 {
     size_t nb = 0;
-    for (const auto& elt: m_landmarks)
+
+    for(const auto& elt : m_landmarks)
     {
         const LandmarksGroup group = elt.second;
         nb += group.m_points.size();
     }
+
     return nb;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 size_t Landmarks::getNumberOfPoints(const std::string& name) const
 {
     const LandmarksGroup& group = this->getGroup(name);
+
     return group.m_points.size();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

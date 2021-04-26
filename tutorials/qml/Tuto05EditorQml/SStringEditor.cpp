@@ -33,67 +33,67 @@ namespace Tuto05EditorQml
 
 static const service::IService::KeyType s_STRING_INOUT = "string";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SStringEditor::SStringEditor() noexcept
 {
-    this->registerObject(s_STRING_INOUT,  service::IService::AccessType::INOUT, true);
+    this->registerObject(s_STRING_INOUT, service::IService::AccessType::INOUT, true);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SStringEditor::~SStringEditor() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStringEditor::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStringEditor::starting()
 {
     this->::ui::qml::IQmlEditor::starting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStringEditor::stopping()
 {
     this->::ui::qml::IQmlEditor::stopping();
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void SStringEditor::updating()
 {
-    auto sstr = this->getInOut< data::String >(s_STRING_INOUT);
+    auto sstr = this->getInOut<data::String>(s_STRING_INOUT);
     SIGHT_ASSERT("'" + s_STRING_INOUT + "' data must be set as 'inout'", sstr);
     const std::string value = sstr->value();
 
     Q_EMIT edited(QString::fromStdString(value));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SStringEditor::updateString(const QString& str)
 {
-    auto sstr = this->getInOut< data::String >(s_STRING_INOUT);
+    auto sstr = this->getInOut<data::String>(s_STRING_INOUT);
     SIGHT_ASSERT("'" + s_STRING_INOUT + "' data must be set as 'inout'", sstr);
 
     sstr->value() = str.toStdString();
 
-    auto sig = sstr->signal< data::String::ModifiedSignalType >(data::String::s_MODIFIED_SIG);
+    auto sig = sstr->signal<data::String::ModifiedSignalType>(data::String::s_MODIFIED_SIG);
     {
         core::com::Connection::Blocker block(sig->getConnection(m_slotUpdate));
         sig->asyncEmit();
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SStringEditor::getAutoConnections() const
 {
@@ -104,6 +104,6 @@ service::IService::KeyConnectionsMap SStringEditor::getAutoConnections() const
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace Tuto05EditorQml

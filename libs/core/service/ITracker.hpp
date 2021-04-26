@@ -53,9 +53,7 @@ namespace sight::service
  */
 class SERVICE_CLASS_API ITracker : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(ITracker, service::IService)
 
     SERVICE_API static const core::com::Slots::SlotKeyType s_TRACK_SLOT;
@@ -87,11 +85,10 @@ public:
     }
 
 protected:
-
-    ///@brief ITracker constructor. Do nothing.
+    /// @brief ITracker constructor. Do nothing.
     SERVICE_API ITracker();
 
-    ///@brief ITracker destructor. Do nothing.
+    /// @brief ITracker destructor. Do nothing.
     SERVICE_API virtual ~ITracker();
 
     SERVICE_API void configuring() override;
@@ -124,6 +121,6 @@ protected:
 
     /// If false, the trackMethod does nothing
     bool m_isTracking;
-
 };
+
 } // arServices

@@ -60,9 +60,7 @@ namespace processing
  */
 class MODULE_VIZ_SCENE2D_CLASS_API SComputeHistogram : public service::IController
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SComputeHistogram, service::IController)
 
     /// Constructor. Does nothing.
@@ -81,7 +79,6 @@ public:
     MODULE_VIZ_SCENE2D_API KeyConnectionsMap getAutoConnections() const override;
 
 protected:
-
     MODULE_VIZ_SCENE2D_API void configuring() override;
 
     /// Starts the service. Calls updating().
@@ -97,10 +94,10 @@ protected:
     MODULE_VIZ_SCENE2D_API void stopping() override;
 
 private:
-
     /// Desired bins width used to classified pixel.
     float m_binsWidth;
-
 };
+
 } // namespace processing
+
 } // namespace sight::module::viz::scene2d

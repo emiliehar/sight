@@ -29,12 +29,12 @@
 namespace sight::viz::qt3d
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 static const sight::core::com::Slots::SlotKeyType s_UPDATE_VISIBILITY_SLOT = "updateVisibility";
 static const sight::core::com::Slots::SlotKeyType s_TOGGLE_VISIBILITY_SLOT = "toggleVisibility";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IAdaptor::IAdaptor()
 {
@@ -42,13 +42,13 @@ IAdaptor::IAdaptor()
     newSlot(s_TOGGLE_VISIBILITY_SLOT, &IAdaptor::toggleVisibility, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IAdaptor::~IAdaptor()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IAdaptor::initialize()
 {
@@ -60,9 +60,11 @@ void IAdaptor::initialize()
         auto& registry       = viz::qt3d::registry::getAdaptorRegistry();
         auto renderServiceId = registry[this->getID()];
 
-        auto result =
-            std::find_if(servicesVector.begin(), servicesVector.end(),
-                         [renderServiceId](const service::IService::sptr& srv)
+        auto result
+            = std::find_if(
+                  servicesVector.begin(),
+                  servicesVector.end(),
+                  [renderServiceId](const service::IService::sptr& srv)
             {
                 return srv->getID() == renderServiceId;
             });
@@ -72,7 +74,7 @@ void IAdaptor::initialize()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IAdaptor::updateVisibility(bool _visibility)
 {
@@ -80,7 +82,7 @@ void IAdaptor::updateVisibility(bool _visibility)
     m_isVisible = _visibility;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void IAdaptor::toggleVisibility()
 {
@@ -88,13 +90,13 @@ void IAdaptor::toggleVisibility()
     this->updateVisibility(m_isVisible);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SRender::sptr IAdaptor::getRenderService() const
 {
     return m_renderService.lock();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::viz::qt3d.

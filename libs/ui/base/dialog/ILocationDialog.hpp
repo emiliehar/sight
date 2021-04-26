@@ -34,16 +34,16 @@
 
 namespace sight::ui::base
 {
+
 namespace dialog
 {
+
 /**
  * @brief   Defines the generic file/folder selector dialog for IHM.
  */
 class UI_BASE_CLASS_API ILocationDialog : public ui::base::GuiBaseObject
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(ILocationDialog, ui::base::GuiBaseObject)
 
     typedef enum
@@ -51,7 +51,7 @@ public:
         NONE            = 0,
         READ            = 1 << 1,
         WRITE           = 1 << 2,
-        FILE_MUST_EXIST = 1 << 3,
+        FILE_MUST_EXIST = 1 << 3
     } Options;
 
     typedef enum
@@ -90,10 +90,10 @@ public:
     UI_BASE_API virtual void saveDefaultLocation(core::location::ILocation::sptr loc);
 
     /// set the type of location for the dialog (SINGLE_FILE, FORLDER, MULTI_FILES)
-    UI_BASE_API virtual void setType( Types type ) = 0;
+    UI_BASE_API virtual void setType(Types type) = 0;
 
     /// allow to set option to the file dialog mode=READ/WRITE , check=FILE_MUST_EXIST
-    UI_BASE_API virtual ILocationDialog& setOption( Options option) = 0;
+    UI_BASE_API virtual ILocationDialog& setOption(Options option) = 0;
 
     /**
      * @brief specify some filtering when browsing files:
@@ -101,7 +101,7 @@ public:
      * @param[in] wildcardList a string of extension (glob syntax) separated by spaces
      * example : addFilter("images","*.png *.jpg")
      */
-    UI_BASE_API virtual void addFilter(const std::string& filterName, const std::string& wildcardList ) = 0;
+    UI_BASE_API virtual void addFilter(const std::string& filterName, const std::string& wildcardList) = 0;
 
     /**
      * Display the dialog
@@ -113,7 +113,6 @@ public:
     UI_BASE_API virtual std::string getCurrentSelection() const = 0;
 
 protected:
-
     UI_BASE_API void readConfig();
 
     UI_BASE_API void writeConfig();
@@ -121,10 +120,10 @@ protected:
     UI_BASE_API data::Composite::sptr getPreferenceUI();
 
 private:
-
     std::string m_title;
     core::location::ILocation::sptr m_defaultLocaction;
 };
 
-} //namespace dialog
+} // namespace dialog
+
 } // namespace sight::ui::base

@@ -49,7 +49,7 @@
 namespace sight::module::io::dicomweb
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesPuller::SSeriesPuller() noexcept :
     m_isPulling(false),
@@ -57,13 +57,13 @@ SSeriesPuller::SSeriesPuller() noexcept :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSeriesPuller::~SSeriesPuller() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::configuring()
 {
@@ -80,7 +80,8 @@ void SSeriesPuller::configuring()
     std::tie(success, m_dicomReaderSrvConfig) = config->getSafeAttributeValue("dicomReaderConfig");
 
     service::IService::ConfigType configuration = this->getConfigTree();
-    //Parse server port and hostname
+
+    // Parse server port and hostname
     if(configuration.count("server"))
     {
         const std::string serverInfo               = configuration.get("server", "");
@@ -94,15 +95,14 @@ void SSeriesPuller::configuring()
     {
         throw core::tools::Failed("'server' element not found");
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::starting()
 {
     // Get Destination SeriesDB
-    m_destinationSeriesDB = this->getInOut< data::SeriesDB>("seriesDB");
+    m_destinationSeriesDB = this->getInOut<data::SeriesDB>("seriesDB");
     SIGHT_ASSERT("The 'seriesDB' key doesn't exist.", m_destinationSeriesDB);
 
     // Create temporary SeriesDB
@@ -110,33 +110,39 @@ void SSeriesPuller::starting()
 
     // Create reader
     service::extension::Factory::sptr srvFactory = service::extension::Factory::getDefault();
-    m_dicomReader =
-        sight::io::base::service::IReader::dynamicCast(srvFactory->create(m_dicomReaderType));
+    m_dicomReader
+        = sight::io::base::service::IReader::dynamicCast(srvFactory->create(m_dicomReaderType));
     SIGHT_ASSERT(
         "Unable to create a reader of type: \"" + m_dicomReaderType + "\" in module::io::dicomweb::SSeriesPuller.",
         m_dicomReader);
-    service::OSR::registerService(m_tempSeriesDB, sight::io::base::service::s_DATA_KEY,
-                                  service::IService::AccessType::INOUT, m_dicomReader);
+    service::OSR::registerService(
+        m_tempSeriesDB,
+        sight::io::base::service::s_DATA_KEY,
+        service::IService::AccessType::INOUT,
+        m_dicomReader);
 
     if(!m_dicomReaderSrvConfig.empty())
     {
         // Get the config
-        core::runtime::ConfigurationElement::csptr readerConfig =
-            service::extension::Config::getDefault()->getServiceConfig(
-                m_dicomReaderSrvConfig, "::io::base::service::IReader");
+        core::runtime::ConfigurationElement::csptr readerConfig
+            = service::extension::Config::getDefault()->getServiceConfig(
+                  m_dicomReaderSrvConfig,
+                  "::io::base::service::IReader");
 
-        SIGHT_ASSERT("Sorry, there is no service configuration "
-                     << m_dicomReaderSrvConfig
-                     << " for sight::io::base::service::IReader", readerConfig);
+        SIGHT_ASSERT(
+            "Sorry, there is no service configuration "
+                << m_dicomReaderSrvConfig
+                << " for sight::io::base::service::IReader",
+                readerConfig);
 
-        m_dicomReader->setConfiguration( core::runtime::ConfigurationElement::constCast(readerConfig) );
+        m_dicomReader->setConfiguration(core::runtime::ConfigurationElement::constCast(readerConfig));
     }
 
     m_dicomReader->configure();
     m_dicomReader->start();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::stopping()
 {
@@ -145,30 +151,34 @@ void SSeriesPuller::stopping()
     service::OSR::unregisterService(m_dicomReader);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::updating()
 {
     const std::string hostname = ui::base::preferences::getValue(m_serverHostnameKey);
+
     if(!hostname.empty())
     {
         m_serverHostname = hostname;
     }
+
     const std::string port = ui::base::preferences::getValue(m_serverPortKey);
+
     if(!port.empty())
     {
         m_serverPort = std::stoi(port);
     }
 
-    data::Vector::csptr selectedSeries = this->getInput< data::Vector >("selectedSeries");
+    data::Vector::csptr selectedSeries = this->getInput<data::Vector>("selectedSeries");
 
     if(m_isPulling)
     {
         // Display a message to inform the user that the service is already pulling data.
         sight::ui::base::dialog::MessageDialog messageBox;
         messageBox.setTitle("Pulling Series");
-        messageBox.setMessage( "The service is already pulling data. Please wait until the pulling is done "
-                               "before sending a new pull request." );
+        messageBox.setMessage(
+            "The service is already pulling data. Please wait until the pulling is done "
+            "before sending a new pull request.");
         messageBox.setIcon(ui::base::dialog::IMessageDialog::INFO);
         messageBox.addButton(ui::base::dialog::IMessageDialog::OK);
         messageBox.show();
@@ -178,7 +188,7 @@ void SSeriesPuller::updating()
         // Display a message to inform the user that there is no series selected.
         sight::ui::base::dialog::MessageDialog messageBox;
         messageBox.setTitle("Pulling Series");
-        messageBox.setMessage( "Unable to pull series, there is no series selected. " );
+        messageBox.setMessage("Unable to pull series, there is no series selected. ");
         messageBox.setIcon(ui::base::dialog::IMessageDialog::INFO);
         messageBox.addButton(ui::base::dialog::IMessageDialog::OK);
         messageBox.show();
@@ -189,7 +199,7 @@ void SSeriesPuller::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::pullSeries()
 {
@@ -206,20 +216,21 @@ void SSeriesPuller::pullSeries()
         m_seriesIndex   = 0;
         m_instanceCount = 0;
 
-        data::Vector::csptr selectedSeries = this->getInput< data::Vector >("selectedSeries");
+        data::Vector::csptr selectedSeries = this->getInput<data::Vector>("selectedSeries");
 
         // Find which selected series must be pulled
         DicomSeriesContainerType pullSeriesVector;
         DicomSeriesContainerType selectedSeriesVector;
 
         data::Vector::ConstIteratorType it = selectedSeries->begin();
-        for(; it != selectedSeries->end(); ++it)
+
+        for( ; it != selectedSeries->end() ; ++it)
         {
             data::DicomSeries::sptr series = data::DicomSeries::dynamicCast(*it);
 
             // Check if the series must be pulled
-            if(series &&
-               std::find(m_localSeries.begin(), m_localSeries.end(), series->getInstanceUID()) == m_localSeries.end())
+            if(series
+               && std::find(m_localSeries.begin(), m_localSeries.end(), series->getInstanceUID()) == m_localSeries.end())
             {
                 // Add series in the pulling series map
                 m_pullingDicomSeriesMap[series->getInstanceUID()] = series;
@@ -227,6 +238,7 @@ void SSeriesPuller::pullSeries()
                 pullSeriesVector.push_back(series);
                 m_instanceCount += series->getNumberOfInstances();
             }
+
             selectedSeriesVector.push_back(series);
         }
 
@@ -234,9 +246,10 @@ void SSeriesPuller::pullSeries()
         if(!pullSeriesVector.empty())
         {
             /// GET
-            const InstanceUIDContainerType& seriesInstancesUIDs =
-                sight::io::http::helper::Series::toSeriesInstanceUIDContainer(pullSeriesVector);
-            for( const std::string& seriesInstancesUID : seriesInstancesUIDs )
+            const InstanceUIDContainerType& seriesInstancesUIDs
+                = sight::io::http::helper::Series::toSeriesInstanceUIDContainer(pullSeriesVector);
+
+            for(const std::string& seriesInstancesUID : seriesInstancesUIDs)
             {
                 // Find Series according to SeriesInstanceUID
                 QJsonObject query;
@@ -258,7 +271,7 @@ void SSeriesPuller::pullSeries()
                 {
                     seriesAnswer = m_clientQt.post(request, QJsonDocument(body).toJson());
                 }
-                catch  (sight::io::http::exceptions::HostNotFound& exception)
+                catch(sight::io::http::exceptions::HostNotFound& exception)
                 {
                     std::stringstream ss;
                     ss << "Host not found:\n"
@@ -274,31 +287,33 @@ void SSeriesPuller::pullSeries()
                 const QJsonArray& seriesArray = jsonResponse.array();
 
                 const size_t seriesArraySize = seriesArray.count();
-                for(size_t i = 0; i < seriesArraySize; ++i)
+
+                for(size_t i = 0 ; i < seriesArraySize ; ++i)
                 {
                     const std::string& seriesUID = seriesArray.at(i).toString().toStdString();
 
                     /// GET all Instances by Series.
                     const std::string& instancesUrl(pacsServer + "/series/" + seriesUID);
-                    const QByteArray& instancesAnswer =
-                        m_clientQt.get( sight::io::http::Request::New(instancesUrl));
+                    const QByteArray& instancesAnswer
+                                 = m_clientQt.get(sight::io::http::Request::New(instancesUrl));
                     jsonResponse = QJsonDocument::fromJson(instancesAnswer);
                     const QJsonObject& jsonObj       = jsonResponse.object();
                     const QJsonArray& instancesArray = jsonObj["Instances"].toArray();
 
                     const size_t instancesArraySize = instancesArray.count();
-                    for(size_t j = 0; j < instancesArraySize; ++j)
+
+                    for(size_t j = 0 ; j < instancesArraySize ; ++j)
                     {
                         const std::string& instanceUID = instancesArray.at(j).toString().toStdString();
 
                         /// GET DICOM Instance file.
-                        const std::string instanceUrl(pacsServer +"/instances/" + instanceUID + "/file");
+                        const std::string instanceUrl(pacsServer + "/instances/" + instanceUID + "/file");
 
                         try
                         {
                             m_path = m_clientQt.getFile(sight::io::http::Request::New(instanceUrl));
                         }
-                        catch  (sight::io::http::exceptions::ContentNotFound& exception)
+                        catch(sight::io::http::exceptions::ContentNotFound& exception)
                         {
                             std::stringstream ss;
                             ss << "Content not found:  \n"
@@ -328,9 +343,8 @@ void SSeriesPuller::pullSeries()
 
         // Set pulling boolean to false
         m_isPulling = false;
-
     }
-    catch (sight::io::http::exceptions::Base& exception)
+    catch(sight::io::http::exceptions::Base& exception)
     {
         std::stringstream ss;
         ss << "Unknown error.";
@@ -340,18 +354,18 @@ void SSeriesPuller::pullSeries()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::readLocalSeries(DicomSeriesContainerType selectedSeries)
 {
     // Read only series that are not in the SeriesDB
-    const InstanceUIDContainerType& alreadyLoadedSeries =
-        sight::io::http::helper::Series::toSeriesInstanceUIDContainer(m_destinationSeriesDB->getContainer());
+    const InstanceUIDContainerType& alreadyLoadedSeries
+        = sight::io::http::helper::Series::toSeriesInstanceUIDContainer(m_destinationSeriesDB->getContainer());
 
     // Create temporary series helper
     data::helper::SeriesDB tempSDBhelper(m_tempSeriesDB);
 
-    for(const data::Series::sptr& series: selectedSeries)
+    for(const data::Series::sptr& series : selectedSeries)
     {
         const std::string& selectedSeriesUID = series->getInstanceUID();
 
@@ -362,8 +376,10 @@ void SSeriesPuller::readLocalSeries(DicomSeriesContainerType selectedSeries)
         }
 
         // Check if the series is loaded
-        if(std::find(alreadyLoadedSeries.begin(), alreadyLoadedSeries.end(),
-                     selectedSeriesUID) == alreadyLoadedSeries.end())
+        if(std::find(
+               alreadyLoadedSeries.begin(),
+               alreadyLoadedSeries.end(),
+               selectedSeriesUID) == alreadyLoadedSeries.end())
         {
             // Clear temporary series
             tempSDBhelper.clear();
@@ -379,19 +395,19 @@ void SSeriesPuller::readLocalSeries(DicomSeriesContainerType selectedSeries)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSeriesPuller::displayErrorMessage(const std::string& message) const
 {
     SIGHT_WARN("Error: " + message);
     sight::ui::base::dialog::MessageDialog messageBox;
     messageBox.setTitle("Error");
-    messageBox.setMessage( message );
+    messageBox.setMessage(message);
     messageBox.setIcon(ui::base::dialog::IMessageDialog::CRITICAL);
     messageBox.addButton(ui::base::dialog::IMessageDialog::OK);
     messageBox.show();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::io::dicomweb

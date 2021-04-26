@@ -30,6 +30,7 @@
 
 namespace sight::module::ui::qt
 {
+
 /**
  * @brief SNotifier is a general service used to display notification in a centralized way.
  * SNotifier needs to be connected to [Success/Failure/Info]Notified signals implemented in IService.
@@ -75,7 +76,6 @@ namespace sight::module::ui::qt
 class MODULE_UI_QT_CLASS_API SNotifier final : public service::IController
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SNotifier, service::IController)
 
     /// Constructor, initializes position map & slots.
@@ -85,7 +85,6 @@ public:
     MODULE_UI_QT_API ~SNotifier() noexcept override;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */
@@ -109,7 +108,6 @@ protected:
     MODULE_UI_QT_API void updating() override;
 
 private:
-
     /// Slot: This method is used to set an enum parameter.
     void setEnumParameter(std::string _val, std::string _key);
 
@@ -139,33 +137,32 @@ private:
     void showNotification(const std::string& _message, sight::ui::base::dialog::NotificationDialog::Type _type);
 
     /// Max number of displayed notifications.
-    std::uint8_t m_maxStackedNotifs {3};
+    std::uint8_t m_maxStackedNotifs{3};
 
     /// Duration of the notifications before closing (in ms).
-    int m_durationInMs {3000};
+    int m_durationInMs{3000};
 
     /// Set position once, all notifications of the app/config are displayed here.
     sight::ui::base::dialog::NotificationDialog::Position m_notifcationsPosition
     {sight::ui::base::dialog::NotificationDialog::Position::TOP_RIGHT};
 
     /// Map to convert string position like "TOP_RIGHT" to NotificationDialog::Position.
-    std::map< std::string, sight::ui::base::dialog::NotificationDialog::Position> m_positionMap;
+    std::map<std::string, sight::ui::base::dialog::NotificationDialog::Position> m_positionMap;
 
     /// Default message (if message in slot are empty), the default message can be configured in xml.
     std::string m_defaultMessage = "Notification";
 
     /// Vector of displayed NotificationDialog, resized with "m_maxStackedNotifs" at start.
-    std::vector< sight::ui::base::dialog::NotificationDialog::sptr > m_popups {};
+    std::vector<sight::ui::base::dialog::NotificationDialog::sptr> m_popups{};
 
     /// Queue of index in m_popups to remove oldest if m_maxStackedNotifs is reached.
-    std::queue< size_t > m_indexQueue;
+    std::queue<size_t> m_indexQueue;
 
     /// fwContainer where notifications will be displayed in, nullptr by default.
-    sight::ui::base::container::fwContainer::csptr m_containerWhereToDisplayNotifs {nullptr};
+    sight::ui::base::container::fwContainer::csptr m_containerWhereToDisplayNotifs{nullptr};
 
     /// Parent containner ID (SID or WID), empty by default.
     std::string m_parentContainerID;
-
 };
 
-} //namespace sight::module::ui::qt
+} // namespace sight::module::ui::qt

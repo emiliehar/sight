@@ -38,9 +38,7 @@ namespace picker
 
 class VIZ_SCENE3D_CLASS_API IPicker
 {
-
 public:
-
     /// Construct all members.
     VIZ_SCENE3D_API IPicker();
 
@@ -93,25 +91,23 @@ public:
     VIZ_SCENE3D_API bool hasSceneManager();
 
 protected:
-
     /// Current scene manager.
-    ::Ogre::SceneManager* m_sceneManager {nullptr};
+    ::Ogre::SceneManager* m_sceneManager{nullptr};
 
     /// Selected movable object.
-    ::Ogre::MovableObject* m_selectedObject {nullptr};
+    ::Ogre::MovableObject* m_selectedObject{nullptr};
 
     /// True if a scene manager is setted.
-    bool m_hasSceneManager {false};
+    bool m_hasSceneManager{false};
 
     /// Intersection between the ray and the selected object.
-    ::Ogre::Vector3 m_rayIntersect {};
+    ::Ogre::Vector3 m_rayIntersect{};
 
     /// Returns the scene node containing the default camera.
     ::Ogre::SceneNode* getCameraSceneNode() const;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Inline method(s)
 
 inline ::Ogre::MovableObject* IPicker::getSelectedObject() const
@@ -119,7 +115,8 @@ inline ::Ogre::MovableObject* IPicker::getSelectedObject() const
     return m_selectedObject;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 }
-}
+
+} // namespace sight::viz

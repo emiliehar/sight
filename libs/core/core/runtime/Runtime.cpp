@@ -35,38 +35,39 @@
 namespace sight::core::runtime
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Runtime::Runtime()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Runtime::~Runtime()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Runtime* Runtime::getDefault()
 {
     return detail::Runtime::getDefault();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Runtime& Runtime::get()
 {
     return detail::Runtime::get();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::shared_ptr<Extension> Runtime::findExtension( const std::string& identifier ) const
+std::shared_ptr<Extension> Runtime::findExtension(const std::string& identifier) const
 {
     std::shared_ptr<Extension> resExtension;
-    for(const ExtensionContainer::value_type& extension :  m_extensions)
+
+    for(const ExtensionContainer::value_type& extension : m_extensions)
     {
         if(extension->getIdentifier() == identifier && extension->isEnabled())
         {
@@ -74,22 +75,23 @@ std::shared_ptr<Extension> Runtime::findExtension( const std::string& identifier
             break;
         }
     }
+
     return resExtension;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void Runtime::setWorkingPath(const std::filesystem::path& )
+void Runtime::setWorkingPath(const std::filesystem::path&)
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string filterID(const std::string& identifier)
 {
-    return boost::algorithm::trim_left_copy_if(identifier, [](auto x) { return x == ':'; } );
+    return boost::algorithm::trim_left_copy_if(identifier, [](auto x){return x == ':';});
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::core::runtime

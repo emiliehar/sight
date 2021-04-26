@@ -30,6 +30,7 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -39,15 +40,15 @@ namespace ut
  */
 class ServiceTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ServiceTest );
-CPPUNIT_TEST( testServiceConfiguration );
-CPPUNIT_TEST( testServiceCreationWithMultipleData );
-CPPUNIT_TEST( testServiceCreationWithTemplateMethods );
-CPPUNIT_TEST( testServiceCreationWithUUID );
-CPPUNIT_TEST( testStartStopUpdate );
-CPPUNIT_TEST( testStartStopUpdateExceptions );
-CPPUNIT_TEST( testCommunication );
-CPPUNIT_TEST( testWithInAndOut );
+CPPUNIT_TEST_SUITE(ServiceTest);
+CPPUNIT_TEST(testServiceConfiguration);
+CPPUNIT_TEST(testServiceCreationWithMultipleData);
+CPPUNIT_TEST(testServiceCreationWithTemplateMethods);
+CPPUNIT_TEST(testServiceCreationWithUUID);
+CPPUNIT_TEST(testStartStopUpdate);
+CPPUNIT_TEST(testStartStopUpdateExceptions);
+CPPUNIT_TEST(testCommunication);
+CPPUNIT_TEST(testWithInAndOut);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -82,9 +83,9 @@ public:
     void testWithInAndOut();
 
 private:
-
     static void startStopUpdateExceptions(service::ut::TestService::sptr _service);
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

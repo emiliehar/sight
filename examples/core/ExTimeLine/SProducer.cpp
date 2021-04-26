@@ -34,7 +34,7 @@
 namespace ExTimeLine
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SProducer::SProducer() noexcept :
     m_senderId(0),
@@ -44,13 +44,13 @@ SProducer::SProducer() noexcept :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SProducer::~SProducer() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProducer::configuring()
 {
@@ -62,20 +62,20 @@ void SProducer::configuring()
     m_timelineSize = config.get<unsigned int>("timelineSize", 0);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProducer::starting()
 {
     m_timer = m_associatedWorker->createTimer();
-    m_timer->setFunction( std::bind(&SProducer::updating, this) );
-    m_timer->setDuration( std::chrono::milliseconds( m_period ) );
+    m_timer->setFunction(std::bind(&SProducer::updating, this));
+    m_timer->setDuration(std::chrono::milliseconds(m_period));
 
     m_timer->start();
 
     // Init timeline pool
     if(m_timelineSize)
     {
-        const auto timeline = this->getLockedInOut< ::ExTimeLine::MessageTL >("timeline");
+        const auto timeline = this->getLockedInOut< ::ExTimeLine::MessageTL>("timeline");
 
         // This wouldn't hurt to initialize the timeline several times since it will be erased each time
         // but this would be a mess to know who is the last to initialize
@@ -88,38 +88,38 @@ void SProducer::starting()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProducer::stopping()
 {
     m_timer.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SProducer::updating()
 {
-    ::ExTimeLine::MessageTL::sptr timeline = this->getInOut< ::ExTimeLine::MessageTL >("timeline");
+    ::ExTimeLine::MessageTL::sptr timeline = this->getInOut< ::ExTimeLine::MessageTL>("timeline");
 
     const auto timestamp = sight::core::HiResClock::getTimeInMilliSec();
     SPTR(::ExTimeLine::MessageTL::BufferType) buffer = timeline->createBuffer(timestamp);
 
     ::ExTimeLine::MsgData* data = buffer->addElement(0);
 
-    const std::string message = m_message + " #" + std::to_string( m_msgCount++ );
+    const std::string message = m_message + " #" + std::to_string(m_msgCount++);
 
     data->uidSender = m_senderId;
     strncpy(data->szMsg, message.c_str(), ::ExTimeLine::MsgData::MAX_MSG_SIZE);
 
     timeline->pushObject(buffer);
 
-    //Notify
+    // Notify
     sight::data::TimeLine::ObjectPushedSignalType::sptr sig;
-    sig =
-        timeline->signal< sight::data::TimeLine::ObjectPushedSignalType >(sight::data::TimeLine::s_OBJECT_PUSHED_SIG );
+    sig
+        = timeline->signal<sight::data::TimeLine::ObjectPushedSignalType>(sight::data::TimeLine::s_OBJECT_PUSHED_SIG);
     sig->asyncEmit(timestamp);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ExTimeLine

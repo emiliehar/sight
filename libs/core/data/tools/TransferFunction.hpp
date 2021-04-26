@@ -36,9 +36,7 @@ namespace sight::data::tools
  */
 class TransferFunction
 {
-
 public:
-
     /**
      * @brief Generate a drawing tf with value between 0 and 255.
      * @param tf  transferFunction to generate
@@ -46,10 +44,8 @@ public:
     DATA_API static void generateDrawingTF(data::TransferFunction::sptr tf);
 
 protected:
-
     /// Return a map <value, color> used to generate drawing TF
     DATA_API static data::TransferFunction::TFDataType getDrawingTFColors();
-
 };
 
 } // namespace sight::data::tools

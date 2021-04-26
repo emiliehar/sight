@@ -26,15 +26,17 @@
 
 namespace sight::io::opencv
 {
+
 namespace ut
 {
+
 /**
  * @brief Tests the io::opencv::FrameTL functions
  */
 class FrameTLTest : public CPPUNIT_NS::TestFixture
 {
 public:
-    CPPUNIT_TEST_SUITE( FrameTLTest );
+    CPPUNIT_TEST_SUITE(FrameTLTest);
     CPPUNIT_TEST(moveToCv);
     CPPUNIT_TEST(copyFromCv);
     CPPUNIT_TEST(copyToCv);
@@ -52,4 +54,4 @@ public:
 
 } // namespace ut
 
-}// namespace sight::io::opencv
+} // namespace sight::io::opencv

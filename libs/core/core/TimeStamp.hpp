@@ -34,7 +34,6 @@ namespace sight::core
  */
 class CORE_CLASS_API TimeStamp : public BaseObject
 {
-
 public:
     SIGHT_DECLARE_CLASS(TimeStamp, BaseObject, new TimeStamp)
 
@@ -75,7 +74,7 @@ public:
      */
     CORE_API bool operator>(const TimeStamp& ts) const
     {
-        return ( this->m_modifiedTime > ts.m_modifiedTime );
+        return this->m_modifiedTime > ts.m_modifiedTime;
     }
 
     /**
@@ -85,7 +84,7 @@ public:
      */
     CORE_API bool operator<(const TimeStamp& ts) const
     {
-        return ( this->m_modifiedTime < ts.m_modifiedTime );
+        return this->m_modifiedTime < ts.m_modifiedTime;
     }
 
     /**
@@ -137,7 +136,6 @@ private:
      * @brief life period (milliseconds)
      */
     TimeStampType m_lifePeriod;
-
 };
 
-} //namespace sight::core
+} // namespace sight::core

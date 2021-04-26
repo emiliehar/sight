@@ -28,6 +28,7 @@
 
 namespace sight::io::vtk
 {
+
 namespace ut
 {
 
@@ -36,9 +37,9 @@ namespace ut
  */
 class TransferFunctionTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( TransferFunctionTest );
-CPPUNIT_TEST( toVtkLookupTableTest );
-CPPUNIT_TEST( toBWVtkLookupTableTest );
+CPPUNIT_TEST_SUITE(TransferFunctionTest);
+CPPUNIT_TEST(toVtkLookupTableTest);
+CPPUNIT_TEST(toBWVtkLookupTableTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -50,10 +51,9 @@ public:
     void toBWVtkLookupTableTest();
 
 private:
-
     data::TransferFunction::sptr createTFColor();
-
 };
 
 } // end namespace ut
+
 } // end namespace sight::io::vtk

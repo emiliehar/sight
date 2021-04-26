@@ -31,9 +31,9 @@ namespace sight::viz::scene3d
 namespace factory
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-viz::scene3d::IWindowInteractor::sptr New( const viz::scene3d::registry::KeyType& classname )
+viz::scene3d::IWindowInteractor::sptr New(const viz::scene3d::registry::KeyType& classname)
 {
     return viz::scene3d::registry::get()->create(classname);
 }
@@ -43,10 +43,11 @@ viz::scene3d::IWindowInteractor::sptr New( const viz::scene3d::registry::KeyType
 namespace offscreenInteractorMgrFactory
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-viz::scene3d::IWindowInteractor::sptr New(const viz::scene3d::registry::KeyType& classname,
-                                          std::pair<unsigned int, unsigned int> _dims)
+viz::scene3d::IWindowInteractor::sptr New(
+    const viz::scene3d::registry::KeyType& classname,
+    std::pair<unsigned int, unsigned int> _dims)
 {
     return viz::scene3d::registry::getOffscreenMgr()->create(classname, _dims);
 }
@@ -56,9 +57,9 @@ viz::scene3d::IWindowInteractor::sptr New(const viz::scene3d::registry::KeyType&
 namespace lightFactory
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-viz::scene3d::ILight::sptr New( const viz::scene3d::registry::KeyType& classname)
+viz::scene3d::ILight::sptr New(const viz::scene3d::registry::KeyType& classname)
 {
     return viz::scene3d::registry::getLightRegistry()->create(classname);
 }

@@ -51,18 +51,20 @@ IJob::IJob(const std::string& name) :
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::~IJob()
 {
-    std::for_each(m_stateHooks.begin(), m_stateHooks.end(),
-                  [&]( const StateHookSeq::value_type& f )
+    std::for_each(
+        m_stateHooks.begin(),
+        m_stateHooks.end(),
+        [&](const StateHookSeq::value_type& f)
         {
             f(m_state);
-        } );
+        });
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const bool& IJob::cancelRequested() const
 {
@@ -70,39 +72,43 @@ const bool& IJob::cancelRequested() const
     return m_cancelRequested;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::CancelRequestCallback IJob::cancelRequestedCallback() const
 {
     return [this]() -> bool
            {
                core::mt::ReadLock lock(m_mutex);
+
                return m_cancelRequested;
            };
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::uint64_t IJob::getDoneWorkUnits() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_doneWorkUnits;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 std::uint64_t IJob::getTotalWorkUnits() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_totalWorkUnits;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::SharedFuture IJob::cancel()
 {
     core::mt::ReadToWriteLock lock(m_mutex);
-    if( m_cancelable && (m_state == WAITING || m_state == RUNNING) )
+
+    if(m_cancelable && (m_state == WAITING || m_state == RUNNING))
     {
         State nextState = (m_state == WAITING) ? CANCELED : CANCELING;
 
@@ -114,18 +120,21 @@ IJob::SharedFuture IJob::cancel()
 
         // unlock mutex for cancel callbacks sanity
         lock.unlock();
+
         // m_cancelHooks can not be changed when m_state != WAITING or
         // RUNNING, no need to lock m_mutex
         for(auto cancel : m_cancelHooks)
         {
-            (cancel)(*this);
+            (cancel) (*this);
         }
+
         lock.lock();
 
         core::mt::UpgradeToWriteLock writeLock(lock);
 
-        SIGHT_ASSERT("State shall be only CANCELING or CANCELED, not " << m_state,
-                     m_state == CANCELED || m_state == CANCELING);
+        SIGHT_ASSERT(
+            "State shall be only CANCELING or CANCELED, not " << m_state,
+                m_state == CANCELED || m_state == CANCELING);
 
         if(m_state == CANCELING)
         {
@@ -135,16 +144,17 @@ IJob::SharedFuture IJob::cancel()
             {
                 // If we use the default constructor, the future is not valid and we will not be able to wait for it
                 // Thus we build a dummy future to get a valid one
-                m_runFuture = std::async( []() {} );
+                m_runFuture = std::async([](){});
             }
         }
     }
+
     // else if (m_state == CANCELING)
     // NOP
     return m_runFuture;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addCancelHook(JobCancelHook callback)
 {
@@ -152,17 +162,19 @@ void IJob::addCancelHook(JobCancelHook callback)
     this->addCancelHookNoLock(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addSimpleCancelHook(CancelHook callback)
 {
-    this->addCancelHook(JobCancelHook([ = ](IJob& /*job*/)
+    this->addCancelHook(
+        JobCancelHook(
+            [ = ](IJob& /*job*/)
         {
             callback();
         }));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addDoneWorkHook(DoneWorkHook callback)
 {
@@ -170,7 +182,7 @@ void IJob::addDoneWorkHook(DoneWorkHook callback)
     this->addDoneWorkHookNoLock(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addTotalWorkUnitsHook(TotalWorkUnitsHook callback)
 {
@@ -178,7 +190,7 @@ void IJob::addTotalWorkUnitsHook(TotalWorkUnitsHook callback)
     this->addTotalWorkUnitsHookNoLock(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addLogHook(LogHook callback)
 {
@@ -186,7 +198,7 @@ void IJob::addLogHook(LogHook callback)
     this->addLogHookNoLock(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addStateHook(StateHook callback)
 {
@@ -194,28 +206,29 @@ void IJob::addStateHook(StateHook callback)
     this->addStateHookNoLock(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::State IJob::getState() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_state;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const std::string& IJob::getName() const
 {
-    return m_name; //Does not need to lock mutex, the name can't be changed
+    return m_name; // Does not need to lock mutex, the name can't be changed
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::SharedFuture IJob::run()
 {
     core::mt::ReadToWriteLock lock(m_mutex);
 
-    if( m_state == WAITING )
+    if(m_state == WAITING)
     {
         {
             core::mt::UpgradeToWriteLock writeLock(lock);
@@ -233,7 +246,7 @@ IJob::SharedFuture IJob::run()
     return m_runFuture;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::setState(IJob::State state)
 {
@@ -241,39 +254,47 @@ void IJob::setState(IJob::State state)
     this->setStateNoLock(state);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::setStateNoLock(IJob::State state)
 {
     m_state = state;
+
     switch(state)
     {
         case WAITING:
             break;
+
         case RUNNING:
             m_sigStarted->asyncEmit();
             break;
+
         case CANCELING:
             m_sigCancelRequested->asyncEmit();
             break;
+
         case CANCELED:
             m_sigCanceled->asyncEmit();
             break;
+
         case FINISHED:
             m_sigFinished->asyncEmit();
             break;
+
         default:
             SIGHT_ASSERT("You shall not pass !", 0);
     }
 
-    std::for_each(m_stateHooks.begin(), m_stateHooks.end(),
-                  [&]( const StateHookSeq::value_type& f )
+    std::for_each(
+        m_stateHooks.begin(),
+        m_stateHooks.end(),
+        [&](const StateHookSeq::value_type& f)
         {
             f(m_state);
-        } );
+        });
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::finish()
 {
@@ -281,25 +302,25 @@ void IJob::finish()
     this->finishNoLock();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::finishNoLock()
 {
-    this->setStateNoLock( ( m_state == CANCELING ) ? CANCELED : FINISHED );
+    this->setStateNoLock((m_state == CANCELING) ? CANCELED : FINISHED);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::function< void() > IJob::finishCallback()
+std::function<void()> IJob::finishCallback()
 {
-    return [ = ] { this->finish(); };
+    return [ = ]{this->finish();};
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::wait()
 {
-    decltype(m_runFuture)runFuture;
+    decltype(m_runFuture) runFuture;
 
     {
         core::mt::ReadLock lock(m_mutex);
@@ -310,20 +331,20 @@ void IJob::wait()
     // No std::future_error are raised before the segfault
     if(!runFuture.valid())
     {
-        SIGHT_THROW_EXCEPTION( core::jobs::exception::Waiting("Job has not been started") );
+        SIGHT_THROW_EXCEPTION(core::jobs::exception::Waiting("Job has not been started"));
     }
 
     try
     {
         runFuture.wait();
     }
-    catch( std::future_error& )
+    catch(std::future_error&)
     {
-        SIGHT_THROW_EXCEPTION( core::jobs::exception::Waiting("Job has not been started") );
+        SIGHT_THROW_EXCEPTION(core::jobs::exception::Waiting("Job has not been started"));
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::log(const std::string& message)
 {
@@ -331,7 +352,7 @@ void IJob::log(const std::string& message)
     this->logNoLock(message);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::logNoLock(const std::string& message)
 {
@@ -339,21 +360,23 @@ void IJob::logNoLock(const std::string& message)
 
     m_sigLogged->asyncEmit(message);
 
-    std::for_each(m_logHooks.begin(), m_logHooks.end(),
-                  [&]( const LogHookSeq::value_type& f )
+    std::for_each(
+        m_logHooks.begin(),
+        m_logHooks.end(),
+        [&](const LogHookSeq::value_type& f)
         {
             f(*this, message);
-        } );
+        });
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::State IJob::getStateNoLock() const
 {
     return m_state;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addCancelHookNoLock(JobCancelHook callback)
 {
@@ -363,7 +386,7 @@ void IJob::addCancelHookNoLock(JobCancelHook callback)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addDoneWorkHookNoLock(DoneWorkHook callback)
 {
@@ -373,7 +396,7 @@ void IJob::addDoneWorkHookNoLock(DoneWorkHook callback)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addTotalWorkUnitsHookNoLock(TotalWorkUnitsHook callback)
 {
@@ -383,34 +406,34 @@ void IJob::addTotalWorkUnitsHookNoLock(TotalWorkUnitsHook callback)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addLogHookNoLock(LogHook callback)
 {
     m_logHooks.push_back(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::addStateHookNoLock(StateHook callback)
 {
     m_stateHooks.push_back(callback);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void IJob::doneWork( std::uint64_t units )
+void IJob::doneWork(std::uint64_t units)
 {
     core::mt::ReadToWriteLock lock(m_mutex);
-    this->doneWork( units, lock );
+    this->doneWork(units, lock);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void IJob::doneWork( std::uint64_t units, core::mt::ReadToWriteLock& lock )
+void IJob::doneWork(std::uint64_t units, core::mt::ReadToWriteLock& lock)
 {
     auto oldDoneWork = m_doneWorkUnits;
-    decltype(m_doneWorkHooks)doneWorkHooks;
+    decltype(m_doneWorkHooks) doneWorkHooks;
 
     if(m_doneWorkUnits == units)
     {
@@ -428,33 +451,35 @@ void IJob::doneWork( std::uint64_t units, core::mt::ReadToWriteLock& lock )
 
     lock.unlock();
 
-    std::for_each(doneWorkHooks.begin(), doneWorkHooks.end(),
-                  [&]( const DoneWorkHookSeq::value_type& f )
+    std::for_each(
+        doneWorkHooks.begin(),
+        doneWorkHooks.end(),
+        [&](const DoneWorkHookSeq::value_type& f)
         {
             f(*this, oldDoneWork);
-        } );
+        });
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::setTotalWorkUnits(std::uint64_t units)
 {
     core::mt::ReadToWriteLock lock(m_mutex);
-    this->setTotalWorkUnitsUpgradeLock( units, lock );
+    this->setTotalWorkUnitsUpgradeLock(units, lock);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void IJob::setTotalWorkUnitsUpgradeLock( std::uint64_t units, core::mt::ReadToWriteLock& lock )
+void IJob::setTotalWorkUnitsUpgradeLock(std::uint64_t units, core::mt::ReadToWriteLock& lock)
 {
     auto oldTotalWorkUnits = m_totalWorkUnits;
-    decltype(m_totalWorkUnitsHooks)totalWorkUnitsHook;
+    decltype(m_totalWorkUnitsHooks) totalWorkUnitsHook;
 
     totalWorkUnitsHook = m_totalWorkUnitsHooks;
 
     if(m_doneWorkUnits > units)
     {
-        this->doneWork( units, lock );
+        this->doneWork(units, lock);
     }
 
     {
@@ -463,22 +488,25 @@ void IJob::setTotalWorkUnitsUpgradeLock( std::uint64_t units, core::mt::ReadToWr
     }
 
     lock.unlock();
-    std::for_each(totalWorkUnitsHook.begin(), totalWorkUnitsHook.end(),
-                  [&]( const TotalWorkUnitsHookSeq::value_type& f )
+    std::for_each(
+        totalWorkUnitsHook.begin(),
+        totalWorkUnitsHook.end(),
+        [&](const TotalWorkUnitsHookSeq::value_type& f)
         {
             f(*this, oldTotalWorkUnits);
-        } );
+        });
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 IJob::Logs IJob::getLogs() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_logs;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::setCancelable(bool cancel)
 {
@@ -486,21 +514,22 @@ void IJob::setCancelable(bool cancel)
     m_cancelable = cancel;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool IJob::isCancelable() const
 {
     core::mt::ReadLock lock(m_mutex);
+
     return m_cancelable;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void IJob::done()
 {
     this->doneWork(m_totalWorkUnits);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sight::core::jobs
+} // namespace sight::core::jobs

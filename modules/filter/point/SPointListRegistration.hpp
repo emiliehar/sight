@@ -61,9 +61,7 @@ namespace sight::module::filter::point
  */
 class MODULE_FILTER_POINT_CLASS_API SPointListRegistration : public service::IRegisterer
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SPointListRegistration, service::IRegisterer)
 
     /**
@@ -78,7 +76,7 @@ public:
      * @{
      */
     /// Emitted when registration error is computed
-    typedef core::com::Signal< void (double) > ErrorComputedSignalType;
+    typedef core::com::Signal<void (double)> ErrorComputedSignalType;
     ///@}
 
     MODULE_FILTER_POINT_API SPointListRegistration();
@@ -86,17 +84,16 @@ public:
     MODULE_FILTER_POINT_API virtual ~SPointListRegistration();
 
 protected:
-
     /// Register a point list slot
     MODULE_FILTER_POINT_API void computeRegistration(core::HiResClock::HiResClockType timestamp) override;
 
     /// Registration Mode (default: RIGID)
     typedef enum Mode
     {
-        RIGID,      /*!< rigid mode of VTK registration */
+        RIGID, /*!< rigid mode of VTK registration */
         SIMILARITY, /*!< similarity mode of VTK registration */
-        AFFINE      /*!< affine mode of VTK registration */
-    }RegistrationModeType;
+        AFFINE /*!< affine mode of VTK registration */
+    } RegistrationModeType;
 
     /// Configures the service
     MODULE_FILTER_POINT_API void configuring() override;
@@ -114,8 +111,7 @@ protected:
     MODULE_FILTER_POINT_API void swapping() override;
 
 private:
-
-    ///SLOT: changeMode
+    /// SLOT: changeMode
     void changeMode(std::string _value);
 
     /// Key source point list
@@ -127,7 +123,7 @@ private:
     /// Key for computed registration matrix
     std::string m_matrixKey;
 
-    ///Registration Mode
+    /// Registration Mode
     RegistrationModeType m_registrationMode;
 };
 

@@ -36,14 +36,19 @@
 
 namespace sight
 {
+
 namespace data
 {
+
 class Vector;
+
 }
 
 namespace core::runtime
 {
+
 struct Extension;
+
 }
 
 namespace activity
@@ -59,9 +64,10 @@ struct ACTIVITY_CLASS_API ActivityAppConfigParam
     ActivityAppConfigParam()
     {
     }
+
     ACTIVITY_API ActivityAppConfigParam(const ConfigType& config);
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     bool isSeshat() const
     {
@@ -74,11 +80,12 @@ struct ACTIVITY_CLASS_API ActivityAppConfigParam
 
 struct ACTIVITY_CLASS_API ActivityAppConfig
 {
-    typedef std::vector< ActivityAppConfigParam > ActivityAppConfigParamsType;
+    typedef std::vector<ActivityAppConfigParam> ActivityAppConfigParamsType;
 
     ActivityAppConfig()
     {
     }
+
     ACTIVITY_API ActivityAppConfig(const ConfigType& config);
 
     std::string id;
@@ -90,6 +97,7 @@ struct ACTIVITY_CLASS_API ActivityRequirementKey
     ActivityRequirementKey()
     {
     }
+
     ACTIVITY_API ActivityRequirementKey(const ConfigType& config);
 
     std::string key;
@@ -101,15 +109,16 @@ struct ACTIVITY_CLASS_API ActivityRequirement
     ActivityRequirement()
     {
     }
+
     ACTIVITY_API ActivityRequirement(const ConfigType& config);
 
-    typedef std::vector< ActivityRequirementKey > KeyType;
+    typedef std::vector<ActivityRequirementKey> KeyType;
 
     std::string name; /// parameter name
     std::string type; /// parameter type (ie. data::ImageSeries)
     std::string container; /// data container if maxOccurs > 1 ("vector" or "composite", default: "composite")
     std::string description; /// parameter description
-    std::string validator;  /// Implementation of data validator
+    std::string validator; /// Implementation of data validator
     unsigned int minOccurs; /// minimum number of data required
     unsigned int maxOccurs; /// maximum number of data required
     bool create; /// True if the data must be created if it is not present (only if minOccurs = 0 and maxOccurs = 1)
@@ -191,10 +200,10 @@ struct ACTIVITY_CLASS_API ActivityRequirement
  */
 struct ACTIVITY_CLASS_API ActivityInfo
 {
-    typedef std::vector< ActivityRequirement > RequirementsType;
+    typedef std::vector<ActivityRequirement> RequirementsType;
     typedef std::pair<unsigned int, unsigned int> MinMaxType;
-    typedef std::map< std::string, MinMaxType > RequirementsMinMaxCount;
-    typedef std::map< std::string, unsigned int > DataCountType;
+    typedef std::map<std::string, MinMaxType> RequirementsMinMaxCount;
+    typedef std::map<std::string, unsigned int> DataCountType;
 
     ActivityInfo()
     {
@@ -214,12 +223,11 @@ struct ACTIVITY_CLASS_API ActivityInfo
     std::string bundleId; ///< Identifier of the module containing the activity
 
     /// Validator implementations
-    std::vector< std::string > validatorsImpl;
+    std::vector<std::string> validatorsImpl;
 
     ActivityAppConfig appConfig;
 
     protected:
-
         RequirementsMinMaxCount m_requirementCount;
 };
 
@@ -231,9 +239,8 @@ struct ACTIVITY_CLASS_API ActivityInfo
  */
 class ACTIVITY_CLASS_API Activity : public core::BaseObject
 {
-
 public:
-    typedef std::vector< ActivityInfo > ActivitiesType;
+    typedef std::vector<ActivityInfo> ActivitiesType;
 
     SIGHT_DECLARE_CLASS(Activity, core::BaseObject, new Activity)
 
@@ -255,18 +262,18 @@ public:
      * @brief Get the parameters associated to extension id.
      * @note This method is thread safe.
      **/
-    ACTIVITY_API const ActivityInfo getInfo( const std::string& extensionId ) const;
+    ACTIVITY_API const ActivityInfo getInfo(const std::string& extensionId) const;
 
     /**
      * @brief Tests if we have information about operator
      * @note This method is thread safe.
      */
-    ACTIVITY_API bool hasInfo( const std::string& extensionId ) const;
+    ACTIVITY_API bool hasInfo(const std::string& extensionId) const;
 
     /**
      * @brief Get the number of vector objects in the same type.
      */
-    ACTIVITY_API ActivityInfo::DataCountType getDataCount( const CSPTR(data::Vector)& data ) const;
+    ACTIVITY_API ActivityInfo::DataCountType getDataCount(const CSPTR(data::Vector)& data) const;
 
     /**
      * @brief Get all infos
@@ -278,13 +285,13 @@ public:
      * @brief Get available activities for given data.
      * @note This method is thread safe.
      */
-    ACTIVITY_API ActivitiesType getInfos( const CSPTR(data::Vector)& data ) const;
+    ACTIVITY_API ActivitiesType getInfos(const CSPTR(data::Vector)& data) const;
 
     /**
      * @brief Get all keys
      * @note This method is thread safe.
      */
-    ACTIVITY_API std::vector< std::string > getKeys() const;
+    ACTIVITY_API std::vector<std::string> getKeys() const;
 
     /**
      * @brief Clear the registry.
@@ -293,8 +300,7 @@ public:
     ACTIVITY_API void clearRegistry();
 
 protected:
-
-    typedef std::map< std::string, ActivityInfo > Registry;
+    typedef std::map<std::string, ActivityInfo> Registry;
 
     /// Container of parameter information
     Registry m_reg;
@@ -307,7 +313,6 @@ protected:
 
     /// The global instance of the app config parameters.
     static Activity::sptr s_activity;
-
 };
 
 } // namespace extension

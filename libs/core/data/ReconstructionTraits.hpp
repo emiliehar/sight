@@ -26,7 +26,7 @@
 #include "data/Node.hpp"
 #include "data/StructureTraits.hpp"
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(ReconstructionTraits));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (ReconstructionTraits));
 
 namespace sight::data
 {
@@ -45,8 +45,8 @@ namespace sight::data
 class DATA_CLASS_API ReconstructionTraits : public data::Object
 {
 public:
-    SIGHT_DECLARE_CLASS(ReconstructionTraits, data::Object, data::factory::New< ReconstructionTraits >)
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(ReconstructionTraits));
+    SIGHT_DECLARE_CLASS(ReconstructionTraits, data::Object, data::factory::New<ReconstructionTraits>)
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (ReconstructionTraits));
 
     /**
      * @brief Constructor
@@ -63,25 +63,25 @@ public:
      * @{
      * @brief Get/Set value of the identifier.
      */
-    std::string& getIdentifier ();
-    const std::string& getIdentifier () const;
-    void setIdentifier (const std::string& _identifier);
+    std::string& getIdentifier();
+    const std::string& getIdentifier() const;
+    void setIdentifier(const std::string& _identifier);
     /// @}
 
     /// Set the reconstruction operator mask node
-    DATA_API void setMaskOpNode(const data::Node::sptr& maskOpNode );
+    DATA_API void setMaskOpNode(const data::Node::sptr& maskOpNode);
 
     /// Get the reconstruction operator mask node. Return a null pointer if the mask node is not defined.
     DATA_API data::Node::sptr getMaskOpNode();
 
     /// Set the reconstruction operator mesh node.
-    DATA_API void setMeshOpNode(const data::Node::sptr& meshOpNode );
+    DATA_API void setMeshOpNode(const data::Node::sptr& meshOpNode);
 
     /// Get the reconstruction operator mesh node. Return a null pointer if the mesh node is not defined.
     DATA_API data::Node::sptr getMeshOpNode();
 
     /// Set the associated structure traits
-    DATA_API void setStructureTraits(const data::StructureTraits::sptr& structureTraits );
+    DATA_API void setStructureTraits(const data::StructureTraits::sptr& structureTraits);
 
     /// Get the associated structure traits
     DATA_API data::StructureTraits::sptr getStructureTraits();
@@ -90,7 +90,6 @@ public:
     DATA_API void cachedDeepCopy(const Object::csptr& _source, DeepCopyCacheType& cache) override;
 
 private:
-
     /// ROI identifier
     std::string m_identifier;
 
@@ -102,30 +101,29 @@ private:
 
     /// associated structure traits
     data::StructureTraits::sptr m_structureTraits;
-
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline std::string& ReconstructionTraits::getIdentifier ()
+inline std::string& ReconstructionTraits::getIdentifier()
 {
     return m_identifier;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline const std::string& ReconstructionTraits::getIdentifier () const
+inline const std::string& ReconstructionTraits::getIdentifier() const
 {
     return m_identifier;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-inline void ReconstructionTraits::setIdentifier (const std::string& _identifier)
+inline void ReconstructionTraits::setIdentifier(const std::string& _identifier)
 {
     m_identifier = _identifier;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::data

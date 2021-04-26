@@ -37,15 +37,15 @@ namespace sight::ui::history
 class UI_HISTORY_CLASS_API UndoRedoManager
 {
 public:
-
     /**
      * @brief Default constructor.
      *
      * @param[in] maxMemory the maximum amount of memory used by the manager (commands are dumped beyond this point)
      * @param[in] maxUndo the maximum number of commands stored by the manager (commands are dumped beyond this point)
      */
-    UI_HISTORY_API UndoRedoManager(size_t maxMemory   = std::numeric_limits<size_t>::max(),
-                                   size_t maxCommands = std::numeric_limits<size_t>::max());
+    UI_HISTORY_API UndoRedoManager(
+        size_t maxMemory   = std::numeric_limits<size_t>::max(),
+        size_t maxCommands = std::numeric_limits<size_t>::max());
 
     /**
      * @brief Push a command to the history.
@@ -54,7 +54,7 @@ public:
      *
      * @return false if the enqueue failed.
      */
-    UI_HISTORY_API bool enqueue( ICommand::sptr cmd );
+    UI_HISTORY_API bool enqueue(ICommand::sptr cmd);
 
     /**
      * @brief Execute the next command if any.
@@ -92,7 +92,6 @@ public:
     UI_HISTORY_API void setHistorySize(size_t histSize);
 
 private:
-
     typedef std::deque<ICommand::sptr> CommandHistoryType;
 
     /// Maximum amount of memory (in bytes) that can be used by the manager.
@@ -112,7 +111,6 @@ private:
 
     /// Removes the oldest command from the history.
     void popFront();
-
 };
 
 } // namespace sight::ui::history

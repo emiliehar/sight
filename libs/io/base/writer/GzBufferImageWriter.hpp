@@ -44,14 +44,14 @@ namespace writer
  * Ircad writer to write a data::Image on filesystem which the file format
  * is .raw.gz. This format is basic. The buffer is writen in a file with zlib.
  */
-class IO_BASE_CLASS_API GzBufferImageWriter : public GenericObjectWriter< data::Image >,
+class IO_BASE_CLASS_API GzBufferImageWriter : public GenericObjectWriter<data::Image>,
                                               public core::location::SingleFile
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(GzBufferImageWriter, GenericObjectWriter< data::Image>,
-                        io::base::writer::factory::New< GzBufferImageWriter >)
+    SIGHT_DECLARE_CLASS(
+        GzBufferImageWriter,
+        GenericObjectWriter<data::Image>,
+        io::base::writer::factory::New<GzBufferImageWriter>)
 
     /// Constructor. Do nothing.
     IO_BASE_API GzBufferImageWriter(io::base::writer::IObjectWriter::Key key);
@@ -64,7 +64,6 @@ public:
 
     /// Defines extension supported by this writer ".raw.gz"
     IO_BASE_API std::string extension() override;
-
 };
 
 } // namespace writer

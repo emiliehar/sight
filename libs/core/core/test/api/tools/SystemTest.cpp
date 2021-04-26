@@ -27,28 +27,29 @@
 #include <fstream>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::SystemTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::SystemTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SystemTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SystemTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SystemTest::genTempFilenameTest()
 {
@@ -58,24 +59,25 @@ void SystemTest::genTempFilenameTest()
 
         for(auto c : filename)
         {
-            CPPUNIT_ASSERT( std::isalnum(c) != 0);
+            CPPUNIT_ASSERT(std::isalnum(c) != 0);
         }
     }
 
-    const std::vector<size_t> size = { 234, 0, 1, 36, 98, 2034 };
+    const std::vector<size_t> size = {234, 0, 1, 36, 98, 2034};
 
     for(auto s : size)
     {
         const std::string filename = core::tools::System::genTempFileName(s);
         CPPUNIT_ASSERT_EQUAL(s, filename.size());
+
         for(auto c : filename)
         {
-            CPPUNIT_ASSERT( std::isalnum(c) != 0);
+            CPPUNIT_ASSERT(std::isalnum(c) != 0);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SystemTest::robustRenameTest()
 {
@@ -89,22 +91,23 @@ void SystemTest::robustRenameTest()
 
     const std::filesystem::path destinationFile(core::tools::System::getTemporaryFolder() / "test1000.sight");
 
-    //1. Basic renaming.
+    // 1. Basic renaming.
     CPPUNIT_ASSERT_NO_THROW(core::tools::System::robustRename(originFile, destinationFile));
 
     CPPUNIT_ASSERT_MESSAGE("Destination file should exist.", std::filesystem::exists(destinationFile));
     CPPUNIT_ASSERT_MESSAGE("Origin file shouldn't exist", !std::filesystem::exists(originFile));
 
     // 2. Should throw an exception.
-    CPPUNIT_ASSERT_THROW(core::tools::System::robustRename(originFile, destinationFile),
-                         std::filesystem::filesystem_error);
+    CPPUNIT_ASSERT_THROW(
+        core::tools::System::robustRename(originFile, destinationFile),
+        std::filesystem::filesystem_error);
 
     // Clean up.
     std::filesystem::remove(destinationFile);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::core::tools

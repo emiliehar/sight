@@ -28,12 +28,13 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class ImageSeriesTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ImageSeriesTest );
+CPPUNIT_TEST_SUITE(ImageSeriesTest);
 CPPUNIT_TEST(imageTest);
 CPPUNIT_TEST_SUITE_END();
 
@@ -48,5 +49,6 @@ private:
     ImageSeries::sptr m_series;
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

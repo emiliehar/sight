@@ -28,18 +28,19 @@
 
 #include <string>
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::splitter::ImageTypeSplitter );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::splitter::ImageTypeSplitter);
 
 namespace sight::filter::dicom
 {
+
 namespace splitter
 {
 
-const std::string ImageTypeSplitter::s_FILTER_NAME        = "Image type splitter";
-const std::string ImageTypeSplitter::s_FILTER_DESCRIPTION =
-    "Split instances according to image type tag.";
+const std::string ImageTypeSplitter::s_FILTER_NAME = "Image type splitter";
+const std::string ImageTypeSplitter::s_FILTER_DESCRIPTION
+    = "Split instances according to image type tag.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageTypeSplitter::ImageTypeSplitter(filter::dicom::IFilter::Key key) :
     TagValueSplitter(key)
@@ -47,34 +48,35 @@ ImageTypeSplitter::ImageTypeSplitter(filter::dicom::IFilter::Key key) :
     this->setTag(DCM_ImageType);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 ImageTypeSplitter::~ImageTypeSplitter()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImageTypeSplitter::getName() const
 {
     return ImageTypeSplitter::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string ImageTypeSplitter::getDescription() const
 {
     return ImageTypeSplitter::s_FILTER_DESCRIPTION;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 bool ImageTypeSplitter::isConfigurationRequired() const
 {
     return false;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace splitter
+
 } // namespace sight::filter::dicom

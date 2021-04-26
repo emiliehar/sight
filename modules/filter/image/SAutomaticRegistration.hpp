@@ -77,7 +77,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SAutomaticRegistration : public service::IOperator
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SAutomaticRegistration, service::IOperator)
 
     /// Constructor, does nothing.
@@ -87,7 +86,6 @@ public:
     MODULE_FILTER_IMAGE_API ~SAutomaticRegistration();
 
 protected:
-
     /// Configure registration parameters.
     MODULE_FILTER_IMAGE_API void configuring() override;
 
@@ -109,7 +107,6 @@ protected:
     MODULE_FILTER_IMAGE_API KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// Set the metric to be used. Key must be 'metric', values are the same as for the configuration.
     void setEnumParameter(std::string val, std::string key) override;
 
@@ -124,7 +121,7 @@ private:
 
     /// Extract the level at the end of the parameter name.
     /// Create the level if it doesn't exist
-    unsigned long extractLevelFromParameterName(const std::string& name );
+    unsigned long extractLevelFromParameterName(const std::string& name);
 
     /// Smallest step that can be taken by the optimizer.
     double m_minStep;
@@ -133,7 +130,7 @@ private:
     unsigned long m_maxIterations;
 
     /// Flag enabling the registration log.
-    bool m_log = { false };
+    bool m_log = {false};
 
     /// Metric used by the optimizer.
     sight::filter::image::MetricType m_metric;

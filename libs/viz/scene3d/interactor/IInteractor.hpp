@@ -49,12 +49,10 @@ namespace interactor
  */
 class VIZ_SCENE3D_CLASS_API IInteractor
 {
-
 public:
+    typedef std::weak_ptr<IInteractor> wptr;
 
-    typedef std::weak_ptr< IInteractor > wptr;
-
-    typedef std::shared_ptr< IInteractor > sptr;
+    typedef std::shared_ptr<IInteractor> sptr;
 
     /// Defines the list of recognized mouse buttons.
     enum MouseButton
@@ -172,59 +170,58 @@ public:
     VIZ_SCENE3D_API virtual void resizeEvent(int _width, int _height);
 
 protected:
-
     /// Weak reference to the layer on which the interactor interacts.
     WPTR(Layer) m_layer;
 
     /// Defines if the interaction must take into account above layers.
-    bool m_layerOrderDependant { true };
+    bool m_layerOrderDependant{true};
 
 private:
-
     /// Checks if the cursor is on top of the given viewport.
     static bool isInViewport(int _mouseX, int _mouseY, const ::Ogre::Viewport* const _vp);
-
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename INT_TYPE>
 static inline bool operator==(INT_TYPE _i, IInteractor::Modifier _m)
 {
     static_assert(std::is_integral<INT_TYPE>::value, "Integral type required.");
+
     return static_cast<INT_TYPE>(_m) == _i;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename INT_TYPE>
 static inline bool operator==(IInteractor::Modifier _m, INT_TYPE _i)
 {
     static_assert(std::is_integral<INT_TYPE>::value, "Integral type required.");
+
     return _i == static_cast<INT_TYPE>(_m);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static inline IInteractor::Modifier operator&(IInteractor::Modifier _m1, IInteractor::Modifier _m2)
 {
     return static_cast<IInteractor::Modifier>(
-        static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m1) &
-        static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m2)
+        static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m1)
+        & static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m2)
         );
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static inline IInteractor::Modifier operator|(IInteractor::Modifier _m1, IInteractor::Modifier _m2)
 {
     return static_cast<IInteractor::Modifier>(
-        static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m1) |
-        static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m2)
+        static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m1)
+        | static_cast<std::underlying_type<IInteractor::Modifier>::type>(_m2)
         );
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 static inline IInteractor::Modifier operator|=(IInteractor::Modifier& _m1, IInteractor::Modifier _m2)
 {
@@ -232,4 +229,5 @@ static inline IInteractor::Modifier operator|=(IInteractor::Modifier& _m1, IInte
 }
 
 } // namespace interactor.
+
 } // namespace sight::viz::scene3d.

@@ -30,6 +30,7 @@
 
 namespace sight::io::opencv
 {
+
 /**
  * @brief Helper to manage conversion from/to OpenCV to/from data::Image
  *
@@ -41,9 +42,7 @@ namespace sight::io::opencv
  */
 class IO_OPENCV_CLASS_API Image
 {
-
 public:
-
     /**
      * @brief Convert an image data into an OpenCV image.
      *
@@ -72,7 +71,6 @@ public:
      * @note The cvImage allocates its own buffer and has the ownership.
      */
     IO_OPENCV_API static ::cv::Mat copyToCv(const data::Image::csptr& _image);
-
 };
 
-}// namespace sight::io::opencv
+} // namespace sight::io::opencv

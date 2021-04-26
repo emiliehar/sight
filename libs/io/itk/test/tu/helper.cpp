@@ -26,19 +26,21 @@
 
 namespace sight::io::itk
 {
+
 namespace ut
 {
+
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 double tolerance(double num)
 {
     return std::floor(num * 100. + .5) / 100;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void roundSpacing(data::Image::sptr image)
 {
@@ -47,8 +49,10 @@ void roundSpacing(data::Image::sptr image)
     image->setSpacing2(spacing);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace helper
-} //namespace ut
-} //namespace sight::io::itk
+} // namespace helper
+
+} // namespace ut
+
+} // namespace sight::io::itk

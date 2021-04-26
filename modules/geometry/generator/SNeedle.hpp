@@ -31,6 +31,7 @@
 
 namespace sight::module::geometry
 {
+
 namespace generator
 {
 
@@ -72,9 +73,7 @@ namespace generator
  */
 class MODULE_GEOMETRY_GENERATOR_CLASS_API SNeedle final : public sight::service::IGenerator
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SNeedle, sight::service::IGenerator)
 
@@ -85,7 +84,6 @@ public:
     MODULE_GEOMETRY_GENERATOR_API ~SNeedle() noexcept override;
 
 protected:
-
     /// Configures the service's parameters.
     MODULE_GEOMETRY_GENERATOR_API void configuring() override;
 
@@ -99,7 +97,6 @@ protected:
     MODULE_GEOMETRY_GENERATOR_API void updating() override;
 
 private:
-
     /// Updates the height of the cylinder.
     void updateHeight(double);
 
@@ -148,7 +145,8 @@ private:
      *
      * \return vtkSmartPointer on a class T type source object (i.e. vtkCylinderSource or vtkConeSource).
      */
-    template<class T> vtkSmartPointer<T> constructSourceObject(double _height, double _center);
+    template<class T>
+    vtkSmartPointer<T> constructSourceObject(double _height, double _center);
 
     /**
      * \brief Filter and color an object through its source algorithm (i.e. source->GetOutputPort()).
@@ -158,8 +156,9 @@ private:
      *
      * \return vtkSmartPointer on a vtkPolyData that handles the geometry of the filtered and colored object.
      */
-    vtkSmartPointer<vtkPolyData> filterAndColorSourceObject(vtkAlgorithmOutput* _sourceAlgorithm,
-                                                            const unsigned char _rgba[4]);
+    vtkSmartPointer<vtkPolyData> filterAndColorSourceObject(
+        vtkAlgorithmOutput* _sourceAlgorithm,
+        const unsigned char _rgba[4]);
 
     /**
      * \brief Generates a torus in the right needle axis.

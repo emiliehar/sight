@@ -60,9 +60,7 @@ namespace action
  */
 class MODULE_FILTER_MESH_CLASS_API SMeshCreation : public ::sight::ui::base::IAction
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SMeshCreation, ::sight::ui::base::IAction)
 
     MODULE_FILTER_MESH_API SMeshCreation() noexcept;
@@ -70,7 +68,6 @@ public:
     MODULE_FILTER_MESH_API virtual ~SMeshCreation() noexcept;
 
 protected:
-
     MODULE_FILTER_MESH_API void starting() override;
 
     MODULE_FILTER_MESH_API void stopping() override;
@@ -82,9 +79,9 @@ protected:
     MODULE_FILTER_MESH_API void updating() override;
 
 private:
-
     unsigned int m_reduction;
 };
 
 } // namespace action
+
 } // namespace sight::module::filter::mesh

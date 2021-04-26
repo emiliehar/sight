@@ -80,11 +80,9 @@ namespace sight::module::ui::qt
 class MODULE_UI_QT_CLASS_API SSelectionMenuButton : public QObject,
                                                     public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SSelectionMenuButton, sight::ui::base::IEditor)
 
     /// Constructor. Do nothing.
@@ -94,7 +92,6 @@ public:
     MODULE_UI_QT_API virtual ~SSelectionMenuButton() noexcept;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /**
@@ -117,20 +114,19 @@ protected:
     void configuring() override;
 
     /// Overrides
-    void info( std::ostream& _sstream ) override;
+    void info(std::ostream& _sstream) override;
 
 protected Q_SLOTS:
     /// This method is called when the popup menu is clicked. Notify the selection changed.
     void onSelection(QAction* action);
 
 private:
-
     /**
      * @name Signals
      * @{
      */
     /// Signal emitted when an item is selected
-    typedef core::com::Signal< void (int) > SelectedSignalType;
+    typedef core::com::Signal<void (int)> SelectedSignalType;
     SelectedSignalType::sptr m_sigSelected;
     /**
      * @}
@@ -154,16 +150,15 @@ private:
 
     std::string m_text; ///< Text displayed on the button
     std::string m_toolTip; ///< Tool tip displayed on the button
-    typedef std::pair <int, std::string> ItemType;
+    typedef std::pair<int, std::string> ItemType;
     typedef std::vector<ItemType> ItemContainerType;
     ItemContainerType m_items;
 
-    QPointer < QMenu > m_pDropDownMenu;
-    QPointer < QPushButton > m_dropDownButton;
-    QPointer < QActionGroup > m_actionGroup;
+    QPointer<QMenu> m_pDropDownMenu;
+    QPointer<QPushButton> m_dropDownButton;
+    QPointer<QActionGroup> m_actionGroup;
 
     int m_selection;
-
 };
 
 } // namespace sight::module::ui::qt

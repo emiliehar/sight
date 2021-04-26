@@ -30,15 +30,16 @@
 
 namespace sight::io::itk
 {
+
 namespace ut
 {
 
 class ImageConversionTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ImageConversionTest );
-CPPUNIT_TEST( testConversion );
-CPPUNIT_TEST( stressTest );
-CPPUNIT_TEST( testConversion2D );
+CPPUNIT_TEST_SUITE(ImageConversionTest);
+CPPUNIT_TEST(testConversion);
+CPPUNIT_TEST(stressTest);
+CPPUNIT_TEST(testConversion2D);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -52,12 +53,12 @@ public:
 
     static void roundSpacing(data::Image::sptr image);
 
-    template< class TYPE >
+    template<class TYPE>
     void stressTestForAType();
-
 };
 
-} //namespace ut
-} //namespace sight::io::itk
+} // namespace ut
+
+} // namespace sight::io::itk
 
 #include "ImageConversionTest.hxx"

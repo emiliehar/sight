@@ -24,6 +24,7 @@
 
 namespace sight::io::dimse
 {
+
 namespace exceptions
 {
 
@@ -38,5 +39,6 @@ PresentationContextMissing::~PresentationContextMissing() noexcept
 {
 }
 
-} //exceptions
-} //fwPacsIO
+} // exceptions
+
+} // fwPacsIO

@@ -30,10 +30,11 @@
 #include <vector>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::ui::history::ut::UndoRedoManagerTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::ui::history::ut::UndoRedoManagerTest);
 
 namespace sight::ui::history
 {
+
 namespace ut
 {
 
@@ -43,7 +44,6 @@ struct CommandInfo
         commandName(cmdName),
         actionName(actName)
     {
-
     }
 
     std::string commandName;
@@ -55,23 +55,21 @@ typedef std::vector<CommandInfo> CommandLog;
 class BogusCommand : public ICommand
 {
 public:
-
     BogusCommand(const std::string& description, CommandLog& cmdLog, size_t size = 0) :
         m_description(description),
         m_cmdLog(cmdLog),
         m_size(size)
     {
-
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual size_t getSize() const
     {
         return m_size;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual bool redo()
     {
@@ -80,7 +78,7 @@ public:
         return true;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     virtual bool undo()
     {
@@ -94,22 +92,21 @@ public:
     CommandLog& m_cmdLog;
 
     size_t m_size;
-
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UndoRedoManagerTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UndoRedoManagerTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UndoRedoManagerTest::managerEnqueueTest()
 {
@@ -130,7 +127,7 @@ void UndoRedoManagerTest::managerEnqueueTest()
     CPPUNIT_ASSERT_EQUAL(size_t(1), undoRedoManager.getCommandCount());
 
     // Add 99 commands to the command history.
-    for(int i = 1; i < 100; ++i)
+    for(int i = 1 ; i < 100 ; ++i)
     {
         BogusCommand::sptr testCmdX = std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log));
 
@@ -141,7 +138,7 @@ void UndoRedoManagerTest::managerEnqueueTest()
     }
 
     // Undo 50 commands in the history.
-    for(int i = 0; i < 50; ++i)
+    for(int i = 0 ; i < 50 ; ++i)
     {
         CPPUNIT_ASSERT_EQUAL(true, undoRedoManager.undo());
 
@@ -183,7 +180,7 @@ void UndoRedoManagerTest::managerEnqueueTest()
     CPPUNIT_ASSERT(lastLog.actionName == "redo");
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UndoRedoManagerTest::managerMemorySizeTest()
 {
@@ -193,10 +190,10 @@ void UndoRedoManagerTest::managerMemorySizeTest()
     ui::history::UndoRedoManager undoRedoManager(MAXMEMORY);
     CommandLog log;
 
-    for(int i = 0; i < 5; ++i)
+    for(int i = 0 ; i < 5 ; ++i)
     {
-        BogusCommand::sptr testCmdI =
-            std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log, CMDSIZE));
+        BogusCommand::sptr testCmdI
+            = std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log, CMDSIZE));
 
         undoRedoManager.enqueue(testCmdI);
 
@@ -204,8 +201,8 @@ void UndoRedoManagerTest::managerMemorySizeTest()
         CPPUNIT_ASSERT_EQUAL(size_t(i + 1), undoRedoManager.getCommandCount());
     }
 
-    BogusCommand::sptr testCmdI =
-        std::make_shared<BogusCommand>(BogusCommand("testCmd5", log, CMDSIZE));
+    BogusCommand::sptr testCmdI
+        = std::make_shared<BogusCommand>(BogusCommand("testCmd5", log, CMDSIZE));
 
     undoRedoManager.enqueue(testCmdI);
 
@@ -213,7 +210,7 @@ void UndoRedoManagerTest::managerMemorySizeTest()
     CPPUNIT_ASSERT_EQUAL(MAXMEMORY / CMDSIZE, undoRedoManager.getCommandCount());
 
     // Undo all commands to find them in the log.
-    for(int i = 5; i > 0; --i)
+    for(int i = 5 ; i > 0 ; --i)
     {
         CPPUNIT_ASSERT_EQUAL(true, undoRedoManager.undo());
 
@@ -223,12 +220,12 @@ void UndoRedoManagerTest::managerMemorySizeTest()
     }
 
     // Assert that "testCmd0" has been removed from the history.
-    auto it = std::find_if(log.begin(), log.end(), [](CommandInfo& info){ return info.commandName == "testCmd0"; });
+    auto it = std::find_if(log.begin(), log.end(), [](CommandInfo& info){return info.commandName == "testCmd0";});
 
     CPPUNIT_ASSERT(it == log.end());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UndoRedoManagerTest::managerCommandCountTest()
 {
@@ -239,10 +236,10 @@ void UndoRedoManagerTest::managerCommandCountTest()
     ui::history::UndoRedoManager undoRedoManager(MAXMEMORY, MAXELT);
     CommandLog log;
 
-    for(int i = 0; i < 5; ++i)
+    for(int i = 0 ; i < 5 ; ++i)
     {
-        BogusCommand::sptr testCmdI =
-            std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log, CMDSIZE));
+        BogusCommand::sptr testCmdI
+            = std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log, CMDSIZE));
 
         undoRedoManager.enqueue(testCmdI);
 
@@ -250,15 +247,15 @@ void UndoRedoManagerTest::managerCommandCountTest()
         CPPUNIT_ASSERT_EQUAL(size_t(i + 1), undoRedoManager.getCommandCount());
     }
 
-    BogusCommand::sptr testCmdI =
-        std::make_shared<BogusCommand>(BogusCommand("testCmd5", log, CMDSIZE));
+    BogusCommand::sptr testCmdI
+        = std::make_shared<BogusCommand>(BogusCommand("testCmd5", log, CMDSIZE));
 
     undoRedoManager.enqueue(testCmdI);
 
     CPPUNIT_ASSERT_EQUAL(MAXELT, undoRedoManager.getCommandCount());
 
     // Undo all commands to find them in the log.
-    for(int i = 5; i > 0; --i)
+    for(int i = 5 ; i > 0 ; --i)
     {
         CPPUNIT_ASSERT_EQUAL(true, undoRedoManager.undo());
 
@@ -268,22 +265,22 @@ void UndoRedoManagerTest::managerCommandCountTest()
     }
 
     // Assert that "testCmd0" has been removed from the history.
-    auto it = std::find_if(log.begin(), log.end(), [](CommandInfo& info){ return info.commandName == "testCmd0"; });
+    auto it = std::find_if(log.begin(), log.end(), [](CommandInfo& info){return info.commandName == "testCmd0";});
 
     CPPUNIT_ASSERT(it == log.end());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void UndoRedoManagerTest::managerClearQueueTest()
 {
     ui::history::UndoRedoManager undoRedoManager;
     CommandLog log;
 
-    for(int i = 0; i < 5; ++i)
+    for(int i = 0 ; i < 5 ; ++i)
     {
-        BogusCommand::sptr testCmdI =
-            std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log));
+        BogusCommand::sptr testCmdI
+            = std::make_shared<BogusCommand>(BogusCommand("testCmd" + std::to_string(i), log));
 
         undoRedoManager.enqueue(testCmdI);
 
@@ -298,7 +295,8 @@ void UndoRedoManagerTest::managerClearQueueTest()
     CPPUNIT_ASSERT_EQUAL(false, undoRedoManager.undo());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace registrationOp
+} // namespace ut
+
+} // namespace registrationOp

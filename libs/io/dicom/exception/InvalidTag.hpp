@@ -28,6 +28,7 @@
 
 namespace sight::io::dicom
 {
+
 namespace exception
 {
 
@@ -45,8 +46,8 @@ public:
 
     /// Destructor
     IO_DICOM_API virtual ~InvalidTag() noexcept;
-
 };
 
 } // namespace exception
+
 } // namespace sight::io::dicom

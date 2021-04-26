@@ -84,7 +84,6 @@ namespace sight::module::filter::image
 class MODULE_FILTER_IMAGE_CLASS_API SPropagator : public service::IOperator
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SPropagator, ::sight::service::IOperator)
 
     /// Initializes slots signals and member variables.
@@ -94,8 +93,7 @@ public:
     MODULE_FILTER_IMAGE_API ~SPropagator() override;
 
 protected:
-
-    ///Configures the services' parameters.
+    /// Configures the services' parameters.
     MODULE_FILTER_IMAGE_API void configuring() override;
 
     /// Initializes line drawer and propagator.
@@ -130,7 +128,6 @@ protected:
     MODULE_FILTER_IMAGE_API void setEnumParameter(std::string val, std::string key) override;
 
 private:
-
     typedef sight::filter::image::MinMaxPropagation::CoordinatesType CoordinatesType;
 
     typedef sight::filter::image::MinMaxPropagation::OrientationType OrientationType;
@@ -184,7 +181,6 @@ private:
 
     /// Set to 'true' if we currently drawing in the image.
     bool m_drawing;
-
 };
 
 } // namespace sight::module::filter::image.

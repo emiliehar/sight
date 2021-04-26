@@ -29,29 +29,32 @@
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 bool isDICOM(const std::filesystem::path& filepath)
 {
-    std::ifstream ifs( filepath, std::ios::binary );
+    std::ifstream ifs(filepath, std::ios::binary);
     ifs.seekg(128);
     char DICM[5] = {0};
     ifs.read(DICM, 4);
     ifs.close();
+
     return strcmp(DICM, "DICM") == 0;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void DicomSearch::searchRecursively(const std::filesystem::path& dirPath,
-                                    std::vector< std::filesystem::path >& dicomFiles,
-                                    bool checkIsDicom,
-                                    const core::jobs::Observer::sptr& readerObserver)
+void DicomSearch::searchRecursively(
+    const std::filesystem::path& dirPath,
+    std::vector<std::filesystem::path>& dicomFiles,
+    bool checkIsDicom,
+    const core::jobs::Observer::sptr& readerObserver)
 {
-    std::vector< std::filesystem::path > fileVect;
+    std::vector<std::filesystem::path> fileVect;
     checkFilenameExtension(dirPath, fileVect, readerObserver);
 
     if(checkIsDicom)
@@ -62,6 +65,7 @@ void DicomSearch::searchRecursively(const std::filesystem::path& dirPath,
         }
 
         std::uint64_t progress = 0;
+
         for(auto file : fileVect)
         {
             if(readerObserver)
@@ -76,10 +80,12 @@ void DicomSearch::searchRecursively(const std::filesystem::path& dirPath,
             }
 
             bool isDicom = isDICOM(file);
+
             if(isDicom)
             {
-                dicomFiles.push_back( file );
+                dicomFiles.push_back(file);
             }
+
             SIGHT_WARN_IF("Failed to read: " + file.string(), !isDicom);
         }
     }
@@ -89,21 +95,22 @@ void DicomSearch::searchRecursively(const std::filesystem::path& dirPath,
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void DicomSearch::checkFilenameExtension(const std::filesystem::path& dirPath,
-                                         std::vector< std::filesystem::path >& dicomFiles,
-                                         const core::jobs::Observer::sptr& fileLookupObserver)
+void DicomSearch::checkFilenameExtension(
+    const std::filesystem::path& dirPath,
+    std::vector<std::filesystem::path>& dicomFiles,
+    const core::jobs::Observer::sptr& fileLookupObserver)
 {
     dicomFiles.clear();
 
-    std::set<std::string> extensions = { ".jpg", ".jpeg", ".htm", ".html", ".txt", ".xml",
-                                         ".stm", ".str", ".lst", ".ifo", ".pdf", ".gif",
-                                         ".png", ".exe", ".zip", ".gz", ".dir", ".dll", ".inf",
-                                         ".DS_Store" };
+    std::set<std::string> extensions = {".jpg", ".jpeg", ".htm", ".html", ".txt", ".xml",
+                                        ".stm", ".str", ".lst", ".ifo", ".pdf", ".gif",
+                                        ".png", ".exe", ".zip", ".gz", ".dir", ".dll", ".inf",
+                                        ".DS_Store"};
 
-    for(std::filesystem::recursive_directory_iterator it(dirPath);
-        it != std::filesystem::recursive_directory_iterator(); ++it)
+    for(std::filesystem::recursive_directory_iterator it(dirPath) ;
+        it != std::filesystem::recursive_directory_iterator() ; ++it)
     {
         if(fileLookupObserver && fileLookupObserver->cancelRequested())
         {
@@ -131,7 +138,8 @@ void DicomSearch::checkFilenameExtension(const std::filesystem::path& dirPath,
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace helper
-} //namespace sight::io::dicom
+} // namespace helper
+
+} // namespace sight::io::dicom

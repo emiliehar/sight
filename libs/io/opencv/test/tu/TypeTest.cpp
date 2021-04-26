@@ -27,14 +27,15 @@
 #include <opencv2/core.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::opencv::ut::TypeTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::opencv::ut::TypeTest);
 
 namespace sight::io::opencv
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TypeTest::setUp()
 {
@@ -42,13 +43,13 @@ void TypeTest::setUp()
     std::srand(101101);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TypeTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename _T, size_t _NUM_COMPONENTS>
 void testToCv(std::int32_t _expectedType)
@@ -58,7 +59,7 @@ void testToCv(std::int32_t _expectedType)
     CPPUNIT_ASSERT_EQUAL(_expectedType, imageFormat);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename _EXPECTED_T, uint8_t _EXPECTED_NUM_COMPONENTS>
 void testFromCv(std::int32_t _cvType)
@@ -72,7 +73,7 @@ void testFromCv(std::int32_t _cvType)
     CPPUNIT_ASSERT_EQUAL(_EXPECTED_NUM_COMPONENTS, comp);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TypeTest::toCv()
 {
@@ -112,7 +113,7 @@ void TypeTest::toCv()
     testToCv<double, 4>(CV_64FC4);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TypeTest::fromCv()
 {
@@ -152,6 +153,6 @@ void TypeTest::fromCv()
     testFromCv<double, 4>(CV_64FC4);
 }
 
-}// namespace ut
+} // namespace ut
 
-}// namespace sight::io::opencv
+} // namespace sight::io::opencv

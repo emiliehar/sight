@@ -36,24 +36,25 @@ CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::zip::ut::ArchiveTest);
 
 namespace sight::io::zip
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArchiveTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArchiveTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArchiveTest::newTest()
 {
@@ -61,7 +62,7 @@ void ArchiveTest::newTest()
     {
         // Create a temporary file
         const std::filesystem::path folder_path = core::tools::System::getTemporaryFolder();
-        std::filesystem::create_directories( folder_path );
+        std::filesystem::create_directories(folder_path);
         const std::filesystem::path archive_path = folder_path / "test.zip";
 
         {
@@ -75,18 +76,20 @@ void ArchiveTest::newTest()
 
     // Error test
     {
-        CPPUNIT_ASSERT_THROW_MESSAGE("A wrong filename should trigger an exception.",
-                                     ArchiveReader::shared("__wrong_file__"), io::zip::exception::Read);
+        CPPUNIT_ASSERT_THROW_MESSAGE(
+            "A wrong filename should trigger an exception.",
+            ArchiveReader::shared("__wrong_file__"),
+            io::zip::exception::Read);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArchiveTest::cacheTest()
 {
     // Create a temporary file
     const std::filesystem::path folder_path = core::tools::System::getTemporaryFolder();
-    std::filesystem::create_directories( folder_path );
+    std::filesystem::create_directories(folder_path);
     const std::filesystem::path archive_path = folder_path / "test.zip";
 
     // Nominal test
@@ -123,17 +126,18 @@ void ArchiveTest::cacheTest()
         auto archive_writer = ArchiveWriter::shared(archive_path);
         CPPUNIT_ASSERT_THROW_MESSAGE(
             "Open the same archive in writing and in reading at the same time, should trigger an exception.",
-            ArchiveReader::shared(archive_path), io::zip::exception::Read);
+            ArchiveReader::shared(archive_path),
+            io::zip::exception::Read);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ArchiveTest::openTest()
 {
     // Create a temporary file
     const std::filesystem::path folder_path = core::tools::System::getTemporaryFolder();
-    std::filesystem::create_directories( folder_path );
+    std::filesystem::create_directories(folder_path);
     const std::filesystem::path archive_path = folder_path / "test.zip";
 
     // Test default parameters

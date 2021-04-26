@@ -33,6 +33,7 @@
 
 namespace sight::service
 {
+
 namespace registry
 {
 
@@ -43,10 +44,8 @@ namespace registry
  */
 class SERVICE_CLASS_API Proxy : public core::BaseObject
 {
-
 public:
-
-    SIGHT_DECLARE_CLASS(Proxy, core::BaseObject, std::make_shared< Proxy >)
+    SIGHT_DECLARE_CLASS(Proxy, core::BaseObject, std::make_shared<Proxy>)
 
     typedef std::string ChannelKeyType;
 
@@ -56,8 +55,8 @@ public:
      */
     struct SigSlots
     {
-        typedef std::set< core::com::SignalBase::sptr > SignalContainerType;
-        typedef std::set< core::com::SlotBase::sptr > SlotContainerType;
+        typedef std::set<core::com::SignalBase::sptr> SignalContainerType;
+        typedef std::set<core::com::SlotBase::sptr> SlotContainerType;
         SignalContainerType m_signals;
         SlotContainerType m_slots;
         SlotContainerType::iterator m_lastConnectedSlot;
@@ -65,7 +64,7 @@ public:
         core::mt::ReadWriteMutex m_mutex;
     };
 
-    typedef std::map< ChannelKeyType, SPTR(SigSlots) > ChannelMapType;
+    typedef std::map<ChannelKeyType, SPTR(SigSlots)> ChannelMapType;
 
     /// Constructor, does nothing
     SERVICE_API Proxy();
@@ -89,7 +88,6 @@ public:
     SERVICE_API void disconnect(ChannelKeyType channel, core::com::SlotBase::sptr slot);
 
 protected:
-
     /// Association channels, SigSlot
     ChannelMapType m_channels;
 
@@ -98,8 +96,8 @@ protected:
 
     /// The global instance of the proxy.
     static Proxy::sptr s_currentProxy;
-
 };
 
 } // namespace registry
+
 } // namespace sight::service

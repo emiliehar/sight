@@ -28,6 +28,7 @@
 
 namespace sight::module::filter::image
 {
+
 /**
  * @brief This service uses a fast registration algorithm to quickly register two images together if the transform
  * between both is pure translation.
@@ -104,7 +105,7 @@ protected:
     /**
      * @brief Compute the registration by calling the `update` slot. The timestamp parameter is discarded.
      */
-    MODULE_FILTER_IMAGE_API void computeRegistration (core::HiResClock::HiResClockType timestamp) override;
+    MODULE_FILTER_IMAGE_API void computeRegistration(core::HiResClock::HiResClockType timestamp) override;
 
 private:
 };

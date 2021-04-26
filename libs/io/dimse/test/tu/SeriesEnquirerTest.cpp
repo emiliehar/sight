@@ -37,14 +37,15 @@
 
 #include <io/dimse/helper/Series.hpp>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::dimse::ut::SeriesEnquirerTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::dimse::ut::SeriesEnquirerTest);
 
 namespace sight::io::dimse
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::setUp()
 {
@@ -63,8 +64,8 @@ void SeriesEnquirerTest::setUp()
 
     // Pacs application port (default 11112)
     char* pacsApplicationPort = std::getenv("FWTEST_PACS_APPLICATION_PORT");
-    m_pacsApplicationPort =
-        (pacsApplicationPort) ? (::boost::lexical_cast<unsigned short>(pacsApplicationPort)) : 11112;
+    m_pacsApplicationPort
+        = (pacsApplicationPort) ? (::boost::lexical_cast<unsigned short>(pacsApplicationPort)) : 11112;
 
     // Move application title
     char* moveApplicationTitle = std::getenv("FWTEST_MOVE_APPLICATION_TITLE");
@@ -73,19 +74,18 @@ void SeriesEnquirerTest::setUp()
 
     // Move application port (default 11110)
     char* moveApplicationPort = std::getenv("FWTEST_MOVE_APPLICATION_PORT");
-    m_moveApplicationPort =
-        (moveApplicationPort) ? (::boost::lexical_cast<unsigned short>(moveApplicationPort)) : 11110;
-
+    m_moveApplicationPort
+        = (moveApplicationPort) ? (::boost::lexical_cast<unsigned short>(moveApplicationPort)) : 11110;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::initializeConnection()
 {
@@ -93,13 +93,18 @@ void SeriesEnquirerTest::initializeConnection()
     m_seriesEnquirer = io::dimse::SeriesEnquirer::New();
 
     // Initialize the enquirer
-    m_seriesEnquirer->initialize(m_localApplicationTitle, m_pacsHostName, m_pacsApplicationPort,
-                                 m_pacsApplicationTitle, m_moveApplicationTitle);
+    m_seriesEnquirer->initialize(
+        m_localApplicationTitle,
+        m_pacsHostName,
+        m_pacsApplicationPort,
+        m_pacsApplicationTitle,
+        m_moveApplicationTitle);
 
     // Connect to the pacs
     m_seriesEnquirer->connect();
-    CPPUNIT_ASSERT_MESSAGE("The retriever should be connected to the pacs.",
-                           m_seriesEnquirer->isConnectedToPacs());
+    CPPUNIT_ASSERT_MESSAGE(
+        "The retriever should be connected to the pacs.",
+        m_seriesEnquirer->isConnectedToPacs());
 
     // Try to send a C-ECHO request to the server
     bool ping = m_seriesEnquirer->pingPacs();
@@ -107,34 +112,41 @@ void SeriesEnquirerTest::initializeConnection()
 
     // Disconnect from the pacs
     m_seriesEnquirer->disconnect();
-    CPPUNIT_ASSERT_MESSAGE("The retriever shouldn't be connected to the pacs.",
-                           !m_seriesEnquirer->isConnectedToPacs());
+    CPPUNIT_ASSERT_MESSAGE(
+        "The retriever shouldn't be connected to the pacs.",
+        !m_seriesEnquirer->isConnectedToPacs());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::pushSeries()
 {
     // Create the series enquirer
     m_seriesEnquirer = io::dimse::SeriesEnquirer::New();
-    m_seriesEnquirer->initialize(m_localApplicationTitle, m_pacsHostName, m_pacsApplicationPort,
-                                 m_pacsApplicationTitle, m_moveApplicationTitle);
+    m_seriesEnquirer->initialize(
+        m_localApplicationTitle,
+        m_pacsHostName,
+        m_pacsApplicationPort,
+        m_pacsApplicationTitle,
+        m_moveApplicationTitle);
     m_seriesEnquirer->connect();
 
     // Retrieve DICOM instances
-    const std::filesystem::path path =
-        utestData::Data::dir() / "sight/Patient/Dicom/DicomDB/01-CT-DICOM_LIVER_FOR_PACS";
+    const std::filesystem::path path
+        = utestData::Data::dir() / "sight/Patient/Dicom/DicomDB/01-CT-DICOM_LIVER_FOR_PACS";
     const std::string pathStr = ::boost::algorithm::replace_all_copy(path.string(), "\\", "/");
 
-    CPPUNIT_ASSERT_MESSAGE("The file '" + path.string() + "' does not exist",
-                           std::filesystem::exists(path));
+    CPPUNIT_ASSERT_MESSAGE(
+        "The file '" + path.string() + "' does not exist",
+        std::filesystem::exists(path));
 
-    std::vector< std::filesystem::path > filenames;
+    std::vector<std::filesystem::path> filenames;
     io::dicom::helper::DicomSearch::searchRecursively(path, filenames, false);
-    CPPUNIT_ASSERT_EQUAL( size_t( 129 ), filenames.size());
+    CPPUNIT_ASSERT_EQUAL(size_t(129), filenames.size());
 
-    std::vector< std::filesystem::path > paths;
-    for(const std::string& file: filenames)
+    std::vector<std::filesystem::path> paths;
+
+    for(const std::string& file : filenames)
     {
         paths.push_back(file);
     }
@@ -144,10 +156,9 @@ void SeriesEnquirerTest::pushSeries()
 
     // Disconnect from the pacs
     m_seriesEnquirer->disconnect();
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::pullSeriesUsingMoveRetrieveMethod()
 {
@@ -159,12 +170,16 @@ void SeriesEnquirerTest::pullSeriesUsingMoveRetrieveMethod()
 
     // Create the series enquirer
     m_seriesEnquirer = io::dimse::SeriesEnquirer::New();
-    m_seriesEnquirer->initialize(m_localApplicationTitle, m_pacsHostName, m_pacsApplicationPort,
-                                 m_pacsApplicationTitle, m_moveApplicationTitle);
+    m_seriesEnquirer->initialize(
+        m_localApplicationTitle,
+        m_pacsHostName,
+        m_pacsApplicationPort,
+        m_pacsApplicationTitle,
+        m_moveApplicationTitle);
     m_seriesEnquirer->connect();
 
     // Try to find series on the pacs
-    OFList< QRResponse* > responses;
+    OFList<QRResponse*> responses;
     responses = m_seriesEnquirer->findSeriesByDate("17890101", "17900101");
     io::dimse::helper::Series::releaseResponses(responses);
 
@@ -178,21 +193,24 @@ void SeriesEnquirerTest::pullSeriesUsingMoveRetrieveMethod()
     m_seriesEnquirer->disconnect();
 
     worker.reset();
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::pullSeriesUsingGetRetrieveMethod()
 {
     // Create the series enquirer
     m_seriesEnquirer = io::dimse::SeriesEnquirer::New();
-    m_seriesEnquirer->initialize(m_localApplicationTitle, m_pacsHostName, m_pacsApplicationPort,
-                                 m_pacsApplicationTitle, m_moveApplicationTitle);
+    m_seriesEnquirer->initialize(
+        m_localApplicationTitle,
+        m_pacsHostName,
+        m_pacsApplicationPort,
+        m_pacsApplicationTitle,
+        m_moveApplicationTitle);
     m_seriesEnquirer->connect();
 
     // Try to pull series from the pacs
-    OFList< QRResponse* > responses;
+    OFList<QRResponse*> responses;
     responses = m_seriesEnquirer->findSeriesByPatientName("Doe");
     m_seriesEnquirer->pullSeriesUsingGetRetrieveMethod(
         io::dimse::helper::Series::toSeriesInstanceUIDContainer(responses));
@@ -200,10 +218,9 @@ void SeriesEnquirerTest::pullSeriesUsingGetRetrieveMethod()
 
     // Disconnect from the pacs
     m_seriesEnquirer->disconnect();
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::pullInstanceUsingMoveRetrieveMethod()
 {
@@ -215,17 +232,24 @@ void SeriesEnquirerTest::pullInstanceUsingMoveRetrieveMethod()
 
     // Create the series enquirer
     m_seriesEnquirer = io::dimse::SeriesEnquirer::New();
-    m_seriesEnquirer->initialize(m_localApplicationTitle, m_pacsHostName, m_pacsApplicationPort,
-                                 m_pacsApplicationTitle, m_moveApplicationTitle);
+    m_seriesEnquirer->initialize(
+        m_localApplicationTitle,
+        m_pacsHostName,
+        m_pacsApplicationPort,
+        m_pacsApplicationTitle,
+        m_moveApplicationTitle);
     m_seriesEnquirer->connect();
 
     // Try to pull instance from the pacs
     std::string sopInstanceUID = m_seriesEnquirer->findSOPInstanceUID(
-        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856", 5);
-    CPPUNIT_ASSERT_MESSAGE("Wrong SOP Instance UID.",
-                           sopInstanceUID == "1.2.826.0.1.3680043.2.1143.9672927753340405594477112277850697930");
+        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856",
+        5);
+    CPPUNIT_ASSERT_MESSAGE(
+        "Wrong SOP Instance UID.",
+        sopInstanceUID == "1.2.826.0.1.3680043.2.1143.9672927753340405594477112277850697930");
     m_seriesEnquirer->pullInstanceUsingMoveRetrieveMethod(
-        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856", sopInstanceUID);
+        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856",
+        sopInstanceUID);
 
     // Disconnect from the pacs
     m_seriesEnquirer->disconnect();
@@ -233,29 +257,36 @@ void SeriesEnquirerTest::pullInstanceUsingMoveRetrieveMethod()
     worker.reset();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SeriesEnquirerTest::pullInstanceUsingGetRetrieveMethod()
 {
     // Create the series enquirer
     m_seriesEnquirer = io::dimse::SeriesEnquirer::New();
-    m_seriesEnquirer->initialize(m_localApplicationTitle, m_pacsHostName, m_pacsApplicationPort,
-                                 m_pacsApplicationTitle, m_moveApplicationTitle);
+    m_seriesEnquirer->initialize(
+        m_localApplicationTitle,
+        m_pacsHostName,
+        m_pacsApplicationPort,
+        m_pacsApplicationTitle,
+        m_moveApplicationTitle);
     m_seriesEnquirer->connect();
 
     // Try to pull instance from the pacs
     std::string sopInstanceUID = m_seriesEnquirer->findSOPInstanceUID(
-        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856", 5);
-    CPPUNIT_ASSERT_MESSAGE("Wrong SOP Instance UID.",
-                           sopInstanceUID == "1.2.826.0.1.3680043.2.1143.9672927753340405594477112277850697930");
+        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856",
+        5);
+    CPPUNIT_ASSERT_MESSAGE(
+        "Wrong SOP Instance UID.",
+        sopInstanceUID == "1.2.826.0.1.3680043.2.1143.9672927753340405594477112277850697930");
     m_seriesEnquirer->pullInstanceUsingGetRetrieveMethod(
-        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856", sopInstanceUID);
+        "1.2.826.0.1.3680043.2.1143.6877747397629659013303967301941157856",
+        sopInstanceUID);
 
     // Disconnect from the pacs
     m_seriesEnquirer->disconnect();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ut
 

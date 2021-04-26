@@ -41,7 +41,6 @@ V2ToV3::V2ToV3() :
     m_targetClassname = "data::Camera";
     m_originVersion   = "2";
     m_targetVersion   = "3";
-
 }
 
 // ----------------------------------------------------------------------------
@@ -52,7 +51,7 @@ V2ToV3::~V2ToV3()
 
 // ----------------------------------------------------------------------------
 
-V2ToV3::V2ToV3( const V2ToV3& cpy ) :
+V2ToV3::V2ToV3(const V2ToV3& cpy) :
     io::atoms::patch::IStructuralPatch(cpy)
 {
 }

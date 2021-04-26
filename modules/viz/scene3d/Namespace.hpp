@@ -28,4 +28,5 @@
 
 namespace sight::module::viz::scene3d
 {
+
 }

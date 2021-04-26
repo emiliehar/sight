@@ -33,9 +33,11 @@
 
 namespace sight::ui::qml
 {
+
 namespace dialog
 {
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief   LoggerDialog allowing the choice of an element among severals (_selections)
@@ -50,8 +52,7 @@ Q_PROPERTY(QString message MEMBER m_message WRITE emitMessage NOTIFY messageChan
 Q_PROPERTY(QUrl shown MEMBER m_shown WRITE emitShown NOTIFY shownChanged)
 
 public:
-
-    SIGHT_DECLARE_CLASS(LoggerDialog, ui::base::dialog::ILoggerDialog, ui::base::factory::New< LoggerDialog >)
+    SIGHT_DECLARE_CLASS(LoggerDialog, ui::base::dialog::ILoggerDialog, ui::base::factory::New<LoggerDialog>)
 
     /// Constructor
     UI_QML_API LoggerDialog(ui::base::GuiBaseObject::Key key);
@@ -104,7 +105,7 @@ private:
     core::log::Logger::sptr m_logger;
 
     /// get pushed button and clicked one
-    bool m_isOk {false};
+    bool m_isOk{false};
 
     /// Resume the biggest error get with an icon
     QUrl m_icon;
@@ -121,4 +122,5 @@ private:
 };
 
 } // namespace dialog
+
 } // namespace sight::ui::qml

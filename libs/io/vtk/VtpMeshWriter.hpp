@@ -34,8 +34,10 @@
 
 namespace sight::core::jobs
 {
+
 class Observer;
 class IJob;
+
 }
 
 namespace sight::io::vtk
@@ -46,13 +48,14 @@ namespace sight::io::vtk
  */
 
 class IO_VTK_CLASS_API VtpMeshWriter :
-    public base::writer::GenericObjectWriter< data::Mesh >,
+    public base::writer::GenericObjectWriter<data::Mesh>,
     public core::location::SingleFile
 {
 public:
-
-    SIGHT_DECLARE_CLASS(VtpMeshWriter, io::base::writer::GenericObjectWriter< data::Mesh >,
-                        io::base::writer::factory::New< VtpMeshWriter >)
+    SIGHT_DECLARE_CLASS(
+        VtpMeshWriter,
+        io::base::writer::GenericObjectWriter<data::Mesh>,
+        io::base::writer::factory::New<VtpMeshWriter>)
     SIGHT_ALLOW_SHARED_FROM_THIS()
 
     /// @brief Constructor.
@@ -71,8 +74,7 @@ public:
     IO_VTK_API SPTR(core::jobs::IJob) getJob() const override;
 
 private:
-
-    ///Internal job
+    /// Internal job
     SPTR(core::jobs::Observer) m_job;
 };
 

@@ -41,24 +41,25 @@ struct Parameters
     data::Image::sptr o_image;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 template<typename PixelType, int dimension>
 struct Flipping
 {
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     void operator()(Parameters& params)
     {
-        typedef typename ::itk::Image< PixelType, dimension> ImageType;
-        const typename ImageType::Pointer itkImage = io::itk::itkImageFactory< ImageType >(params.i_image);
+        typedef typename ::itk::Image<PixelType, dimension> ImageType;
+        const typename ImageType::Pointer itkImage = io::itk::itkImageFactory<ImageType>(params.i_image);
 
-        typename ::itk::FlipImageFilter<ImageType>::Pointer flipFilter =
-            ::itk::FlipImageFilter<ImageType>::New();
+        typename ::itk::FlipImageFilter<ImageType>::Pointer flipFilter
+            = ::itk::FlipImageFilter<ImageType>::New();
 
         flipFilter->SetInput(itkImage);
         typename ::itk::FlipImageFilter<ImageType>::FlipAxesArrayType axes;
-        for(size_t i = 0; i < axes.Size() && i < params.i_flipAxes.size(); i++)
+
+        for(size_t i = 0 ; i < axes.Size() && i < params.i_flipAxes.size() ; i++)
         {
             axes[i] = params.i_flipAxes[i];
         }
@@ -73,29 +74,34 @@ struct Flipping
 
 struct FlippingDimensionExtractor
 {
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     template<class PixelType>
     void operator()(Parameters& params)
     {
         const data::Image::Size size = params.i_image->getSize2();
+
         switch(size.size())
         {
             case 1:
                 Flipping<PixelType, 1> d1;
                 d1(params);
                 break;
+
             case 2:
                 Flipping<PixelType, 2> d2;
                 d2(params);
                 break;
+
             case 3:
                 Flipping<PixelType, 3> d3;
                 d3(params);
                 break;
+
             default:
-                SIGHT_ERROR("Flipping cannot be performed due to incompatible image size ("
-                            + std::to_string(size.size()) + ").");
+                SIGHT_ERROR(
+                    "Flipping cannot be performed due to incompatible image size ("
+                    + std::to_string(size.size()) + ").");
                 // In this case, we just deep copy the input image in the output
                 params.o_image->deepCopy(params.i_image);
                 break;
@@ -103,11 +109,12 @@ struct FlippingDimensionExtractor
     }
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void Flipper::flip(const data::Image::csptr& _inImage,
-                   const data::Image::sptr& _outImage,
-                   const std::array<bool, 3>& _inFlipAxes)
+void Flipper::flip(
+    const data::Image::csptr& _inImage,
+    const data::Image::sptr& _outImage,
+    const std::array<bool, 3>& _inFlipAxes)
 {
     // If the image is valid, process it, otherwise copy it in the output image
     if(data::fieldHelper::MedicalImageHelpers::checkImageValidity(_inImage))
@@ -118,8 +125,9 @@ void Flipper::flip(const data::Image::csptr& _inImage,
         params.o_image    = _outImage;
 
         const core::tools::Type type = _inImage->getType();
-        core::tools::Dispatcher< core::tools::SupportedDispatcherTypes, FlippingDimensionExtractor >::invoke(type,
-                                                                                                             params);
+        core::tools::Dispatcher<core::tools::SupportedDispatcherTypes, FlippingDimensionExtractor>::invoke(
+            type,
+            params);
     }
     else
     {
@@ -127,6 +135,6 @@ void Flipper::flip(const data::Image::csptr& _inImage,
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}// namespace sight::filter::image
+} // namespace sight::filter::image

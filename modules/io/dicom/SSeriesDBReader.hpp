@@ -34,16 +34,21 @@
 
 namespace sight::core::jobs
 {
+
 class IJob;
+
 }
 
 namespace sight::data
 {
+
 class SeriesDB;
+
 }
 
 namespace sight::module::io::dicom
 {
+
 /**
  * @brief GDCM Reader (ImageSeries/ModelSeries)
  *
@@ -116,11 +121,10 @@ namespace sight::module::io::dicom
  */
 class MODULE_IO_DICOM_CLASS_API SSeriesDBReader : public sight::io::base::service::IReader
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SSeriesDBReader, sight::io::base::service::IReader)
 
-    typedef core::com::Signal< void ( SPTR(core::jobs::IJob) ) > JobCreatedSignal;
+    typedef core::com::Signal<void (SPTR(core::jobs::IJob))> JobCreatedSignal;
 
     /**
      * @brief   constructor
@@ -134,9 +138,8 @@ public:
     MODULE_IO_DICOM_API ~SSeriesDBReader() noexcept override;
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
-    typedef std::vector< std::string > SupportedSOPClassContainerType;
+    typedef std::vector<std::string> SupportedSOPClassContainerType;
 
     enum DicomDirSupport
     {
@@ -158,7 +161,7 @@ protected:
     MODULE_IO_DICOM_API void updating() override;
 
     /// Override
-    MODULE_IO_DICOM_API void info(std::ostream& _sstream ) override;
+    MODULE_IO_DICOM_API void info(std::ostream& _sstream) override;
 
     /// Override
     MODULE_IO_DICOM_API std::string getSelectorDialogTitle() override;
@@ -177,7 +180,6 @@ protected:
     MODULE_IO_DICOM_API sight::io::base::service::IOPathType getIOPathType() const override;
 
 private:
-
     /**
      * @brief Create a seriesDB and fill it using the data of the DICOM files
      * @param[in] dicomDir DICOM folder

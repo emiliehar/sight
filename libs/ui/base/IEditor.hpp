@@ -38,13 +38,10 @@ namespace sight::ui::base
 
 class UI_BASE_CLASS_API IEditor : public ui::base::IGuiContainer
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IEditor, ui::base::IGuiContainer)
 
 protected:
-
     /**
      * @brief   Constructor. Do nothing (Just initialize parameters).
      */
@@ -56,7 +53,6 @@ protected:
     virtual ~IEditor() noexcept
     {
     }
-
 };
 
 } // namespace sight::ui::base

@@ -52,7 +52,7 @@ V1ToV2::~V1ToV2()
 
 // ----------------------------------------------------------------------------
 
-V1ToV2::V1ToV2( const V1ToV2& cpy ) :
+V1ToV2::V1ToV2(const V1ToV2& cpy) :
     io::atoms::patch::IStructuralPatch(cpy)
 {
 }
@@ -71,7 +71,7 @@ void V1ToV2::apply(
 
     // Create helper
     io::atoms::patch::helper::Object helper(current);
-    helper.addAttribute("diffuse_texture", sight::atoms::Object::sptr() );
+    helper.addAttribute("diffuse_texture", sight::atoms::Object::sptr());
     helper.addAttribute("diffuse_texture_filtering", sight::atoms::String::New("LINEAR"));
     helper.addAttribute("diffuse_texture_wrapping", sight::atoms::String::New("REPEAT"));
 }

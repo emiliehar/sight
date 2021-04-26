@@ -35,25 +35,22 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API Application : public ui::base::IApplication
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(Application, ui::base::IApplication, Application::factory)
 
     UI_BASE_API static Application::sptr getDefault();
 
 protected:
-
     /// Application factory, returning the registered instance of Application. Manage a Singleton.
     UI_BASE_API static Application::sptr factory();
 
     Application()
     {
     }
+
     virtual ~Application()
     {
     }
-
 };
 
 } // namespace sight::ui::base

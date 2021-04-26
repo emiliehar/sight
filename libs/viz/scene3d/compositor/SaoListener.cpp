@@ -37,7 +37,7 @@ namespace sight::viz::scene3d
 namespace compositor
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SaoListener::notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialPtr& mat)
 {
@@ -45,10 +45,10 @@ void SaoListener::notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialP
     auto fragmentParams = mat->getTechnique(0)->getPass(0)->getFragmentProgramParameters();
 
     // try to go here only when the AO_mat is called
-    if (pass_id == 1)
+    if(pass_id == 1)
     {
-        ::Ogre::CompositorChain* compChain =
-            ::Ogre::CompositorManager::getSingletonPtr()->getCompositorChain(m_viewport);
+        ::Ogre::CompositorChain* compChain
+            = ::Ogre::CompositorManager::getSingletonPtr()->getCompositorChain(m_viewport);
 
         ::Ogre::CompositorInstance* saoCompositor = compChain->getCompositor("SAO");
         ::Ogre::TexturePtr mip0, mip1, mip2, mip3, mip4, mip5, mip6, mip7, mip8, rt0;
@@ -65,7 +65,7 @@ void SaoListener::notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialP
         rt0  = saoCompositor->getTextureInstance("rt0", 0);
 
         // ---------------------------------------------------
-        //  Copy the content of mip0,mip1... in rt0
+        // Copy the content of mip0,mip1... in rt0
         // ---------------------------------------------------
         rt0->freeInternalResources();
 
@@ -97,17 +97,17 @@ void SaoListener::notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialP
 
         const ::Ogre::Matrix4& proj = m_viewport->getCamera()->getProjectionMatrix();
 
-        const ::Ogre::Vector4 projInfo( -2.f / (static_cast<float>(mip0.get()->getWidth()) * proj[0][0]),
-                                        -2.f / (static_cast<float>(mip0.get()->getHeight()) * proj[1][1]),
-                                        (1.f - proj[0][2]) / proj[0][0],
-                                        (1.f + proj[1][2]) / proj[1][1]);
+        const ::Ogre::Vector4 projInfo(-2.f / (static_cast<float>(mip0.get()->getWidth()) * proj[0][0]),
+                                       -2.f / (static_cast<float>(mip0.get()->getHeight()) * proj[1][1]),
+                                       (1.f - proj[0][2]) / proj[0][0],
+                                       (1.f + proj[1][2]) / proj[1][1]);
         fragmentParams->setNamedConstant("eu_projInfo", projInfo);
     }
 
-    if (pass_id >= 41)
+    if(pass_id >= 41)
     {
-        ::Ogre::CompositorChain* compChain =
-            ::Ogre::CompositorManager::getSingletonPtr()->getCompositorChain(m_viewport);
+        ::Ogre::CompositorChain* compChain
+            = ::Ogre::CompositorManager::getSingletonPtr()->getCompositorChain(m_viewport);
 
         ::Ogre::CompositorInstance* Sao_compositor = compChain->getCompositor("SAO");
 
@@ -117,7 +117,7 @@ void SaoListener::notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialP
         fragmentParams->setNamedConstant("eu_vpHeight", static_cast<float>(prevMip.get()->getHeight()));
     }
 
-    if (pass_id == 4)
+    if(pass_id == 4)
     {
         // Change the Blend State
 
@@ -132,8 +132,8 @@ void SaoListener::notifyMaterialRender(::Ogre::uint32 pass_id, ::Ogre::MaterialP
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace compositor
 
-}// namespace sight::viz::scene3d
+} // namespace sight::viz::scene3d

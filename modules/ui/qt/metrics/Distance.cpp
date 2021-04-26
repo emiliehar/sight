@@ -46,50 +46,50 @@
 namespace sight::module::ui::qt::metrics
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const core::com::Signals::SignalKeyType Distance::s_DISTANCE_REQUESTED_SIG = "distanceRequested";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Distance::Distance() noexcept
 {
-    m_sigDistanceRequested = newSignal< DistanceRequestedSignalType >(s_DISTANCE_REQUESTED_SIG);
+    m_sigDistanceRequested = newSignal<DistanceRequestedSignalType>(s_DISTANCE_REQUESTED_SIG);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Distance::~Distance() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Distance::starting()
 {
     this->sight::ui::base::IGuiContainer::create();
 
     auto qtContainer = sight::ui::qt::container::QtContainer::dynamicCast(
-        this->getContainer() );
+        this->getContainer());
 
     namespace fs = std::filesystem;
     fs::path pathImageDist = core::runtime::getModuleResourceFilePath("sight::module::ui::qt", "distance.png");
-    SIGHT_ASSERT("Image "<< pathImageDist << "is missing", fs::exists(pathImageDist));
+    SIGHT_ASSERT("Image " << pathImageDist << "is missing", fs::exists(pathImageDist));
 
     QIcon imageDist(QString::fromStdString(pathImageDist.string()));
 
-    m_distButton = new QPushButton( imageDist, tr(""));
+    m_distButton = new QPushButton(imageDist, tr(""));
     m_distButton->setToolTip(tr("Distance"));
 
     QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget( m_distButton, 1 );
+    layout->addWidget(m_distButton, 1);
     layout->setContentsMargins(0, 0, 0, 0);
     QObject::connect(m_distButton, SIGNAL(clicked()), this, SLOT(onDistanceButton()));
 
-    qtContainer->setLayout( layout );
+    qtContainer->setLayout(layout);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Distance::stopping()
 {
@@ -98,32 +98,32 @@ void Distance::stopping()
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Distance::configuring()
 {
     this->sight::ui::base::IGuiContainer::initialize();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Distance::updating()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Distance::onDistanceButton()
 {
-    data::Image::sptr image = this->getInOut< data::Image >("image");
+    data::Image::sptr image = this->getInOut<data::Image>("image");
     SIGHT_ASSERT("'image' key is not found.", image);
 
     // force distance to be shown
-    image->setField("ShowDistances",  data::Boolean::New(true));
+    image->setField("ShowDistances", data::Boolean::New(true));
 
     m_sigDistanceRequested->asyncEmit();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::module::ui::qt::metrics

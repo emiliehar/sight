@@ -34,9 +34,7 @@ namespace sight::module::ui::base
  */
 class MODULE_UI_BASE_CLASS_API SMenuBar : public ::sight::ui::base::IMenuBar
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SMenuBar, ::sight::ui::base::IMenuBar)
 
     /// Constructor. Do nothing.
@@ -46,7 +44,6 @@ public:
     MODULE_UI_BASE_API virtual ~SMenuBar() noexcept;
 
 protected:
-
     /** @name Service methods ( override from service::IService )
      * @{
      */

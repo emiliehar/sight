@@ -33,11 +33,14 @@
 
 namespace sight::core::log
 {
+
 class Logger;
+
 }
 
 namespace sight::io::dicom
 {
+
 namespace helper
 {
 
@@ -54,7 +57,6 @@ namespace helper
 class IO_DICOM_CLASS_API SegmentedPropertyRegistry
 {
 public:
-
     /// Entry containing the 5 attributes of a structure type
     typedef std::array<std::string, 5> EntryType;
 
@@ -75,9 +77,10 @@ public:
      * @param[in] omitFirstLine If set to 'true', the first line of the file is omitted
      * @param[in] logger Logger used to display errors
      */
-    IO_DICOM_API bool readSegmentedPropertyRegistryFile(const std::filesystem::path& filepath,
-                                                        bool omitFirstLine                    = false,
-                                                        const SPTR(core::log::Logger)& logger = 0);
+    IO_DICOM_API bool readSegmentedPropertyRegistryFile(
+        const std::filesystem::path& filepath,
+        bool omitFirstLine                    = false,
+        const SPTR(core::log::Logger)& logger = 0);
 
     /**
      * @brief Read an extract registry values from a CSV stream
@@ -93,9 +96,10 @@ public:
      * @param[in] omitFirstLine If set to 'true', the first line of the file is omitted
      * @param[in] logger Logger used to display errors
      */
-    IO_DICOM_API bool readSegmentedPropertyRegistryFile(std::istream& csvStream,
-                                                        bool omitFirstLine                    = false,
-                                                        const SPTR(core::log::Logger)& logger = 0);
+    IO_DICOM_API bool readSegmentedPropertyRegistryFile(
+        std::istream& csvStream,
+        bool omitFirstLine                    = false,
+        const SPTR(core::log::Logger)& logger = 0);
 
     /// Returns whether the registry is empty or not
     IO_DICOM_API bool empty() const;
@@ -138,14 +142,14 @@ public:
      * @param[in] anatomicRegion Anatomic Region
      * @param[in] anatomicRegionModifiers Anatomic Region Modifiers
      */
-    IO_DICOM_API std::string getStructureType(const std::string& propertyType,
-                                              const std::string& propertyCategory,
-                                              const std::string& propertyTypeModifiers,
-                                              const std::string& anatomicRegion,
-                                              const std::string& anatomicRegionModifiers) const;
+    IO_DICOM_API std::string getStructureType(
+        const std::string& propertyType,
+        const std::string& propertyCategory,
+        const std::string& propertyTypeModifiers,
+        const std::string& anatomicRegion,
+        const std::string& anatomicRegionModifiers) const;
 
 private:
-
     /// Entry registry type
     typedef std::map<std::string, EntryType> EntryRegistryType;
 
@@ -154,8 +158,8 @@ private:
 
     /// Segmented Property Registry
     EntryRegistryType m_registry;
-
 };
 
-} //namespace helper
-} //namespace sight::io::dicom
+} // namespace helper
+
+} // namespace sight::io::dicom

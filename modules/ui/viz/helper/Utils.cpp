@@ -28,7 +28,7 @@ namespace sight::module::ui::viz
 namespace helper
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QColor Utils::converOgreColorToQColor(const ::Ogre::ColourValue& _ogreColor)
 {
@@ -40,7 +40,7 @@ QColor Utils::converOgreColorToQColor(const ::Ogre::ColourValue& _ogreColor)
     return QColor(r, g, b, a);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ::Ogre::ColourValue Utils::convertQColorToOgreColor(const QColor& _qColor)
 {
@@ -52,7 +52,7 @@ QColor Utils::converOgreColorToQColor(const ::Ogre::ColourValue& _ogreColor)
     return ::Ogre::ColourValue(r, g, b, a);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace helper
 

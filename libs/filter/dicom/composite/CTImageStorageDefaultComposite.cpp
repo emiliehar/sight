@@ -33,18 +33,19 @@
 #include "filter/dicom/splitter/SOPClassUIDSplitter.hpp"
 #include "filter/dicom/splitter/TemporalPositionSplitter.hpp"
 
-fwDicomIOFilterRegisterMacro( ::sight::filter::dicom::composite::CTImageStorageDefaultComposite );
+fwDicomIOFilterRegisterMacro(::sight::filter::dicom::composite::CTImageStorageDefaultComposite);
 
 namespace sight::filter::dicom
 {
+
 namespace composite
 {
 
-const std::string CTImageStorageDefaultComposite::s_FILTER_NAME        = "CTImageStorage default composite";
-const std::string CTImageStorageDefaultComposite::s_FILTER_DESCRIPTION =
-    "CTImageStorage default composite.";
+const std::string CTImageStorageDefaultComposite::s_FILTER_NAME = "CTImageStorage default composite";
+const std::string CTImageStorageDefaultComposite::s_FILTER_DESCRIPTION
+    = "CTImageStorage default composite.";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 CTImageStorageDefaultComposite::CTImageStorageDefaultComposite(filter::dicom::IFilter::Key key) :
     IComposite()
@@ -69,20 +70,20 @@ CTImageStorageDefaultComposite::CTImageStorageDefaultComposite(filter::dicom::IF
     this->addChild(filter::dicom::modifier::SliceThicknessModifier::New());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 CTImageStorageDefaultComposite::~CTImageStorageDefaultComposite()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string CTImageStorageDefaultComposite::getName() const
 {
     return CTImageStorageDefaultComposite::s_FILTER_NAME;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 std::string CTImageStorageDefaultComposite::getDescription() const
 {
@@ -90,4 +91,5 @@ std::string CTImageStorageDefaultComposite::getDescription() const
 }
 
 } // namespace composite
+
 } // namespace sight::filter::dicom

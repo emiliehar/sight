@@ -29,145 +29,155 @@
 
 #include <functional>
 
-SIGHT_REGISTER_DATA( sight::data::ProcessObject );
+SIGHT_REGISTER_DATA(sight::data::ProcessObject);
 
 namespace sight::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ProcessObject::ProcessObject(data::Object::Key)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ProcessObject::~ProcessObject()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Object::sptr ProcessObject::getValue(const ParamNameType& name, const ProcessObjectMapType& params)
 {
     data::Object::sptr object;
     ProcessObjectMapType::const_iterator iter = params.find(name);
+
     if(iter != params.end())
     {
         object = iter->second;
     }
+
     return object;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Object::sptr ProcessObject::getInput(const ParamNameType& name)
 {
     return this->getValue(name, m_inputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Object::sptr ProcessObject::getOutput(const ParamNameType& name)
 {
     return this->getValue(name, m_outputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProcessObject::setValue(const ParamNameType& name, data::Object::sptr object, ProcessObjectMapType& params)
 {
     std::pair<ProcessObjectMapType::iterator, bool> res;
     res = params.insert(ProcessObjectMapType::value_type(name, object));
-    if( !res.second )
+
+    if(!res.second)
     {
         res.first->second = object;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProcessObject::setInputValue(const ParamNameType& name, data::Object::sptr object)
 {
     this->setValue(name, object, m_inputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProcessObject::setOutputValue(const ParamNameType& name, data::Object::sptr object)
 {
     this->setValue(name, object, m_outputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ProcessObject::ParamNameVectorType ProcessObject::getParamNames(const ProcessObjectMapType& params) const
 {
     ParamNameVectorType names;
-    std::transform( params.begin(), params.end(),
-                    std::back_inserter(names),
-                    std::bind(&ProcessObjectMapType::value_type::first, std::placeholders::_1) );
+    std::transform(
+        params.begin(),
+        params.end(),
+        std::back_inserter(names),
+        std::bind(&ProcessObjectMapType::value_type::first, std::placeholders::_1));
+
     return names;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ProcessObject::ParamNameVectorType ProcessObject::getInputsParamNames() const
 {
     return this->getParamNames(m_inputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 ProcessObject::ParamNameVectorType ProcessObject::getOutputsParamNames() const
 {
     return this->getParamNames(m_outputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProcessObject::clearInputs()
 {
     this->clearParams(m_outputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProcessObject::clearOutputs()
 {
     this->clearParams(m_inputs);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void ProcessObject::clearParams(ProcessObjectMapType& params)
 {
     params.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void ProcessObject::shallowCopy(const Object::csptr& source )
+void ProcessObject::shallowCopy(const Object::csptr& source)
 {
     ProcessObject::csptr other = ProcessObject::dynamicConstCast(source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (source ? source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldShallowCopy( source );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (source ? source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldShallowCopy(source);
 
     m_inputs  = other->m_inputs;
     m_outputs = other->m_outputs;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void ProcessObject::cachedDeepCopy(const Object::csptr& source, DeepCopyCacheType& cache)
 {
     ProcessObject::csptr other = ProcessObject::dynamicConstCast(source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (source ? source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
-    this->fieldDeepCopy( source, cache );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (source ? source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
+    this->fieldDeepCopy(source, cache);
 
     this->clearInputs();
     this->clearOutputs();
@@ -183,6 +193,6 @@ void ProcessObject::cachedDeepCopy(const Object::csptr& source, DeepCopyCacheTyp
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace sight::data

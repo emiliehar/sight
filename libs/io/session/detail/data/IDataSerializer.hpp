@@ -35,6 +35,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -43,7 +44,6 @@ class IDataSerializer
 {
 public:
     SIGHT_DECLARE_CLASS(IDataSerializer)
-
     /// Delete default copy constructors and assignment operators
     IDataSerializer(const IDataSerializer&)            = delete;
     IDataSerializer(IDataSerializer&&)                 = delete;
@@ -67,7 +67,6 @@ public:
         const core::crypto::secure_string& password = "") = 0;
 
 protected:
-
     /// Default constructor
     IDataSerializer() = default;
 
@@ -84,4 +83,5 @@ protected:
 };
 
 } // namespace detail::data
+
 } // namespace sight::io::session

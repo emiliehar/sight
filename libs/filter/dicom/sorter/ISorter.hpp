@@ -29,6 +29,7 @@
 
 namespace sight::filter::dicom
 {
+
 namespace sorter
 {
 
@@ -49,8 +50,8 @@ public:
 protected:
     /// Constructor
     FILTER_DICOM_API ISorter();
-
 };
 
 } // namespace sorter
+
 } // namespace sight::filter::dicom

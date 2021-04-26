@@ -28,6 +28,7 @@
 
 namespace sight::module::viz::scene2d
 {
+
 namespace adaptor
 {
 
@@ -55,7 +56,6 @@ namespace adaptor
  */
 class MODULE_VIZ_SCENE2D_CLASS_API SLine : public sight::viz::scene2d::IAdaptor
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SLine, ::sight::viz::scene2d::IAdaptor)
 
@@ -66,7 +66,6 @@ public:
     MODULE_VIZ_SCENE2D_API virtual ~SLine() noexcept;
 
 protected:
-
     MODULE_VIZ_SCENE2D_API void configuring() override;
 
     /// Initialize the layer and call the draw() function.
@@ -79,7 +78,6 @@ protected:
     MODULE_VIZ_SCENE2D_API void stopping() override;
 
 private:
-
     /// Create the line, set it m_pen, add it to the layer, set the layer position and zValue and add it to the scene.
     void draw();
 
@@ -94,4 +92,5 @@ private:
 };
 
 } // namespace adaptor
+
 } // namespace sight::module::viz::scene2d

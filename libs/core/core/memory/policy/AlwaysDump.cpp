@@ -33,10 +33,12 @@ namespace policy
 
 fwMemoryPolicyRegisterMacro(core::memory::policy::AlwaysDump);
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::allocationRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer,
-                                    BufferInfo::SizeType size )
+void AlwaysDump::allocationRequest(
+    BufferInfo& info,
+    core::memory::BufferManager::ConstBufferPtrType buffer,
+    BufferInfo::SizeType size)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
@@ -44,10 +46,12 @@ void AlwaysDump::allocationRequest( BufferInfo& info, core::memory::BufferManage
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::setRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer,
-                             BufferInfo::SizeType size )
+void AlwaysDump::setRequest(
+    BufferInfo& info,
+    core::memory::BufferManager::ConstBufferPtrType buffer,
+    BufferInfo::SizeType size)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
@@ -55,10 +59,12 @@ void AlwaysDump::setRequest( BufferInfo& info, core::memory::BufferManager::Cons
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::reallocateRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer,
-                                    BufferInfo::SizeType newSize )
+void AlwaysDump::reallocateRequest(
+    BufferInfo& info,
+    core::memory::BufferManager::ConstBufferPtrType buffer,
+    BufferInfo::SizeType newSize)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
@@ -66,66 +72,68 @@ void AlwaysDump::reallocateRequest( BufferInfo& info, core::memory::BufferManage
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::destroyRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void AlwaysDump::destroyRequest(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::lockRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void AlwaysDump::lockRequest(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::unlockRequest( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void AlwaysDump::unlockRequest(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::dumpSuccess( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void AlwaysDump::dumpSuccess(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void AlwaysDump::restoreSuccess( BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer )
+void AlwaysDump::restoreSuccess(BufferInfo& info, core::memory::BufferManager::ConstBufferPtrType buffer)
 {
     SIGHT_NOT_USED(info);
     SIGHT_NOT_USED(buffer);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 size_t AlwaysDump::dump()
 {
     size_t dumped = 0;
 
     core::memory::BufferManager::sptr manager = core::memory::BufferManager::getDefault();
+
     if(manager)
     {
         const core::memory::BufferManager::BufferInfoMapType bufferInfos = manager->getBufferInfos().get();
 
-        for(const core::memory::BufferManager::BufferInfoMapType::value_type& elt :  bufferInfos)
+        for(const core::memory::BufferManager::BufferInfoMapType::value_type& elt : bufferInfos)
         {
             const core::memory::BufferInfo& info = elt.second;
-            if( !( info.size == 0 || info.lockCount() > 0 || !info.loaded )  )
+
+            if(!(info.size == 0 || info.lockCount() > 0 || !info.loaded))
             {
-                if( manager->dumpBuffer(elt.first).get() )
+                if(manager->dumpBuffer(elt.first).get())
                 {
                     dumped += elt.second.size;
                 }
@@ -136,34 +144,36 @@ size_t AlwaysDump::dump()
     return dumped;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AlwaysDump::apply()
 {
     this->dump();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void AlwaysDump::refresh()
 {
     this->apply();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-std::string AlwaysDump::getParam(const std::string& name, bool* ok  ) const
+std::string AlwaysDump::getParam(const std::string& name, bool* ok) const
 {
     SIGHT_NOT_USED(name);
-    if (ok)
+
+    if(ok)
     {
         *ok = false;
     }
+
     return "";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace policy
 
-} //namespace sight::core::memory
+} // namespace sight::core::memory

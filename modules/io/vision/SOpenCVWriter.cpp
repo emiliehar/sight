@@ -38,18 +38,17 @@
 
 namespace sight::module::io::vision
 {
+
 // ----------------------------------------------------------------------------
 
 SOpenCVWriter::SOpenCVWriter()
 {
-
 }
 
 // ----------------------------------------------------------------------------
 
 SOpenCVWriter::~SOpenCVWriter()
 {
-
 }
 
 // ----------------------------------------------------------------------------
@@ -66,13 +65,14 @@ void SOpenCVWriter::configureWithIHM()
     this->openLocationDialog();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SOpenCVWriter::openLocationDialog()
 {
     this->defineLocationGUI();
 }
-//----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
 
 bool SOpenCVWriter::defineLocationGUI()
 {
@@ -91,7 +91,7 @@ bool SOpenCVWriter::defineLocationGUI()
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
 
-    if (result)
+    if(result)
     {
         this->setFile(result->getFile());
         defaultDirectory->setFolder(result->getFile().parent_path());
@@ -106,26 +106,23 @@ bool SOpenCVWriter::defineLocationGUI()
     return ok;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 void SOpenCVWriter::starting()
 {
-
 }
 
 // ----------------------------------------------------------------------------
 
 void SOpenCVWriter::stopping()
 {
-
 }
 
 // ----------------------------------------------------------------------------
 
 void SOpenCVWriter::updating()
 {
-
-    data::CameraSeries::csptr camSeries = this->getInput< data::CameraSeries >(sight::io::base::service::s_DATA_KEY);
+    data::CameraSeries::csptr camSeries = this->getInput<data::CameraSeries>(sight::io::base::service::s_DATA_KEY);
 
     if(!camSeries)
     {
@@ -135,12 +132,15 @@ void SOpenCVWriter::updating()
     SIGHT_ASSERT("CameraSeries is null", camSeries);
 
     bool use_dialog = false;
+
     if(!this->hasLocationDefined())
     {
         use_dialog = this->defineLocationGUI();
+
         if(!use_dialog)
         {
             m_writeFailed = true;
+
             return;
         }
     }
@@ -148,9 +148,9 @@ void SOpenCVWriter::updating()
     data::mt::ObjectReadLock lock(camSeries);
     size_t numberOfCameras = camSeries->getNumberOfCameras();
 
-    std::vector< data::Camera::sptr > cameras;
-    std::vector< ::cv::Mat > cameraMatrices;
-    std::vector< ::cv::Mat > cameraDistCoefs;
+    std::vector<data::Camera::sptr> cameras;
+    std::vector< ::cv::Mat> cameraMatrices;
+    std::vector< ::cv::Mat> cameraDistCoefs;
 
     // Set the cameras
     data::Matrix4::sptr extrinsicMatrix;
@@ -158,7 +158,7 @@ void SOpenCVWriter::updating()
 
     data::mt::ObjectReadLock camSeriesLock(camSeries);
 
-    for(size_t i = 0; i < numberOfCameras; ++i)
+    for(size_t i = 0 ; i < numberOfCameras ; ++i)
     {
         cameras.push_back(camSeries->getCamera(i));
         cameraMatrices.push_back(::cv::Mat::eye(3, 3, CV_64F));
@@ -169,7 +169,7 @@ void SOpenCVWriter::updating()
         cameraMatrices[i].at<double>(0, 2) = cameras[i]->getCx();
         cameraMatrices[i].at<double>(1, 2) = cameras[i]->getCy();
 
-        for(std::uint8_t c = 0; c < 5; ++c)
+        for(std::uint8_t c = 0 ; c < 5 ; ++c)
         {
             cameraDistCoefs[i].at<double>(c, 0) = cameras[i]->getDistortionCoefficient()[c];
         }
@@ -177,40 +177,43 @@ void SOpenCVWriter::updating()
 
     ::cv::FileStorage fs(this->getFile().string().c_str(), ::cv::FileStorage::WRITE);
 
-    fs << "nbCameras"<< static_cast<int>(numberOfCameras);
+    fs << "nbCameras" << static_cast<int>(numberOfCameras);
 
-    for( size_t c = 0; c < numberOfCameras; ++c)
+    for(size_t c = 0 ; c < numberOfCameras ; ++c)
     {
         std::stringstream camNum;
-        camNum << "camera_"<< c;
+        camNum << "camera_" << c;
 
         fs << camNum.str() << "{";
-        fs << "id"<<camSeries->getCamera(c)->getCameraID().c_str();
+        fs << "id" << camSeries->getCamera(c)->getCameraID().c_str();
         fs << "description" << camSeries->getCamera(c)->getDescription().c_str();
-        fs << "imageWidth" << static_cast< int> (camSeries->getCamera(c)->getWidth());
-        fs << "imageHeight" << static_cast< int >(camSeries->getCamera(c)->getHeight());
+        fs << "imageWidth" << static_cast<int>(camSeries->getCamera(c)->getWidth());
+        fs << "imageHeight" << static_cast<int>(camSeries->getCamera(c)->getHeight());
         fs << "matrix" << cameraMatrices[c];
         fs << "distortion" << cameraDistCoefs[c];
         fs << "scale" << camSeries->getCamera(c)->getScale();
 
         extrinsicMatrix = camSeries->getExtrinsicMatrix(c);
+
         if(extrinsicMatrix)
         {
-            for(std::uint8_t i = 0; i < 4; ++i)
+            for(std::uint8_t i = 0 ; i < 4 ; ++i)
             {
-                for(std::uint8_t j = 0; j < 4; ++j)
+                for(std::uint8_t j = 0 ; j < 4 ; ++j)
                 {
-                    extrinsic.at< double >(i, j) = extrinsicMatrix->getCoefficient(i, j);
+                    extrinsic.at<double>(i, j) = extrinsicMatrix->getCoefficient(i, j);
                 }
             }
-            fs << "extrinsic"<< extrinsic;
+
+            fs << "extrinsic" << extrinsic;
         }
+
         fs << "}";
     }
 
     fs.release();
 
-    //clear locations only if it was configured through GUI.
+    // clear locations only if it was configured through GUI.
     if(use_dialog)
     {
         this->clearLocations();
@@ -233,4 +236,5 @@ sight::io::base::service::IOPathType SOpenCVWriter::getIOPathType() const
 }
 
 // ----------------------------------------------------------------------------
-} //namespace sight::module::io::vision
+
+} // namespace sight::module::io::vision

@@ -60,13 +60,12 @@ namespace sight::module::sync
 class MODULE_SYNC_CLASS_API SFrameUpdater : public service::IController
 {
 public:
-
     SIGHT_DECLARE_SERVICE(SFrameUpdater, service::IController)
 
     static const core::com::Slots::SlotKeyType s_UPDATE_FRAME_SLOT;
 
     /// Type of signal m_sigRenderRequested
-    typedef core::com::Signal< void () > RenderRequestedSignalType;
+    typedef core::com::Signal<void ()> RenderRequestedSignalType;
 
     /// Key in m_signals map of signal m_sigObjectModified
     static const core::com::Signals::SignalKeyType s_RENDER_REQUESTED_SIG;
@@ -78,7 +77,6 @@ public:
     MODULE_SYNC_API virtual ~SFrameUpdater() noexcept;
 
 protected:
-
     /// Starting method. Initialize timer.
     MODULE_SYNC_API void starting() override;
 
@@ -92,7 +90,7 @@ protected:
     MODULE_SYNC_API void updating() override;
 
     /// Update frame slots
-    MODULE_SYNC_API virtual void updateFrame( core::HiResClock::HiResClockType timestamp );
+    MODULE_SYNC_API virtual void updateFrame(core::HiResClock::HiResClockType timestamp);
 
     /// Update the image according to the frame timeline.
     MODULE_SYNC_API virtual void updateImage();
@@ -104,7 +102,6 @@ protected:
     MODULE_SYNC_API void resetTimeline();
 
 private:
-
     /**
      * @brief Returns proposals to connect service slots to associated object signals,
      * this method is used for obj/srv auto connections
@@ -129,4 +126,4 @@ private:
     bool m_imageInitialized;
 };
 
-} //namespace sight::module::sync
+} // namespace sight::module::sync

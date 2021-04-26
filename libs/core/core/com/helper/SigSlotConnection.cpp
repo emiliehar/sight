@@ -32,38 +32,41 @@
 
 namespace sight::core::com
 {
+
 namespace helper
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SigSlotConnection::SigSlotConnection()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SigSlotConnection::~SigSlotConnection()
 {
     this->disconnect();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void SigSlotConnection::connect(const core::com::HasSignals::csptr& hasSignals,
-                                core::com::Signals::SignalKeyType signalKey,
-                                const core::com::HasSlots::csptr& hasSlots, core::com::Slots::SlotKeyType slotKey )
+void SigSlotConnection::connect(
+    const core::com::HasSignals::csptr& hasSignals,
+    core::com::Signals::SignalKeyType signalKey,
+    const core::com::HasSlots::csptr& hasSlots,
+    core::com::Slots::SlotKeyType slotKey)
 {
     try
     {
-        core::com::Connection connection = hasSignals->signal( signalKey )->connect( hasSlots->slot( slotKey ) );
+        core::com::Connection connection = hasSignals->signal(signalKey)->connect(hasSlots->slot(slotKey));
         m_connections.push_back(connection);
     }
-    catch (core::com::exception::BadSlot& e)
+    catch(core::com::exception::BadSlot& e)
     {
         SIGHT_ERROR("Can't connect signal '" + signalKey + "' with slot '" + slotKey + "' : " << e.what() << ".");
     }
-    catch (core::com::exception::AlreadyConnected& e)
+    catch(core::com::exception::AlreadyConnected& e)
     {
         const core::tools::Object::csptr source = core::tools::Object::dynamicCast(hasSignals);
         auto sourceID                           = source ? source->getID() : "";
@@ -71,38 +74,41 @@ void SigSlotConnection::connect(const core::com::HasSignals::csptr& hasSignals,
         const core::tools::Object::csptr target = core::tools::Object::dynamicCast(hasSlots);
         auto targetID                           = target ? target->getID() : "";
 
-        SIGHT_ERROR("Can't connect signal '" + sourceID + "/" + signalKey + "' with slot '"
-                    + targetID + "/" + slotKey + "' : " << e.what() << ".");
+        SIGHT_ERROR(
+            "Can't connect signal '" + sourceID + "/" + signalKey + "' with slot '"
+            + targetID + "/" + slotKey + "' : " << e.what() << ".");
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void SigSlotConnection::connect(const core::com::HasSignals::csptr& hasSignals,
-                                const core::com::HasSlots::csptr& hasSlots,
-                                const KeyConnectionsType& keyConnections )
+void SigSlotConnection::connect(
+    const core::com::HasSignals::csptr& hasSignals,
+    const core::com::HasSlots::csptr& hasSlots,
+    const KeyConnectionsType& keyConnections)
 {
     SIGHT_ASSERT("Signal source is NULL", hasSignals);
     SIGHT_ASSERT("Slot destination is NULL", hasSlots);
 
-    for( const KeyConnectionType& keys : keyConnections )
+    for(const KeyConnectionType& keys : keyConnections)
     {
-        auto signal = hasSignals->signal( keys.first );
+        auto signal = hasSignals->signal(keys.first);
         SIGHT_ASSERT("Signal '" + keys.first + "' not found.", signal);
-        auto slot = hasSlots->slot( keys.second );
+        auto slot = hasSlots->slot(keys.second);
         SIGHT_ASSERT("Slot '" + keys.second + "' not found.", slot);
 
         try
         {
-            core::com::Connection connection = signal->connect( slot );
+            core::com::Connection connection = signal->connect(slot);
             m_connections.push_back(connection);
         }
-        catch (core::com::exception::BadSlot& e)
+        catch(core::com::exception::BadSlot& e)
         {
-            SIGHT_ERROR("Can't connect signal '" + keys.first + "' with slot '" + keys.second + "' : "
-                        << e.what() << ".");
+            SIGHT_ERROR(
+                "Can't connect signal '" + keys.first + "' with slot '" + keys.second + "' : "
+                    << e.what() << ".");
         }
-        catch (core::com::exception::AlreadyConnected& e)
+        catch(core::com::exception::AlreadyConnected& e)
         {
             const core::tools::Object::csptr source = core::tools::Object::dynamicCast(hasSignals);
             auto sourceID                           = source ? source->getID() : "";
@@ -110,31 +116,33 @@ void SigSlotConnection::connect(const core::com::HasSignals::csptr& hasSignals,
             const core::tools::Object::csptr target = core::tools::Object::dynamicCast(hasSlots);
             auto targetID                           = target ? target->getID() : "";
 
-            SIGHT_ERROR("Can't connect signal '" + sourceID + "/" + keys.first + "' with slot '"
-                        + targetID + "/" + keys.second + "' : " << e.what() << ".");
+            SIGHT_ERROR(
+                "Can't connect signal '" + sourceID + "/" + keys.first + "' with slot '"
+                + targetID + "/" + keys.second + "' : " << e.what() << ".");
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-void SigSlotConnection::addConnection( core::com::Connection connection )
+void SigSlotConnection::addConnection(core::com::Connection connection)
 {
     m_connections.push_back(connection);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SigSlotConnection::disconnect()
 {
-    BOOST_REVERSE_FOREACH( core::com::Connection& connection, m_connections )
+    BOOST_REVERSE_FOREACH(core::com::Connection& connection, m_connections)
     {
         connection.disconnect();
     }
     m_connections.clear();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // end namespace helper
+
 } // end namespace sight::core::com

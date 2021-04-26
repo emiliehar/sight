@@ -27,8 +27,10 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
+
 /**
  *
  * @brief class to manage conversion between data::String and igtl::StringMessage
@@ -55,7 +57,7 @@ public:
      *
      * @return an data::String converted from an igtl::StringMessage
      */
-    IO_IGTL_API ::igtl::MessageBase::Pointer fromFwDataObject (data::Object::csptr src) const;
+    IO_IGTL_API ::igtl::MessageBase::Pointer fromFwDataObject(data::Object::csptr src) const;
 
     /**
      * @brief create new StringConverter
@@ -85,5 +87,7 @@ private:
     /// fwData type supported for conversion
     static const std::string s_FWDATA_OBJECT_TYPE;
 };
+
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

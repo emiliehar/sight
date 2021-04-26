@@ -34,6 +34,7 @@
 
 namespace sight::ui::base
 {
+
 namespace layoutManager
 {
 
@@ -43,7 +44,6 @@ namespace layoutManager
 class UI_BASE_CLASS_API IViewLayoutManager : public ui::base::GuiBaseObject
 {
 public:
-
     SIGHT_DECLARE_CLASS(IViewLayoutManager, ui::base::GuiBaseObject)
 
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
@@ -57,14 +57,14 @@ public:
     /**
      * @brief Configure the layout before creation.
      */
-    UI_BASE_API virtual void initialize( ConfigurationType configuration) = 0;
+    UI_BASE_API virtual void initialize(ConfigurationType configuration) = 0;
 
     /**
      * @brief Instantiate layout with parent container.
      * @pre LayoutManager must be initialized before.
      * @pre parent containers must be instanced.
      */
-    UI_BASE_API virtual void createLayout( ui::base::container::fwContainer::sptr parent ) = 0;
+    UI_BASE_API virtual void createLayout(ui::base::container::fwContainer::sptr parent) = 0;
 
     /**
      * @brief Destroy local layout with sub containers.
@@ -75,19 +75,18 @@ public:
     /**
      * @brief Returns all sub containers managed by this layout.
      */
-    UI_BASE_API virtual std::vector< ui::base::container::fwContainer::sptr > getSubViews();
+    UI_BASE_API virtual std::vector<ui::base::container::fwContainer::sptr> getSubViews();
 
 protected:
-
     /**
      * @brief Helper to destroy local sub views.
      */
     UI_BASE_API virtual void destroySubViews();
 
     /// All sub containers managed by this layout.
-    std::vector< ui::base::container::fwContainer::sptr > m_subViews;
-
+    std::vector<ui::base::container::fwContainer::sptr> m_subViews;
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::base

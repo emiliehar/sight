@@ -29,7 +29,7 @@
 namespace sight::viz::scene3d
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const std::string ILight::REGISTRY_KEY = "sight::viz::scene3d::ILight::REGISTRY_KEY";
 
@@ -39,12 +39,13 @@ const std::string ILight::s_SPOT_LIGHT        = "Spot";
 
 const int viz::scene3d::ILight::s_OFFSET_RANGE = 180;
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-viz::scene3d::ILight::sptr ILight::createLightAdaptor(data::Color::sptr _diffuse,
-                                                      data::Color::sptr _specular)
+viz::scene3d::ILight::sptr ILight::createLightAdaptor(
+    data::Color::sptr _diffuse,
+    data::Color::sptr _specular)
 {
-    viz::scene3d::ILight::sptr light = viz::scene3d::lightFactory::New(viz::scene3d::ILight::REGISTRY_KEY );
+    viz::scene3d::ILight::sptr light = viz::scene3d::lightFactory::New(viz::scene3d::ILight::REGISTRY_KEY);
     SIGHT_ASSERT("The factory process to create an ILight failed.", light);
     SIGHT_ASSERT("The light adaptor must be registered with existing data objects.", _diffuse && _specular);
 
@@ -54,7 +55,7 @@ viz::scene3d::ILight::sptr ILight::createLightAdaptor(data::Color::sptr _diffuse
     return light;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void ILight::destroyLightAdaptor(ILight::sptr _lightAdaptor)
 {
@@ -65,18 +66,18 @@ void ILight::destroyLightAdaptor(ILight::sptr _lightAdaptor)
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 viz::scene3d::ILight::ILight()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 viz::scene3d::ILight::~ILight()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::viz::scene3d

@@ -36,8 +36,7 @@ namespace ut
 class PointListTest : public CPPUNIT_NS::TestFixture
 {
 public:
-
-    CPPUNIT_TEST_SUITE( PointListTest );
+    CPPUNIT_TEST_SUITE(PointListTest);
     CPPUNIT_TEST(copyFromCv);
     CPPUNIT_TEST(copyToCv);
     CPPUNIT_TEST_SUITE_END();

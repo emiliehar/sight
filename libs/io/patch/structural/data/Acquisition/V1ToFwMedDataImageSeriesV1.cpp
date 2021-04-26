@@ -53,7 +53,6 @@ V1ToFwMedDataImageSeriesV1::V1ToFwMedDataImageSeriesV1() :
     m_targetClassname = "::sight::data::ImageSeries";
     m_originVersion   = "1";
     m_targetVersion   = "1";
-
 }
 
 // ----------------------------------------------------------------------------
@@ -64,7 +63,7 @@ V1ToFwMedDataImageSeriesV1::~V1ToFwMedDataImageSeriesV1()
 
 // ----------------------------------------------------------------------------
 
-V1ToFwMedDataImageSeriesV1::V1ToFwMedDataImageSeriesV1( const V1ToFwMedDataImageSeriesV1& cpy ) :
+V1ToFwMedDataImageSeriesV1::V1ToFwMedDataImageSeriesV1(const V1ToFwMedDataImageSeriesV1& cpy) :
     io::atoms::patch::
     IStructuralPatch(cpy)
 {
@@ -72,16 +71,17 @@ V1ToFwMedDataImageSeriesV1::V1ToFwMedDataImageSeriesV1( const V1ToFwMedDataImage
 
 // ----------------------------------------------------------------------------
 
-void V1ToFwMedDataImageSeriesV1::apply(const sight::atoms::Object::sptr& previous,
-                                       const sight::atoms::Object::sptr& current,
-                                       io::atoms::patch::IPatch::NewVersionsType& newVersions)
+void V1ToFwMedDataImageSeriesV1::apply(
+    const sight::atoms::Object::sptr& previous,
+    const sight::atoms::Object::sptr& current,
+    io::atoms::patch::IPatch::NewVersionsType& newVersions)
 {
     IStructuralPatch::apply(previous, current, newVersions);
 
-    //Update object version
+    // Update object version
     this->updateVersion(current);
 
-    //Create helper
+    // Create helper
     io::atoms::patch::helper::Object helper(current);
 
     helper.removeAttribute("bits_per_pixel");
@@ -119,26 +119,26 @@ void V1ToFwMedDataImageSeriesV1::apply(const sight::atoms::Object::sptr& previou
     io::atoms::patch::StructuralCreatorDB::sptr creators = io::atoms::patch::StructuralCreatorDB::getDefault();
 
     // Create Patient
-    helper.addAttribute("patient", creators->create( "::sight::data::Patient", "1") );
+    helper.addAttribute("patient", creators->create("::sight::data::Patient", "1"));
 
     // Create Equipment
-    helper.addAttribute("equipment", creators->create( "::sight::data::Equipment", "1") );
+    helper.addAttribute("equipment", creators->create("::sight::data::Equipment", "1"));
 
     // Create Study
-    helper.addAttribute("study", creators->create( "::sight::data::Study", "1") );
+    helper.addAttribute("study", creators->create("::sight::data::Study", "1"));
 
     // Create performing_physicians_name
     helper.addAttribute("performing_physicians_name", sight::atoms::Sequence::New());
 
-    //===========================================
+    //= ==========================================
     // Update time format
-    //===========================================
+    //= ==========================================
 
     std::string creationDate = previous->getAttribute("creation_date")->getString();
 
     // Date and time
-    ::boost::posix_time::ptime pdate =
-        ::boost::posix_time::time_from_string(creationDate);
+    ::boost::posix_time::ptime pdate
+        = ::boost::posix_time::time_from_string(creationDate);
     const std::string date = core::tools::getDate(pdate);
     const std::string time = core::tools::getTime(pdate);
 

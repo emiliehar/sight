@@ -38,7 +38,6 @@ namespace sight::core::log
 class CORE_CLASS_API Log : public core::BaseObject
 {
 public:
-
     typedef enum
     {
         INFORMATION = 0,
@@ -77,13 +76,11 @@ public:
     }
 
 protected:
-
     /// Log level
     LevelType m_level;
 
     /// Log message
     std::string m_message;
-
 }; // class Logger
 
 } // namespace sight::core::log

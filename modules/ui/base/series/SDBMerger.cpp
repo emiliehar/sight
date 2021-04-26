@@ -40,6 +40,7 @@
 
 namespace sight::module::ui::base
 {
+
 namespace series
 {
 
@@ -48,35 +49,35 @@ static const core::com::Slots::SlotKeyType FORWARD_JOB_SLOT       = "forwardJob"
 
 static const service::IService::KeyType s_SERIES_INOUT = "seriesDB";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-SDBMerger::SDBMerger( ) noexcept :
+SDBMerger::SDBMerger() noexcept :
     m_ioSelectorSrvConfig("IOSelectorServiceConfigVRRenderReader")
 {
-    m_sigJobCreated  = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
-    m_slotForwardJob = newSlot( FORWARD_JOB_SLOT, &SDBMerger::forwardJob, this );
+    m_sigJobCreated  = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
+    m_slotForwardJob = newSlot(FORWARD_JOB_SLOT, &SDBMerger::forwardJob, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SDBMerger::~SDBMerger() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SDBMerger::info(std::ostream& _sstream )
+void SDBMerger::info(std::ostream& _sstream)
 {
     _sstream << "Action for add SeriesDB" << std::endl;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDBMerger::configuring()
 {
-
     this->sight::ui::base::IAction::initialize();
-    std::vector < ConfigurationType > vectConfig = m_configuration->find("IOSelectorSrvConfig");
+    std::vector<ConfigurationType> vectConfig = m_configuration->find("IOSelectorSrvConfig");
+
     if(!vectConfig.empty())
     {
         ConfigurationType selectorConfig = vectConfig.at(0);
@@ -85,13 +86,13 @@ void SDBMerger::configuring()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SDBMerger::updating( )
+void SDBMerger::updating()
 {
     sight::ui::base::LockAction lock(this->getSptr());
 
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIES_INOUT);
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIES_INOUT);
     SIGHT_ASSERT("The inout key '" + s_SERIES_INOUT + "' is not correctly set.", seriesDB);
 
     // Create a new SeriesDB
@@ -101,11 +102,14 @@ void SDBMerger::updating( )
 
     // Get the config
     core::runtime::ConfigurationElement::csptr ioCfg;
-    ioCfg = service::extension::Config::getDefault()->getServiceConfig(m_ioSelectorSrvConfig,
-                                                                       "::sight::module::ui::base::io::SSelector");
-    SIGHT_ASSERT("There is no service configuration "
-                 << m_ioSelectorSrvConfig
-                 << " for module::ui::base::editor::SSelector", ioCfg);
+    ioCfg = service::extension::Config::getDefault()->getServiceConfig(
+        m_ioSelectorSrvConfig,
+        "::sight::module::ui::base::io::SSelector");
+    SIGHT_ASSERT(
+        "There is no service configuration "
+            << m_ioSelectorSrvConfig
+            << " for module::ui::base::editor::SSelector",
+            ioCfg);
 
     // Init and execute the service
     service::IService::sptr ioSelectorSrv;
@@ -114,45 +118,48 @@ void SDBMerger::updating( )
     ioSelectorSrv->setWorker(m_associatedWorker);
 
     auto jobCreatedSignal = ioSelectorSrv->signal("jobCreated");
+
     if(jobCreatedSignal)
     {
         jobCreatedSignal->connect(m_slotForwardJob);
     }
 
-    ioSelectorSrv->setConfiguration( core::runtime::ConfigurationElement::constCast(ioCfg) );
+    ioSelectorSrv->setConfiguration(core::runtime::ConfigurationElement::constCast(ioCfg));
     ioSelectorSrv->configure();
     ioSelectorSrv->start();
     ioSelectorSrv->update();
     ioSelectorSrv->stop();
-    service::OSR::unregisterService( ioSelectorSrv );
+    service::OSR::unregisterService(ioSelectorSrv);
 
     data::helper::SeriesDB sDBhelper(seriesDB);
     sDBhelper.merge(localSeriesDB);
     sDBhelper.notify();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDBMerger::starting()
 {
     this->sight::ui::base::IAction::actionServiceStarting();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDBMerger::stopping()
 {
     this->sight::ui::base::IAction::actionServiceStopping();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SDBMerger::forwardJob(core::jobs::IJob::sptr iJob)
 {
     m_sigJobCreated->emit(iJob);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //
+
 } // namespace series
+
 } // namespace sight::module::ui::base

@@ -26,6 +26,7 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -34,10 +35,10 @@ namespace ut
  */
 class IHasServicesTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( IHasServicesTest );
-CPPUNIT_TEST( testRegistration );
-CPPUNIT_TEST( testConnection );
-CPPUNIT_TEST( testOptionalInputs );
+CPPUNIT_TEST_SUITE(IHasServicesTest);
+CPPUNIT_TEST(testRegistration);
+CPPUNIT_TEST(testConnection);
+CPPUNIT_TEST(testOptionalInputs);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -53,5 +54,6 @@ public:
     void testOptionalInputs();
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

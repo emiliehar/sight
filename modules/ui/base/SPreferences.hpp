@@ -49,20 +49,19 @@ namespace sight::module::ui::base
  */
 class MODULE_UI_BASE_CLASS_API SPreferences : public ::sight::ui::base::preferences::IPreferences
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SPreferences, ::sight::ui::base::preferences::IPreferences)
 
-    ///Destructor
+    /// Destructor
     MODULE_UI_BASE_API SPreferences() noexcept
     {
     }
+
     MODULE_UI_BASE_API virtual ~SPreferences() noexcept
     {
     }
 
 protected:
-
     /// Starts service and loads preferences if exists.
     MODULE_UI_BASE_API void starting() override;
 
@@ -78,7 +77,6 @@ protected:
     std::filesystem::path m_prefFile;
 
 private:
-
     /// loads preferences
     void load();
     /// saves preferences

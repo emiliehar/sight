@@ -61,13 +61,13 @@ SColourImageMasking::SColourImageMasking() noexcept :
     m_backgroundComponents(5),
     m_foregroundComponents(5)
 {
-    newSlot( s_SET_BACKGROUND_SLOT, &SColourImageMasking::setBackground, this );
-    newSlot( s_SET_FOREGROUND_SLOT, &SColourImageMasking::setForeground, this );
-    newSlot( s_SET_THRESHOLD_SLOT, &SColourImageMasking::setThreshold, this );
-    newSlot( s_SET_NOISE_LEVEL_SLOT, &SColourImageMasking::setNoiseLevel, this );
-    newSlot( s_SET_BACKGROUND_COMPONENTS_SLOT, &SColourImageMasking::setBackgroundComponents, this );
-    newSlot( s_SET_FOREGROUND_COMPONENTS_SLOT, &SColourImageMasking::setForegroundComponents, this );
-    newSlot( s_CLEAR_MASKTL_SLOT, &SColourImageMasking::clearMaskTL, this );
+    newSlot(s_SET_BACKGROUND_SLOT, &SColourImageMasking::setBackground, this);
+    newSlot(s_SET_FOREGROUND_SLOT, &SColourImageMasking::setForeground, this);
+    newSlot(s_SET_THRESHOLD_SLOT, &SColourImageMasking::setThreshold, this);
+    newSlot(s_SET_NOISE_LEVEL_SLOT, &SColourImageMasking::setNoiseLevel, this);
+    newSlot(s_SET_BACKGROUND_COMPONENTS_SLOT, &SColourImageMasking::setBackgroundComponents, this);
+    newSlot(s_SET_FOREGROUND_COMPONENTS_SLOT, &SColourImageMasking::setForegroundComponents, this);
+    newSlot(s_CLEAR_MASKTL_SLOT, &SColourImageMasking::clearMaskTL, this);
 }
 
 // ------------------------------------------------------------------------------
@@ -87,8 +87,9 @@ void SColourImageMasking::configuring()
     m_foregroundComponents = config.get<int>("foregroundComponents", 5);
     m_backgroundComponents = config.get<int>("backgroundComponents", 5);
 
-    SIGHT_ASSERT("Scale factor must be between 0 and 1. Current value: " << m_scaleFactor,
-                 (m_scaleFactor > 0 && m_scaleFactor <= 1));
+    SIGHT_ASSERT(
+        "Scale factor must be between 0 and 1. Current value: " << m_scaleFactor,
+            (m_scaleFactor > 0 && m_scaleFactor <= 1));
     SIGHT_ASSERT(
         "The number of background components must be greater than 0. Current value: " << m_backgroundComponents,
             m_backgroundComponents > 0);
@@ -104,27 +105,29 @@ void SColourImageMasking::configuring()
     std::string s_lowerValue                      = hsvConfig.get<std::string>("lower", "");
     std::string s_upperValue                      = hsvConfig.get<std::string>("upper", "");
 
-    const ::boost::char_separator<char> sep {",", ";"};
+    const ::boost::char_separator<char> sep{",", ";"};
 
     if(!s_lowerValue.empty())
     {
-        const ::boost::tokenizer<boost::char_separator<char> > tokLower {s_lowerValue, sep};
+        const ::boost::tokenizer<boost::char_separator<char> > tokLower{s_lowerValue, sep};
         int i = 0;
+
         for(const auto& it : tokLower)
         {
             SIGHT_ASSERT("Only 3 integers needed to define lower HSV value", i < 3);
-            m_lowerColor[i++] = ::boost::lexical_cast< double >(it);
+            m_lowerColor[i++] = ::boost::lexical_cast<double>(it);
         }
     }
 
     if(!s_upperValue.empty())
     {
-        const ::boost::tokenizer<boost::char_separator<char> > tokUpper {s_upperValue, sep};
+        const ::boost::tokenizer<boost::char_separator<char> > tokUpper{s_upperValue, sep};
         int i = 0;
+
         for(const auto& it : tokUpper)
         {
             SIGHT_ASSERT("Only 3 integers needed to define upper HSV value", i < 3);
-            m_upperColor[i++] = ::boost::lexical_cast< double >(it);
+            m_upperColor[i++] = ::boost::lexical_cast<double>(it);
         }
     }
 }
@@ -134,7 +137,7 @@ void SColourImageMasking::configuring()
 void SColourImageMasking::starting()
 {
     using namespace sight::filter::vision;
-    m_masker = std::make_unique< Masker >(HSv, LLRatio);
+    m_masker = std::make_unique<Masker>(HSv, LLRatio);
     m_masker->setThreshold(1.);
 
     m_lastVideoTimestamp = 0.;
@@ -146,14 +149,14 @@ void SColourImageMasking::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SColourImageMasking::getAutoConnections() const
 {
     KeyConnectionsMap connections;
 
-    connections.push( s_VIDEO_TL_KEY, data::FrameTL::s_OBJECT_PUSHED_SIG, s_UPDATE_SLOT );
-    connections.push( s_VIDEO_TL_KEY, data::FrameTL::s_CLEARED_SIG, s_CLEAR_MASKTL_SLOT );
+    connections.push(s_VIDEO_TL_KEY, data::FrameTL::s_OBJECT_PUSHED_SIG, s_UPDATE_SLOT);
+    connections.push(s_VIDEO_TL_KEY, data::FrameTL::s_CLEARED_SIG, s_CLEAR_MASKTL_SLOT);
 
     return connections;
 }
@@ -164,25 +167,27 @@ void SColourImageMasking::updating()
 {
     if(m_masker->isModelLearned())
     {
-        const auto mask    = this->getLockedInput< data::Image >(s_MASK_KEY);
-        const auto videoTL = this->getLockedInput< data::FrameTL >(s_VIDEO_TL_KEY);
-        auto videoMaskTL   = this->getLockedInOut< data::FrameTL >(s_VIDEO_MASK_TL_KEY);
+        const auto mask    = this->getLockedInput<data::Image>(s_MASK_KEY);
+        const auto videoTL = this->getLockedInput<data::FrameTL>(s_VIDEO_TL_KEY);
+        auto videoMaskTL   = this->getLockedInOut<data::FrameTL>(s_VIDEO_MASK_TL_KEY);
 
         // Sanity checks
         SIGHT_ASSERT("Missing input '" << s_MASK_KEY << "'.", mask);
         SIGHT_ASSERT("Missing input '" << s_VIDEO_TL_KEY << "'.", videoTL);
         SIGHT_ASSERT("Missing inout '" << s_VIDEO_MASK_TL_KEY << "'.", videoMaskTL);
         const auto maskSize = mask->getSize2();
+
         if(maskSize[0] != videoTL->getWidth() || maskSize[1] != videoTL->getHeight())
         {
-            SIGHT_ERROR("Reference mask (" << maskSize[0] << ", " << maskSize[1]
-                                           << ") has different size as the video timeline (" << videoTL->getWidth() << ", "
-                                           << videoTL->getHeight() << ").");
+            SIGHT_ERROR(
+                "Reference mask (" << maskSize[0] << ", " << maskSize[1]
+                                   << ") has different size as the video timeline (" << videoTL->getWidth() << ", "
+                                   << videoTL->getHeight() << ").");
         }
 
         // This service can take a while to run, this blocker skips frames that arrive while we're already processing
         // one
-        auto sig_ = videoTL->signal< data::FrameTL::ObjectPushedSignalType>(
+        auto sig_ = videoTL->signal<data::FrameTL::ObjectPushedSignalType>(
             data::FrameTL::s_OBJECT_PUSHED_SIG);
         core::com::Connection::Blocker blocker(sig_->getConnection(m_slotUpdate));
 
@@ -194,17 +199,21 @@ void SColourImageMasking::updating()
 
         if(!videoBuffer)
         {
-            SIGHT_ERROR("Buffer not found with timestamp "<< currentTimestamp);
+            SIGHT_ERROR("Buffer not found with timestamp " << currentTimestamp);
+
             return;
         }
 
         const std::uint8_t* frameBuffOutVideo = &videoBuffer->getElement(0);
 
         core::HiResClock::HiResClockType videoTimestamp = videoBuffer->getTimestamp();
+
         if(videoTimestamp <= m_lastVideoTimestamp)
         {
-            SIGHT_WARN("Dropping frame with timestamp " << videoTimestamp << " (previous frame had timestamp "
-                                                        << m_lastVideoTimestamp << ")");
+            SIGHT_WARN(
+                "Dropping frame with timestamp " << videoTimestamp << " (previous frame had timestamp "
+                                                 << m_lastVideoTimestamp << ")");
+
             return;
         }
 
@@ -217,7 +226,7 @@ void SColourImageMasking::updating()
 
         maskCV = (maskCV > 0);
 
-        //convert the data::FrameTL videoTL to an OpenCV image
+        // convert the data::FrameTL videoTL to an OpenCV image
         const ::cv::Mat videoCV = io::opencv::FrameTL::moveToCv(videoTL.get_shared(), frameBuffOutVideo);
 
         // Create image mask to put inside the timeline
@@ -235,7 +244,7 @@ void SColourImageMasking::updating()
         // Push the mask object in the timeline
         videoMaskTL->pushObject(maskBuffer);
 
-        auto sig = videoMaskTL->signal< data::TimeLine::ObjectPushedSignalType >(
+        auto sig = videoMaskTL->signal<data::TimeLine::ObjectPushedSignalType>(
             data::TimeLine::s_OBJECT_PUSHED_SIG);
         sig->asyncEmit(currentTimestamp);
     }
@@ -245,19 +254,22 @@ void SColourImageMasking::updating()
 
 void SColourImageMasking::setBackground()
 {
-    const auto mask    = this->getLockedInput< data::Image >(s_MASK_KEY);
-    const auto videoTL = this->getLockedInput< data::FrameTL >(s_VIDEO_TL_KEY);
+    const auto mask    = this->getLockedInput<data::Image>(s_MASK_KEY);
+    const auto videoTL = this->getLockedInput<data::FrameTL>(s_VIDEO_TL_KEY);
 
     core::HiResClock::HiResClockType currentTimestamp = core::HiResClock::getTimeInMilliSec();
     CSPTR(data::FrameTL::BufferType) videoBuffer = videoTL->getClosestBuffer(currentTimestamp);
+
     if(!videoBuffer)
     {
         SIGHT_ERROR("Buffer not found with timestamp " << currentTimestamp);
+
         return;
     }
+
     const std::uint8_t* frameBuffOutVideo = &videoBuffer->getElement(0);
 
-    //convert the data::FrameTL videoTL to an OpenCV image
+    // convert the data::FrameTL videoTL to an OpenCV image
     const ::cv::Mat videoCV = io::opencv::FrameTL::moveToCv(videoTL.get_shared(), frameBuffOutVideo);
 
     // convert the data::Image mask to an OpenCV image
@@ -269,8 +281,9 @@ void SColourImageMasking::setBackground()
     maskCV = (maskCV > 0);
 
     // Save size to downscale the image (speed up the process but decrease segmentation quality)
-    m_maskDownsize = ::cv::Size(static_cast<int>(static_cast<float>(maskCV.size[1])*m_scaleFactor),
-                                static_cast<int>(static_cast<float>(maskCV.size[0])*m_scaleFactor));
+    m_maskDownsize = ::cv::Size(
+        static_cast<int>(static_cast<float>(maskCV.size[1]) * m_scaleFactor),
+        static_cast<int>(static_cast<float>(maskCV.size[0]) * m_scaleFactor));
 
     // Erode a little bit the mask to avoid the borders
     // Construct element type
@@ -278,9 +291,10 @@ void SColourImageMasking::setBackground()
     // Choose element size
     int elementErodeSize(1);
     // Construct erosion element
-    ::cv::Mat elementErode = ::cv::getStructuringElement(elementType,
-                                                         ::cv::Size(2*elementErodeSize+1, 2*elementErodeSize+1),
-                                                         ::cv::Point(elementErodeSize, elementErodeSize));
+    ::cv::Mat elementErode = ::cv::getStructuringElement(
+        elementType,
+        ::cv::Size(2 * elementErodeSize + 1, 2 * elementErodeSize + 1),
+        ::cv::Point(elementErodeSize, elementErodeSize));
     // Perform erosion
     ::cv::erode(maskCV, maskCV, elementErode);
 
@@ -288,7 +302,7 @@ void SColourImageMasking::setBackground()
     m_masker->trainBackgroundModel(videoCV, maskCV, m_backgroundComponents);
 
     // Initialize the mask timeline
-    auto videoMaskTL = this->getLockedInOut< data::FrameTL >(s_VIDEO_MASK_TL_KEY);
+    auto videoMaskTL = this->getLockedInOut<data::FrameTL>(s_VIDEO_MASK_TL_KEY);
     videoMaskTL->initPoolSize(videoTL->getWidth(), videoTL->getHeight(), core::tools::Type::s_UINT8, 4);
 }
 
@@ -296,18 +310,21 @@ void SColourImageMasking::setBackground()
 
 void SColourImageMasking::setForeground()
 {
-    const auto videoTL = this->getLockedInput< data::FrameTL >(s_VIDEO_TL_KEY);
+    const auto videoTL = this->getLockedInput<data::FrameTL>(s_VIDEO_TL_KEY);
 
     core::HiResClock::HiResClockType currentTimestamp = core::HiResClock::getTimeInMilliSec();
     CSPTR(data::FrameTL::BufferType) videoBuffer = videoTL->getClosestBuffer(currentTimestamp);
+
     if(!videoBuffer)
     {
-        SIGHT_ERROR("Buffer not found with timestamp "<< currentTimestamp);
+        SIGHT_ERROR("Buffer not found with timestamp " << currentTimestamp);
+
         return;
     }
+
     const std::uint8_t* frameBuffOutVideo = &videoBuffer->getElement(0);
 
-    //convert mask to an OpenCV image:
+    // convert mask to an OpenCV image:
     ::cv::Mat videoCV = io::opencv::FrameTL::moveToCv(videoTL.get_shared(), frameBuffOutVideo);
 
     // Convert RGB to HSV
@@ -326,9 +343,10 @@ void SColourImageMasking::setForeground()
     // Choose element size
     int elementErodeSize(2);
     // Construct erosion element
-    ::cv::Mat elementErode = ::cv::getStructuringElement(elementType,
-                                                         ::cv::Size(2*elementErodeSize+1, 2*elementErodeSize+1),
-                                                         ::cv::Point(elementErodeSize, elementErodeSize));
+    ::cv::Mat elementErode = ::cv::getStructuringElement(
+        elementType,
+        ::cv::Size(2 * elementErodeSize + 1, 2 * elementErodeSize + 1),
+        ::cv::Point(elementErodeSize, elementErodeSize));
     // Perform erosion
     ::cv::erode(foregroundMask, openForegroundMask, elementErode);
 
@@ -371,10 +389,10 @@ void SColourImageMasking::setForegroundComponents(int fgComponents)
 
 void SColourImageMasking::clearMaskTL()
 {
-    auto videoMaskTL = this->getLockedInOut< data::FrameTL >(s_VIDEO_MASK_TL_KEY);
+    auto videoMaskTL = this->getLockedInOut<data::FrameTL>(s_VIDEO_MASK_TL_KEY);
     videoMaskTL->clearTimeline();
-    auto sigTLCleared = videoMaskTL->signal< data::FrameTL::ObjectClearedSignalType >(
-        data::FrameTL::s_CLEARED_SIG );
+    auto sigTLCleared = videoMaskTL->signal<data::FrameTL::ObjectClearedSignalType>(
+        data::FrameTL::s_CLEARED_SIG);
     sigTLCleared->asyncEmit();
     m_lastVideoTimestamp = 0.;
 }

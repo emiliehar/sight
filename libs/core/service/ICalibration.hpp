@@ -28,6 +28,7 @@
 
 namespace sight::service
 {
+
 /**
  * @brief   ICalibration is an interface API for calibration services.
  */

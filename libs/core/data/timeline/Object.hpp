@@ -49,7 +49,7 @@ public:
     DATA_API virtual ~Object();
 
     /// Define deep copy
-    DATA_API virtual void deepCopy( const Object& _source );
+    DATA_API virtual void deepCopy(const Object& _source);
 
     /// Return timestamp
     core::HiResClock::HiResClockType getTimestamp() const
@@ -58,7 +58,6 @@ public:
     }
 
 protected:
-
     /// Timestamp
     core::HiResClock::HiResClockType m_timestamp;
 };

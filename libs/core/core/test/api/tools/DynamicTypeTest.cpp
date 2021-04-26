@@ -25,28 +25,29 @@
 #include <core/tools/DynamicType.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::tools::ut::DynamicTypeTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::tools::ut::DynamicTypeTest);
 
 namespace sight::core::tools
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DynamicTypeTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DynamicTypeTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DynamicTypeTest::typeTest()
 {
@@ -57,8 +58,9 @@ void DynamicTypeTest::typeTest()
 
     CPPUNIT_ASSERT(type1.isType<int>());
     CPPUNIT_ASSERT(type2.isType<double>());
-    CPPUNIT_ASSERT_EQUAL(type2.string(), TYPE );
+    CPPUNIT_ASSERT_EQUAL(type2.string(), TYPE);
 }
 
 } // namespace ut
+
 } // namespace sight::core::tools

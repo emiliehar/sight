@@ -26,12 +26,13 @@
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 class CalibrationInfoTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( CalibrationInfoTest );
+CPPUNIT_TEST_SUITE(CalibrationInfoTest);
 CPPUNIT_TEST(calibrationInfoTest);
 CPPUNIT_TEST_SUITE_END();
 
@@ -45,5 +46,6 @@ public:
     void deepCopyTest();
 };
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

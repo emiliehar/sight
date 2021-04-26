@@ -34,28 +34,29 @@
 #include <random>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::geometry::data::ut::PointListTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::geometry::data::ut::PointListTest);
 
 namespace sight::geometry::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointListTest::setUp()
 {
     // Set up context before running a test.
-
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void PointListTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointListTest::computeDistance()
 {
@@ -85,7 +86,7 @@ void PointListTest::computeDistance()
         // Build 2 pointlists:
         // The first one with increasing x values
         // And the second one with inscreasing x values but shifted in y
-        for(size_t i = 0; i < nbPoints; i++)
+        for(size_t i = 0 ; i < nbPoints ; i++)
         {
             p = sight::data::Point::New(static_cast<float>(i), 0.0f, 0.0f);
             pl1->pushBack(p);
@@ -100,7 +101,7 @@ void PointListTest::computeDistance()
         const auto dumpLock   = outputArray->lock();
         auto distanceArrayItr = outputArray->begin<double>();
 
-        for(size_t i = 0; i < nbPoints; i++, ++distanceArrayItr)
+        for(size_t i = 0 ; i < nbPoints ; i++, ++distanceArrayItr)
         {
             CPPUNIT_ASSERT_DOUBLES_EQUAL(*distanceArrayItr, 1.0, 1e-8);
         }
@@ -114,7 +115,7 @@ void PointListTest::computeDistance()
         // Build 2 point lists:
         // The first one with increasing x values
         // And the second one with increasing x values but shifted in y
-        for(size_t i = 0; i < nbPoints; i++)
+        for(size_t i = 0 ; i < nbPoints ; i++)
         {
             p = sight::data::Point::New(static_cast<float>(i), 0.0f, 0.0f);
             pl1->pushBack(p);
@@ -129,14 +130,14 @@ void PointListTest::computeDistance()
 
         auto distanceArrayItr = outputArray->begin<double>();
 
-        for(size_t i = 0; i < nbPoints; i++, ++distanceArrayItr)
+        for(size_t i = 0 ; i < nbPoints ; i++, ++distanceArrayItr)
         {
             CPPUNIT_ASSERT_DOUBLES_EQUAL(*distanceArrayItr, static_cast<double>(i), 1e-8);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointListTest::transform()
 {
@@ -159,7 +160,8 @@ void PointListTest::transform()
         const size_t size                                        = points1.size();
 
         sight::data::PointList::sptr pl2 = sight::data::PointList::New();
-        for(size_t i = 0; i < size; i++)
+
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp = points1[i]->getCoord();
             pl2->pushBack(sight::data::Point::New(tmp[0], tmp[1], tmp[2]));
@@ -169,7 +171,8 @@ void PointListTest::transform()
         geometry::data::PointList::transform(pl1, tf1);
 
         const sight::data::PointList::PointListContainer points2 = pl2->getPoints();
-        for(size_t i = 0; i < size; i++)
+
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp1 = points1[i]->getCoord();
             const sight::data::Point::PointCoordArrayType tmp2 = points2[i]->getCoord();
@@ -182,7 +185,6 @@ void PointListTest::transform()
 
     // Simple test with translation
     {
-
         std::vector<float> translation(3, 0.0f);
         translation[0] = 8.0;
         translation[1] = 16.0;
@@ -205,11 +207,15 @@ void PointListTest::transform()
         const size_t size                                        = points1.size();
 
         sight::data::PointList::sptr pl2 = sight::data::PointList::New();
-        for(size_t i = 0; i < size; i++)
+
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp = points1[i]->getCoord();
-            pl2->pushBack(sight::data::Point::New(tmp[0] + translation[0], tmp[1] + translation[1],
-                                                  tmp[2] + translation[2]));
+            pl2->pushBack(
+                sight::data::Point::New(
+                    tmp[0] + translation[0],
+                    tmp[1] + translation[1],
+                    tmp[2] + translation[2]));
         }
 
         const auto tf1 = sight::data::Matrix4::New();
@@ -219,7 +225,8 @@ void PointListTest::transform()
         geometry::data::PointList::transform(pl1, tf1);
 
         const sight::data::PointList::PointListContainer points2 = pl2->getPoints();
-        for(size_t i = 0; i < size; i++)
+
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp1 = points1[i]->getCoord();
             const sight::data::Point::PointCoordArrayType tmp2 = points2[i]->getCoord();
@@ -267,7 +274,7 @@ void PointListTest::transform()
         size_t size                                              = points1.size();
         const sight::data::PointList::PointListContainer points2 = pl2->getPoints();
 
-        for(size_t i = 0; i < size; i++)
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp1 = points1[i]->getCoord();
             const sight::data::Point::PointCoordArrayType tmp2 = points2[i]->getCoord();
@@ -279,7 +286,7 @@ void PointListTest::transform()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointListTest::associate()
 {
@@ -309,7 +316,7 @@ void PointListTest::associate()
         pl2 = sight::data::PointList::New();
 
         // Build 2 point lists with the same points, the point are in the inverse order in the second list
-        for(size_t i = 0; i <= nbPoints; i++)
+        for(size_t i = 0 ; i <= nbPoints ; i++)
         {
             p = sight::data::Point::New(static_cast<float>(i), 0.0f, 0.0f);
             pl1->pushBack(p);
@@ -338,7 +345,7 @@ void PointListTest::associate()
 
         const size_t size = points1.size();
 
-        for(size_t i = 0; i < size; i++)
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp1 = points1[i]->getCoord();
             const sight::data::Point::PointCoordArrayType tmp2 = points2[i]->getCoord();
@@ -403,22 +410,21 @@ void PointListTest::associate()
         const size_t size      = points1.size();
         const int nbComponents = 3;
 
-        for(size_t i = 0; i < size; i++)
+        for(size_t i = 0 ; i < size ; i++)
         {
             const sight::data::Point::PointCoordArrayType tmp1 = points1[i]->getCoord();
             const sight::data::Point::PointCoordArrayType tmp2 = points2[i]->getCoord();
 
             // Compare the components
-            for(int j = 0; j < nbComponents; j++)
+            for(int j = 0 ; j < nbComponents ; j++)
             {
                 CPPUNIT_ASSERT_DOUBLES_EQUAL(tmp1[j], tmp2[j], 1e-5);
             }
         }
-
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointListTest::removeClosestPointNominal()
 {
@@ -426,40 +432,48 @@ void PointListTest::removeClosestPointNominal()
     sight::data::PointList::sptr pl = sight::data::PointList::New();
 
     // Remove points in an empty list
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p =
-            sight::data::Point::New(static_cast< float >(i), static_cast< float >(i), static_cast< float >(i));
-        CPPUNIT_ASSERT( geometry::data::PointList::removeClosestPoint(pl, p,
-                                                                      std::numeric_limits<float>::min()) ==
-                        nullptr );
+        const auto p
+            = sight::data::Point::New(static_cast<float>(i), static_cast<float>(i), static_cast<float>(i));
+        CPPUNIT_ASSERT(
+            geometry::data::PointList::removeClosestPoint(
+                pl,
+                p,
+                std::numeric_limits<float>::min())
+            == nullptr);
     }
 
     // Build a list
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p =
-            sight::data::Point::New(static_cast< float >(i), static_cast< float >(i), static_cast< float >(i));
+        const auto p
+            = sight::data::Point::New(static_cast<float>(i), static_cast<float>(i), static_cast<float>(i));
         pl->pushBack(p);
     }
 
     // Remove points with an unmatched delta
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p = sight::data::Point::New(static_cast< float >(nbPoints+1), static_cast< float >(nbPoints+1),
-                                               static_cast< float >(nbPoints+1));
-        CPPUNIT_ASSERT( geometry::data::PointList::removeClosestPoint(pl, p,
-                                                                      std::numeric_limits<float>::min()) ==
-                        nullptr );
+        const auto p = sight::data::Point::New(
+            static_cast<float>(nbPoints + 1),
+            static_cast<float>(nbPoints + 1),
+            static_cast<float>(nbPoints + 1));
+        CPPUNIT_ASSERT(
+            geometry::data::PointList::removeClosestPoint(
+                pl,
+                p,
+                std::numeric_limits<float>::min())
+            == nullptr);
     }
 
     // Remove points
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p =
-            sight::data::Point::New(static_cast< float >(i), static_cast< float >(i), static_cast< float >(i));
-        const auto pRes =
-            geometry::data::PointList::removeClosestPoint(pl, p, std::numeric_limits<float>::max());
+        const auto p
+            = sight::data::Point::New(static_cast<float>(i), static_cast<float>(i), static_cast<float>(i));
+        const auto pRes
+            = geometry::data::PointList::removeClosestPoint(pl, p, std::numeric_limits<float>::max());
         CPPUNIT_ASSERT(pRes != nullptr);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(pRes->getCoord()[0], p->getCoord()[0], std::numeric_limits<float>::min());
         CPPUNIT_ASSERT_DOUBLES_EQUAL(pRes->getCoord()[1], p->getCoord()[1], std::numeric_limits<float>::min());
@@ -467,7 +481,7 @@ void PointListTest::removeClosestPointNominal()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PointListTest::removeClosestPointExtreme()
 {
@@ -475,30 +489,33 @@ void PointListTest::removeClosestPointExtreme()
     sight::data::PointList::sptr pl = sight::data::PointList::New();
 
     // Build a list
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p =
-            sight::data::Point::New(static_cast< float >(i), static_cast< float >(i), static_cast< float >(i));
+        const auto p
+            = sight::data::Point::New(static_cast<float>(i), static_cast<float>(i), static_cast<float>(i));
         pl->pushBack(p);
     }
 
     // Remove points with negative delta
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p =
-            sight::data::Point::New(static_cast< float >(i), static_cast< float >(i), static_cast< float >(i));
-        CPPUNIT_ASSERT(geometry::data::PointList::removeClosestPoint(pl, p,
-                                                                     -std::numeric_limits<float>::max()) ==
-                       nullptr);
+        const auto p
+            = sight::data::Point::New(static_cast<float>(i), static_cast<float>(i), static_cast<float>(i));
+        CPPUNIT_ASSERT(
+            geometry::data::PointList::removeClosestPoint(
+                pl,
+                p,
+                -std::numeric_limits<float>::max())
+            == nullptr);
     }
 
     // Remove points with biggest delta
-    for(size_t i = 0; i < nbPoints; ++i)
+    for(size_t i = 0 ; i < nbPoints ; ++i)
     {
-        const auto p =
-            sight::data::Point::New(static_cast< float >(i), static_cast< float >(i), static_cast< float >(i));
-        const auto pRes =
-            geometry::data::PointList::removeClosestPoint(pl, p, std::numeric_limits<float>::max());
+        const auto p
+            = sight::data::Point::New(static_cast<float>(i), static_cast<float>(i), static_cast<float>(i));
+        const auto pRes
+            = geometry::data::PointList::removeClosestPoint(pl, p, std::numeric_limits<float>::max());
         CPPUNIT_ASSERT(pRes != nullptr);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(pRes->getCoord()[0], p->getCoord()[0], i + std::numeric_limits<float>::max());
         CPPUNIT_ASSERT_DOUBLES_EQUAL(pRes->getCoord()[1], p->getCoord()[1], i + std::numeric_limits<float>::max());
@@ -506,5 +523,6 @@ void PointListTest::removeClosestPointExtreme()
     }
 }
 
-} //namespace ut
-} //namespace sight::geometry::data
+} // namespace ut
+
+} // namespace sight::geometry::data

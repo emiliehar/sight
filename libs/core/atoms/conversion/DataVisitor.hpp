@@ -32,12 +32,16 @@
 
 namespace sight::atoms
 {
+
 class Object;
+
 }
 
 namespace sight::data
 {
+
 class Object;
+
 }
 
 namespace sight::atoms::conversion
@@ -50,10 +54,8 @@ namespace sight::atoms::conversion
  */
 class ATOMS_CLASS_API DataVisitor : public ::camp::ExtendedClassVisitor
 {
-
 public:
-
-    typedef std::map< std::string, SPTR(atoms::Object) > AtomCacheType;
+    typedef std::map<std::string, SPTR(atoms::Object)> AtomCacheType;
 
     typedef std::string ClassnameType;
 
@@ -101,7 +103,6 @@ public:
     ATOMS_API SPTR(atoms::Object) getAtomObject() const;
 
 private:
-
     /// Reflection in camp world of m_dataObj
     ::camp::UserObject m_campDataObj;
 

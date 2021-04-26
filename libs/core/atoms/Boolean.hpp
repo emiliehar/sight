@@ -38,7 +38,7 @@ namespace sight::atoms
 class ATOMS_CLASS_API Boolean : public Base
 {
 public:
-    SIGHT_DECLARE_CLASS(Boolean, atoms::Base, atoms::factory::New< Boolean >)
+    SIGHT_DECLARE_CLASS(Boolean, atoms::Base, atoms::factory::New<Boolean>)
 
     /**
      * @brief Constructor
@@ -87,7 +87,7 @@ public:
         return atoms::Base::BOOLEAN;
     }
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     bool getValue() const
     {
@@ -95,7 +95,6 @@ public:
     }
 
 protected:
-
     /**
      * @brief Construct an object storing a bool value
      * @param value the boolena value.

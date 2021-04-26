@@ -31,6 +31,7 @@
 
 namespace sight::module::viz::scene2d
 {
+
 namespace adaptor
 {
 
@@ -66,9 +67,7 @@ namespace adaptor
  */
 class SHistogramValue : public sight::viz::scene2d::IAdaptor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SHistogramValue, ::sight::viz::scene2d::IAdaptor)
 
     /// Creates the adaptor.
@@ -78,7 +77,6 @@ public:
     MODULE_VIZ_SCENE2D_API virtual ~SHistogramValue() noexcept;
 
 private:
-
     /// Configures the adaptor.
     void configuring() override;
 
@@ -106,7 +104,7 @@ private:
      * @brief Filters the event to call the right methods from mouse informations.
      * @param _event the 2D scene event.
      */
-    void processInteraction(sight::viz::scene2d::data::Event& _event ) override;
+    void processInteraction(sight::viz::scene2d::data::Event& _event) override;
 
     /// Defines the color used for graphic item's inner color.
     QPen m_color;
@@ -128,8 +126,8 @@ private:
 
     /// Stores the main layer.
     QGraphicsItemGroup* m_layer;
-
 };
 
-}   // namespace adaptor
-}   // namespace sight::module::viz::scene2d
+} // namespace adaptor
+
+} // namespace sight::module::viz::scene2d

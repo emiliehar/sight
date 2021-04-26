@@ -24,6 +24,7 @@
 
 namespace sight::ui::base
 {
+
 /**
  * @brief       The namespace ui::base::layoutManager contains the implementation of managers use to handle the GUI
  * layout
@@ -33,4 +34,5 @@ namespace layoutManager
 {
 
 }
+
 }

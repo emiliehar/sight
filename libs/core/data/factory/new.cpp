@@ -35,9 +35,9 @@ namespace sight::data
 namespace factory
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-data::Object::sptr New( const data::registry::KeyType& _classname )
+data::Object::sptr New(const data::registry::KeyType& _classname)
 {
     SIGHT_ASSERT("A classname must be specified", !_classname.empty());
 
@@ -51,15 +51,18 @@ data::Object::sptr New( const data::registry::KeyType& _classname )
     {
         std::smatch match;
         static const std::regex reg("(\\w*)::(?:(core|filter|geometry|io|navigation|ui|viz)::)?(\\w*)::.*");
-        if( std::regex_match(classname, match, reg ) && match.size() >= 3)
+
+        if(std::regex_match(classname, match, reg) && match.size() >= 3)
         {
-            const std::string libname = match[1].str() + '_' + (match[2].length() ? (match[2].str() + "_") : "") +
-                                        match[3].str();
+            const std::string libname = match[1].str() + '_' + (match[2].length() ? (match[2].str() + "_") : "")
+                                        + match[3].str();
             SIGHT_DEBUG("libname: " + libname);
             const bool loaded = core::runtime::loadLibrary(libname);
+
             if(!loaded)
             {
                 SIGHT_THROW("Cannot load library for data '" + classname + "'");
+
                 return nullptr;
             }
         }
@@ -67,6 +70,7 @@ data::Object::sptr New( const data::registry::KeyType& _classname )
         {
             SIGHT_THROW("Cannot determine library name from data '" + classname + "'");
         }
+
         // 3. Re-try now that the library is loaded
         data = data::registry::get()->create(classname);
     }

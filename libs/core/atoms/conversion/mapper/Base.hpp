@@ -31,15 +31,20 @@
 
 namespace sight::atoms
 {
+
 class Object;
+
 }
 namespace sight::data
 {
+
 class Object;
+
 }
 
 namespace sight::atoms::conversion
 {
+
 namespace mapper
 {
 
@@ -47,13 +52,12 @@ namespace mapper
 class ATOMS_CLASS_API Base
 {
 public:
-
     /**
      * @brief Class used to register a class factory in factory registry.
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -75,8 +79,9 @@ public:
      * @param object data to convert
      * @param cache  cache to register the data already converted, used when a data is referenced multiple times.
      */
-    ATOMS_API virtual SPTR(atoms::Object) convert(SPTR(data::Object) object,
-                                                  DataVisitor::AtomCacheType& cache) = 0;
+    ATOMS_API virtual SPTR(atoms::Object) convert(
+        SPTR(data::Object) object,
+        DataVisitor::AtomCacheType& cache) = 0;
 
     /**
      * @brief Convert a atoms::Object to a data::Object.
@@ -84,12 +89,13 @@ public:
      * @param cache  cache to register the atoms already converted, used when an atom is referenced multiple times.
      * @param uuidPolicy AtomVisitor's policy
      */
-    ATOMS_API virtual SPTR(data::Object) convert(SPTR(atoms::Object) atom,
-                                                 AtomVisitor::DataCacheType& cache,
-                                                 const AtomVisitor::IReadPolicy& uuidPolicy
-                                                 ) = 0;
-
+    ATOMS_API virtual SPTR(data::Object) convert(
+        SPTR(atoms::Object) atom,
+        AtomVisitor::DataCacheType& cache,
+        const AtomVisitor::IReadPolicy& uuidPolicy
+        ) = 0;
 };
 
 }
+
 }

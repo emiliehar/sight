@@ -85,9 +85,7 @@ namespace sight::module::io::matrix
 
 class MODULE_IO_MATRIX_CLASS_API SMatricesReader : public sight::io::base::service::IReader
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SMatricesReader, sight::io::base::service::IReader)
 
     /// Constructor.
@@ -114,14 +112,13 @@ public:
      */
     struct TimeStampedMatrices
     {
-        ///timestamp
+        /// timestamp
         core::HiResClock::HiResClockType timestamp;
-        ///vector of matrices (std::array<float, 16>).
-        std::vector< std::array< float, 16 > > matrices;
+        /// vector of matrices (std::array<float, 16>).
+        std::vector<std::array<float, 16> > matrices;
     };
 
 protected:
-
     /// Does nothing
     MODULE_IO_MATRIX_API void configuring() override;
 
@@ -135,7 +132,6 @@ protected:
     MODULE_IO_MATRIX_API void updating() override;
 
 private:
-
     /// SLOT: Read previous TimeStamped matrices
     void readPrevious();
     /// SLOT: Read next TimeStamped matrices
@@ -156,11 +152,11 @@ private:
     /// Read matrices (this function is set to the worker)
     void readMatrices();
 
-    bool m_isPlaying; ///<flag if the service is playing.
+    bool m_isPlaying; ///< flag if the service is playing.
 
-    std::ifstream* m_filestream;///< input filestream
+    std::ifstream* m_filestream; ///< input filestream
 
-    std::vector< TimeStampedMatrices > m_tsMatrices;///< vector of TimeStampedMatrices read from csv file.
+    std::vector<TimeStampedMatrices> m_tsMatrices; ///< vector of TimeStampedMatrices read from csv file.
 
     core::thread::Timer::sptr m_timer; ///< Timer to call readMatrices at constant framerate
 

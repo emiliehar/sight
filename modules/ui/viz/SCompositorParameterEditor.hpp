@@ -48,9 +48,7 @@ namespace sight::module::ui::viz
  */
 class MODULE_UI_VIZ_CLASS_API SCompositorParameterEditor : public sight::ui::base::IEditor
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SCompositorParameterEditor, sight::ui::base::IEditor)
 
     /// Constructor.
@@ -65,10 +63,9 @@ public:
      */
     /// Slot: update the interface.
     MODULE_UI_VIZ_API static const core::com::Slots::SlotKeyType s_UPDATE_COMPOSITOR_SLOT;
-    /** @} */
+/** @} */
 
 protected:
-
     /// Configure the editor to associate with each object type
     MODULE_UI_VIZ_API void configuring() override;
 

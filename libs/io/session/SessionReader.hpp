@@ -37,10 +37,8 @@ class IO_SESSION_CLASS_API SessionReader final :
     public core::location::SingleFile
 {
 public:
-
-    SIGHT_DECLARE_CLASS(SessionReader, base::reader::IObjectReader, base::reader::factory::New< SessionReader >)
+    SIGHT_DECLARE_CLASS(SessionReader, base::reader::IObjectReader, base::reader::factory::New<SessionReader>)
     SIGHT_ALLOW_SHARED_FROM_THIS()
-
     /// Delete default constructors and assignment operators
     SessionReader()                                = delete;
     SessionReader(const SessionReader&)            = delete;
@@ -65,7 +63,6 @@ public:
     IO_SESSION_API void setPassword(const core::crypto::secure_string& password);
 
 private:
-
     /// PImpl
     class SessionReaderImpl;
     std::unique_ptr<SessionReaderImpl> m_pimpl;

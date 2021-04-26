@@ -32,7 +32,7 @@ namespace sight::core::com
 namespace exception
 {
 
-AlreadyConnected::AlreadyConnected ( const std::string& err ) :
+AlreadyConnected::AlreadyConnected(const std::string& err) :
     core::Exception(err)
 {
 }

@@ -25,26 +25,29 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 StringDeserializer::sptr StringDeserializer::shared()
 {
     struct make_shared_enabler final : public StringDeserializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 StringDeserializer::uptr StringDeserializer::unique()
 {
     struct make_unique_enabler final : public StringDeserializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr StringDeserializer::deserialize(
     const zip::ArchiveReader::sptr& archive,
@@ -65,7 +68,7 @@ sight::data::Object::sptr StringDeserializer::deserialize(
     return string;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::data::Object::sptr StringDeserializer::create()
 {
@@ -74,4 +77,5 @@ sight::data::Object::sptr StringDeserializer::create()
 }
 
 } // detail::data
+
 } // namespace sight::io::session

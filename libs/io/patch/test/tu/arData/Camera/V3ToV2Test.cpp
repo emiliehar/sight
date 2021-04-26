@@ -37,33 +37,37 @@
 #include <io/patch/structural/data/Camera/V3ToV2.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::io::patch::structural::ut::data::Camera::V3ToV2Test );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::patch::structural::ut::data::Camera::V3ToV2Test);
 
 namespace sight::io::patch::structural
 {
+
 namespace ut
 {
+
 namespace data
 {
+
 namespace Camera
 {
+
 // force link for log
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V3ToV2Test::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V3ToV2Test::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void V3ToV2Test::applyPatchTest()
 {
@@ -104,8 +108,8 @@ void V3ToV2Test::applyPatchTest()
 
     CPPUNIT_ASSERT(camObjV2);
     CPPUNIT_ASSERT(camObjV2->getAttribute("intrinsic"));
-    sight::atoms::Sequence::sptr intrinsicParam2 =
-        sight::atoms::Sequence::dynamicCast(camObjV2->getAttribute("intrinsic"));
+    sight::atoms::Sequence::sptr intrinsicParam2
+        = sight::atoms::Sequence::dynamicCast(camObjV2->getAttribute("intrinsic"));
     CPPUNIT_ASSERT_EQUAL(size_t(4), intrinsicParam2->size());
     CPPUNIT_ASSERT(camObjV3->getAttribute("width"));
     CPPUNIT_ASSERT_EQUAL(std::string("1920"), camObjV3->getAttribute("width")->getString());
@@ -124,9 +128,12 @@ void V3ToV2Test::applyPatchTest()
     CPPUNIT_ASSERT(!camObjV2->getAttribute("scale"));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace Camera
-} //namespace data
-} //namespace ut
-} //namespace sight::io::patch::structural
+} // namespace Camera
+
+} // namespace data
+
+} // namespace ut
+
+} // namespace sight::io::patch::structural

@@ -31,10 +31,11 @@
 
 namespace sight::ui::dicom
 {
+
 namespace widget
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QTagSelectorWidget::QTagSelectorWidget(QWidget* parent) :
     QWidget(parent)
@@ -72,7 +73,7 @@ QTagSelectorWidget::QTagSelectorWidget(QWidget* parent) :
     QObject::connect(m_elementSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateTagName(int)));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QTagSelectorWidget::~QTagSelectorWidget()
 {
@@ -81,7 +82,7 @@ QTagSelectorWidget::~QTagSelectorWidget()
     QObject::disconnect(m_elementSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateTagName(int)));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QTagSelectorWidget::updateTagName(int value)
 {
@@ -90,7 +91,7 @@ void QTagSelectorWidget::updateTagName(int value)
     m_tagNameLabel->setText(text.c_str());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QTagSelectorWidget::setTagValue(const DcmTagKey& tag)
 {
@@ -99,7 +100,7 @@ void QTagSelectorWidget::setTagValue(const DcmTagKey& tag)
     this->updateTagName();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 DcmTagKey QTagSelectorWidget::getTag()
 {
@@ -107,4 +108,5 @@ DcmTagKey QTagSelectorWidget::getTag()
 }
 
 } // namespace widget
+
 } // namespace sight::ui::dicom

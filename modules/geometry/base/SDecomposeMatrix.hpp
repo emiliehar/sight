@@ -54,9 +54,7 @@ namespace sight::module::geometry::base
  */
 class MODULE_GEOMETRY_BASE_CLASS_API SDecomposeMatrix : public service::IOperator
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(SDecomposeMatrix, ::sight::service::IOperator)
 
     /**
@@ -72,7 +70,6 @@ public:
     }
 
 protected:
-
     /// This method is used to configure the service.
     MODULE_GEOMETRY_BASE_API void configuring() override;
 
@@ -94,4 +91,4 @@ protected:
     MODULE_GEOMETRY_BASE_API KeyConnectionsMap getAutoConnections() const override;
 };
 
-} //namespace sight::module::geometry::base
+} // namespace sight::module::geometry::base

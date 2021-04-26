@@ -36,9 +36,7 @@ namespace sight::ui::base
  */
 class UI_BASE_CLASS_API GuiBaseObject : public ::sight::core::BaseObject
 {
-
 public:
-
     typedef ::sight::ui::base::factory::Key Key;
 
     /**
@@ -47,7 +45,7 @@ public:
      *
      * @tparam T Factory product type
      */
-    template <typename T>
+    template<typename T>
     class Registry
     {
     public:
@@ -67,12 +65,12 @@ protected:
     GuiBaseObject()
     {
     }
+
     virtual ~GuiBaseObject()
     {
     }
 
     /**  @} */
-
 };
 
 } // namespace sight::ui::base

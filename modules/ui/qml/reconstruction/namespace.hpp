@@ -24,8 +24,9 @@
 
 /**
  * @brief The namespace sight::module::ui::qml::reconstruction contains several editors using Qml related on
- *reconstruction.
+ * reconstruction.
  */
 namespace sight::module::ui::qml::reconstruction
 {
+
 }

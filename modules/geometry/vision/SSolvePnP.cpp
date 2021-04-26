@@ -43,17 +43,17 @@ const service::IService::KeyType s_POINTLIST2D_INPUT = "pointList2d";
 const service::IService::KeyType s_POINTLIST3D_INPUT = "pointList3d";
 const service::IService::KeyType s_MATRIX_INOUT      = "matrix";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSolvePnP::SSolvePnP() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSolvePnP::computeRegistration(core::HiResClock::HiResClockType)
 {
-    const auto camera = this->getLockedInput< data::Camera > (s_CALIBRATION_INPUT);
+    const auto camera = this->getLockedInput<data::Camera>(s_CALIBRATION_INPUT);
 
     if(!camera->getIsCalibrated())
     {
@@ -61,35 +61,36 @@ void SSolvePnP::computeRegistration(core::HiResClock::HiResClockType)
     }
 
     Camera cvCamera;
-    std::tie(cvCamera.intrinsicMat, cvCamera.imageSize, cvCamera.distCoef) =
-        io::opencv::Camera::copyToCv(camera.get_shared());
+    std::tie(cvCamera.intrinsicMat, cvCamera.imageSize, cvCamera.distCoef)
+        = io::opencv::Camera::copyToCv(camera.get_shared());
 
-    //get points
-    std::vector< ::cv::Point2f > points2d;
-    std::vector< ::cv::Point3f > points3d;
+    // get points
+    std::vector< ::cv::Point2f> points2d;
+    std::vector< ::cv::Point3f> points3d;
 
-    const auto fwPoints2d = this->getLockedInput< data::PointList >(s_POINTLIST2D_INPUT);
+    const auto fwPoints2d = this->getLockedInput<data::PointList>(s_POINTLIST2D_INPUT);
 
-    const auto fwPoints3d = this->getLockedInput< data::PointList >(s_POINTLIST3D_INPUT);
+    const auto fwPoints3d = this->getLockedInput<data::PointList>(s_POINTLIST3D_INPUT);
 
-    auto fwMatrix = this->getLockedInOut< data::Matrix4 >(s_MATRIX_INOUT);
+    auto fwMatrix = this->getLockedInOut<data::Matrix4>(s_MATRIX_INOUT);
 
-    //points list should have same number of points
+    // points list should have same number of points
     if(fwPoints2d->getPoints().size() != fwPoints3d->getPoints().size())
     {
-        SIGHT_ERROR("'" + s_POINTLIST2D_INPUT + "' and '"
-                    + s_POINTLIST3D_INPUT + "' should have the same number of points");
+        SIGHT_ERROR(
+            "'" + s_POINTLIST2D_INPUT + "' and '"
+            + s_POINTLIST3D_INPUT + "' should have the same number of points");
 
         return;
     }
 
     const size_t numberOfPoints = fwPoints2d->getPoints().size();
 
-    const float cxcyShift[2] = {(static_cast< float >(camera->getWidth()) / 2.f ) - static_cast<float>(camera->getCx()),
-                                (static_cast< float >(camera->getHeight()) / 2.f ) -
-                                static_cast<float>(camera->getCy())};
+    const float cxcyShift[2] = {(static_cast<float>(camera->getWidth()) / 2.f) - static_cast<float>(camera->getCx()),
+                                (static_cast<float>(camera->getHeight()) / 2.f)
+                                - static_cast<float>(camera->getCy())};
 
-    for(size_t i = 0; i < numberOfPoints; ++i)
+    for(size_t i = 0 ; i < numberOfPoints ; ++i)
     {
         // 2d
         data::Point::csptr p2d = fwPoints2d->getPoints()[i];
@@ -109,13 +110,15 @@ void SSolvePnP::computeRegistration(core::HiResClock::HiResClockType)
         cvP3d.z = static_cast<float>(p3d->getCoord()[2]);
 
         points3d.push_back(cvP3d);
-
     }
 
     // call solvepnp
-    ::cv::Matx44f cvMat = sight::geometry::vision::helper::cameraPoseMonocular(points3d, points2d,
-                                                                               cvCamera.intrinsicMat,
-                                                                               cvCamera.distCoef);
+    ::cv::Matx44f cvMat = sight::geometry::vision::helper::cameraPoseMonocular(
+        points3d,
+        points2d,
+        cvCamera.intrinsicMat,
+        cvCamera.distCoef);
+
     // object pose
     if(m_reverseMatrix)
     {
@@ -127,34 +130,33 @@ void SSolvePnP::computeRegistration(core::HiResClock::HiResClockType)
 
     fwMatrix->deepCopy(matrix);
 
-    const auto sig = fwMatrix->signal< data::Matrix4::ModifiedSignalType >
-                         ( data::Matrix4::s_MODIFIED_SIG);
+    const auto sig = fwMatrix->signal<data::Matrix4::ModifiedSignalType>
+                         (data::Matrix4::s_MODIFIED_SIG);
     sig->asyncEmit();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSolvePnP::configuring()
 {
     const ConfigType config = this->getConfigTree().get_child("config.<xmlattr>");
 
-    m_reverseMatrix = config.get< bool >("inverse", false);
-
+    m_reverseMatrix = config.get<bool>("inverse", false);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSolvePnP::starting()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSolvePnP::stopping()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSolvePnP::updating()
 {
@@ -162,6 +164,6 @@ void SSolvePnP::updating()
     this->computeRegistration(0.);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::geometry::vision

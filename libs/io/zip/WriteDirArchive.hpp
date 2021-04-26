@@ -38,12 +38,10 @@ namespace sight::io::zip
  */
 class IO_ZIP_CLASS_API WriteDirArchive : public IWriteArchive
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(WriteDirArchive, IWriteArchive)
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
     static sptr New(const std::filesystem::path& archive)
     {
@@ -51,7 +49,7 @@ public:
     }
 
     /// Constructors. Initializes archive path and creates archive directories if doesn't exist.
-    IO_ZIP_API WriteDirArchive( const std::filesystem::path& archive );
+    IO_ZIP_API WriteDirArchive(const std::filesystem::path& archive);
 
     /// Destructor. Flush and close last output file stream.
     IO_ZIP_API ~WriteDirArchive();
@@ -72,8 +70,9 @@ public:
      *
      * @note Do nothing if destinationFile already exists in archive.
      */
-    IO_ZIP_API void putFile(const std::filesystem::path& sourceFile,
-                            const std::filesystem::path& destinationFile) override;
+    IO_ZIP_API void putFile(
+        const std::filesystem::path& sourceFile,
+        const std::filesystem::path& destinationFile) override;
 
     /**
      * @brief Creates a folder in archive.
@@ -87,7 +86,6 @@ public:
     IO_ZIP_API const std::filesystem::path getArchivePath() const override;
 
 protected:
-
     std::filesystem::path m_archive;
 };
 

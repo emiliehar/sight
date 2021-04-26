@@ -34,6 +34,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
@@ -111,7 +112,6 @@ class MODULE_UI_QT_CLASS_API SSequencer : public QObject,
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SSequencer, sight::ui::base::IEditor)
 
     /// Initialize signals and slots
@@ -124,21 +124,19 @@ public:
      * @name Signals API
      * @{
      */
-    typedef core::com::Signal<void (data::ActivitySeries::sptr ) > ActivityCreatedSignalType;
-    typedef core::com::Signal<void (data::ActivitySeries::sptr) > DataRequiredSignalType;
-    typedef core::com::Signal<void (bool) > EnabledPreviousSignalType;
-    typedef core::com::Signal<void (bool) > EnabledNextSignalType;
-    /**
-     * @}
-     */
+    typedef core::com::Signal<void (data::ActivitySeries::sptr)> ActivityCreatedSignalType;
+    typedef core::com::Signal<void (data::ActivitySeries::sptr)> DataRequiredSignalType;
+    typedef core::com::Signal<void (bool)> EnabledPreviousSignalType;
+    typedef core::com::Signal<void (bool)> EnabledNextSignalType;
+/**
+ * @}
+ */
 
 public Q_SLOTS:
-
     /// Slot: create the activity at the given index, emit 'dataRequired' signal if the activity require additional data
     void goTo(int index);
 
 protected:
-
     /// Parse the configuration
     void configuring() override;
 
@@ -161,7 +159,6 @@ protected:
     KeyConnectionsMap getAutoConnections() const override;
 
 private:
-
     /// Slot: Check if the next activities can be enabled
     void checkNext();
 
@@ -196,4 +193,5 @@ private:
 };
 
 } // namespace activity
+
 } // namespace sight::module::ui::qt

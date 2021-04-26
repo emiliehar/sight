@@ -26,13 +26,14 @@
 
 namespace sight::filter::vision
 {
+
 namespace ut
 {
 
 class ProjectionTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ProjectionTest );
-CPPUNIT_TEST( projectionTest );
+CPPUNIT_TEST_SUITE(ProjectionTest);
+CPPUNIT_TEST(projectionTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,5 +44,6 @@ public:
     void projectionTest();
 };
 
-} //namespace ut
-} //namespace sight::filter::vision
+} // namespace ut
+
+} // namespace sight::filter::vision

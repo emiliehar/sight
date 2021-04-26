@@ -55,7 +55,7 @@ struct Win32 : public Native
      *
      * @param[in]   modulePath      a path to the module to manage
      */
-    Win32( const std::filesystem::path& modulePath ) noexcept;
+    Win32(const std::filesystem::path& modulePath) noexcept;
 
     /**
      * @brief   Tells if the module is loaded.
@@ -84,12 +84,10 @@ struct Win32 : public Native
     void unload() override;
 
     private:
-
         /**
          * @brief   A handle of the loaded module.
          */
         HMODULE m_handle;
-
 };
 
 } // namespace dl

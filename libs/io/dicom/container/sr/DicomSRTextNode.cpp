@@ -26,38 +26,41 @@
 
 namespace sight::io::dicom
 {
+
 namespace container
 {
+
 namespace sr
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-DicomSRTextNode::DicomSRTextNode(const DicomCodedAttribute& codedAttribute,
-                                 const std::string& relationship,
-                                 const std::string textValue) :
+DicomSRTextNode::DicomSRTextNode(
+    const DicomCodedAttribute& codedAttribute,
+    const std::string& relationship,
+    const std::string textValue) :
     io::dicom::container::sr::DicomSRNode(codedAttribute, "TEXT", relationship),
     m_textValue(textValue)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 DicomSRTextNode::~DicomSRTextNode()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSRTextNode::write(::gdcm::DataSet& dataset) const
 {
     io::dicom::container::sr::DicomSRNode::write(dataset);
 
     // Text Value - Type 1C
-    io::dicom::helper::DicomDataWriter::setTagValue< 0x0040, 0xa160 >(m_textValue, dataset);
+    io::dicom::helper::DicomDataWriter::setTagValue<0x0040, 0xa160>(m_textValue, dataset);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void DicomSRTextNode::print(std::ostream& os) const
 {
@@ -65,8 +68,10 @@ void DicomSRTextNode::print(std::ostream& os) const
     os << "\\nText value : [" << m_textValue << "]";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sr
-} //namespace container
-} //namespace sight::io::dicom
+} // namespace sr
+
+} // namespace container
+
+} // namespace sight::io::dicom

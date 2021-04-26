@@ -26,12 +26,13 @@
 
 namespace sight::io::dicom
 {
+
 namespace ut
 {
 
 class FunctionsTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( FunctionsTest );
+CPPUNIT_TEST_SUITE(FunctionsTest);
 CPPUNIT_TEST(generatePatientIdTest);
 CPPUNIT_TEST(generateStudyInstanceUidTest);
 CPPUNIT_TEST_SUITE_END();

@@ -34,7 +34,9 @@
 
 namespace sight::data
 {
+
 class Material;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
@@ -69,9 +71,7 @@ class MODULE_VIZ_SCENE3D_CLASS_API SVector final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(SVector, ::sight::viz::scene3d::IAdaptor)
 
@@ -82,7 +82,6 @@ public:
     MODULE_VIZ_SCENE3D_API ~SVector() noexcept override;
 
 protected:
-
     /// Configures the adaptor
     MODULE_VIZ_SCENE3D_API void configuring() override;
 
@@ -102,7 +101,6 @@ protected:
     MODULE_VIZ_SCENE3D_API void setVisible(bool _visible) override;
 
 private:
-
     /**
      * @brief Updates the length of the vector.
      * @param _length length of the vector.
@@ -116,26 +114,25 @@ private:
     void deleteVector();
 
     /// Contains the material data.
-    data::Material::sptr m_material {nullptr};
+    data::Material::sptr m_material{nullptr};
 
     /// Defines the axis length (in mm).
-    float m_length {1.f};
+    float m_length{1.f};
 
     /// Defines the color of the vector.
-    std::string m_color {"#FFFFFF"};
+    std::string m_color{"#FFFFFF"};
 
     /// Contains the line along the z axis.
-    ::Ogre::ManualObject* m_line {nullptr};
+    ::Ogre::ManualObject* m_line{nullptr};
 
     /// Contains the arrow of the z axis.
-    ::Ogre::ManualObject* m_cone {nullptr};
+    ::Ogre::ManualObject* m_cone{nullptr};
 
     /// Contains the scene node where all of our manual objects are attached.
-    ::Ogre::SceneNode* m_sceneNode {nullptr};
+    ::Ogre::SceneNode* m_sceneNode{nullptr};
 
     /// Contains the material used to draw the vector.
-    module::viz::scene3d::adaptor::SMaterial::sptr m_materialAdaptor {nullptr};
-
+    module::viz::scene3d::adaptor::SMaterial::sptr m_materialAdaptor{nullptr};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

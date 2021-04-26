@@ -73,7 +73,6 @@ class MODULE_UI_QML_CLASS_API SOrganMaterialEditor : public sight::ui::qml::IQml
 Q_OBJECT
 
 public:
-
     SIGHT_DECLARE_SERVICE(SOrganMaterialEditor, ::sight::ui::qml::IQmlEditor)
 
     /// Constructor. Do nothing.
@@ -83,11 +82,9 @@ public:
     MODULE_UI_QML_API virtual ~SOrganMaterialEditor() noexcept;
 
 Q_SIGNALS:
-
     void materialChanged(QColor color, int opacity);
 
 protected:
-
     typedef core::runtime::ConfigurationElement::sptr Configuration;
 
     /// Call IQmlEditor::starting
@@ -111,15 +108,13 @@ protected:
     KeyConnectionsMap getAutoConnections() const override;
 
 protected Q_SLOTS:
-
     /// Called when the opacity changed, it will update the reconstruction Material
-    void onOpacitySlider( int value);
+    void onOpacitySlider(int value);
 
     /// Called when the color changed, it will update the reconstruction Material
     void onColor(QColor color);
 
 private:
-
     /// Notify the material changes
     void materialNotification();
 };

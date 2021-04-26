@@ -26,22 +26,23 @@
 
 namespace sight::service
 {
+
 namespace ut
 {
 
 class SigSlotConnectionTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( SigSlotConnectionTest );
-CPPUNIT_TEST( basicTest );
+CPPUNIT_TEST_SUITE(SigSlotConnectionTest);
+CPPUNIT_TEST(basicTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
-
     void setUp();
     void tearDown();
 
     void basicTest();
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

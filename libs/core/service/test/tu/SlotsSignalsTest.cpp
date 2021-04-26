@@ -30,30 +30,31 @@
 #include <utest/Exception.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::service::ut::SlotsSignalsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::service::ut::SlotsSignalsTest);
 //
 namespace sight::service
 {
+
 namespace ut
 {
 
 static utest::Exception fwTestException(""); // force link with fwTest
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotsSignalsTest::setUp()
 {
     // Set up context before running a test.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotsSignalsTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotsSignalsTest::basicTest()
 {
@@ -97,7 +98,7 @@ void SlotsSignalsTest::basicTest()
     activeWorkers->clearRegistry();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotsSignalsTest::comObjectServiceTest()
 {
@@ -112,7 +113,6 @@ void SlotsSignalsTest::comObjectServiceTest()
     activeWorkers->addWorker("worker2", worker2);
 
     {
-
         SReaderTest::sptr readerTestSrv = service::factory::New<SReaderTest>();
         service::OSR::registerService(readerTestSrv);
         readerTestSrv->registerInOut(buffer, IBasicTest::s_BUFFER_INOUT);
@@ -182,7 +182,7 @@ void SlotsSignalsTest::comObjectServiceTest()
     activeWorkers->clearRegistry();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotsSignalsTest::comServiceToServiceTest()
 {
@@ -225,7 +225,7 @@ void SlotsSignalsTest::comServiceToServiceTest()
     activeWorkers->clearRegistry();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SlotsSignalsTest::blockConnectionTest()
 {
@@ -255,7 +255,7 @@ void SlotsSignalsTest::blockConnectionTest()
 
     readerTestSrv->update();
 
-    std::this_thread::sleep_for( std::chrono::seconds(8));
+    std::this_thread::sleep_for(std::chrono::seconds(8));
 
     IService::SharedFutureType stopReaderFuture = readerTestSrv->stop();
     IService::SharedFutureType stopShowFuture   = showTestSrv->stop();
@@ -269,7 +269,8 @@ void SlotsSignalsTest::blockConnectionTest()
     activeWorkers->clearRegistry();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

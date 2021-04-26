@@ -25,6 +25,7 @@
 
 namespace sight::io::session
 {
+
 namespace detail::data
 {
 
@@ -32,15 +33,17 @@ namespace detail::data
 CompositeSerializer::sptr CompositeSerializer::shared()
 {
     struct make_shared_enabler final : public CompositeSerializer {};
-    return std::make_shared< make_shared_enabler >();
+
+    return std::make_shared<make_shared_enabler>();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CompositeSerializer::uptr CompositeSerializer::unique()
 {
     struct make_unique_enabler final : public CompositeSerializer {};
-    return std::make_unique< make_unique_enabler >();
+
+    return std::make_unique<make_unique_enabler>();
 }
 
 /// Serialization function
@@ -66,4 +69,5 @@ void CompositeSerializer::serialize(
 }
 
 } // detail::data
+
 } // namespace sight::io::session

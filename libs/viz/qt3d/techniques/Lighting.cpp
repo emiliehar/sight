@@ -68,18 +68,27 @@ Lighting::Lighting()
     const auto fragmentShaderNormalPath = core::runtime::getLibraryResourceFilePath(
         "viz_qt3d/glsl/normalVisu_FP.glsl");
     Qt3DRender::QShaderProgram* const normalShaderProgram = new Qt3DRender::QShaderProgram();
-    normalShaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                        fromStdString(
-                                                                                                            vertexShaderNormalPath
-                                                                                                            .string()))));
-    normalShaderProgram->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                          fromStdString(
-                                                                                                              geometryShaderNormalPath
-                                                                                                              .string()))));
-    normalShaderProgram->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                          fromStdString(
-                                                                                                              fragmentShaderNormalPath
-                                                                                                              .string()))));
+    normalShaderProgram->setVertexShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    vertexShaderNormalPath
+                    .string()))));
+    normalShaderProgram->setGeometryShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    geometryShaderNormalPath
+                    .string()))));
+    normalShaderProgram->setFragmentShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    fragmentShaderNormalPath
+                    .string()))));
 
     m_normalPass = new Qt3DRender::QRenderPass();
     m_normalPass->setShaderProgram(normalShaderProgram);
@@ -93,20 +102,29 @@ Lighting::Lighting()
     const auto fragmentShaderCellNormalPath = core::runtime::getLibraryResourceFilePath(
         "viz_qt3d/glsl/normalVisu_FP.glsl");
     Qt3DRender::QShaderProgram* const cellNormalShaderProgram = new Qt3DRender::QShaderProgram();
-    cellNormalShaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                            fromStdString(
-                                                                                                                vertexShaderCellNormalPath
-                                                                                                                .string()))));
-    cellNormalShaderProgram->setGeometryShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                              fromStdString(
-                                                                                                                  geometryShaderCellNormalPath
-                                                                                                                  .
-                                                                                                                  string()))));
-    cellNormalShaderProgram->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                              fromStdString(
-                                                                                                                  fragmentShaderCellNormalPath
-                                                                                                                  .
-                                                                                                                  string()))));
+    cellNormalShaderProgram->setVertexShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    vertexShaderCellNormalPath
+                    .string()))));
+    cellNormalShaderProgram->setGeometryShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    geometryShaderCellNormalPath
+                    .
+                    string()))));
+    cellNormalShaderProgram->setFragmentShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    fragmentShaderCellNormalPath
+                    .
+                    string()))));
 
     m_cellNormalPass = new Qt3DRender::QRenderPass();
     m_cellNormalPass->setShaderProgram(cellNormalShaderProgram);
@@ -118,14 +136,20 @@ Lighting::Lighting()
     const auto fragmentShaderPath = core::runtime::getLibraryResourceFilePath(
         "viz_qt3d/glsl/defaultRender_FP.glsl");
     Qt3DRender::QShaderProgram* const renderShaderProgram = new Qt3DRender::QShaderProgram();
-    renderShaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                        fromStdString(
-                                                                                                            vertexShaderPath
-                                                                                                            .string()))));
-    renderShaderProgram->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                          fromStdString(
-                                                                                                              fragmentShaderPath
-                                                                                                              .string()))));
+    renderShaderProgram->setVertexShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    vertexShaderPath
+                    .string()))));
+    renderShaderProgram->setFragmentShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    fragmentShaderPath
+                    .string()))));
 
     m_renderPass = new Qt3DRender::QRenderPass();
     m_renderPass->setShaderProgram(renderShaderProgram);
@@ -137,14 +161,20 @@ Lighting::Lighting()
     const auto edgeFragmentShaderPath = core::runtime::getLibraryResourceFilePath(
         "viz_qt3d/glsl/edgeRender_FP.glsl");
     Qt3DRender::QShaderProgram* const edgeShaderProgram = new Qt3DRender::QShaderProgram();
-    edgeShaderProgram->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                      fromStdString(
-                                                                                                          edgeVertexShaderPath
-                                                                                                          .string()))));
-    edgeShaderProgram->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(QString::
-                                                                                                        fromStdString(
-                                                                                                            edgeFragmentShaderPath
-                                                                                                            .string()))));
+    edgeShaderProgram->setVertexShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    edgeVertexShaderPath
+                    .string()))));
+    edgeShaderProgram->setFragmentShaderCode(
+        Qt3DRender::QShaderProgram::loadSource(
+            QUrl::fromLocalFile(
+                QString::
+                fromStdString(
+                    edgeFragmentShaderPath
+                    .string()))));
 
     m_edgeRenderPass = new Qt3DRender::QRenderPass();
     m_edgeRenderPass->setShaderProgram(edgeShaderProgram);
@@ -171,57 +201,58 @@ Lighting::~Lighting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QVector3D Lighting::getLightPosition()
 {
     return qvariant_cast<QVector3D>(m_lightPosition->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 QVector3D Lighting::getLightIntensity()
 {
     return qvariant_cast<QVector3D>(m_lightIntensity->value());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 Lighting::LightingMode Lighting::getLightingMode()
 {
     int lightingMode = qvariant_cast<int>(m_lightingMode->value());
-    return static_cast< Lighting::LightingMode >(lightingMode);
+
+    return static_cast<Lighting::LightingMode>(lightingMode);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Lighting::setLightPosition(QVector3D _lightPosition)
 {
     m_lightPosition->setValue(_lightPosition);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Lighting::setLightIntensity(QVector3D _lightIntensity)
 {
     m_lightIntensity->setValue(_lightIntensity);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Lighting::setLightingMode(Lighting::LightingMode _lightingMode)
 {
     m_lightingMode->setValue(_lightingMode);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Lighting::enableCellsNormals(bool _isEnabled)
 {
     m_isCellsNormalsEnabled = _isEnabled;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Lighting::showNormals(bool _isEnabled)
 {
@@ -232,6 +263,7 @@ void Lighting::showNormals(bool _isEnabled)
         {
             m_normalPass->setEnabled(false);
         }
+
         m_cellNormalPass->setEnabled(_isEnabled);
     }
     else
@@ -241,11 +273,12 @@ void Lighting::showNormals(bool _isEnabled)
         {
             m_cellNormalPass->setEnabled(false);
         }
+
         m_normalPass->setEnabled(_isEnabled);
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void Lighting::updateRasterMode(int _rasterMode)
 {
@@ -254,19 +287,19 @@ void Lighting::updateRasterMode(int _rasterMode)
         m_edgeRenderPass->setEnabled(false);
     }
 
-    if(_rasterMode == 1) //SURFACE.
+    if(_rasterMode == 1) // SURFACE.
     {
         m_rasterModeRenderState->setRasterMode(Qt3DRender::QRasterMode::Fill);
     }
-    else if(_rasterMode == 2) //POINTS.
+    else if(_rasterMode == 2) // POINTS.
     {
         m_rasterModeRenderState->setRasterMode(Qt3DRender::QRasterMode::Points);
     }
-    else if(_rasterMode == 4) //LINES.
+    else if(_rasterMode == 4) // LINES.
     {
         m_rasterModeRenderState->setRasterMode(Qt3DRender::QRasterMode::Lines);
     }
-    else if(_rasterMode == 5) //EDGE.
+    else if(_rasterMode == 5) // EDGE.
     {
         if(!m_edgeRenderPass->isEnabled())
         {

@@ -31,24 +31,33 @@
 
 namespace sight::ui::base
 {
+
 // Forward declarations
 namespace container
 {
+
 class fwContainer;
+
 }
 namespace layoutManager
 {
+
 class IViewLayoutManager;
+
 }
 namespace registry
 {
+
 class View;
+
 }
 namespace builder
 {
+
 class IToolBarBuilder;
 class IContainerBuilder;
 class ISlideViewBuilder;
+
 }
 
 /**
@@ -120,9 +129,7 @@ class ISlideViewBuilder;
  */
 class UI_BASE_CLASS_API IGuiContainer : public service::IService
 {
-
 public:
-
     SIGHT_DECLARE_SERVICE(IGuiContainer, service::IService)
 
     UI_BASE_API SPTR(ui::base::container::fwContainer) getContainer();
@@ -130,7 +137,6 @@ public:
     UI_BASE_API void setParent(std::string wid);
 
 protected:
-
     UI_BASE_API IGuiContainer();
 
     UI_BASE_API virtual ~IGuiContainer();
@@ -190,24 +196,23 @@ protected:
     /// SLOT: hide the container
     UI_BASE_API void hide();
 
-    /**
-     * @}
-     */
+/**
+ * @}
+ */
 
 private:
+    typedef std::vector<SPTR(ui::base::builder::ISlideViewBuilder)> SlideViewContainerType;
 
-    typedef std::vector< SPTR(ui::base::builder::ISlideViewBuilder) > SlideViewContainerType;
-
-    void initializeLayoutManager( core::runtime::ConfigurationElement::sptr layoutConfig );
-    void initializeToolBarBuilder( core::runtime::ConfigurationElement::sptr toolBarConfig );
-    void initializeSlideViewBuilder( core::runtime::ConfigurationElement::sptr slideViewConfig );
+    void initializeLayoutManager(core::runtime::ConfigurationElement::sptr layoutConfig);
+    void initializeToolBarBuilder(core::runtime::ConfigurationElement::sptr toolBarConfig);
+    void initializeSlideViewBuilder(core::runtime::ConfigurationElement::sptr slideViewConfig);
 
     bool m_viewLayoutManagerIsCreated;
-    SPTR( ui::base::layoutManager::IViewLayoutManager) m_viewLayoutManager;
+    SPTR(ui::base::layoutManager::IViewLayoutManager) m_viewLayoutManager;
 
-    SPTR( ui::base::registry::View) m_viewRegistry;
-    SPTR( ui::base::builder::IToolBarBuilder) m_toolBarBuilder;
-    SPTR( ui::base::builder::IContainerBuilder) m_containerBuilder;
+    SPTR(ui::base::registry::View) m_viewRegistry;
+    SPTR(ui::base::builder::IToolBarBuilder) m_toolBarBuilder;
+    SPTR(ui::base::builder::IContainerBuilder) m_containerBuilder;
     SlideViewContainerType m_slideViewBuilders;
 
     ConfigurationType m_viewRegistryConfig;

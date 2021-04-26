@@ -41,10 +41,11 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace activity
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const service::IService::KeyType s_SERIESDB_INOUT = "seriesDB";
 
@@ -67,14 +68,14 @@ static const std::string s_BACKGROUND_CONFIG = "background";
 static const std::string s_PRIMARY_CONFIG    = "primary";
 static const std::string s_ELEVATION_CONFIG  = "elevation";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSequencer::SSequencer() noexcept
 {
-    m_sigActivityCreated = newSignal< ActivityCreatedSignalType >(s_ACTIVITY_CREATED_SIG);
-    m_sigDataRequired    = newSignal< DataRequiredSignalType >(s_DATA_REQUIRED_SIG);
-    m_sigEnabledPrevious = newSignal< EnabledPreviousSignalType >(s_ENABLED_PREVIOUS_SIG);
-    m_sigEnabledNext     = newSignal< EnabledNextSignalType >(s_ENABLED_NEXT_SIG);
+    m_sigActivityCreated = newSignal<ActivityCreatedSignalType>(s_ACTIVITY_CREATED_SIG);
+    m_sigDataRequired    = newSignal<DataRequiredSignalType>(s_DATA_REQUIRED_SIG);
+    m_sigEnabledPrevious = newSignal<EnabledPreviousSignalType>(s_ENABLED_PREVIOUS_SIG);
+    m_sigEnabledNext     = newSignal<EnabledNextSignalType>(s_ENABLED_NEXT_SIG);
     newSlot(s_GO_TO_SLOT, &SSequencer::goTo, this);
     newSlot(s_CHECK_NEXT_SLOT, &SSequencer::checkNext, this);
     newSlot(s_NEXT_SLOT, &SSequencer::next, this);
@@ -82,13 +83,13 @@ SSequencer::SSequencer() noexcept
     newSlot(s_SEND_INFO_SLOT, &SSequencer::sendInfo, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SSequencer::~SSequencer() noexcept
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::configuring()
 {
@@ -98,7 +99,8 @@ void SSequencer::configuring()
 
     auto pair = config.equal_range("activity");
     auto it   = pair.first;
-    for (; it != pair.second; ++it)
+
+    for( ; it != pair.second ; ++it)
     {
         m_activityIds.push_back(it->second.get<std::string>("<xmlattr>.id"));
         m_activityNames.push_back(it->second.get<std::string>("<xmlattr>.name", ""));
@@ -113,7 +115,7 @@ void SSequencer::configuring()
     m_elevation  = config.get<std::string>(s_ELEVATION_CONFIG, m_elevation);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::starting()
 {
@@ -127,16 +129,18 @@ void SSequencer::starting()
     m_widget = new QQuickWidget();
     mainLayout->addWidget(m_widget);
 
-    const auto path =
-        core::runtime::getModuleResourceFilePath("sight::module::ui::qt", "ActivitySequencer.qml");
+    const auto path
+        = core::runtime::getModuleResourceFilePath("sight::module::ui::qt", "ActivitySequencer.qml");
     QWidget* parent = qtContainer->getQtContainer();
     auto engine     = m_widget->engine();
     m_widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
     QColor clear;
+
     if(m_clear.empty())
     {
         clear = parent->palette().color(QPalette::Background);
+
         // styleSheet override QPalette
         // we assume that styleSheet is the dark style
         if(!qApp->styleSheet().isEmpty())
@@ -152,9 +156,11 @@ void SSequencer::starting()
     m_widget->setClearColor(clear);
 
     QString theme = QString::fromStdString(m_theme);
+
     if(theme.isEmpty())
     {
         theme = "light";
+
         // styleSheet override QPalette
         // we assume that styleSheet is the dark style
         if(!qApp->styleSheet().isEmpty())
@@ -166,7 +172,8 @@ void SSequencer::starting()
     // check if './qml' directory is in the local folder (used by installed application) or in the deps folder
     const auto runtimePath = core::runtime::Runtime::getDefault()->getWorkingPath();
     const auto qmlDir      = runtimePath / "qml";
-    if (std::filesystem::exists(qmlDir))
+
+    if(std::filesystem::exists(qmlDir))
     {
         engine->addImportPath(QString::fromStdString(qmlDir.string()));
     }
@@ -178,30 +185,39 @@ void SSequencer::starting()
     QStringList activitiesName;
 
     auto activityReg = sight::activity::extension::Activity::getDefault();
-    for (size_t i = 0; i < m_activityIds.size(); ++i)
+
+    for(size_t i = 0 ; i < m_activityIds.size() ; ++i)
     {
         std::string name = m_activityNames[i];
-        if (name.empty())
+
+        if(name.empty())
         {
             const auto info = activityReg->getInfo(m_activityIds[i]);
             name = info.title;
         }
+
         activitiesName.append(QString::fromStdString(name));
     }
 
     engine->rootContext()->setContextProperty("activityNameList", activitiesName);
     engine->rootContext()->setContextProperty("widgetWidth", m_widget->width());
     engine->rootContext()->setContextProperty(QString::fromStdString(s_THEME_CONFIG), theme);
-    engine->rootContext()->setContextProperty(QString::fromStdString(s_ACCENT_CONFIG),
-                                              QString::fromStdString(m_accent));
-    engine->rootContext()->setContextProperty(QString::fromStdString(s_FOREGROUND_CONFIG),
-                                              QString::fromStdString(m_foreground));
-    engine->rootContext()->setContextProperty(QString::fromStdString(s_BACKGROUND_CONFIG),
-                                              QString::fromStdString(m_background));
-    engine->rootContext()->setContextProperty(QString::fromStdString(s_PRIMARY_CONFIG), QString::fromStdString(
-                                                  m_primary));
-    engine->rootContext()->setContextProperty(QString::fromStdString(s_ELEVATION_CONFIG),
-                                              QString::fromStdString(m_elevation));
+    engine->rootContext()->setContextProperty(
+        QString::fromStdString(s_ACCENT_CONFIG),
+        QString::fromStdString(m_accent));
+    engine->rootContext()->setContextProperty(
+        QString::fromStdString(s_FOREGROUND_CONFIG),
+        QString::fromStdString(m_foreground));
+    engine->rootContext()->setContextProperty(
+        QString::fromStdString(s_BACKGROUND_CONFIG),
+        QString::fromStdString(m_background));
+    engine->rootContext()->setContextProperty(
+        QString::fromStdString(s_PRIMARY_CONFIG),
+        QString::fromStdString(
+            m_primary));
+    engine->rootContext()->setContextProperty(
+        QString::fromStdString(s_ELEVATION_CONFIG),
+        QString::fromStdString(m_elevation));
 
     m_widget->setSource(QUrl::fromLocalFile(QString::fromStdString(path.string())));
 
@@ -210,24 +226,25 @@ void SSequencer::starting()
     qtContainer->setLayout(mainLayout);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::stopping()
 {
     this->destroy();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::updating()
 {
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIESDB_INOUT);
-    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT +"' seriesDB", seriesDB);
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIESDB_INOUT);
+    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT + "' seriesDB", seriesDB);
 
     m_currentActivity = this->parseActivities(seriesDB);
-    if (m_currentActivity >= 0)
+
+    if(m_currentActivity >= 0)
     {
-        for (int i = 0; i <= m_currentActivity; ++i)
+        for(int i = 0 ; i <= m_currentActivity ; ++i)
         {
             this->enableActivity(i);
         }
@@ -243,19 +260,21 @@ void SSequencer::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::goTo(int index)
 {
-    if (index < 0 || index >= static_cast<int>(m_activityIds.size()))
+    if(index < 0 || index >= static_cast<int>(m_activityIds.size()))
     {
         SIGHT_ERROR("no activity to launch at index " << index)
+
         return;
     }
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIESDB_INOUT);
-    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT +"' seriesDB", seriesDB);
 
-    if (m_currentActivity >= 0)
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIESDB_INOUT);
+    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT + "' seriesDB", seriesDB);
+
+    if(m_currentActivity >= 0)
     {
         this->storeActivityData(seriesDB, m_currentActivity);
     }
@@ -268,6 +287,7 @@ void SSequencer::goTo(int index)
     std::string errorMsg;
 
     std::tie(ok, errorMsg) = this->validateActivity(activity);
+
     if(ok)
     {
         m_sigActivityCreated->asyncEmit(activity);
@@ -284,22 +304,23 @@ void SSequencer::goTo(int index)
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::checkNext()
 {
-    data::SeriesDB::sptr seriesDB = this->getInOut< data::SeriesDB >(s_SERIESDB_INOUT);
-    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT +"' seriesDB", seriesDB);
+    data::SeriesDB::sptr seriesDB = this->getInOut<data::SeriesDB>(s_SERIESDB_INOUT);
+    SIGHT_ASSERT("Missing '" + s_SERIESDB_INOUT + "' seriesDB", seriesDB);
 
     // Store current activity data before checking the next one,
     // new data can be added in the current activity during the process.
-    if (m_currentActivity >= 0)
+    if(m_currentActivity >= 0)
     {
         this->storeActivityData(seriesDB, m_currentActivity);
     }
 
     const size_t nextIdx = static_cast<size_t>(m_currentActivity + 1);
-    if (nextIdx < m_activityIds.size())
+
+    if(nextIdx < m_activityIds.size())
     {
         data::ActivitySeries::sptr nextActivity = this->getActivity(seriesDB, nextIdx, m_slotUpdate);
 
@@ -307,59 +328,60 @@ void SSequencer::checkNext()
         std::string errorMsg;
 
         std::tie(ok, errorMsg) = this->validateActivity(nextActivity);
-        if (ok)
+
+        if(ok)
         {
             this->enableActivity(m_currentActivity + 1);
         }
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::next()
 {
     this->goTo(m_currentActivity + 1);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::previous()
 {
     this->goTo(m_currentActivity - 1);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::sendInfo() const
 {
     const bool previousEnabled = (m_currentActivity > 0);
     m_sigEnabledPrevious->asyncEmit(previousEnabled);
 
-    const bool nextEnabled = (m_currentActivity < static_cast<int>(m_activityIds.size()) -1);
+    const bool nextEnabled = (m_currentActivity < static_cast<int>(m_activityIds.size()) - 1);
     m_sigEnabledNext->asyncEmit(nextEnabled);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SSequencer::enableActivity(int index)
 {
     QObject* object = m_widget->rootObject();
     QMetaObject::invokeMethod(object, "enableActivity", Q_ARG(QVariant, index));
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap SSequencer::getAutoConnections() const
 {
     KeyConnectionsMap connections;
-    connections.push( s_SERIESDB_INOUT, data::SeriesDB::s_ADDED_SERIES_SIG, s_UPDATE_SLOT );
-    connections.push( s_SERIESDB_INOUT, data::SeriesDB::s_MODIFIED_SIG, s_UPDATE_SLOT );
+    connections.push(s_SERIESDB_INOUT, data::SeriesDB::s_ADDED_SERIES_SIG, s_UPDATE_SLOT);
+    connections.push(s_SERIESDB_INOUT, data::SeriesDB::s_MODIFIED_SIG, s_UPDATE_SLOT);
 
     return connections;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace activity
+
 } // namespace activity

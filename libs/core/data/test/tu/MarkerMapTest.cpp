@@ -25,40 +25,41 @@
 #include <data/MarkerMap.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::data::ut::MarkerMapTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::data::ut::MarkerMapTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
 static const data::MarkerMap::MarkerType marker101 = {{
-                                                          {{ 1.23f, 1.4314f }},
-                                                          {{ 2.45f, 1.42f }},
-                                                          {{ -1.3f, 1.24f }},
-                                                          {{ -10.23f, 1.4f }}
-                                                      }};
+    {{1.23f, 1.4314f}},
+    {{2.45f, 1.42f}},
+    {{-1.3f, 1.24f}},
+    {{-10.23f, 1.4f}}
+}};
 
 static const data::MarkerMap::MarkerType marker102 = {{
-                                                          {{ 1.23f, 2.4314f }},
-                                                          {{ 2.45f, 4.484f }},
-                                                          {{ -11.3f, 3.24f }},
-                                                          {{ 100.23f, 1.4f }}
-                                                      }};
+    {{1.23f, 2.4314f}},
+    {{2.45f, 4.484f}},
+    {{-11.3f, 3.24f}},
+    {{100.23f, 1.4f}}
+}};
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MarkerMapTest::setUp()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MarkerMapTest::tearDown()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MarkerMapTest::getterSetter()
 {
@@ -128,7 +129,7 @@ void MarkerMapTest::getterSetter()
     CPPUNIT_ASSERT_EQUAL(size_t(2), markerMap->count());
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MarkerMapTest::shallowCopyTest()
 {
@@ -144,7 +145,7 @@ void MarkerMapTest::shallowCopyTest()
     CPPUNIT_ASSERT(markerMap1->getMarker("0") == markerMap2->getMarker("0"));
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MarkerMapTest::deepCopyTest()
 {
@@ -160,5 +161,6 @@ void MarkerMapTest::deepCopyTest()
     CPPUNIT_ASSERT(markerMap1->getMarker("0") == markerMap2->getMarker("0"));
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

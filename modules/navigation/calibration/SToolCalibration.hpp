@@ -28,6 +28,7 @@
 
 namespace sight::module::navigation::calibration
 {
+
 /**
  * @brief Service that computes a pivot calibration
  *
@@ -52,7 +53,6 @@ namespace sight::module::navigation::calibration
  */
 class MODULE_NAVIGATION_CALIBRATION_CLASS_API SToolCalibration : public service::IRegisterer
 {
-
 public:
     SIGHT_DECLARE_SERVICE(SToolCalibration, ::sight::service::IRegisterer)
 
@@ -67,7 +67,6 @@ public:
     MODULE_NAVIGATION_CALIBRATION_API virtual ~SToolCalibration() noexcept;
 
 protected:
-
     /// Configures the service
     MODULE_NAVIGATION_CALIBRATION_API void configuring() override;
 
@@ -85,8 +84,7 @@ protected:
     override;
 
 private:
-
-    bool m_hasOutputCenter {false};
+    bool m_hasOutputCenter{false};
 };
 
 }

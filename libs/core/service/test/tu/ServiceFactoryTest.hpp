@@ -25,6 +25,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 namespace sight::service
 {
+
 namespace ut
 {
 
@@ -33,8 +34,8 @@ namespace ut
  */
 class ServiceFactoryTest : public CPPUNIT_NS::TestFixture
 {
-CPPUNIT_TEST_SUITE( ServiceFactoryTest );
-CPPUNIT_TEST( factoryTest );
+CPPUNIT_TEST_SUITE(ServiceFactoryTest);
+CPPUNIT_TEST(factoryTest);
 CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -47,5 +48,6 @@ public:
 private:
 };
 
-} //namespace ut
-} //namespace sight::service
+} // namespace ut
+
+} // namespace sight::service

@@ -52,28 +52,28 @@ namespace sight::module::io::vtk
 
 static const core::com::Signals::SignalKeyType JOB_CREATED_SIGNAL = "jobCreated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 SImageWriter::SImageWriter() noexcept
 {
-    m_sigJobCreated = newSignal< JobCreatedSignalType >( JOB_CREATED_SIGNAL );
+    m_sigJobCreated = newSignal<JobCreatedSignalType>(JOB_CREATED_SIGNAL);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 sight::io::base::service::IOPathType SImageWriter::getIOPathType() const
 {
     return sight::io::base::service::FILE;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageWriter::configureWithIHM()
 {
     this->openLocationDialog();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageWriter::openLocationDialog()
 {
@@ -89,7 +89,8 @@ void SImageWriter::openLocationDialog()
     dialogFile.setOption(ui::base::dialog::ILocationDialog::WRITE);
 
     auto result = core::location::SingleFile::dynamicCast(dialogFile.show());
-    if (result)
+
+    if(result)
     {
         defaultDirectory->setFolder(result->getFile().parent_path());
         dialogFile.saveDefaultLocation(defaultDirectory);
@@ -99,40 +100,40 @@ void SImageWriter::openLocationDialog()
     {
         this->clearLocations();
     }
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageWriter::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageWriter::stopping()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageWriter::configuring()
 {
     sight::io::base::service::IWriter::configuring();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void SImageWriter::info(std::ostream& _sstream )
+void SImageWriter::info(std::ostream& _sstream)
 {
     _sstream << "SImageWriter::info";
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
-                              const CSPTR(data::Image)& image,
-                              const SPTR(JobCreatedSignalType)& sigJobCreated )
+bool SImageWriter::saveImage(
+    const std::filesystem::path& imgFile,
+    const CSPTR(data::Image)& image,
+    const SPTR(JobCreatedSignalType)& sigJobCreated)
 {
     bool bValue = true;
 
@@ -178,16 +179,19 @@ bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
                     "Warning",
                     "Unsupported " + type + " format for " + ext + " export.\n The image will not be exported.",
                     sight::ui::base::dialog::IMessageDialog::WARNING);
+
                 return false;
             }
+
             // Check number of components
             if(noc < 1 || noc > 4)
             {
                 sight::ui::base::dialog::MessageDialog::show(
                     "Warning",
-                    "Unsupported number of components (" + std::to_string(noc) + ") for " +
-                    ext + " export.\n The image will not be exported.",
+                    "Unsupported number of components (" + std::to_string(noc) + ") for "
+                    + ext + " export.\n The image will not be exported.",
                     sight::ui::base::dialog::IMessageDialog::WARNING);
+
                 return false;
             }
         }
@@ -200,16 +204,19 @@ bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
                     "Warning",
                     "Unsupported " + type + " format for " + ext + " export.\n The image will not be exported.",
                     sight::ui::base::dialog::IMessageDialog::WARNING);
+
                 return false;
             }
+
             // Check number of components
             if(noc < 1 || noc > 3)
             {
                 sight::ui::base::dialog::MessageDialog::show(
                     "Warning",
-                    "Unsupported number of components (" + std::to_string(noc) + ") for " +
-                    ext + " export.\n The image will not be exported.",
+                    "Unsupported number of components (" + std::to_string(noc) + ") for "
+                    + ext + " export.\n The image will not be exported.",
                     sight::ui::base::dialog::IMessageDialog::WARNING);
+
                 return false;
             }
         }
@@ -220,8 +227,10 @@ bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
     }
     else
     {
-        SIGHT_THROW_EXCEPTION(core::tools::Failed("Unsupported " + ext + " format (Available formats: " +
-                                                  ".vtk, .vti, .mhd, .bmp, .jpg, .jpeg, .png, .pnm, .tiff)"));
+        SIGHT_THROW_EXCEPTION(
+            core::tools::Failed(
+                "Unsupported " + ext + " format (Available formats: "
+                + ".vtk, .vti, .mhd, .bmp, .jpg, .jpeg, .png, .pnm, .tiff)"));
     }
 
     myWriter->setObject(image);
@@ -233,7 +242,7 @@ bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
         // Launch writing process
         myWriter->write();
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         std::stringstream ss;
         ss << "Warning during saving : " << e.what();
@@ -244,7 +253,7 @@ bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
             sight::ui::base::dialog::IMessageDialog::WARNING);
         bValue = false;
     }
-    catch( ... )
+    catch(...)
     {
         sight::ui::base::dialog::MessageDialog::show(
             "Warning",
@@ -252,18 +261,18 @@ bool SImageWriter::saveImage( const std::filesystem::path& imgFile,
             sight::ui::base::dialog::IMessageDialog::WARNING);
         bValue = false;
     }
+
     return bValue;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void SImageWriter::updating()
 {
-
-    if( this->hasLocationDefined() )
+    if(this->hasLocationDefined())
     {
         // Retrieve dataStruct associated with this service
-        data::Image::csptr pImage = this->getInput< data::Image >(sight::io::base::service::s_DATA_KEY);
+        data::Image::csptr pImage = this->getInput<data::Image>(sight::io::base::service::s_DATA_KEY);
         SIGHT_ASSERT("The input key '" + sight::io::base::service::s_DATA_KEY + "' is not correctly set.", pImage);
 
         sight::ui::base::Cursor cursor;
@@ -285,6 +294,6 @@ void SImageWriter::updating()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace ioVtk

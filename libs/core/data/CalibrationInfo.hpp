@@ -34,10 +34,11 @@
 
 #include <list>
 
-SIGHT_DECLARE_DATA_REFLECTION((sight)(data)(CalibrationInfo));
+SIGHT_DECLARE_DATA_REFLECTION((sight) (data) (CalibrationInfo));
 
 namespace sight::data
 {
+
 /**
  * @brief class for handle calibration information , this class handle two lists the first one contains images
  * and the second one contains pointList
@@ -46,14 +47,13 @@ namespace sight::data
 class DATA_CLASS_API CalibrationInfo : public data::Object
 {
 public:
+    SIGHT_DECLARE_CLASS(CalibrationInfo, data::Object, data::factory::New<CalibrationInfo>)
 
-    SIGHT_DECLARE_CLASS(CalibrationInfo, data::Object, data::factory::New< CalibrationInfo >)
+    SIGHT_MAKE_FRIEND_REFLECTION((sight) (data) (CalibrationInfo));
 
-    SIGHT_MAKE_FRIEND_REFLECTION((sight)(data)(CalibrationInfo));
-
-    ///typedefs
-    typedef std::list< data::Image::sptr > ImageContainerType;
-    typedef std::list< data::PointList::sptr > PointListContainerType;
+    /// typedefs
+    typedef std::list<data::Image::sptr> ImageContainerType;
+    typedef std::list<data::PointList::sptr> PointListContainerType;
 
     /**
      * @name Signals API
@@ -75,13 +75,13 @@ public:
      * @}
      */
 
-    ///Constructor
+    /// Constructor
     DATA_API CalibrationInfo(data::Object::Key key);
-    ///Destructor
+    /// Destructor
     DATA_API ~CalibrationInfo();
 
     /// Defines shallow copy
-    DATA_API void shallowCopy(const data::Object::csptr& _source ) override;
+    DATA_API void shallowCopy(const data::Object::csptr& _source) override;
 
     /// Defines deep copy
     DATA_API void cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& cache) override;
@@ -91,7 +91,7 @@ public:
      * @param[in] img the new image
      * @param[in] pl the corresponding point list
      */
-    DATA_API void addRecord( const data::Image::sptr& img, const data::PointList::sptr& pl );
+    DATA_API void addRecord(const data::Image::sptr& img, const data::PointList::sptr& pl);
 
     /**
      * @brief remove the desired record (both image and pointList)
@@ -102,10 +102,10 @@ public:
     /// Reset all records
     DATA_API void resetRecords();
 
-    ///Get all the images
+    /// Get all the images
     DATA_API ImageContainerType getImageContainer() const;
 
-    ///Get all the pointLists
+    /// Get all the pointLists
     DATA_API PointListContainerType getPointListContainer() const;
 
     /**
@@ -114,7 +114,7 @@ public:
      * @param[in] img image
      * @return pointList corresponding to the image
      */
-    DATA_API data::PointList::sptr getPointList( const data::Image::sptr& img) const;
+    DATA_API data::PointList::sptr getPointList(const data::Image::sptr& img) const;
 
     /**
      * @brief Get the image corresponding to the specified pointList, if the specified pointList is not found
@@ -122,7 +122,7 @@ public:
      * @param[in] pl the pointList
      * @return image corresponding to the pointList
      */
-    DATA_API data::Image::sptr getImage( const data::PointList::sptr& pl) const;
+    DATA_API data::Image::sptr getImage(const data::PointList::sptr& pl) const;
 
     /**
      * @brief Get the image corresponding to the specified index, if the index is not found
@@ -133,19 +133,18 @@ public:
     DATA_API data::Image::sptr getImage(size_t idx) const;
 
 protected:
-    ///List of Image
+    /// List of Image
     ImageContainerType m_imageContainer;
-    ///List of pointList
+    /// List of pointList
     PointListContainerType m_pointListContainer;
-    ///added record signal
+    /// added record signal
     AddedRecordSignalType::sptr m_sigAddedRecord;
     /// removed record signal
     RemovedRecordSignalType::sptr m_sigRemovedRecord;
-    ///reset records signal
+    /// reset records signal
     ResetRecordSignalType::sptr m_sigResetRecord;
-    ///get record signal
+    /// get record signal
     GetRecordSignalType::sptr m_sigGetRecord;
-
 };
 
-}// namespace sight::data
+} // namespace sight::data

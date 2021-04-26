@@ -28,13 +28,15 @@
 
 namespace sight::io::igtl::detail
 {
+
 namespace converter
 {
 
 converterRegisterMacro(io::igtl::detail::converter::IntConverter);
 converterRegisterMacro(io::igtl::detail::converter::FloatConverter);
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace converter
+
 } // namespace sight::io::igtl::detail

@@ -41,6 +41,7 @@
 
 namespace sight::viz::scene3d
 {
+
 namespace vr
 {
 
@@ -48,15 +49,17 @@ namespace vr
 
 static const std::string s_TF_TEXUNIT_NAME = "transferFunction";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-GridProxyGeometry* GridProxyGeometry::New(const std::string& _name, ::Ogre::SceneManager* _sceneManager,
-                                          ::Ogre::TexturePtr _3DImageTexture, const TransferFunction::sptr& _tf,
-                                          const std::string& _mtlName)
+GridProxyGeometry* GridProxyGeometry::New(
+    const std::string& _name,
+    ::Ogre::SceneManager* _sceneManager,
+    ::Ogre::TexturePtr _3DImageTexture,
+    const TransferFunction::sptr& _tf,
+    const std::string& _mtlName)
 {
-
     const auto& factoryName = GridProxyGeometryFactory::FACTORY_TYPE_NAME;
-    auto instance           = static_cast< viz::scene3d::vr::GridProxyGeometry*>
+    auto instance           = static_cast<viz::scene3d::vr::GridProxyGeometry*>
                               (_sceneManager->createMovableObject(_name, factoryName));
 
     instance->m_inputPrimitiveType = data::Mesh::CellType::POINT;
@@ -65,11 +68,13 @@ GridProxyGeometry* GridProxyGeometry::New(const std::string& _name, ::Ogre::Scen
     instance->m_gpuTF              = _tf;
 
     ::Ogre::MaterialPtr mat = ::Ogre::MaterialManager::getSingleton().getByName(_name + "_" + _mtlName, RESOURCE_GROUP);
+
     if(!mat)
     {
-        mat =
-            ::Ogre::MaterialManager::getSingleton().getByName(_mtlName, RESOURCE_GROUP)->clone(_name + "_" + _mtlName);
+        mat
+            = ::Ogre::MaterialManager::getSingleton().getByName(_mtlName, RESOURCE_GROUP)->clone(_name + "_" + _mtlName);
     }
+
     instance->setMaterial(mat);
 
     instance->initialize();
@@ -78,21 +83,21 @@ GridProxyGeometry* GridProxyGeometry::New(const std::string& _name, ::Ogre::Scen
     return instance;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GridProxyGeometry::GridProxyGeometry(const Ogre::String& name) :
     R2VBRenderable(name)
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 GridProxyGeometry::~GridProxyGeometry()
 {
     if(m_r2vbSource)
     {
         ::Ogre::MeshPtr mesh = m_r2vbSource->getMesh();
-        this->m_srcObject    = nullptr;
+        this->m_srcObject = nullptr;
         mParentSceneManager->destroyEntity(m_r2vbSource);
         m_r2vbSource = nullptr;
         ::Ogre::MeshManager::getSingleton().remove(mesh->getHandle());
@@ -109,7 +114,7 @@ GridProxyGeometry::~GridProxyGeometry()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::initialize()
 {
@@ -121,19 +126,19 @@ void GridProxyGeometry::initialize()
     this->initializeGridMaterials();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::updateGridSize()
 {
-    const std::vector<int> imageSize = {{ int(this->m_3DImageTexture->getWidth()),
-                                          int(this->m_3DImageTexture->getHeight()),
-                                          int(this->m_3DImageTexture->getDepth()) }};
+    const std::vector<int> imageSize = {{int(this->m_3DImageTexture->getWidth()),
+        int(this->m_3DImageTexture->getHeight()),
+        int(this->m_3DImageTexture->getDepth())}};
 
-    for(size_t i = 0; i < 3; ++i)
+    for(size_t i = 0 ; i < 3 ; ++i)
     {
-        m_gridSize[i] =
-            static_cast<int>(imageSize[i]) / m_brickSize[i] +
-            (static_cast<int>(imageSize[i]) % m_brickSize[i] != 0);
+        m_gridSize[i]
+            = static_cast<int>(imageSize[i]) / m_brickSize[i]
+              + (static_cast<int>(imageSize[i]) % m_brickSize[i] != 0);
     }
 
     if(m_gridTexture)
@@ -146,7 +151,7 @@ void GridProxyGeometry::updateGridSize()
     this->computeGrid();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::initializeR2VBSource()
 {
@@ -186,25 +191,29 @@ void GridProxyGeometry::initializeR2VBSource()
     m_r2vbSource->getSubEntity(0)->getRenderOperation(m_gridRenderOp);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::initializeGridMaterials()
 {
     ::Ogre::MaterialManager& mtlMng = ::Ogre::MaterialManager::getSingleton();
 
     ::Ogre::MaterialPtr gridMtl = mtlMng.getByName(this->getName() + "_VolumeBricksGrid", RESOURCE_GROUP);
+
     if(!gridMtl)
     {
         gridMtl = mtlMng.getByName("VolumeBricksGrid", RESOURCE_GROUP)->clone(this->getName() + "_VolumeBricksGrid");
     }
+
     gridMtl->load();
     m_gridComputingPass = gridMtl->getTechnique(0)->getPass(0);
 
     ::Ogre::MaterialPtr geomGeneratorMtl = mtlMng.getByName(this->getName() + "_VolumeBricks", RESOURCE_GROUP);
+
     if(!geomGeneratorMtl)
     {
         geomGeneratorMtl = mtlMng.getByName("VolumeBricks", RESOURCE_GROUP)->clone(this->getName() + "_VolumeBricks");
     }
+
     geomGeneratorMtl->load();
     m_geomGeneratorPass = geomGeneratorMtl->getTechnique(0)->getPass(0);
 
@@ -215,7 +224,7 @@ void GridProxyGeometry::initializeGridMaterials()
     this->setupGrid();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::setupGrid()
 {
@@ -233,7 +242,7 @@ void GridProxyGeometry::setupGrid()
             ::Ogre::TU_RENDERTARGET
             );
 
-        for(unsigned i = 0; i < static_cast<unsigned>(m_gridSize[2]); ++i)
+        for(unsigned i = 0 ; i < static_cast<unsigned>(m_gridSize[2]) ; ++i)
         {
             ::Ogre::RenderTexture* rt = m_gridTexture->getBuffer()->getRenderTarget(i);
             rt->setDepthBufferPool(::Ogre::DepthBuffer::POOL_NO_DEPTH);
@@ -243,20 +252,21 @@ void GridProxyGeometry::setupGrid()
 
     // Update R2VB source geometry.
     {
-        ::Ogre::MeshPtr r2vbSrcMesh = ::Ogre::MeshManager::getSingleton().getByName(this->mName + "_gridMesh",
-                                                                                    RESOURCE_GROUP);
+        ::Ogre::MeshPtr r2vbSrcMesh = ::Ogre::MeshManager::getSingleton().getByName(
+            this->mName + "_gridMesh",
+            RESOURCE_GROUP);
 
         ::Ogre::VertexData* meshVtxData = r2vbSrcMesh->getSubMesh(0)->vertexData;
 
         meshVtxData->vertexCount = static_cast<size_t>(m_gridSize[0] * m_gridSize[1] * m_gridSize[2]);
 
-        ::Ogre::HardwareVertexBufferSharedPtr vtxBuffer =
-            ::Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(
-                ::Ogre::VertexElement::getTypeSize(::Ogre::VET_INT1),
-                meshVtxData->vertexCount,
-                ::Ogre::HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+        ::Ogre::HardwareVertexBufferSharedPtr vtxBuffer
+            = ::Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(
+                  ::Ogre::VertexElement::getTypeSize(::Ogre::VET_INT1),
+                  meshVtxData->vertexCount,
+                  ::Ogre::HardwareBuffer::HBU_STATIC_WRITE_ONLY);
 
-        for(size_t i = 0; i < meshVtxData->vertexCount; ++i)
+        for(size_t i = 0 ; i < meshVtxData->vertexCount ; ++i)
         {
             vtxBuffer->writeData(
                 i * ::Ogre::VertexElement::getTypeSize(::Ogre::VET_INT1),
@@ -290,16 +300,16 @@ void GridProxyGeometry::setupGrid()
 
         gridGeneratorParams->setNamedConstant("u_brickSize", m_brickSize.data(), 3, 1);
 
-        ::Ogre::GpuProgramParametersSharedPtr geomGeneratorVtxParams =
-            m_geomGeneratorPass->getVertexProgramParameters();
+        ::Ogre::GpuProgramParametersSharedPtr geomGeneratorVtxParams
+            = m_geomGeneratorPass->getVertexProgramParameters();
         geomGeneratorVtxParams->setNamedConstant("u_gridResolution", m_gridSize.data(), 3, 1);
 
-        ::Ogre::GpuProgramParametersSharedPtr geomGeneratorGeomParams =
-            m_geomGeneratorPass->getGeometryProgramParameters();
+        ::Ogre::GpuProgramParametersSharedPtr geomGeneratorGeomParams
+            = m_geomGeneratorPass->getGeometryProgramParameters();
 
-        const std::vector<int> imageSize = {{ int(this->m_3DImageTexture->getWidth()),
-                                              int(this->m_3DImageTexture->getHeight()),
-                                              int(this->m_3DImageTexture->getDepth()) }};
+        const std::vector<int> imageSize = {{int(this->m_3DImageTexture->getWidth()),
+            int(this->m_3DImageTexture->getHeight()),
+            int(this->m_3DImageTexture->getDepth())}};
 
         geomGeneratorGeomParams->setNamedConstant("u_imageResolution", imageSize.data(), 3, 1);
         geomGeneratorGeomParams->setNamedConstant("u_brickSize", this->m_brickSize.data(), 3, 1);
@@ -311,7 +321,7 @@ void GridProxyGeometry::setupGrid()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::computeGrid()
 {
@@ -322,7 +332,7 @@ void GridProxyGeometry::computeGrid()
     ::Ogre::GpuProgramParametersSharedPtr params = m_gridComputingPass->getFragmentProgramParameters();
     m_gpuTF.lock()->bind(m_gridComputingPass, s_TF_TEXUNIT_NAME, params);
 
-    for(unsigned i = 0; i < static_cast<unsigned>(m_gridSize[2]); ++i)
+    for(unsigned i = 0 ; i < static_cast<unsigned>(m_gridSize[2]) ; ++i)
     {
         ::Ogre::RenderTexture* rt = m_gridTexture->getBuffer()->getRenderTarget(i);
 
@@ -343,7 +353,7 @@ void GridProxyGeometry::computeGrid()
     this->manualUpdate();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::clipGrid(const Ogre::AxisAlignedBox& _clippingBox)
 {
@@ -369,21 +379,22 @@ void GridProxyGeometry::clipGrid(const Ogre::AxisAlignedBox& _clippingBox)
     this->manualUpdate();
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 const Ogre::String& GridProxyGeometry::getMovableType() const
 {
     return GridProxyGeometryFactory::FACTORY_TYPE_NAME;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void GridProxyGeometry::set3DImageTexture(const ::Ogre::TexturePtr& _texture)
 {
     m_3DImageTexture = _texture;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 } // namespace vr
+
 } // namespace sight::viz::scene3d

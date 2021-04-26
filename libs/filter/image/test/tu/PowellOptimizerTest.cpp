@@ -27,36 +27,35 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ::sight::filter::image::ut::PowellOptimizerTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::filter::image::ut::PowellOptimizerTest);
 
 namespace sight::filter::image
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PowellOptimizerTest::setUp()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PowellOptimizerTest::tearDown()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PowellOptimizerTest::parabolaTest()
 {
-    filter::image::PowellOptimizer::OptimizedFunctionType xSquared =
-        [](const filter::image::PowellOptimizer::FunctionParametersType& p)
-        {
-            return p[0] * p[0];
-        };
+    filter::image::PowellOptimizer::OptimizedFunctionType xSquared
+        = [](const filter::image::PowellOptimizer::FunctionParametersType& p)
+          {
+              return p[0] * p[0];
+          };
 
     filter::image::PowellOptimizer optimizer(xSquared, 1e-9, 1e-9, 1.0, 200);
 
@@ -67,18 +66,19 @@ void PowellOptimizerTest::parabolaTest()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(0, finalParams[0], 1e-9);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PowellOptimizerTest::ackleyTest()
 {
-    filter::image::PowellOptimizer::OptimizedFunctionType ackleyFunction =
-        [](const filter::image::PowellOptimizer::FunctionParametersType& p)
-        {
-            const double x = p[0], y = p[1];
-            const double res = -20 * std::exp(-0.2 * std::sqrt(0.5 * (x * x + y * y)))
-                               - std::exp(0.5 * (std::cos(2 * M_PI * x) + std::cos(2 * M_PI * y))) + M_E + 20;
-            return res;
-        };
+    filter::image::PowellOptimizer::OptimizedFunctionType ackleyFunction
+        = [](const filter::image::PowellOptimizer::FunctionParametersType& p)
+          {
+              const double x = p[0], y = p[1];
+              const double res = -20 * std::exp(-0.2 * std::sqrt(0.5 * (x * x + y * y)))
+                                 - std::exp(0.5 * (std::cos(2 * M_PI * x) + std::cos(2 * M_PI * y))) + M_E + 20;
+
+              return res;
+          };
 
     filter::image::PowellOptimizer optimizer(ackleyFunction, 1e-9, 1e-9, 1.0, 200);
 
@@ -90,24 +90,25 @@ void PowellOptimizerTest::ackleyTest()
 
     CPPUNIT_ASSERT_DOUBLES_EQUAL(0, finalParams[0], 1e-9);
     CPPUNIT_ASSERT_DOUBLES_EQUAL(0, finalParams[1], 1e-9);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PowellOptimizerTest::sphereFunctionTest()
 {
     // n-dimensional sphere function.
-    filter::image::PowellOptimizer::OptimizedFunctionType sphereFunction =
-        [](const filter::image::PowellOptimizer::FunctionParametersType& p)
-        {
-            double res(0.);
-            for(const auto e : p)
-            {
-                res += e * e;
-            }
-            return res;
-        };
+    filter::image::PowellOptimizer::OptimizedFunctionType sphereFunction
+        = [](const filter::image::PowellOptimizer::FunctionParametersType& p)
+          {
+              double res(0.);
+
+              for(const auto e : p)
+              {
+                  res += e * e;
+              }
+
+              return res;
+          };
 
     filter::image::PowellOptimizer optimizer(sphereFunction, 1e-9, 1e-9, 1.0, 200);
 
@@ -137,19 +138,19 @@ void PowellOptimizerTest::sphereFunctionTest()
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void PowellOptimizerTest::bealeFunctionTest()
 {
-    filter::image::PowellOptimizer::OptimizedFunctionType bealeFunction =
-        [](const filter::image::PowellOptimizer::FunctionParametersType& p)
-        {
-            const double x = p[0];
-            const double y = p[1];
+    filter::image::PowellOptimizer::OptimizedFunctionType bealeFunction
+        = [](const filter::image::PowellOptimizer::FunctionParametersType& p)
+          {
+              const double x = p[0];
+              const double y = p[1];
 
-            return std::pow(1.5 - x + x*y, 2.) + std::pow(2.25 - x + x * std::pow(y, 2.), 2.)
-                   + std::pow(2.625 - x + x * std::pow(y, 3.), 2.);
-        };
+              return std::pow(1.5 - x + x * y, 2.) + std::pow(2.25 - x + x * std::pow(y, 2.), 2.)
+                     + std::pow(2.625 - x + x * std::pow(y, 3.), 2.);
+          };
 
     filter::image::PowellOptimizer optimizer(bealeFunction, 1e-9, 1e-9, 1.0, 200);
 
@@ -163,5 +164,6 @@ void PowellOptimizerTest::bealeFunctionTest()
     CPPUNIT_ASSERT_DOUBLES_EQUAL(0.5, finalParams[1], 1e-9);
 }
 
-} //namespace ut.
-} //namespace sight::filter::image.
+} // namespace ut.
+
+} // namespace sight::filter::image.

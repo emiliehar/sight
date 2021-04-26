@@ -33,6 +33,7 @@ namespace sight::io::atoms::filter
  */
 namespace factory
 {
+
 } // namespace factory
 
 /**
@@ -40,6 +41,7 @@ namespace factory
  */
 namespace registry
 {
+
 } // namespace registry
 
 } // namespace sight::io::atoms::filter

@@ -32,6 +32,7 @@
 
 namespace sight::ui::base
 {
+
 namespace layoutManager
 {
 
@@ -40,9 +41,7 @@ namespace layoutManager
  */
 class UI_BASE_CLASS_API TabLayoutManagerBase : public IViewLayoutManager
 {
-
 public:
-
     SIGHT_DECLARE_CLASS(TabLayoutManagerBase, ui::base::layoutManager::IViewLayoutManager)
 
     typedef std::string RegistryKeyType;
@@ -50,7 +49,6 @@ public:
     class ViewInfo
     {
     public:
-
         ViewInfo() :
             m_border(0),
             m_minSize(std::make_pair(-1, -1)),
@@ -61,11 +59,11 @@ public:
         }
 
         int m_border;
-        int m_leftBorder {0};
-        int m_topBorder {0};
-        int m_rightBorder {0};
-        int m_bottomBorder {0};
-        std::pair< int, int >  m_minSize;
+        int m_leftBorder{0};
+        int m_topBorder{0};
+        int m_rightBorder{0};
+        int m_bottomBorder{0};
+        std::pair<int, int> m_minSize;
         std::string m_caption;
         bool m_isSelect;
         bool m_useScrollBar;
@@ -111,23 +109,22 @@ public:
      *   - \b minHeight : minimal height of the view.
      *   - \b selected  {yes | no}: define if the tab is the current one.
      */
-    UI_BASE_API void initialize( ConfigurationType configuration) override;
+    UI_BASE_API void initialize(ConfigurationType configuration) override;
 
     UI_BASE_API static const RegistryKeyType REGISTRY_KEY;
 
-    //------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
 
-    std::list< ViewInfo> getViewsInfo()
+    std::list<ViewInfo> getViewsInfo()
     {
         return m_views;
     }
 
 private:
-
     /// Save layout configuration definition
-    std::list< ViewInfo>  m_views;
-
+    std::list<ViewInfo> m_views;
 };
 
 } // namespace layoutManager
+
 } // namespace sight::ui::base

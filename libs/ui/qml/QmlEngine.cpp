@@ -37,7 +37,7 @@
 namespace sight::ui::qml
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QmlEngine::QmlEngine()
 {
@@ -46,75 +46,79 @@ QmlEngine::QmlEngine()
     // check if './qml' directory is in the local folder (used by installed application) or in the deps folder
     const auto runtimePath = core::runtime::Runtime::getDefault()->getWorkingPath();
     const auto qmlDir      = runtimePath / "qml";
-    if (std::filesystem::exists(qmlDir))
+
+    if(std::filesystem::exists(qmlDir))
     {
         m_engine->addImportPath(QString::fromStdString(qmlDir.string()));
     }
+
     // Maybe still needed for MSVC ?
     // else
     // {
-    //     m_engine->addImportPath(QML_IMPORT_PATH);
+    // m_engine->addImportPath(QML_IMPORT_PATH);
     // }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QmlEngine::~QmlEngine()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SPTR(QmlEngine) QmlEngine::getDefault()
 {
-    auto engineInstance = core::LazyInstantiator< QmlEngine >::getInstance();
+    auto engineInstance = core::LazyInstantiator<QmlEngine>::getInstance();
+
     return engineInstance;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QmlEngine::loadMainComponent(const std::filesystem::path& file)
 {
     m_engine->load(QUrl::fromLocalFile(QString::fromStdString(file.string())));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QObject* QmlEngine::createComponent(const std::filesystem::path& file, QSharedPointer<QQmlContext>& context)
 {
     QQmlComponent component(m_engine, QUrl::fromLocalFile(QString::fromStdString(file.string())));
+
     return component.create(context.get());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QObject* QmlEngine::createComponent(const std::filesystem::path& file)
 {
     QQmlComponent component(m_engine, QUrl::fromLocalFile(QString::fromStdString(file.string())));
+
     return component.create(m_engine->rootContext());
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void QmlEngine::importModulePath(const std::filesystem::path& path)
 {
     m_engine->addImportPath(QString::fromStdString(path.string()));
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 QList<QObject*> QmlEngine::getRootObjects()
 {
     return m_engine->rootObjects();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 QQmlContext* QmlEngine::getRootContext()
 {
     return m_engine->rootContext();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-}
+} // namespace sight::ui

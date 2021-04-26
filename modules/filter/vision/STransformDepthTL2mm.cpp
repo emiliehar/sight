@@ -39,7 +39,7 @@ static const service::IService::KeyType s_CAMERA_SERIES_INPUT   = "cameraSeries"
 static const service::IService::KeyType s_ORIGIN_FRAME_TL_INPUT = "originDepthTL";
 static const service::IService::KeyType s_SCALED_FRAME_TL_INOUT = "scaledDepthTL";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STransformDepthTL2mm::STransformDepthTL2mm() :
     m_lastTimestamp(0)
@@ -47,57 +47,55 @@ STransformDepthTL2mm::STransformDepthTL2mm() :
     newSlot(s_COMPUTE_SLOT, &STransformDepthTL2mm::compute, this);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 STransformDepthTL2mm::~STransformDepthTL2mm()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransformDepthTL2mm::starting()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransformDepthTL2mm::stopping()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransformDepthTL2mm::configuring()
 {
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransformDepthTL2mm::compute(core::HiResClock::HiResClockType timestamp)
 {
-    if (timestamp > m_lastTimestamp)
+    if(timestamp > m_lastTimestamp)
     {
-        data::FrameTL::csptr originFrameTL = this->getInput< data::FrameTL >(s_ORIGIN_FRAME_TL_INPUT);
+        data::FrameTL::csptr originFrameTL = this->getInput<data::FrameTL>(s_ORIGIN_FRAME_TL_INPUT);
         SIGHT_ASSERT("missing '" + s_ORIGIN_FRAME_TL_INPUT + "' timeline", originFrameTL);
-        data::CameraSeries::csptr cameraSeries = this->getInput< data::CameraSeries >(s_CAMERA_SERIES_INPUT);
+        data::CameraSeries::csptr cameraSeries = this->getInput<data::CameraSeries>(s_CAMERA_SERIES_INPUT);
         SIGHT_ASSERT("missing '" + s_CAMERA_SERIES_INPUT + "' cameraSeries", cameraSeries);
         data::Camera::csptr depthCamera   = cameraSeries->getCamera(0);
-        data::FrameTL::sptr scaledFrameTL = this->getInOut< data::FrameTL >(s_SCALED_FRAME_TL_INOUT);
+        data::FrameTL::sptr scaledFrameTL = this->getInOut<data::FrameTL>(s_SCALED_FRAME_TL_INOUT);
         SIGHT_ASSERT("missing '" + s_SCALED_FRAME_TL_INOUT + "' timeline", scaledFrameTL);
 
         const double scale = depthCamera->getScale();
 
         const auto depthBufferObj = originFrameTL->getClosestBuffer(timestamp);
 
-        if (depthBufferObj)
+        if(depthBufferObj)
         {
             const size_t width  = originFrameTL->getWidth();
             const size_t height = originFrameTL->getHeight();
             const size_t size   = width * height;
 
-            if (scaledFrameTL->getWidth() == 0 || scaledFrameTL->getHeight() == 0)
+            if(scaledFrameTL->getWidth() == 0 || scaledFrameTL->getHeight() == 0)
             {
                 scaledFrameTL->initPoolSize(width, height, core::tools::Type::s_UINT16, 1);
             }
@@ -108,41 +106,41 @@ void STransformDepthTL2mm::compute(core::HiResClock::HiResClockType timestamp)
 
             std::uint16_t* depthBufferOut = reinterpret_cast<std::uint16_t*>(depthBufferOutObj->addElement(0));
 
-            for (size_t i = 0; i < size; ++i)
+            for(size_t i = 0 ; i < size ; ++i)
             {
-                *depthBufferOut++ = static_cast<std::uint16_t>((*depthBufferIn++)*scale);
+                *depthBufferOut++ = static_cast<std::uint16_t>((*depthBufferIn++) * scale);
             }
 
             scaledFrameTL->pushObject(depthBufferOutObj);
 
-            auto sig =
-                scaledFrameTL->signal< data::TimeLine::ObjectPushedSignalType >(
-                    data::TimeLine::s_OBJECT_PUSHED_SIG);
+            auto sig
+                = scaledFrameTL->signal<data::TimeLine::ObjectPushedSignalType>(
+                      data::TimeLine::s_OBJECT_PUSHED_SIG);
             sig->asyncEmit(timestamp);
             m_sigComputed->asyncEmit();
         }
+
         m_lastTimestamp = timestamp;
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void STransformDepthTL2mm::updating()
 {
-
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 service::IService::KeyConnectionsMap STransformDepthTL2mm::getAutoConnections() const
 {
     KeyConnectionsMap connections;
 
-    connections.push( s_ORIGIN_FRAME_TL_INPUT, data::BufferTL::s_OBJECT_PUSHED_SIG, s_COMPUTE_SLOT );
+    connections.push(s_ORIGIN_FRAME_TL_INPUT, data::BufferTL::s_OBJECT_PUSHED_SIG, s_COMPUTE_SLOT);
 
     return connections;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::module::filter::vision

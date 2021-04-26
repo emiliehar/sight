@@ -40,7 +40,6 @@ namespace sight::filter::image
 class FILTER_IMAGE_CLASS_API LineDrawer
 {
 public:
-
     typedef BresenhamLine::CoordinatesType CoordinatesType;
 
     typedef data::helper::MedicalImage::Orientation OrientationType;
@@ -58,15 +57,15 @@ public:
      * @param[in] overwrite overwrite mode, don't overwrite existing pixels if not set.
      * @return The differences in the image before and after drawing.
      */
-    FILTER_IMAGE_API ImageDiff draw(const OrientationType orientation,
-                                    const CoordinatesType& startCoord,
-                                    const CoordinatesType& endCoord,
-                                    data::Image::BufferType* value,
-                                    const double thickness,
-                                    const bool overwrite = true);
+    FILTER_IMAGE_API ImageDiff draw(
+        const OrientationType orientation,
+        const CoordinatesType& startCoord,
+        const CoordinatesType& endCoord,
+        data::Image::BufferType* value,
+        const double thickness,
+        const bool overwrite = true);
 
 private:
-
     /**
      * @brief Draws a filled discrete ellipse in a 3D image slice.
      *
@@ -81,9 +80,14 @@ private:
      * @param[in,out] diff vector storing the differences in the image before and after drawing.
      * @return true if at least one pixel has been drawn, false otherwise.
      */
-    bool drawEllipse( const LineDrawer::CoordinatesType& c, data::Image::BufferType* value,
-                      const double radius, const size_t firstDim, const size_t secondDim, const bool overwrite,
-                      ImageDiff& diff);
+    bool drawEllipse(
+        const LineDrawer::CoordinatesType& c,
+        data::Image::BufferType* value,
+        const double radius,
+        const size_t firstDim,
+        const size_t secondDim,
+        const bool overwrite,
+        ImageDiff& diff);
 
     /**
      * @brief Draws a pixel in a 3D image if the right conditions are met.
@@ -99,8 +103,11 @@ private:
      * @param[in,out] diff vector storing the differences in the image before and after drawing.
      * @return true if at least one pixel has been drawn, false otherwise.
      */
-    bool drawPixel( const data::Image::IndexType index, data::Image::BufferType* value, const bool overwrite,
-                    ImageDiff& diff);
+    bool drawPixel(
+        const data::Image::IndexType index,
+        data::Image::BufferType* value,
+        const bool overwrite,
+        ImageDiff& diff);
 
     /// Takes ROI into account.
     bool m_useROI;

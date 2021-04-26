@@ -44,6 +44,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace com
 {
 
@@ -60,12 +61,12 @@ static const core::com::Slots::SlotKeyType s_SET_VISIBLE_SLOT       = "setVisibl
 static const core::com::Slots::SlotKeyType s_SHOW_SLOT              = "show";
 static const core::com::Slots::SlotKeyType s_HIDE_SLOT              = "hide";
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSignalButton::SSignalButton() noexcept
 {
-    m_sigClicked = newSignal< ClickedSignalType >(s_CLICKED_SIG);
-    m_sigToggled = newSignal< ToggledSignalType >(s_TOGGLED_SIG);
+    m_sigClicked = newSignal<ClickedSignalType>(s_CLICKED_SIG);
+    m_sigToggled = newSignal<ToggledSignalType>(s_TOGGLED_SIG);
 
     newSlot(s_SET_CHECKED_SLOT, &SSignalButton::setChecked, this);
     newSlot(s_CHECK_SLOT, &SSignalButton::check, this);
@@ -78,13 +79,13 @@ SSignalButton::SSignalButton() noexcept
     newSlot(s_HIDE_SLOT, &SSignalButton::hide, this);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SSignalButton::~SSignalButton() noexcept
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::configuring()
 {
@@ -95,33 +96,41 @@ void SSignalButton::configuring()
     if(config)
     {
         core::runtime::ConfigurationElement::sptr checkableCfg = config->findConfigurationElement("checkable");
+
         if(checkableCfg)
         {
-            SIGHT_ASSERT("'checkable' value must be 'true' or 'false'",
-                         checkableCfg->getValue() == "true" || checkableCfg->getValue() == "false");
+            SIGHT_ASSERT(
+                "'checkable' value must be 'true' or 'false'",
+                checkableCfg->getValue() == "true" || checkableCfg->getValue() == "false");
             m_checkable = (checkableCfg->getValue() == "true");
         }
 
         core::runtime::ConfigurationElement::sptr executableCfg = config->findConfigurationElement("executable");
+
         if(executableCfg)
         {
-            SIGHT_ASSERT("'executable' value must be 'true' or 'false'",
-                         executableCfg->getValue() == "true" || executableCfg->getValue() == "false");
+            SIGHT_ASSERT(
+                "'executable' value must be 'true' or 'false'",
+                executableCfg->getValue() == "true" || executableCfg->getValue() == "false");
             m_executable = (executableCfg->getValue() == "true");
         }
 
         core::runtime::ConfigurationElement::sptr txtCfg = config->findConfigurationElement("text");
+
         if(txtCfg)
         {
             m_text = txtCfg->getValue();
         }
+
         core::runtime::ConfigurationElement::sptr iconCfg = config->findConfigurationElement("icon");
+
         if(iconCfg)
         {
             m_icon = core::runtime::getModuleResourceFilePath(iconCfg->getValue());
         }
 
         core::runtime::ConfigurationElement::sptr txt2Cfg = config->findConfigurationElement("text2");
+
         if(txt2Cfg)
         {
             SIGHT_ASSERT("Button must be 'checkable' in order to defined 'text2'", m_checkable);
@@ -130,6 +139,7 @@ void SSignalButton::configuring()
         }
 
         core::runtime::ConfigurationElement::sptr icon2Cfg = config->findConfigurationElement("icon2");
+
         if(icon2Cfg)
         {
             SIGHT_ASSERT("Button must be 'checkable' in order to defined 'icon2'", m_checkable);
@@ -138,27 +148,32 @@ void SSignalButton::configuring()
         }
 
         core::runtime::ConfigurationElement::sptr checkedCfg = config->findConfigurationElement("checked");
+
         if(checkedCfg)
         {
             SIGHT_ASSERT("Button must be 'checkable' in order to defined 'checked'", m_checkable);
-            SIGHT_ASSERT("'checked' value must be 'true' or 'false'",
-                         checkedCfg->getValue() == "true" || checkedCfg->getValue() == "false");
+            SIGHT_ASSERT(
+                "'checked' value must be 'true' or 'false'",
+                checkedCfg->getValue() == "true" || checkedCfg->getValue() == "false");
             m_checkAtStart = (checkedCfg->getValue() == "true");
         }
 
         core::runtime::ConfigurationElement::sptr widthCfg = config->findConfigurationElement("iconWidth");
+
         if(widthCfg)
         {
             m_iconWidth = std::stoi(widthCfg->getValue());
         }
 
         core::runtime::ConfigurationElement::sptr heightCfg = config->findConfigurationElement("iconHeight");
+
         if(heightCfg)
         {
             m_iconHeight = std::stoi(heightCfg->getValue());
         }
 
         core::runtime::ConfigurationElement::sptr tooltipCfg = config->findConfigurationElement("toolTip");
+
         if(tooltipCfg)
         {
             m_toolTip = tooltipCfg->getValue();
@@ -166,13 +181,13 @@ void SSignalButton::configuring()
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::starting()
 {
     this->create();
 
-    auto qtContainer = ::sight::ui::qt::container::QtContainer::dynamicCast( this->getContainer() );
+    auto qtContainer = ::sight::ui::qt::container::QtContainer::dynamicCast(this->getContainer());
 
     QVBoxLayout* layout = new QVBoxLayout();
     m_button = new QPushButton(QString::fromStdString(m_text));
@@ -189,6 +204,7 @@ void SSignalButton::starting()
     {
         m_button->setIcon(QIcon(QString::fromStdString(m_icon.string())));
     }
+
     if(m_iconWidth > 0 && m_iconHeight > 0)
     {
         m_button->setIconSize(QSize(m_iconWidth, m_iconHeight));
@@ -201,10 +217,12 @@ void SSignalButton::starting()
         if(m_checkAtStart)
         {
             m_button->setChecked(true);
+
             if(!m_text2.empty())
             {
                 m_button->setText(QString::fromStdString(m_text2));
             }
+
             if(!m_icon2.empty())
             {
                 m_button->setIcon(QIcon(QString::fromStdString(m_icon2.string())));
@@ -212,31 +230,31 @@ void SSignalButton::starting()
         }
     }
 
-    QObject::connect(m_button.data(), &QPushButton::clicked, this, &SSignalButton::onClicked );
-    QObject::connect(m_button.data(), &QPushButton::toggled, this, &SSignalButton::onToggled );
+    QObject::connect(m_button.data(), &QPushButton::clicked, this, &SSignalButton::onClicked);
+    QObject::connect(m_button.data(), &QPushButton::toggled, this, &SSignalButton::onToggled);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::updating()
 {
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::stopping()
 {
     this->destroy();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::onClicked()
 {
     m_sigClicked->asyncEmit();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::onToggled(bool toogled)
 {
@@ -244,7 +262,7 @@ void SSignalButton::onToggled(bool toogled)
     m_sigToggled->asyncEmit(toogled);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::setChecked(bool checked)
 {
@@ -254,6 +272,7 @@ void SSignalButton::setChecked(bool checked)
         {
             m_button->setText(QString::fromStdString(m_text2));
         }
+
         if(!m_icon2.empty())
         {
             m_button->setIcon(QIcon(QString::fromStdString(m_icon2.string())));
@@ -265,6 +284,7 @@ void SSignalButton::setChecked(bool checked)
         {
             m_button->setText(QString::fromStdString(m_text));
         }
+
         if(!m_icon.empty())
         {
             m_button->setIcon(QIcon(QString::fromStdString(m_icon.string())));
@@ -277,63 +297,64 @@ void SSignalButton::setChecked(bool checked)
     this->blockSignals(false);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::check()
 {
     this->setChecked(true);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::uncheck()
 {
     this->setChecked(false);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::setIsExecutable(bool _isExecutable)
 {
     m_button->setEnabled(_isExecutable);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::setExecutable()
 {
     m_button->setEnabled(true);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::setInexecutable()
 {
     m_button->setEnabled(false);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::setVisible(bool _isVisible)
 {
     m_button->setVisible(_isVisible);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::show()
 {
     m_button->show();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 void SSignalButton::hide()
 {
     m_button->hide();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace com.
+
 } // namespace sight::module::ui::base.

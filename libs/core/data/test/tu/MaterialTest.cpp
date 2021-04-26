@@ -32,32 +32,33 @@
 #include <vector>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::data::ut::MaterialTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::data::ut::MaterialTest);
 
 namespace sight::data
 {
+
 namespace ut
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MaterialTest::setUp()
 {
     // Set up context before running a test.
-
 }
-//------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------
 
 void MaterialTest::tearDown()
 {
     // Clean up after the test run.
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void MaterialTest::methode1()
 {
-    //-----------test values
+    // -----------test values
     data::Color::sptr CAMBIENT = data::Color::New();
     CAMBIENT->setRGBA(0.5f, 0.5f, 0.5f, 0.5f);
 
@@ -73,5 +74,6 @@ void MaterialTest::methode1()
     CPPUNIT_ASSERT_EQUAL(material->diffuse()->getRGBA()[0], CDIFF->getRGBA()[0]);
 }
 
-} //namespace ut
-} //namespace sight::data
+} // namespace ut
+
+} // namespace sight::data

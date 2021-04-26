@@ -35,13 +35,13 @@
 namespace sight::data
 {
 
-SIGHT_REGISTER_DATA( sight::data::CameraSeries );
+SIGHT_REGISTER_DATA(sight::data::CameraSeries);
 
 const core::com::Signals::SignalKeyType CameraSeries::s_ADDED_CAMERA_SIG         = "addedCamera";
 const core::com::Signals::SignalKeyType CameraSeries::s_REMOVED_CAMERA_SIG       = "removedCamera";
 const core::com::Signals::SignalKeyType CameraSeries::s_EXTRINSIC_CALIBRATED_SIG = "extrinsicCalibrated";
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CameraSeries::CameraSeries(data::Object::Key key) :
     Series(key)
@@ -53,23 +53,24 @@ CameraSeries::CameraSeries(data::Object::Key key) :
     core::com::HasSignals::m_signals(s_ADDED_CAMERA_SIG, m_sigAddedCamera)
         (s_REMOVED_CAMERA_SIG, m_sigRemovedCamera)
         (s_EXTRINSIC_CALIBRATED_SIG, m_sigExtrinsicCalibrated);
-
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 CameraSeries::~CameraSeries()
 {
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-void CameraSeries::shallowCopy( const data::Object::csptr& _source )
+void CameraSeries::shallowCopy(const data::Object::csptr& _source)
 {
     CameraSeries::csptr other = CameraSeries::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
     this->data::Series::shallowCopy(_source);
 
@@ -77,21 +78,23 @@ void CameraSeries::shallowCopy( const data::Object::csptr& _source )
     m_extrinsicMatrices = other->m_extrinsicMatrices;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeries::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCacheType& cache)
 {
     CameraSeries::csptr other = CameraSeries::dynamicConstCast(_source);
-    SIGHT_THROW_EXCEPTION_IF( data::Exception(
-                                  "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
-                                  + " to " + this->getClassname()), !bool(other) );
+    SIGHT_THROW_EXCEPTION_IF(
+        data::Exception(
+            "Unable to copy" + (_source ? _source->getClassname() : std::string("<NULL>"))
+            + " to " + this->getClassname()),
+        !bool(other));
 
-    this->data::Series::cachedDeepCopy( _source, cache );
+    this->data::Series::cachedDeepCopy(_source, cache);
 
     m_cameras.clear();
     m_extrinsicMatrices.clear();
 
-    for(CameraContainerType::value_type elt : other->m_cameras )
+    for(CameraContainerType::value_type elt : other->m_cameras)
     {
         data::Camera::sptr newCamera;
         newCamera = data::Object::copy(elt, cache);
@@ -106,31 +109,34 @@ void CameraSeries::cachedDeepCopy(const data::Object::csptr& _source, DeepCopyCa
     }
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeries::addCamera(const data::Camera::sptr& camera)
 {
-    SIGHT_THROW_IF("Camera already exists in CameraSeries.",
-                   std::find(m_cameras.begin(), m_cameras.end(), camera) != m_cameras.end());
+    SIGHT_THROW_IF(
+        "Camera already exists in CameraSeries.",
+        std::find(m_cameras.begin(), m_cameras.end(), camera) != m_cameras.end());
     m_cameras.push_back(camera);
     data::Matrix4::sptr matrix;
-    if (m_extrinsicMatrices.empty())
+
+    if(m_extrinsicMatrices.empty())
     {
         matrix = data::Matrix4::New();
     }
+
     m_extrinsicMatrices.push_back(matrix);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Camera::sptr CameraSeries::getCamera(size_t index) const
 {
-    SIGHT_THROW_IF("Number of cameras is less than " << index, index >= m_cameras.size() );
+    SIGHT_THROW_IF("Number of cameras is less than " << index, index >= m_cameras.size());
 
     return m_cameras[index];
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeries::removeCamera(const data::Camera::sptr& camera)
 {
@@ -143,22 +149,23 @@ void CameraSeries::removeCamera(const data::Camera::sptr& camera)
     m_cameras.erase(iter);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void CameraSeries::setExtrinsicMatrix(size_t index, data::Matrix4::sptr matrix)
 {
-    SIGHT_THROW_IF("Number of cameras is less than " << index, index >= m_cameras.size() );
+    SIGHT_THROW_IF("Number of cameras is less than " << index, index >= m_cameras.size());
     m_extrinsicMatrices[index] = matrix;
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 data::Matrix4::sptr CameraSeries::getExtrinsicMatrix(size_t index) const
 {
-    SIGHT_THROW_IF("Number of cameras is less than " << index, index >= m_cameras.size() );
+    SIGHT_THROW_IF("Number of cameras is less than " << index, index >= m_cameras.size());
+
     return m_extrinsicMatrices[index];
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-} //namespace sight::data
+} // namespace sight::data

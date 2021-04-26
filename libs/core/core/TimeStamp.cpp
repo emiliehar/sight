@@ -25,11 +25,11 @@
 namespace sight::core
 {
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 void TimeStamp::modified()
 {
     m_modifiedTime = core::HiResClock::getTimeInMilliSec();
 }
 
-} //namespace sight::core
+} // namespace sight::core

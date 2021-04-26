@@ -35,7 +35,7 @@ namespace exception
 /// Bad call exception.
 struct AlreadyConnected : core::Exception
 {
-    CORE_API AlreadyConnected ( const std::string& err );
+    CORE_API AlreadyConnected(const std::string& err);
 };
 
 } // namespace exception

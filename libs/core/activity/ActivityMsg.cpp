@@ -35,11 +35,12 @@
 namespace sight::activity
 {
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
-                         const activity::extension::ActivityInfo& info,
-                         const ParametersType& parameters)
+ActivityMsg::ActivityMsg(
+    const data::ActivitySeries::sptr& series,
+    const activity::extension::ActivityInfo& info,
+    const ParametersType& parameters)
 {
     SIGHT_ASSERT("ActivitySeries instantiation failed", series);
 
@@ -59,6 +60,7 @@ ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
         std::string newTabInfo = info.tabInfo;
         std::regex e("(!(([\\w]+\\.?)+[\\w]))");
         std::smatch what;
+
         if(std::regex_search(newTabInfo, what, e))
         {
             std::string submatch(what[1].first, what[1].second);
@@ -66,7 +68,7 @@ ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
             submatch.replace(0, 1, "@");
 
             data::Object::sptr obj = data::reflection::getObject(series->getData(), submatch);
-            SIGHT_ASSERT("Invalid seshat path : '" << submatch <<"'", obj);
+            SIGHT_ASSERT("Invalid seshat path : '" << submatch << "'", obj);
 
             data::String::sptr stringParameter = data::String::dynamicCast(obj);
 
@@ -83,10 +85,11 @@ ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
 
             submatch.replace(0, 1, "!");
             ::boost::algorithm::replace_all(newTabInfo, submatch, tabInfoSeshat);
-
         }
+
         m_tabInfo = newTabInfo;
     }
+
     m_iconPath = info.icon;
     m_tooltip  = m_tabInfo;
     m_series   = series;
@@ -99,7 +102,8 @@ ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
     asConfigParam.replace = asUID;
     asConfigParam.by      = series->getID();
     params.push_back(asConfigParam);
-    for(const ActiReg::ActivityAppConfigParam& param :  params)
+
+    for(const ActiReg::ActivityAppConfigParam& param : params)
     {
         if(!param.isSeshat())
         {
@@ -108,13 +112,14 @@ ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
         else
         {
             std::string parameterToReplace = param.by;
-            if (parameterToReplace.substr(0, 1) == "!")
+
+            if(parameterToReplace.substr(0, 1) == "!")
             {
                 parameterToReplace.replace(0, 1, "@");
             }
 
             data::Object::sptr obj = data::reflection::getObject(series->getData(), parameterToReplace);
-            SIGHT_ASSERT("Invalid seshat path : '"<<param.by<<"'", obj);
+            SIGHT_ASSERT("Invalid seshat path : '" << param.by << "'", obj);
 
             data::String::sptr stringParameter = data::String::dynamicCast(obj);
 
@@ -124,11 +129,12 @@ ActivityMsg::ActivityMsg(const data::ActivitySeries::sptr& series,
             {
                 parameterValue = stringParameter->getValue();
             }
+
             m_replaceMap[param.replace] = parameterValue;
         }
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 } // namespace sight::activity

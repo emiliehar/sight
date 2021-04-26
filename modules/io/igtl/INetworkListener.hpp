@@ -30,12 +30,11 @@
 
 namespace sight::module::io::igtl
 {
+
 /// Interface providing behavior of network listeners, if you want create a new network listener you must be inherit.
 class MODULE_IO_IGTL_CLASS_API INetworkListener : public service::IController
 {
-
 public:
-
     /// Generates default methods as New, dynamicCast, ...
     SIGHT_DECLARE_SERVICE(INetworkListener, service::IController)
 
@@ -46,7 +45,6 @@ public:
     MODULE_IO_IGTL_API ~INetworkListener() override;
 
 protected:
-
     /// Defines the signal's name emitted when service is connected.
     MODULE_IO_IGTL_API static const core::com::Signals::SignalKeyType s_CONNECTED_SIGNAL;
 
@@ -57,13 +55,12 @@ protected:
     MODULE_IO_IGTL_API void updating() override;
 
     /// Defines the signal emitted when service is connected.
-    typedef core::com::Signal< void () > ConnectedSignalType;
+    typedef core::com::Signal<void ()> ConnectedSignalType;
     ConnectedSignalType::sptr m_sigConnected;
 
     /// Defines the signal emitted when service is disconnected.
-    typedef core::com::Signal< void () > DisconnectSignalType;
+    typedef core::com::Signal<void ()> DisconnectSignalType;
     DisconnectSignalType::sptr m_sigDisconnected;
-
 };
 
 } // namespace sight::module::io::igtl.

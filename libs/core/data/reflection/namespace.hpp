@@ -24,16 +24,19 @@
 
 namespace sight::data
 {
+
 /**
  * @brief This namespace contains data object descriptions used for introspection.
  */
 namespace reflection
 {
+
 /**
  * @brief This namespace contains exceptions related to data objects introspection.
  */
 namespace exception
 {
+
 }
 
 /**
@@ -41,6 +44,9 @@ namespace exception
  */
 namespace visitor
 {
+
 }
+
 } // namespace reflection
+
 }

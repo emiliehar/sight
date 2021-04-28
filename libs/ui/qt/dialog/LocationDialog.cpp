@@ -99,7 +99,7 @@ core::location::ILocation::sptr LocationDialog::show()
                 paths.push_back(bpath);
             }
 
-            auto multipleFiles = core::location::MultipleFiles::New();
+            const auto& multipleFiles = std::make_shared<core::location::MultipleFiles>();
             multipleFiles->setFiles(paths);
             location = multipleFiles;
         }
@@ -128,7 +128,7 @@ core::location::ILocation::sptr LocationDialog::show()
         }
         if(!fileName.isNull())
         {
-            auto singleFile = core::location::SingleFile::New();
+            const auto& singleFile = std::make_shared<core::location::SingleFile>();
             singleFile->setFile(fileName.toStdString());
             location = singleFile;
         }
@@ -147,7 +147,7 @@ core::location::ILocation::sptr LocationDialog::show()
 
         if(!dir.isNull())
         {
-            auto singleDirectory = core::location::SingleFolder::New();
+            const auto& singleDirectory = std::make_shared<core::location::SingleFolder>();
             singleDirectory->setFolder(dir.toStdString());
             location = singleDirectory;
         }

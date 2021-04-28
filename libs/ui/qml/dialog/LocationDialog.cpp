@@ -140,19 +140,19 @@ void LocationDialog::resultDialog(const QVariant& msg)
                 paths.push_back(bpath);
             }
 
-            auto multipleFiles = core::location::MultipleFiles::New();
+            const auto& multipleFiles = std::make_shared<core::location::MultipleFiles>();
             multipleFiles->setFiles(paths);
             m_location = multipleFiles;
         }
         else if(m_type == ui::base::dialog::ILocationDialog::SINGLE_FILE)
         {
-            auto singleFile = core::location::SingleFile::New();
+            const auto& singleFile = std::make_shared<core::location::SingleFile>();
             singleFile->setFile(files.first().toLocalFile().toStdString());
             m_location = singleFile;
         }
         else if(m_type == ui::base::dialog::ILocationDialog::FOLDER)
         {
-            auto singleDirectory = core::location::SingleFolder::New();
+            const auto& singleDirectory = std::make_shared<core::location::SingleFolder>();
             singleDirectory->setFolder(files.first().toLocalFile().toStdString());
             m_location = singleDirectory;
         }

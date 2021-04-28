@@ -576,7 +576,7 @@ void SWriter::configureWithIHM()
 
 void SWriter::openLocationDialog()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     if( !m_useAtomsPatcher || versionSelection() )
     {

@@ -22,59 +22,52 @@
 
 #pragma once
 
-#include <core/location/ILocation.hpp>
+#include "ILocation.hpp"
 
 #include <filesystem>
 
 namespace sight::core::location
 {
-/**
- * @brief Class to define a location that holds one single file path.
- */
+/// Class to define a location that holds one single file path.
 class CORE_CLASS_API SingleFile : public ILocation
 {
 public:
-    SIGHT_DECLARE_CLASS(SingleFile)
-
-    /// Factory
-    inline static SingleFile::sptr New()
-    {
-        struct make_shared_enabler : public SingleFile {};
-        return std::make_shared<make_shared_enabler>();
-    }
+    SIGHT_DECLARE_CLASS(SingleFile, ILocation)
 
     /// String serialization function
-    inline std::string toString() const override
-    {
-        return m_file.string();
-    }
+    inline std::string toString() const override;
 
-    //------------------------------------------------------------------------------
+    /// Set the file path
+    inline void setFile(const std::filesystem::path& filePath);
 
-    inline void setFile(const std::filesystem::path& filePath)
-    {
-        m_file = filePath;
-    }
-
-    //------------------------------------------------------------------------------
-
-    inline std::filesystem::path getFile()
-    {
-        return m_file;
-    }
-
-protected:
-
-    /// Constructor
-    CORE_API SingleFile() = default;
-
-    /// Destructor
-    CORE_API virtual ~SingleFile() = default;
+    /// Get the file path
+    inline std::filesystem::path getFile() const;
 
 private:
 
     /// The filesystem path to the target file
     std::filesystem::path m_file;
 };
+
+//------------------------------------------------------------------------------
+
+inline std::string SingleFile::toString() const
+{
+    return m_file.string();
+}
+
+//------------------------------------------------------------------------------
+
+inline void SingleFile::setFile(const std::filesystem::path& filePath)
+{
+    m_file = filePath;
+}
+
+//------------------------------------------------------------------------------
+
+inline std::filesystem::path SingleFile::getFile() const
+{
+    return m_file;
+}
 
 } // namespace sight::io::base::location

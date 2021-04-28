@@ -91,7 +91,7 @@ const core::location::ILocation::sptr ILocationDialog::getDefaultLocation()
         {
             const auto stringLocation =
                 data::String::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_FILE ] );
-            core::location::SingleFile::sptr singleFile = core::location::SingleFile::New();
+            const auto& singleFile = std::make_shared<core::location::SingleFile>();
             singleFile->setFile(stringLocation->getValue());
             location = singleFile;
         }
@@ -99,7 +99,7 @@ const core::location::ILocation::sptr ILocationDialog::getDefaultLocation()
         {
             const auto stringLocation =
                 data::String::dynamicCast( (*prefUI)[ ILocationDialog::DLG_DEFAULT_DIRECTORY ] );
-            core::location::SingleFolder::sptr singleDirectory = core::location::SingleFolder::New();
+            const auto& singleDirectory = std::make_shared<core::location::SingleFolder>();
             singleDirectory->setFolder(stringLocation->getValue());
             location = singleDirectory;
         }

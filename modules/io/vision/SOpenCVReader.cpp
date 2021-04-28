@@ -83,7 +83,7 @@ bool SOpenCVReader::defineLocationGUI()
     bool ok = false;
 
     // Ask user for the file path
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Enter file name" : m_windowTitle);

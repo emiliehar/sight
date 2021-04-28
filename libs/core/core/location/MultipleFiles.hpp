@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <core/location/ILocation.hpp>
+#include "ILocation.hpp"
 
 #include <filesystem>
 #include <iterator>
@@ -33,68 +33,64 @@
 
 namespace sight::core::location
 {
-/**
- * @brief Class to define a location that holds one or more file path.
- */
-class CORE_CLASS_API MultipleFiles : public core::location::ILocation
+/// Class to define a location that holds one or more file path.
+class CORE_CLASS_API MultipleFiles : public ILocation
 {
 public:
-    SIGHT_DECLARE_CLASS(MultipleFiles)
-
-    /// Factory
-    inline static MultipleFiles::sptr New()
-    {
-        struct make_shared_enabler : public MultipleFiles {};
-        return std::make_shared<make_shared_enabler>();
-    }
+    SIGHT_DECLARE_CLASS(MultipleFiles, ILocation)
 
     /// String serialization function
-    inline std::string toString() const override
-    {
-        #ifdef WIN32
-        const char* const delim = ";";
-        #else
-        const char* const delim = ":";
-        #endif
+    inline std::string toString() const override;
 
-        std::stringstream stringstream;
-        std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<std::string>(stringstream, delim));
-        return stringstream.str();
-    }
+    /// Sets the file paths
+    inline void setFiles(const std::vector<std::filesystem::path>& filePaths);
 
-    //------------------------------------------------------------------------------
+    /// Gets the file paths
+    inline std::vector<std::filesystem::path> getFiles() const;
 
-    inline void setFiles(const std::vector<std::filesystem::path>& filePaths)
-    {
-        m_files = filePaths;
-    }
-
-    //------------------------------------------------------------------------------
-
-    inline std::vector<std::filesystem::path> getFiles()
-    {
-        return m_files;
-    }
-
-    //------------------------------------------------------------------------------
-
-    inline void addFile(const std::filesystem::path& filePaths)
-    {
-        m_files.push_back(filePaths);
-    }
-
-protected:
-
-    /// Constructor
-    CORE_API MultipleFiles() = default;
-
-    /// Destructor
-    CORE_API virtual ~MultipleFiles() = default;
+    /// Append one file path
+    inline void addFile(const std::filesystem::path& filePaths);
 
 private:
 
     /// The filesystem::path vector
     std::vector<std::filesystem::path> m_files;
 };
+
+
+// String serialization function
+inline std::string MultipleFiles::toString() const
+{
+    #ifdef WIN32
+    const char* const delim = ";";
+    #else
+    const char* const delim = ":";
+    #endif
+
+    std::stringstream stringstream;
+    std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<std::string>(stringstream, delim));
+    return stringstream.str();
+}
+
+//------------------------------------------------------------------------------
+
+inline void MultipleFiles::setFiles(const std::vector<std::filesystem::path>& filePaths)
+{
+    m_files = filePaths;
+}
+
+//------------------------------------------------------------------------------
+
+inline std::vector<std::filesystem::path> MultipleFiles::getFiles() const
+{
+    return m_files;
+}
+
+//------------------------------------------------------------------------------
+
+inline void MultipleFiles::addFile(const std::filesystem::path& filePaths)
+{
+    m_files.push_back(filePaths);
+}
 
 } // namespace sight::io::base::location

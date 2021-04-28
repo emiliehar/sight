@@ -153,7 +153,7 @@ void SnapshotEditor::onSnapButton()
 
 std::string SnapshotEditor::requestFileName()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
     std::string fileName         = "";
 
     sight::ui::base::dialog::LocationDialog dialogFile;

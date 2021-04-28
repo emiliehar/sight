@@ -75,7 +75,7 @@ void SMeshWriter::configureWithIHM()
 
 void SMeshWriter::openLocationDialog()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_windowTitle.empty() ? "Choose a vtk file to save Mesh" : m_windowTitle);

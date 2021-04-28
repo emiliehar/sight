@@ -483,7 +483,7 @@ void SOpenvslam::setEnumParameter(std::string _val, std::string _key)
 
 void SOpenvslam::loadMap()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select openvslam map file");
@@ -509,7 +509,7 @@ void SOpenvslam::loadMap()
 
 void SOpenvslam::saveMap()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Choose a file to save Openvslam map");
@@ -558,7 +558,7 @@ void SOpenvslam::saveMap()
 
 void SOpenvslam::saveTrajectories()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFolder;
     dialogFolder.setTitle("Choose a folder & name to save trajectories files.");

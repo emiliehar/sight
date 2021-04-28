@@ -208,7 +208,7 @@ void SCamera::onChooseFile()
     // Check preferences
     const std::filesystem::path videoDirPreferencePath(sight::ui::base::preferences::getVideoDir());
 
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setDefaultLocation(defaultDirectory);

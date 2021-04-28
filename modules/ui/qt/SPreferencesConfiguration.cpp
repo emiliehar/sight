@@ -379,7 +379,7 @@ void SPreferencesConfiguration::stopping()
 
 void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select Storage directory");
@@ -400,7 +400,7 @@ void SPreferencesConfiguration::onSelectDir(QPointer<QLineEdit> lineEdit)
 
 void SPreferencesConfiguration::onSelectFile(QPointer<QLineEdit> lineEdit)
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle("Select File");

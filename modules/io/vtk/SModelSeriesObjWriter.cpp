@@ -74,7 +74,7 @@ void SModelSeriesObjWriter::configureWithIHM()
 
 void SModelSeriesObjWriter::openLocationDialog()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialog;
     dialog.setTitle(m_windowTitle.empty() ? "Choose a directory to save meshes" : m_windowTitle);
@@ -84,7 +84,7 @@ void SModelSeriesObjWriter::openLocationDialog()
 
     core::location::SingleFolder::sptr result;
 
-    while(result = core::location::SingleFolder::dynamicCast(dialog.show()))
+    while((result = core::location::SingleFolder::dynamicCast(dialog.show())))
     {
         if( std::filesystem::is_empty(result->getFolder()) )
         {

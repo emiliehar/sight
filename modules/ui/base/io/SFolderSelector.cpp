@@ -67,7 +67,7 @@ void SFolderSelector::starting()
 
 void SFolderSelector::updating( )
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
     sight::ui::base::dialog::LocationDialog dialogFile;
     dialogFile.setTitle(m_dialogTitle);
     dialogFile.setDefaultLocation(defaultDirectory);

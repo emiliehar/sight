@@ -82,7 +82,7 @@ void SImageReader::configureWithIHM()
 
 void SImageReader::openLocationDialog()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     /* Initialize the available extensions for BitmapImageReader */
     std::vector<std::string> ext;

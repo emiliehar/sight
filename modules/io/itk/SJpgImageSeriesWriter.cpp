@@ -79,7 +79,7 @@ void SJpgImageSeriesWriter::configureWithIHM()
 
 void SJpgImageSeriesWriter::openLocationDialog()
 {
-    static auto defaultDirectory = core::location::SingleFolder::New();
+    static auto defaultDirectory = std::make_shared<core::location::SingleFolder>();
 
     sight::ui::base::dialog::LocationDialog dialog;
     dialog.setTitle(m_windowTitle.empty() ? "Choose a directory to save image" : m_windowTitle);
@@ -89,7 +89,7 @@ void SJpgImageSeriesWriter::openLocationDialog()
 
     core::location::SingleFolder::sptr result;
 
-    while(result = core::location::SingleFolder::dynamicCast(dialog.show()))
+    while((result = core::location::SingleFolder::dynamicCast(dialog.show())))
     {
         if(std::filesystem::is_empty(result->getFolder()))
         {

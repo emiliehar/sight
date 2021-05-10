@@ -123,10 +123,10 @@ public:
      *   - \b minHeight : minimal height of the view
      *   - \b resizable  {yes | no}: define if the view can be resized.
      *   - \b position : indicates the sequential position, starting with zero. It uses if more than one view as the
-     * same align value (available only with wxWidget see wxAuiManager in wxWidgets documenattion for more details).
-     *   - \b layer : available only with wxWidget. See wxAuiManager in wxWidgets documenattion for more details
+     * same align value (available only with wxWidget see wxAuiManager in wxWidgets documentation for more details).
+     *   - \b layer : available only with wxWidget. See wxAuiManager in wxWidgets documentation for more details
      *   - \b row : use to place several view next to each other (available only with wxWidget). See wxAuiManager in
-     * wxWidgets documenattion for more details
+     * wxWidgets documentation for more details
      *   - \b visible  {true | yes | false | no} : define if the view is visible or not.
      *   - \b toolTip : string that will be displayed next to the mouse pointer when it lies over the view.
      *   - \b backgroundColor (optional) : (hexa) background color.

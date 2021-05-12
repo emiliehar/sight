@@ -1,4 +1,4 @@
-<plugin id="activity_viz_negato" >
+<plugin id="activity_viz_3d" >
 
     <requirement id="sight::module::service" />
     <requirement id="sight::module::ui::qt" />
@@ -6,18 +6,15 @@
     <requirement id="sight::module::viz::scene3d" />
     <requirement id="sight::module::viz::scene3dQt" />
 
-    <xi:include href="configurations/2DVisualization.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
-    <xi:include href="configurations/2DNegato.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
-    <xi:include href="configurations/2DNegatoWithTF.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
-    <xi:include href="configurations/2DSimpleConfig.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
+    <xi:include href="configurations/3DVisualization.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
 
     <extension implements="sight::activity::extension::Activity">
-        <id>2DVisualization</id>
-        <title>2D visualization</title>
-        <desc>Display a medical image in 2D.</desc>
-        <icon>sight::module::ui::icons/icon-2D.png</icon>
+        <id>3DVisualization</id>
+        <title>3D visualization</title>
+        <desc>Display a medical image in 3D.</desc>
+        <icon>sight::module::ui::icons/icon-3D.png</icon>
         <requirements>
-            <requirement name="imageSeries" type="sight::data::ImageSeries" minOccurs="1" maxOccurs="1">
+            <requirement name="modelSeries" type="sight::data::ModelSeries" minOccurs="1" maxOccurs="1">
                 <desc>Image to display.</desc>
             </requirement>
             <requirement name="landmarks" type="sight::data::Landmarks" minOccurs="0" maxOccurs="0">
@@ -25,9 +22,9 @@
             </requirement>
         </requirements>
         <builder>sight::activity::builder::ActivitySeriesInitData</builder>
-        <appConfig id="2DVisualization">
+        <appConfig id="3DVisualization">
             <parameters>
-                <parameter replace="image" by="@values.imageSeries.image" />
+                <parameter replace="mesh" by="@values.meshSeries.mesh" />
                 <parameter replace="landmarks" by="@values.landmarks" />
             </parameters>
         </appConfig>

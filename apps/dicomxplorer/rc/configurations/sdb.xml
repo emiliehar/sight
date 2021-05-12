@@ -74,9 +74,7 @@
                 <config id="2DSimpleConfig" type="sight::data::ImageSeries">
                     <extract path="@image" pattern="imageID" />
                 </config>
-                <config id="3DSimpleConfig" type="sight::data::ModelSeries">
-                     <extract path="@modelSeries" pattern="modelSeries" />
-                </config>
+                <config id="3DSimpleConfig" type="sight::data::SeriesDB"/>
             </configs>
         </service>
 

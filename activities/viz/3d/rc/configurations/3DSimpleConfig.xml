@@ -1,36 +1,21 @@
-<extension implements="sight::service::extension::AppConfig">
+<extension implements="::sight::service::extension::AppConfig">
     <id>3DSimpleConfig</id>
     <parameters>
         <param name="WID_PARENT" />
-        <param name="modelSeries" />
+        <param name="objectID" />
     </parameters>
     <config>
-
-        <object uid="${modelSeries}" type="sight::data::ModelSeries" src="ref" />
-
-        <service uid="mainview" type="sight::module::ui::base::SView">
-            <gui>
-                <layout type="sight::ui::base::CardinalLayoutManager">
-                    <view align="center" />
-                    <view align="bottom" minWidth="200" minHeight="30" resizable="no" />
-                </layout>
-            </gui>
-            <registry>
-                <parent wid="${WID_PARENT}" />
-                <view sid="gs" start="yes" />
-            </registry>
-        </service>
-
+        <object uid="${objectID}" type="sight::data::ModelSeries" src="ref" />
         <!-- *************************** Begin generic scene *************************** -->
 
         <service uid="gs" type="sight::viz::scene3d::SRender" >
             <scene>
                 <background topColor="#36393E" bottomColor="#36393E" />
                 
-                <layer id="default" order="1" transparency="HybridTransparency" numPeels="4" />
+                <layer id="default" order="1"/>
 
                 <adaptor uid="cameraInteractorAdaptor" />
-                <adaptor uid="seriesAdaptor" />
+                <adaptor uid="modelAdaptor" />
             </scene>
         </service>
 
@@ -38,24 +23,18 @@
             <config layer="default" priority="0" orientation="${orientation}" />
         </service>
 
-        <service uid="seriesAdaptor" type="sight::module::viz::scene3d::adaptor::SModelSeries" autoConnect="yes">
-            <inout key="modelSeries" uid="${modelSeries}" />
-            <config layer="default" picker="picker" autoresetcamera="yes"/>
+        <service uid="modelAdaptor" type="sight::module::viz::scene3d::adaptor::SModelSeries" autoConnect="yes">
+            <inout key="modelSeries" uid="${objectID}" />
+            <config layer="default" autoresetcamera="yes"/>
         </service>
+
 
         <!-- *************************** End generic scene *************************** -->
 
-        <service uid="modelDumpLocker" type="sight::module::memory::LockDumpSrv">
-            <inout key="target" uid="${modelSeries}" />
-        </service>
-
-
-
-        <start uid="modelDumpLocker" />
-        <start uid="mainview" />
+        <start uid="gs" />
 
         <!-- gs adaptors -->
+        <start uid="modelAdaptor" />
         <start uid="cameraInteractorAdaptor" />
-        <start uid="seriesAdaptor" />
     </config>
 </extension>

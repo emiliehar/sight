@@ -6,7 +6,7 @@
     <requirement id="sight::module::viz::scene3d" />
     <requirement id="sight::module::viz::scene3dQt" />
 
-    <xi:include href="configurations/3DVisualization.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
+    <xi:include href="configurations/3DSimpleConfig.xml" xmlns:xi="http://www.w3.org/2003/XInclude" />
 
     <extension implements="sight::activity::extension::Activity">
         <id>3DVisualization</id>
@@ -21,10 +21,10 @@
                 <desc>Landmarks to display.</desc>
             </requirement>
         </requirements>
-        <builder>sight::activity::builder::ActivitySeriesInitData</builder>
+        <builder>::sight::activity::builder::ActivitySeriesInitData</builder>
         <appConfig id="3DVisualization">
             <parameters>
-                <parameter replace="mesh" by="@values.meshSeries.mesh" />
+                <parameter replace="modelSeries" by="@values.modelSeries" />
                 <parameter replace="landmarks" by="@values.landmarks" />
             </parameters>
         </appConfig>

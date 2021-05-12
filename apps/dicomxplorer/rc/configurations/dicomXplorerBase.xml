@@ -1,5 +1,5 @@
 <extension implements="::sight::service::extension::AppConfig">
-    <id>VRRenderBase</id>
+    <id>dicomXplorerBase</id>
     <parameters>
         <param name="appName" />
         <param name="appIconPath" />
@@ -120,7 +120,7 @@
 
         <service uid="dynamicView" type="sight::module::ui::qt::activity::SDynamicView">
             <inout key="SERIESDB" uid="seriesDB" />
-            <mainActivity id="SDBVRRender" closable="false" />
+            <mainActivity id="SDBdicomXplorer" closable="false" />
             <parameters>
                 <parameter replace="ICON_PATH" by="${appIconPath}" />
                 <parameter replace="DYNAMICVIEW_CHANNEL" by="dynamicViewChannel" />

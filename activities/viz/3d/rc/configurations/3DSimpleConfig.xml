@@ -2,10 +2,12 @@
     <id>3DSimpleConfig</id>
     <parameters>
         <param name="WID_PARENT" />
-        <param name="modelID" />
+        <param name="modelSeries" />
     </parameters>
     <config>
-        <object uid="${modelID}" type="sight::data::Mesh" src="ref" />
+
+        <object uid="${modelSeries}" type="sight::data::ModelSeries" src="ref" />
+
         <service uid="mainview" type="sight::module::ui::base::SView">
             <gui>
                 <layout type="sight::ui::base::CardinalLayoutManager">
@@ -29,7 +31,6 @@
 
                 <adaptor uid="cameraInteractorAdaptor" />
                 <adaptor uid="seriesAdaptor" />
-
             </scene>
         </service>
 
@@ -38,15 +39,17 @@
         </service>
 
         <service uid="seriesAdaptor" type="sight::module::viz::scene3d::adaptor::SModelSeries" autoConnect="yes">
-            <inout key="model" uid="${modelID}" />
+            <inout key="modelSeries" uid="${modelSeries}" />
             <config layer="default" picker="picker" autoresetcamera="yes"/>
         </service>
 
         <!-- *************************** End generic scene *************************** -->
 
         <service uid="modelDumpLocker" type="sight::module::memory::LockDumpSrv">
-            <inout key="target" uid="${modelID}" />
+            <inout key="target" uid="${modelSeries}" />
         </service>
+
+
 
         <start uid="modelDumpLocker" />
         <start uid="mainview" />

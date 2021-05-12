@@ -1,6 +1,6 @@
 
 <extension implements="::sight::service::extension::AppConfig">
-    <id>SDBVRRender</id>
+    <id>SDBdicomXplorer</id>
     <parameters>
         <param name="SERIESDB" />
         <param name="WID_PARENT" />
@@ -36,6 +36,7 @@
                     <menuItem name="Export" icon="sight::module::ui::icons/Export.svg" />
                     <separator />
                     <menuItem name="2D visualization" icon="sight::module::ui::icons/icon-2D.png" />
+                    <menuItem name="3D visualization" icon="sight::module::ui::icons/icon-3D.png" />
                     <separator />
                     <menuItem name="DICOM PACS Reader" icon="sight::module::ui::icons/Pull.svg" />
                     <menuItem name="DICOM PACS Writer" icon="sight::module::ui::icons/Push.svg" />
@@ -48,6 +49,7 @@
                 <menuItem sid="action_import" start="yes" />
                 <menuItem sid="action_exportSeries" start="yes" />
                 <menuItem sid="action_2DVisualization" start="yes" />
+                <menuItem sid="action_3DVisualization" start="yes" />
                 <menuItem sid="action_dicomPacsReader" start="yes" />
                 <menuItem sid="action_dicomPacsWriter" start="yes" />
                 <menuItem sid="action_dicomFiltering" start="yes" />
@@ -72,8 +74,9 @@
                 <config id="2DSimpleConfig" type="sight::data::ImageSeries">
                     <extract path="@image" pattern="imageID" />
                 </config>
-                <config id="3DSimpleConfig" type="data::ModelSeries" />
-                    <extract path="@model" pattern="modelID" />
+                <config id="3DSimpleConfig" type="sight::data::ModelSeries">
+                     <extract path="@modelSeries" pattern="modelSeries" />
+                </config>
             </configs>
         </service>
 
@@ -83,14 +86,14 @@
                 <parameters>
                     <parameter replace="SERIESDB" by="${SERIESDB}" />
                     <parameter replace="ICON_PATH" by="${ICON_PATH}" />
-                    <parameter replace="APP_NAME" by="VRRender" />
+                    <parameter replace="APP_NAME" by="dicomXplorer" />
                     <parameter replace="PROGRESS_CHANNEL" by="${PROGRESS_CHANNEL}" />
                 </parameters>
                 <filter>
                     <mode>exclude</mode>
                     <id>ImageSeriesExport</id>
                     <id>ModelSeriesExport</id>
-                    <id>SDBVRRender</id>
+                    <id>SDBdicomXplorer</id>
                 </filter>
             </config>
         </service>
@@ -109,13 +112,31 @@
             </config>
         </service>
 
+<<<<<<< dev
         <service uid="action_dicomPacsReader" type="sight::module::ui::qt::activity::SLauncher" autoConnect="true">
+=======
+        <service uid="action_3DVisualization" type="sight::module::ui::qt::activity::SLauncher" autoConnect="yes">
+            <in key="series" uid="selections" />
+            <config>
+                <parameters>
+                    <parameter replace="SERIESDB" by="${SERIESDB}" />
+                    <parameter replace="ICON_PATH" by="${ICON_PATH}" />
+                </parameters>
+                <filter>
+                    <mode>include</mode>
+                    <id>3DVisualization</id>
+                </filter>
+            </config>
+        </service>
+
+        <service uid="action_dicomPacsReader" type="sight::module::ui::qt::activity::SLauncher" autoConnect="yes">
+>>>>>>> refactor(graphics): remove all VRRender mentions  and rename attributes
             <in key="series" uid="selections" />
             <config>
                 <parameters>
                     <parameter replace="SERIESDB" by="${SERIESDB}"  />
                     <parameter replace="ICON_PATH" by="${ICON_PATH}" />
-                    <parameter replace="APP_NAME" by="VRRender" />
+                    <parameter replace="APP_NAME" by="dicomXplorer" />
                 </parameters>
                 <filter>
                     <mode>include</mode>
@@ -129,7 +150,7 @@
             <config>
                 <parameters>
                     <parameter replace="ICON_PATH" by="${ICON_PATH}" />
-                    <parameter replace="APP_NAME" by="VRRender" />
+                    <parameter replace="APP_NAME" by="dicomXplorer" />
                     <parameter replace="PROGRESS_CHANNEL" by="${PROGRESS_CHANNEL}" />
                 </parameters>
                 <filter>
@@ -160,7 +181,7 @@
                 <parameters>
                     <parameter replace="SERIESDB" by="${SERIESDB}"  />
                     <parameter replace="ICON_PATH" by="${ICON_PATH}" />
-                    <parameter replace="APP_NAME" by="VRRender" />
+                    <parameter replace="APP_NAME" by="dicomXplorer" />
                 </parameters>
                 <filter>
                     <mode>include</mode>
@@ -174,7 +195,7 @@
             <config>
                 <parameters>
                     <parameter replace="ICON_PATH" by="${ICON_PATH}" />
-                    <parameter replace="APP_NAME" by="VRRender" />
+                    <parameter replace="APP_NAME" by="dicomXplorer" />
                     <parameter replace="PROGRESS_CHANNEL" by="${PROGRESS_CHANNEL}" />
                 </parameters>
                 <filter>

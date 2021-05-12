@@ -24,6 +24,6 @@ add_dependencies(dicomxplorer
                  module_ui_base
 )
 
-moduleParam(module_appXml PARAM_LIST config parameters PARAM_VALUES VRRenderBase VRRenderAppBase)
+moduleParam(module_appXml PARAM_LIST config parameters PARAM_VALUES dicomXplorerBase dicomXplorerAppBase)
 
 sight_generate_profile(dicomxplorer)

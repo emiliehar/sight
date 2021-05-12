@@ -11,4 +11,5 @@ add_dependencies(activity_viz_3d
                  module_viz_scene3dQt
                  module_viz_scene3d
                  module_ui_icons
+                 data
                 )

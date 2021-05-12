@@ -19,7 +19,7 @@
             </scene>
         </service>
 
-        <service uid="cameraInteractorAdaptor" type="sight::module::viz::scene3d::adaptor::STrackballCamera" autoConnect="yes" >
+        <service uid="cameraInteractorAdaptor" type="sight::module::viz::scene3d::adaptor::STrackballCamera" >
             <config layer="default" priority="0" orientation="${orientation}" />
         </service>
 

@@ -110,9 +110,6 @@
             </config>
         </service>
 
-<<<<<<< dev
-        <service uid="action_dicomPacsReader" type="sight::module::ui::qt::activity::SLauncher" autoConnect="true">
-=======
         <service uid="action_3DVisualization" type="sight::module::ui::qt::activity::SLauncher" autoConnect="yes">
             <in key="series" uid="selections" />
             <config>

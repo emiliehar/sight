@@ -27,6 +27,8 @@
 #include "viz/scene3d/factory/Text.hpp"
 #include "viz/scene3d/vr/GridProxyGeometry.hpp"
 
+#include "viz/scene3d/ogre.hpp"
+
 #include <core/runtime/operations.hpp>
 #include <core/spyLog.hpp>
 #include <core/tools/System.hpp>
@@ -38,6 +40,7 @@
 #include <OgreHardwarePixelBuffer.h>
 #include <OgreResourceGroupManager.h>
 #include <OgreTextureManager.h>
+#include <OGRE/OgreMaterialManager.h>
 
 #include <algorithm>
 #include <cctype> // Needed for isspace()
@@ -69,14 +72,16 @@ void Utils::loadResources()
     ::Ogre::ConfigFile cf;
     ::Ogre::String resourceGroupName, typeName, archName;
 
-    for(const auto& path : s_resourcesPath)
+    for(const auto& moduleName : s_resourcesPath)
     {
         try
         {
             // Check file existence
+            const auto path= core::runtime::getResourceFilePath(std::filesystem::path(moduleName) / "resources.cfg");
+
             if(!std::filesystem::exists(path))
             {
-                SIGHT_FATAL("File '" + path +"' doesn't exist. Ogre needs it to load resources");
+                SIGHT_FATAL("File '" + path.string() +"' doesn't exist. Ogre needs it to load resources");
             }
 
             const auto tmpPath = std::filesystem::temp_directory_path() / core::tools::System::genTempFileName();
@@ -90,8 +95,8 @@ void Utils::loadResources()
             // Copy the resource file and make paths absolute.
             std::ifstream resourceFile(path);
 
-            makePathsAbsolute("FileSystem", resourceFile, newResourceFile);
 
+            makePathsAbsolute("FileSystem", resourceFile, newResourceFile,path.parent_path());
             resourceFile.close();
             newResourceFile.close();
             cf.load(tmpPath.string());
@@ -115,21 +120,21 @@ void Utils::loadResources()
         }
         catch ( ::Ogre::FileNotFoundException& )
         {
-            SIGHT_ERROR("Unable to find Ogre resources path : " + path);
+            SIGHT_ERROR("Unable to find Ogre resources path : " + moduleName);
         }
         catch (...)
         {
-            SIGHT_ERROR("Unable to load resource from " + path);
+            SIGHT_ERROR("Unable to load resource from " + moduleName);
         }
     }
 }
 
 //------------------------------------------------------------------------------
 
-void Utils::addResourcesPath(const std::filesystem::path& path)
+void Utils::addResourcesPath(const std::string& moduleName)
 {
-    SIGHT_ASSERT("Empty resource path", !path.empty());
-    s_resourcesPath.insert(path.string());
+    SIGHT_ASSERT("Empty resource path", !moduleName.empty());
+    s_resourcesPath.insert(moduleName);
 }
 
 //------------------------------------------------------------------------------
@@ -166,7 +171,7 @@ void Utils::addResourcesPath(const std::filesystem::path& path)
             SIGHT_FATAL("Can't create temporary config file'" + tmpPluginCfg.string() + "'");
         }
 
-        const bool tokenFound = makePathsAbsolute("PluginFolder", pluginCfg, newPlugin);
+        const bool tokenFound = makePathsAbsolute("PluginFolder", pluginCfg, newPlugin, confPath.parent_path());
 
         pluginCfg.close();
         newPlugin.close();
@@ -222,8 +227,7 @@ void Utils::addResourcesPath(const std::filesystem::path& path)
 
         root->initialise(false);
 
-        auto resourcePath = core::runtime::getLibraryResourceFilePath("viz_scene3d/resources.cfg" );
-        viz::scene3d::Utils::addResourcesPath( resourcePath );
+        viz::scene3d::Utils::addResourcesPath("viz_scene3d" );
 
         loadResources();
 
@@ -773,7 +777,7 @@ std::pair< ::Ogre::Vector3, ::Ogre::Vector3 > Utils::convertSpacingAndOrigin(con
 
 //------------------------------------------------------------------------------
 
-bool Utils::makePathsAbsolute(const std::string& key, std::istream& input, std::ostream& output)
+bool Utils::makePathsAbsolute(const std::string& key, std::istream& input, std::ostream& output, const std::filesystem::path& modulePath)
 {
     bool keyFound = false;
 
@@ -795,8 +799,7 @@ bool Utils::makePathsAbsolute(const std::string& key, std::istream& input, std::
 
                 if(!currentPath.is_absolute())
                 {
-                    const auto absPath = core::runtime::Runtime::getDefault()->getWorkingPath() / currentPath;
-
+                    const auto absPath = modulePath / currentPath;
                     output << key << "=" << absPath.string() << std::endl;
                 }
                 else

@@ -70,7 +70,7 @@ public:
      *        In this case, you can call this method in the Plugin.cpp file of this module
      * @param path Relative path to the ressource.cfg file from a specific module
      */
-    VIZ_SCENE3D_API static void addResourcesPath(const std::filesystem::path& path);
+    VIZ_SCENE3D_API static void addResourcesPath(const std::string& path);
 
     /**
      * @brief getOgreRoot
@@ -178,7 +178,7 @@ private:
      * @param[out] output Output stream, where the new config is copied to.
      * @return whether or not the key was found in the input.
      */
-    static bool makePathsAbsolute(const std::string& key, std::istream& input, std::ostream& output);
+    static bool makePathsAbsolute(const std::string& key, std::istream& input, std::ostream& output, const std::filesystem::path& modulePath);
 
     static ::Ogre::OverlaySystem* s_overlaySystem;
 

@@ -340,7 +340,7 @@ service::IService::Config Config::parseService(
     {
         const auto srvCfgFactory = service::extension::Config::getDefault();
         srvConfig.m_config = srvCfgFactory->getServiceConfig(config, srvConfig.m_type);
-        cfgElem            = core::runtime::Convert::toPropertyTree(srvConfig.m_config);
+        //cfgElem            = core::runtime::Convert::toPropertyTree(srvConfig.m_config);
     }
     else
     {

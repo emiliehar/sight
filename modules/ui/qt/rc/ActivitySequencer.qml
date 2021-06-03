@@ -27,7 +27,7 @@ Item{
         Material.foreground =  (foreground != "") ? foreground : Material.color(Material.BlueGrey, Material.Shade900)
         Material.background = (background != "") ? background : Material.background
         Material.primary = (primary != "") ? primary : Material.color(Material.Teal)
-        Material.elevation = (elevation != "") ? elevation : Material.elevation
+        Material.elevation = 3
     }
 
     RowLayout {

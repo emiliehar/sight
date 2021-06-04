@@ -2,8 +2,8 @@
 
 | Branch |    Status |
 |--------|-----------|
-| Dev    | [![pipeline status](https://git.ircad.fr/Sight/sight/badges/dev/pipeline.svg)](https://git.ircad.fr/Sight/sight/commits/dev) |
-| Master | [![pipeline status](https://git.ircad.fr/Sight/sight/badges/master/pipeline.svg)](https://git.ircad.fr/Sight/sight/commits/master) |
+| Dev    | [![pipeline status](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/badges/dev/pipeline.svg)](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/commits/dev) |
+| Master | [![pipeline status](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/badges/master/pipeline.svg)](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/commits/master) |
 
 ## Description
 
@@ -14,7 +14,7 @@ It includes various features such as 2D and 3D digital image processing, visuali
 
 **Sight** was formerly known as [FW4SPL](https://github.com/fw4spl-org/fw4spl). It was renamed in 2018, firstly to make its purpose clearer, and secondly as part of a major change in design and in the governance of the development team. For instance, FW4SPL was made of several repositories, whereas Sight now contains all open-source features in a single one, for the sake of simplicity.
 
-Lots of **tutorials** and **examples** can also be found in the `Samples` directory. The tutorials can help you to learn smoothly how to use **Sight**, detailed steps are described [here](https://sight.pages.ircad.fr/sight-doc/Tutorials/index.html).
+Lots of **tutorials** and **examples** can also be found in the `Samples` directory. The tutorials can help you to learn smoothly how to use **Sight**, detailed steps are described [here](https://sight.pages.ihu-strasbourg.eu/sight-doc/Tutorials/index.html).
 
 ### Features
 
@@ -35,9 +35,9 @@ Lots of **tutorials** and **examples** can also be found in the `Samples` direct
 **Sight** comes with **VRRender**, a medical image and segmentation viewer. It supports many import formats including DICOM and VTK.
 
 <div align="center">
-    <img src="https://git.ircad.fr/sight/sight-doc/-/raw/dev/Introduction/media/SDB.png">
-    <img src="https://git.ircad.fr/sight/sight-doc/-/raw/dev/Introduction/media/DICOM_nav_animated.gif">
-    <img src="https://git.ircad.fr/sight/sight-doc/-/raw/dev/Introduction/media/VR_animated.gif">
+    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/SDB.png">
+    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/DICOM_nav_animated.gif">
+    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/VR_animated.gif">
 </div>
 
 ### ARCalibration
@@ -45,8 +45,8 @@ Lots of **tutorials** and **examples** can also be found in the `Samples` direct
 **ARCalibration** is a user-friendly application to calibrate mono and stereo cameras. This software is a must-have since camera calibration is a mandatory step in any AR application.
 
 <div align="center">
-    <img src="https://git.ircad.fr/sight/sight-doc/-/raw/dev/Introduction/media/calibration.png">
-    <img src="https://git.ircad.fr/sight/sight-doc/-/raw/dev/Introduction/media/reproj_animated.gif">
+    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/calibration.png">
+    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/reproj_animated.gif">
 </div>
 
 ## Install
@@ -55,9 +55,9 @@ See [detailed install instructions](https://sight.pages.ircad.fr/sight-doc/Insta
 
 ## Documentation
 
-* [Documentation](https://sight.pages.ircad.fr/sight-doc)
-* [Tutorials](https://sight.pages.ircad.fr/sight-doc/Tutorials/index.html)
-* [Doxygen](https://sight.pages.ircad.fr/sight)
+* [Documentation](https://sight.pages.ihu-strasbourg.eu/sight-doc)
+* [Tutorials](https://sight.pages.ihu-strasbourg.eu/sight-doc/Tutorials/index.html)
+* [Doxygen](https://sight.pages.ihu-strasbourg.eu/sight)
 * Former FW4SPL [Blog](http://fw4spl-org.github.io/fw4spl-blog/) (new website coming soon)
 
 ## Support
@@ -77,4 +77,4 @@ You can also get live community support on the [gitter chat room](https://gitter
 ## Annex
 
 * [Artifactory](https://conan.ircad.fr): registry containing the external binary dependencies required by **Sight**.
-* [Conan](https://git.ircad.fr/conan): repositories used to generate conan packages used by **Sight** (Boost, VTK, ITK, Qt, ...).
+* [Conan](https://gitlab.ihu-strasbourg.eu.fr/conan): repositories used to generate conan packages used by **Sight** (Boost, VTK, ITK, Qt, ...).

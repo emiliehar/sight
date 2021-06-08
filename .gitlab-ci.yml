@@ -360,7 +360,7 @@ deploy_manual:linux-release:
 #     BUILD_TYPE: "Release"
 #   when: manual
 
-deploy:pages:
+pages:
   image: "${SIGHT_CI_UBUNTU20_10}:dev"
   stage: deploy
   dependencies:

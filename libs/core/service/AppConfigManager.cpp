@@ -148,8 +148,12 @@ void AppConfigManager::create()
 
     this->createObjects(m_cfgElem);
     this->createConnections();
+
     const auto configTree = core::runtime::Convert::toPropertyTree(m_cfgElem);
-    this->createServices(configTree.get_child("config"));
+    if(configTree.count("config") > 0)
+    {
+        this->createServices(configTree.get_child("config"));
+    }
 
     m_state = STATE_CREATED;
 }

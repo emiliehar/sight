@@ -5,7 +5,7 @@ stages:
   - deploy
 
 .linux_before:
-  image: "${SIGHT_CI_UBUNTU21_04}:dev"
+  image: "${SIGHT_CI_UBUNTU20_10}:dev"
   dependencies: []
   variables:
     CCACHE_BASEDIR: $CI_PROJECT_DIR
@@ -48,7 +48,7 @@ lint:sheldon:
   script:
     # Download sheldon.
     # TODO: use dev/master/tag branch
-    - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@git.ircad.fr/Sight/sight-git.git -b ${EXTRA_BRANCH} $CI_PROJECT_DIR/.build/sight-git
+    - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ihu-strasbourg.eu/Sight/sight-git.git -b ${EXTRA_BRANCH} $CI_PROJECT_DIR/.build/sight-git
     # Stage all files from the merge to get them checked by sheldon.
     - git add *
     # Display modified files.
@@ -86,7 +86,7 @@ lint:sheldon:
     # Print CCache statistics (Cache hit rate should have raised)
     - ccache -s
     # Clone sight-data.
-    - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@git.ircad.fr/Sight/sight-data.git -b ${EXTRA_BRANCH}
+    - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ihu-strasbourg.eu/Sight/sight-data.git -b ${EXTRA_BRANCH}
     - export FWTEST_DATA_DIR=$CI_PROJECT_DIR/.build/sight-data
     # Launch tests
     - ctest --timeout 480 --output-on-failure -O ctest.log -j4
@@ -110,7 +110,7 @@ lint:sheldon:
       - .build/SightViewer*.tar.zst
       - .build/packages/sight-*.tar.zst
 
-build:linux-21.04-debug-gcc:
+build:linux-20.10-debug-gcc:
   extends: .linux_build
   variables:
     BUILD_TYPE: "Debug"
@@ -120,7 +120,7 @@ build:linux-21.04-debug-gcc:
     CC: "/usr/lib/ccache/gcc"
     CXX: "/usr/lib/ccache/g++"
 
-build:linux-21.04-release-gcc:
+build:linux-20.10-release-gcc:
   extends: .linux_build
   variables:
     BUILD_TYPE: "Release"
@@ -130,7 +130,7 @@ build:linux-21.04-release-gcc:
     CC: "/usr/lib/ccache/gcc"
     CXX: "/usr/lib/ccache/g++"
 
-build:linux-21.04-release-clang:
+build:linux-20.10-release-clang:
   extends: .linux_build
   variables:
     BUILD_TYPE: "Release"
@@ -140,22 +140,22 @@ build:linux-21.04-release-clang:
     CC: "/usr/lib/ccache/clang"
     CXX: "/usr/lib/ccache/clang++"
 
-build:linux-20.10-release-gcc:
-  extends: .linux_build
+# build:linux-21.04-release-gcc:
+#   extends: .linux_build
+#   image: "${SIGHT_CI_UBUNTU21_04}:dev"
+#   variables:
+#     BUILD_TYPE: "Release"
+#     SIGHT_BUILD_DOC: "OFF"
+#     SIGHT_BUILD_PACKAGE: "OFF"
+#     CC: "/usr/lib/ccache/gcc"
+#     CXX: "/usr/lib/ccache/g++"
+
+.linux_deploy:
   image: "${SIGHT_CI_UBUNTU20_10}:dev"
   variables:
     BUILD_TYPE: "Release"
-    SIGHT_BUILD_DOC: "OFF"
-    SIGHT_BUILD_PACKAGE: "OFF"
-    CC: "/usr/lib/ccache/gcc"
-    CXX: "/usr/lib/ccache/g++"
-
-.linux_deploy:
-  image: "${SIGHT_CI_UBUNTU21_04}:dev"
-  variables:
-    BUILD_TYPE: "Release"
   stage: deploy
-  script:
+  script: 
     - cd .build/
     - >
       if [ "$BUILD_TYPE" == "Release" ]; then
@@ -168,7 +168,6 @@ build:linux-20.10-release-gcc:
         new_name=${package_name/-Release/}
         mv $package_name $new_name
         package_name=$new_name
-        curl -X PUT -u "${OWNCLOUD_UID}:${OWNCLOUD_PWD}" "https://owncloud.ircad.fr/remote.php/webdav/IRCAD%20-%20Open/Binaries/$package_name" --data-binary @"$package_name"
       fi
     - cd packages
     - package_name=$(ls -1 sight-*)
@@ -178,7 +177,6 @@ build:linux-20.10-release-gcc:
         mv $package_name $new_name
         package_name=$new_name
       fi
-    - curl -X PUT -u "${OWNCLOUD_UID}:${OWNCLOUD_PWD}" "https://owncloud.ircad.fr/remote.php/webdav/IRCAD%20-%20Open/Binaries/$package_name" --data-binary @"$package_name"
   artifacts:
     paths:
       - .build/SightViewer*.tar.zst
@@ -187,7 +185,7 @@ build:linux-20.10-release-gcc:
 deploy:linux-debug:
   extends: .linux_deploy
   dependencies:
-    - build:linux-21.04-debug-gcc
+    - build:linux-20.10-debug-gcc
   variables:
     BUILD_TYPE: "Debug"
   only:
@@ -198,7 +196,7 @@ deploy:linux-debug:
 deploy_manual:linux-debug:
   extends: .linux_deploy
   dependencies:
-    - build:linux-21.04-debug-gcc
+    - build:linux-20.10-debug-gcc
   variables:
     BUILD_TYPE: "Debug"
   when: manual
@@ -206,7 +204,7 @@ deploy_manual:linux-debug:
 deploy:linux-release:
   extends: .linux_deploy
   dependencies:
-    - build:linux-21.04-release-gcc
+    - build:linux-20.10-release-gcc
   variables:
     BUILD_TYPE: "Release"
   only:
@@ -217,182 +215,16 @@ deploy:linux-release:
 deploy_manual:linux-release:
   extends: .linux_deploy
   dependencies:
-    - build:linux-21.04-release-gcc
+    - build:linux-20.10-release-gcc
   variables:
     BUILD_TYPE: "Release"
   when: manual
 
-.windows_before:
-  dependencies: []
-  variables:
-    BUILD_TYPE: "Release"
-    CACHE: "D:\\gitlab-cache"
-  before_script:
-    # Merge the branch into dev.
-    - $EXTRA_BRANCH=${env:CI_COMMIT_REF_NAME}
-    - Write-Warning "${env:CI_COMMIT_REF_NAME} ${env:CI_COMMIT_TAG}"
-    - |
-      if ("${env:CI_COMMIT_REF_NAME}" -ne "dev" -and "${env:CI_COMMIT_REF_NAME}" -ne "master") {
-        if ("${env:CI_COMMIT_TAG}" -eq "$null") {
-          git config user.name $GITLAB_USER_ID
-          git config user.email $GITLAB_USER_EMAIL
-          git fetch --all
-          git checkout dev
-          git reset --hard origin/dev
-          git merge "origin/${env:CI_COMMIT_REF_NAME}" --no-commit --no-ff
-          $EXTRA_BRANCH="dev"
-        }
-      }
-    - md "${env:CI_PROJECT_DIR}/install"
-    - md "${env:CI_PROJECT_DIR}/build"
-    - $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-    - $vcvarspath = &$vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-    - Write-Output "vc tools located at $vcvarspath"
-    - cmd.exe /c "call `"$vcvarspath\VC\Auxiliary\Build\vcvars64.bat`" && set > vcvars.txt"
-    - |
-      Get-Content "vcvars.txt" | Foreach-Object {
-        if ($_ -match "^(.*?)=(.*)$") {
-          Set-Content "env:\$($matches[1])" $matches[2]
-        }
-      }
-  tags:
-    - conan
-    - windows
-
-prebuild:windows:
-  extends: .windows_before
-  dependencies: []
-  stage: prebuild
-  script:
-    # Checkout vcpkg packages, the script only downloads if necessary
-    - cmake -DSIGHT_DEPS_ROOT_DIRECTORY="${env:CACHE}" -P "${env:CI_PROJECT_DIR}\cmake\build\download_deps.cmake"
-
-.windows_build:
-  extends: .windows_before
-  dependencies: []
-  variables:
-    TOOLCHAIN: "scripts\\buildsystems\\vcpkg.cmake"
-  stage: build
-  script:
-    # Get the package_name name from our CMake script
-    - $PACKAGE_NAME = cmd /c cmake -DGET_ARCHIVE_FOLDER=ON -P "${env:CI_PROJECT_DIR}\cmake\build\download_deps.cmake" '2>&1'
-    # Build the project on the merge result.
-    - cd "${env:CI_PROJECT_DIR}/build"
-    - cmake "$env:CI_PROJECT_DIR" -G Ninja -DCMAKE_TOOLCHAIN_FILE="$CACHE\$PACKAGE_NAME\$TOOLCHAIN" -DCMAKE_INSTALL_PREFIX="$env:CI_PROJECT_DIR/install" -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DSIGHT_BUILD_TESTS=ON -DSIGHT_ENABLE_PCH=ON
-    - $env:TMP="$CACHE\tmp"
-    - $env:TEMP="$CACHE\tmp"
-    - ninja
-    # Clone sight-data.
-    - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@git.ircad.fr/Sight/sight-data.git -b ${EXTRA_BRANCH}
-    - $env:FWTEST_DATA_DIR="${env:CI_PROJECT_DIR}/build/sight-data"
-    # Launch tests
-    - ctest --timeout 480 --output-on-failure -O ctest.log -j6
-    - |
-      if ("${SIGHT_BUILD_PACKAGE}" -eq "ON") {
-        ninja SightViewer_package
-        ninja install
-        ninja package
-      }
-  artifacts:
-    when: always
-    name: "${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_SLUG}"
-    paths:
-      - build/ctest.log
-      - build/fwTest.log
-      - build/SightViewer*.exe
-      - build/packages/sight-*.zip
-
-build:windows-debug:
-  extends: .windows_build
-  variables:
-    BUILD_TYPE: "Debug"
-    SIGHT_BUILD_PACKAGE: "ON"
-
-build:windows-release:
-  extends: .windows_build
-  variables:
-    BUILD_TYPE: "Release"
-    SIGHT_BUILD_PACKAGE: "ON"
-
-.windows_deploy:
-  stage: deploy
-  script:
-    - cd build
-    - |
-      if ("$BUILD_TYPE" -eq "release" ) {
-        $package_name=ls SightViewer* | Select-Object -First 1
-        $package_name=$package_name.name
-        if ("${env:CI_COMMIT_REF_NAME}" -eq "dev") {
-          $new_name=[regex]::replace($package_name, "-[0-9]*-[a-z0-9]*", "-latest")
-          mv $package_name $new_name
-          $package_name=$new_name
-        }
-        $new_name=$package_name.replace("-Release", "")
-        mv $package_name $new_name
-        $package_name=$new_name
-        curl.exe -X PUT -u ${OWNCLOUD_UID}:${OWNCLOUD_PWD} --data-binary "@$package_name" "https://owncloud.ircad.fr/remote.php/webdav/IRCAD%20-%20Open/Binaries/$package_name"
-      }
-    - cd packages
-    - $package_name=ls sight-* | Select-Object -First 1
-    - $package_name=$package_name.name
-    - |            
-      if ("${env:CI_COMMIT_REF_NAME}" -eq "dev") {
-        $new_name=[regex]::replace($package_name, "-[0-9]*-[a-z0-9]*", "-latest")
-        mv $package_name $new_name
-        $package_name=$new_name
-      }
-    - curl.exe -X PUT -u ${OWNCLOUD_UID}:${OWNCLOUD_PWD} --data-binary "@$package_name" "https://owncloud.ircad.fr/remote.php/webdav/IRCAD%20-%20Open/Binaries/$package_name"
-  artifacts:
-    paths:
-      - build/SightViewer*.exe
-      - build/packages/sight-*.zip
-  tags:
-    - conan
-    - windows
-
-deploy:windows-debug:
-  extends: .windows_deploy
-  dependencies:
-    - build:windows-debug
-  variables:
-    BUILD_TYPE: "Debug"
-  only:
-    refs:
-      - master
-      - dev
-
-deploy_manual:windows-debug:
-  extends: .windows_deploy
-  dependencies:
-    - build:windows-debug
-  variables:
-    BUILD_TYPE: "Debug"
-  when: manual
-
-deploy:windows-release:
-  extends: .windows_deploy
-  dependencies:
-    - build:windows-release
-  variables:
-    BUILD_TYPE: "Release"
-  only:
-    refs:
-      - master
-      - dev
-
-deploy_manual:windows-release:
-  extends: .windows_deploy
-  dependencies:
-    - build:windows-release
-  variables:
-    BUILD_TYPE: "Release"
-  when: manual
-
-deploy:pages:
-  image: "${SIGHT_CI_UBUNTU21_04}:dev"
+pages:
+  image: "${SIGHT_CI_UBUNTU20_10}:dev"
   stage: deploy
   dependencies:
-    - build:linux-21.04-release-gcc
+    - build:linux-20.10-release-gcc
   script:
     - mv .build/Documentation/Doxygen/html/ public/
   artifacts:

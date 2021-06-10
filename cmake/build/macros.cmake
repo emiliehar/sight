@@ -1054,7 +1054,7 @@ function(sight_create_package_targets SIGHT_COMPONENTS SIGHT_IMPORTED_COMPONENTS
                 ${CMAKE_COMMAND} -DDEPENDS="${DEPENDS}"
                                  -DBUILD_TYPE=${CMAKE_BUILD_TYPE}
                                  -DQT_PLUGINS_SOURCE_DIR="${Qt5_DIR}/../../..$<$<CONFIG:Debug>:/debug>/plugins" 
-                                 -DQT_DESTINATION="${CMAKE_INSTALL_BINDIR}/qt5"
+                                 -DQT_DESTINATION="${CMAKE_INSTALL_BINDIR}/.."
                                  -DOGRE_PLUGIN_DIR="${OGRE_PLUGIN_DIR}"
                                  -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}"
                                  -P "${FWCMAKE_RESOURCE_PATH}/install/windows/install_plugins.cmake"

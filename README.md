@@ -2,8 +2,8 @@
 
 | Branch |    Status |
 |--------|-----------|
-| Dev    | [![pipeline status](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/badges/dev/pipeline.svg)](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/commits/dev) |
-| Master | [![pipeline status](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/badges/master/pipeline.svg)](https://gitlab.ihu-strasbourg.eu.fr/Sight/sight/commits/master) |
+| Dev    | [![pipeline status](https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight/badges/dev/pipeline.svg)](https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight/commits/dev) |
+| Master | [![pipeline status](https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight/badges/master/pipeline.svg)](https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight/commits/master) |
 
 ## Description
 
@@ -35,9 +35,9 @@ Lots of **tutorials** and **examples** can also be found in the `Samples` direct
 **Sight** comes with **VRRender**, a medical image and segmentation viewer. It supports many import formats including DICOM and VTK.
 
 <div align="center">
-    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/SDB.png">
-    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/DICOM_nav_animated.gif">
-    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/VR_animated.gif">
+    <img src="https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight-doc/-/raw/dev/Introduction/media/SDB.png">
+    <img src="https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight-doc/-/raw/dev/Introduction/media/DICOM_nav_animated.gif">
+    <img src="https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight-doc/-/raw/dev/Introduction/media/VR_animated.gif">
 </div>
 
 ### ARCalibration
@@ -45,19 +45,19 @@ Lots of **tutorials** and **examples** can also be found in the `Samples` direct
 **ARCalibration** is a user-friendly application to calibrate mono and stereo cameras. This software is a must-have since camera calibration is a mandatory step in any AR application.
 
 <div align="center">
-    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/calibration.png">
-    <img src="https://gitlab.ihu-strasbourg.eu.fr/sight/sight-doc/-/raw/dev/Introduction/media/reproj_animated.gif">
+    <img src="https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight-doc/-/raw/dev/Introduction/media/calibration.png">
+    <img src="https://gitlab.ihu-strasbourg.eu/rd/camma-restricted/ircad-ihu-rd/sight/sight-doc/-/raw/dev/Introduction/media/reproj_animated.gif">
 </div>
 
 ## Install
 
-See [detailed install instructions](https://sight.pages.ircad.fr/sight-doc/Installation/index.html) for Windows and Linux.
+See [detailed install instructions](https://rd.pages.ihu-strasbourg.eu/camma-restricted/ircad-ihu-rd/sight/sight-doc/Installation/index.html) for Windows and Linux.
 
 ## Documentation
 
-* [Documentation](https://sight.pages.ihu-strasbourg.eu/sight-doc)
-* [Tutorials](https://sight.pages.ihu-strasbourg.eu/sight-doc/Tutorials/index.html)
-* [Doxygen](https://sight.pages.ihu-strasbourg.eu/sight)
+* [Documentation](https://rd.pages.ihu-strasbourg.eu/camma-restricted/ircad-ihu-rd/sight/sight-doc/)
+* [Tutorials](https://rd.pages.ihu-strasbourg.eu/camma-restricted/ircad-ihu-rd/sight/sight-doc/Tutorials/index.html)
+* [Doxygen](https://rd.pages.ihu-strasbourg.eu/camma-restricted/ircad-ihu-rd/sight/sight/index.html)
 * Former FW4SPL [Blog](http://fw4spl-org.github.io/fw4spl-blog/) (new website coming soon)
 
 ## Support
@@ -73,8 +73,3 @@ Until then, we gently ask our community users to use our GitHub mirror to [repor
 or propose [contributions](https://github.com/IRCAD-IHU/sight/pulls).
 
 You can also get live community support on the [gitter chat room](https://gitter.im/IRCAD-IHU/sight-support).
-
-## Annex
-
-* [Artifactory](https://conan.ircad.fr): registry containing the external binary dependencies required by **Sight**.
-* [Conan](https://gitlab.ihu-strasbourg.eu.fr/conan): repositories used to generate conan packages used by **Sight** (Boost, VTK, ITK, Qt, ...).

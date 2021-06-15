@@ -34,10 +34,11 @@
 #include <filesystem>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION( sight::core::runtime::ut::RuntimeTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(sight::core::runtime::ut::RuntimeTest);
 
 namespace sight::core::runtime
 {
+
 namespace ut
 {
 
@@ -83,16 +84,16 @@ void RuntimeTest::testModule()
     auto module = core::runtime::loadModule(std::string("::sight::module::utest"));
 
     CPPUNIT_ASSERT_MESSAGE("Module not found", module);
-    CPPUNIT_ASSERT_EQUAL(std::string("sight::module::utest"),  module->getIdentifier());
+    CPPUNIT_ASSERT_EQUAL(std::string("sight::module::utest"), module->getIdentifier());
     // No good parameter test for now, but at least test without any parameter
-    CPPUNIT_ASSERT_EQUAL(false,  module->hasParameter("test"));
-    CPPUNIT_ASSERT_EQUAL(std::string(),  module->getParameterValue("test"));
+    CPPUNIT_ASSERT_EQUAL(false, module->hasParameter("test"));
+    CPPUNIT_ASSERT_EQUAL(std::string(), module->getParameterValue("test"));
 
     auto runtime           = core::runtime::Runtime::getDefault();
     const auto libLocation = runtime->getWorkingPath() / MODULE_LIB_PREFIX;
-    CPPUNIT_ASSERT_EQUAL(libLocation,  module->getLibraryLocation());
+    CPPUNIT_ASSERT_EQUAL(libLocation, module->getLibraryLocation());
     const auto rcLocation = runtime->getWorkingPath() / MODULE_RC_PREFIX;
-    CPPUNIT_ASSERT_EQUAL(rcLocation / "module_utest",  module->getResourcesLocation());
+    CPPUNIT_ASSERT_EQUAL(rcLocation / "module_utest", module->getResourcesLocation());
 
     CPPUNIT_ASSERT_EQUAL(std::string("sight::module::utest::Plugin"), module->getClass());
     auto plugin = module->getPlugin();
@@ -131,11 +132,17 @@ void RuntimeTest::testOperations()
     path = core::runtime::getModuleResourceFilePath("wrong::module::format/plugin.xml");
     CPPUNIT_ASSERT_EQUAL(std::filesystem::path(), path);
 
-    path = core::runtime::getLibraryResourceFilePath("fwLibrary/plugin.xml");
-    CPPUNIT_ASSERT_EQUAL(location / "fwLibrary/plugin.xml", path);
+    path = core::runtime::getLibraryResourceFilePath("core/plugin.xsd");
+    CPPUNIT_ASSERT_EQUAL(location / "core/plugin.xsd", path);
 
-    path = core::runtime::getResourceFilePath("fwLibrary/plugin.xml");
-    CPPUNIT_ASSERT_EQUAL(location / "fwLibrary/plugin.xml", path);
+    path = core::runtime::getLibraryResourceFilePath("sight::core/plugin.xsd");
+    CPPUNIT_ASSERT_EQUAL(location / "core/plugin.xsd", path);
+
+    path = core::runtime::getLibraryResourceFilePath("::sight::core/plugin.xsd");
+    CPPUNIT_ASSERT_EQUAL(location / "core/plugin.xsd", path);
+
+    path = core::runtime::getResourceFilePath("core/plugin.xsd");
+    CPPUNIT_ASSERT_EQUAL(location / "core/plugin.xsd", path);
 
     path = core::runtime::getResourceFilePath("module_utest/plugin.xml");
     CPPUNIT_ASSERT_EQUAL(location / "module_utest/plugin.xml", path);
@@ -157,13 +164,8 @@ void RuntimeTest::testPropertyTree()
 {
     {
         boost::property_tree::ptree config;
-        config.put("test.yes", "foo");
-        config.put("test.no", "no");
         config.put("test.true", "true");
         config.put("test.false", "false");
-
-        CPPUNIT_ASSERT_THROW(core::runtime::get_ptree_value(config, "test.yes", true), core::Exception);
-        CPPUNIT_ASSERT_THROW(core::runtime::get_ptree_value(config, "test.no", true), core::Exception);
         bool value = core::runtime::get_ptree_value(config, "test.true", true);
         CPPUNIT_ASSERT_EQUAL(true, value);
         value = core::runtime::get_ptree_value(config, "test.false", true);
@@ -205,4 +207,5 @@ void RuntimeTest::testPropertyTree()
 //------------------------------------------------------------------------------
 
 } // namespace ut
+
 } // namespace sight::core::runtime

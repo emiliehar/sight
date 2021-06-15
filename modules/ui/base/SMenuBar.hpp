@@ -36,7 +36,7 @@ class MODULE_UI_BASE_CLASS_API SMenuBar : public ::sight::ui::base::IMenuBar
 {
 public:
 
-    SIGHT_DECLARE_SERVICE(SMenuBar, ::sight::ui::base::IMenuBar)
+    SIGHT_DECLARE_SERVICE(SMenuBar, ::sight::ui::base::IMenuBar);
 
     /// Constructor. Do nothing.
     MODULE_UI_BASE_API SMenuBar() noexcept;
@@ -64,8 +64,8 @@ protected:
               </layout>
           </gui>
           <registry>
-              <menu sid="myMenu" start="yes" />
-              <menu sid="myMenu2" start="yes" />
+              <menu sid="myMenu" start="true" />
+              <menu sid="myMenu2" start="true" />
           </registry>
        </service>
        @endcode

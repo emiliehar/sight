@@ -50,7 +50,7 @@ class UI_BASE_CLASS_API IMenuLayoutManager : public ui::base::GuiBaseObject
 {
 public:
 
-    SIGHT_DECLARE_CLASS(IMenuLayoutManager, ui::base::GuiBaseObject)
+    SIGHT_DECLARE_CLASS(IMenuLayoutManager, ui::base::GuiBaseObject);
 
     typedef core::runtime::ConfigurationElement::sptr ConfigurationType;
     typedef std::string RegistryKeyType;
@@ -130,11 +130,11 @@ public:
                 </layout>
             </gui>
             <registry>
-                <menuItem sid="item1" start="yes" />
-                <menuItem sid="item2" start="no" />
-                <menuItem sid="item3" start="no" />
-                <menu sid="mymenu" start="yes" />
-                <menuItem sid="actionQuit" start="no" />
+                <menuItem sid="item1" start="true" />
+                <menuItem sid="item2" start="false" />
+                <menuItem sid="item3" start="false" />
+                <menu sid="mymenu" start="true" />
+                <menuItem sid="actionQuit" start="false" />
             </registry>
        </service>
        @endcode

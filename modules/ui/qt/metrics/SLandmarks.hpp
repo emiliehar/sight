@@ -67,7 +67,7 @@ namespace sight::module::ui::qt::metrics
            <text>Use 'Ctrl+Left Click' to add new landmarks</text>
            <size>10.0</size>
            <opacity>0.5</opacity>
-           <advanced>yes</advanced>
+           <advanced>true</advanced>
         </service>
        @endcode
  *
@@ -82,18 +82,17 @@ namespace sight::module::ui::qt::metrics
  * - \b text (optional): text displayed at the top of this editor.
  * - \b size (optional, default="10.0"): default size of created landmarks.
  * - \b opacity (optional, default="1.0"): default opacity of created landmarks.
- * - \b advanced (optional, default="no"): if "yes", use the advanced mode displaying point information
+ * - \b advanced (optional, default="false"): if "true", use the advanced mode displaying point information
  *      and groups with multiple points.
  */
 class MODULE_UI_QT_CLASS_API SLandmarks final : public QObject,
                                                 public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
 
-    SIGHT_DECLARE_SERVICE(SLandmarks, sight::ui::base::IEditor)
+    SIGHT_DECLARE_SERVICE(SLandmarks, sight::ui::base::IEditor);
 
     /// Initializes slots.
     MODULE_UI_QT_API SLandmarks() noexcept;
@@ -341,17 +340,16 @@ public:
     QPointer<QPushButton> m_removeButton;
 
     /// Enables/disables the advanced mode.
-    bool m_advancedMode { false };
+    bool m_advancedMode {false};
 
     /// Sets the default landmark size.
-    float m_defaultLandmarkSize { 10.f };
+    float m_defaultLandmarkSize {10.f};
 
     /// Sets the default landmark opacity.
-    float m_defaultLandmarkOpacity { 1.f };
+    float m_defaultLandmarkOpacity {1.f};
 
     /// Sets the text displayed at the top of this editor.
-    std::string m_text { "Use 'Ctrl+Left Click' to add new landmarks" };
-
+    std::string m_text {"Use 'Ctrl+Left Click' to add new landmarks"};
 };
 
 } // sight::module::ui::qt::metrics

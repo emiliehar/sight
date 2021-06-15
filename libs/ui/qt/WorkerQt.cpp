@@ -44,11 +44,12 @@ namespace sight::ui::qt
 class WorkerQtTask : public QEvent
 {
 public:
-    WorkerQtTask( const core::thread::Worker::TaskType& handler ) :
-        QEvent( static_cast< QEvent::Type >(s_WORKER_QT_TASK_EVENT_TYPE) ),
-        m_handler( handler )
+
+    WorkerQtTask(const core::thread::Worker::TaskType& handler) :
+        QEvent(static_cast<QEvent::Type>(s_WORKER_QT_TASK_EVENT_TYPE)),
+        m_handler(handler)
     {
-        SIGHT_ASSERT( "Application should be instantiated", QCoreApplication::instance() );
+        SIGHT_ASSERT("Application should be instantiated", QCoreApplication::instance());
     }
 
     ~WorkerQtTask()
@@ -71,6 +72,7 @@ const int WorkerQtTask::s_WORKER_QT_TASK_EVENT_TYPE = QEvent::registerEventType(
 class WorkerQt : public core::thread::Worker
 {
 public:
+
     WorkerQt();
 
     void init(int& argc, char** argv);
@@ -96,26 +98,30 @@ protected:
     int m_argc;
     char** m_argv;
 
-    QSharedPointer< QCoreApplication > m_app;
+    QSharedPointer<QCoreApplication> m_app;
 
     SPTR(core::thread::Timer) createTimer();
 
     /// Copy constructor forbidden
-    WorkerQt( const WorkerQt& );
+    WorkerQt(const WorkerQt&);
 
     /// Copy operator forbidden
-    WorkerQt& operator=( const WorkerQt& );
+    WorkerQt& operator=(const WorkerQt&);
 
     core::thread::ThreadIdType m_threadId;
 };
 
 //-----------------------------------------------------------------------------
 
-core::thread::Worker::sptr getQtWorker(int& argc, char** argv,
-                                       std::function<QSharedPointer<QCoreApplication>(int&, char**)> callback,
-                                       const std::string& name, const std::string& version)
+core::thread::Worker::sptr getQtWorker(
+    int& argc,
+    char** argv,
+    std::function<QSharedPointer<QCoreApplication>(int&, char**)> callback,
+    const std::string& name,
+    const std::string& version
+)
 {
-    SPTR(WorkerQt) workerQt = std::make_shared< WorkerQt >();
+    SPTR(WorkerQt) workerQt = std::make_shared<WorkerQt>();
     workerQt->init(argc, argv);
     workerQt->setApp(callback(argc, argv), name, version);
     return std::move(workerQt);
@@ -129,6 +135,7 @@ core::thread::Worker::sptr getQtWorker(int& argc, char** argv,
 class TimerQt : public core::thread::Timer
 {
 public:
+
     /**
      * @brief Constructs a TimerQt from given io_service.
      */
@@ -173,16 +180,16 @@ protected Q_SLOTS:
 protected:
 
     /// Copy constructor forbidden.
-    TimerQt( const TimerQt& );
+    TimerQt(const TimerQt&);
 
     /// Copy operator forbidden.
-    TimerQt& operator=( const TimerQt& );
+    TimerQt& operator=(const TimerQt&);
 
     void updatedFunction();
 
-    QPointer< QTimer > m_timerQt;
+    QPointer<QTimer> m_timerQt;
 
-    QPointer< ui::qt::util::FuncSlot > m_qtFunc;
+    QPointer<ui::qt::util::FuncSlot> m_qtFunc;
 };
 
 //------------------------------------------------------------------------------
@@ -192,37 +199,37 @@ protected:
 WorkerQt::WorkerQt() :
     m_argc(0),
     m_app(nullptr),
-    m_threadId( core::thread::getCurrentThreadId() )
+    m_threadId(core::thread::getCurrentThreadId())
 {
 }
 
 //------------------------------------------------------------------------------
 
-void WorkerQt::init( int& argc, char** argv)
+void WorkerQt::init(int& argc, char** argv)
 {
-
+#ifdef WIN32
     // To get Qt initialized properly, we need to find its plugins
-    // This is difficult to do this, especially because the location of the deps is different whether
+    // This is difficult to do, especially because the location of the deps is different whether
     // you are executing the application in the build tree or in the install tree
     // Thus the strategy here is to locate the Qt5Core library and then compute the path relatively
-    // This work in all cases when we use our binpkgs. If we use the system libraries, the Qt.conf file
-    // of the system should do the job and the following might be useless.
-    std::filesystem::path qt5LibDir           = core::tools::os::getSharedLibraryPath("Qt5Core");
-    const std::filesystem::path qt5PluginsDir = qt5LibDir.remove_filename() / "qt5" / "plugins";
+    // This work in all cases when we use VCPkg.
+    std::filesystem::path qt5LibDir           = core::tools::os::getSharedLibraryPath("Qt5Core").remove_filename();
+    const std::filesystem::path qt5PluginsDir = (qt5LibDir.parent_path().parent_path()) / "plugins";
 
     QDir pluginDir(QString::fromStdString(qt5PluginsDir.string()));
-    if (pluginDir.exists())
+    if(pluginDir.exists())
     {
+        SIGHT_INFO("Load Qt5 plugins path from: " + qt5PluginsDir.string());
         QCoreApplication::setLibraryPaths(QStringList(pluginDir.absolutePath()));
     }
     else
     {
         SIGHT_ERROR("Could not determine qt5 plugins path, tried with: " + qt5PluginsDir.string());
     }
+#endif
 
     m_argc = argc;
     m_argv = argv;
-
 }
 
 //------------------------------------------------------------------------------
@@ -247,14 +254,16 @@ WorkerQt::~WorkerQt()
 
 core::thread::Worker::FutureType WorkerQt::getFuture()
 {
-    if (!m_future.valid() )
+    if(!m_future.valid())
     {
-        SIGHT_ASSERT("WorkerQt loop shall be created and ran from main thread ",
-                     !m_future.valid() && core::thread::getCurrentThreadId() == this->getThreadId() );
+        SIGHT_ASSERT(
+            "WorkerQt loop shall be created and ran from main thread ",
+            !m_future.valid() && core::thread::getCurrentThreadId() == this->getThreadId()
+        );
 
-        std::packaged_task< ExitReturnType() > task( std::bind(&QCoreApplication::exec) );
+        std::packaged_task<ExitReturnType()> task(std::bind(&QCoreApplication::exec));
 
-        std::future< ExitReturnType > ufuture = task.get_future();
+        std::future<ExitReturnType> ufuture = task.get_future();
 
         m_future = std::move(ufuture);
 
@@ -277,18 +286,19 @@ void WorkerQt::stop()
 {
     this->postTask<void>(&QCoreApplication::quit).wait();
 }
+
 //------------------------------------------------------------------------------
 
 SPTR(core::thread::Timer) WorkerQt::createTimer()
 {
-    return std::make_shared< TimerQt >();
+    return std::make_shared<TimerQt>();
 }
 
 //------------------------------------------------------------------------------
 
 void WorkerQt::post(TaskType handler)
 {
-    QCoreApplication::postEvent( QCoreApplication::instance(), new WorkerQtTask(handler) );
+    QCoreApplication::postEvent(QCoreApplication::instance(), new WorkerQtTask(handler));
 }
 
 //------------------------------------------------------------------------------
@@ -308,7 +318,7 @@ void WorkerQt::processTasks(PeriodType maxtime)
 // ---------- Timer private implementation ----------
 
 TimerQt::TimerQt() :
-    m_timerQt( new QTimer(QCoreApplication::instance()) )
+    m_timerQt(new QTimer(QCoreApplication::instance()))
 {
     m_qtFunc = new ui::qt::util::FuncSlot();
     QObject::connect(m_timerQt, SIGNAL(timeout()), m_qtFunc, SLOT(trigger()));
@@ -329,9 +339,10 @@ TimerQt::~TimerQt()
 void TimerQt::setDuration(TimeDurationType duration)
 {
     core::mt::ScopedLock lock(m_mutex);
-    m_timerQt->setInterval( static_cast<int>(
-                                std::chrono::duration_cast< std::chrono::milliseconds >(duration).count())
-                            );
+    m_timerQt->setInterval(
+        static_cast<int>(
+            std::chrono::duration_cast<std::chrono::milliseconds>(duration).count())
+    );
 }
 
 //------------------------------------------------------------------------------

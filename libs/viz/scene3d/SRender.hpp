@@ -78,7 +78,7 @@ class Layer;
             <layer id="..." order="1">
                 <viewport hOffset="0.03" vOffset="0.03" width="0.3" height="0.3" hAlign="right" vAlign="top"/>
             </layer>
-            <layer id="..." order="2" compositors="Invert;Laplace;Posterize" defaultLight="no" overlays="..."/>
+            <layer id="..." order="2" compositors="Invert;Laplace;Posterize" defaultLight="false" overlays="..."/>
 
             <adaptor uid="..."/>
             <adaptor uid="..."/>
@@ -121,9 +121,10 @@ class Layer;
  *         Not used for WeightedBlended OIT
  *    - \b compositors (optional, string): defines the default compositor chain. Compositors are separated by semicolons
  *    - \b fullscreen (optional, bool, default=false): Show the scene in full screen.
- *    - \b stereoMode (optional, no/AutoStereo5/AutoStereo8/Stereo, default=no): Sets the mode used for stereoscopic 3D
+ *    - \b stereoMode (optional, false/AutoStereo5/AutoStereo8/Stereo, default=false): Sets the mode used for
+ * stereoscopic 3D
  *         rendering.
- *    - \b defaultLight (optional, yes/no, default=yes): Sets if a default light is created in the layer.
+ *    - \b defaultLight (optional, true/false, default=true): Sets if a default light is created in the layer.
  *    - \b overlays (optional, string): list of overlay names (separated by semicolons) rendered on top of the layer's
  *         viewport.
  *  - \b adaptor
@@ -134,7 +135,7 @@ class VIZ_SCENE3D_CLASS_API SRender final : public viz::base::IRender
 public:
 
     /// Generates default methods as New, dynamicCast, ...
-    SIGHT_DECLARE_SERVICE(SRender, viz::base::IRender)
+    SIGHT_DECLARE_SERVICE(SRender, viz::base::IRender);
 
     /// Represents all possible render modes.
     enum class RenderMode

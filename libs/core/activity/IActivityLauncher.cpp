@@ -58,7 +58,7 @@ void IActivityLauncher::parseConfiguration(const ConfigurationType& config, cons
     SIGHT_DEBUG_IF("main activity 'id' is not defined", m_mainActivityId.empty());
 
     const auto inoutsCfg = config.equal_range("inout");
-    for (auto itCfg = inoutsCfg.first; itCfg != inoutsCfg.second; ++itCfg)
+    for(auto itCfg = inoutsCfg.first ; itCfg != inoutsCfg.second ; ++itCfg)
     {
         const std::string key = itCfg->second.get<std::string>("<xmlattr>.key");
         SIGHT_ASSERT("Missing 'key' tag.", !key.empty());
@@ -66,10 +66,8 @@ void IActivityLauncher::parseConfiguration(const ConfigurationType& config, cons
         const std::string uid = itCfg->second.get<std::string>("<xmlattr>.uid");
         SIGHT_ASSERT("Missing 'uid' tag.", !uid.empty());
 
-        const std::string strOptional = itCfg->second.get<std::string>("<xmlattr>.optional", "no");
-        const bool optional           = (strOptional == "yes");
-
-        const auto it = inouts.find(key);
+        const bool optional = itCfg->second.get<bool>("<xmlattr>.optional", false);
+        const auto it       = inouts.find(key);
         SIGHT_ASSERT("Inout '" + key + "' is not found.", it != inouts.end());
         data::Object::csptr obj = it->second.getShared();
         ParameterType param;
@@ -83,13 +81,14 @@ void IActivityLauncher::parseConfiguration(const ConfigurationType& config, cons
             SIGHT_ASSERT("Object key '" + key + "'with uid '" + uid + "' does not exists.", obj);
             param.by = obj->getID();
         }
+
         m_parameters.push_back(param);
     }
 
     ConfigurationType configParams = config.get_child("parameters");
 
     const auto paramsCfg = configParams.equal_range("parameter");
-    for (auto itParams = paramsCfg.first; itParams != paramsCfg.second; ++itParams)
+    for(auto itParams = paramsCfg.first ; itParams != paramsCfg.second ; ++itParams)
     {
         const std::string replace = itParams->second.get<std::string>("<xmlattr>.replace");
         std::string by            = itParams->second.get<std::string>("<xmlattr>.by", "");
@@ -97,8 +96,11 @@ void IActivityLauncher::parseConfiguration(const ConfigurationType& config, cons
         {
             by = itParams->second.get<std::string>("<xmlattr>.uid");
         }
-        SIGHT_ASSERT("'parameter' tag must contain valid 'replace' and 'by' attributes.",
-                     !replace.empty() && !by.empty());
+
+        SIGHT_ASSERT(
+            "'parameter' tag must contain valid 'replace' and 'by' attributes.",
+            !replace.empty() && !by.empty()
+        );
         ParameterType param;
         param.replace = replace;
         param.by      = by;
@@ -110,7 +112,8 @@ void IActivityLauncher::parseConfiguration(const ConfigurationType& config, cons
 //------------------------------------------------------------------------------
 
 std::pair<bool, std::string> IActivityLauncher::validateActivity(
-    const data::ActivitySeries::csptr& activitySeries) const
+    const data::ActivitySeries::csptr& activitySeries
+) const
 {
     bool isValid = true;
     std::string message;
@@ -119,13 +122,13 @@ std::pair<bool, std::string> IActivityLauncher::validateActivity(
     info = activity::extension::Activity::getDefault()->getInfo(activitySeries->getActivityConfigId());
 
     // load activity module
-    std::shared_ptr< core::runtime::Module > module = core::runtime::findModule(info.bundleId);
-    if (!module->isStarted())
+    std::shared_ptr<core::runtime::Module> module = core::runtime::findModule(info.bundleId);
+    if(!module->isStarted())
     {
         module->start();
     }
 
-    for (std::string validatorImpl : info.validatorsImpl)
+    for(std::string validatorImpl : info.validatorsImpl)
     {
         /// Process activity validator
         activity::IValidator::sptr validator = activity::validator::factory::New(validatorImpl);
@@ -141,7 +144,8 @@ std::pair<bool, std::string> IActivityLauncher::validateActivity(
             isValid  = false;
         }
     }
-    if (!isValid)
+
+    if(!isValid)
     {
         message = "The activity '" + info.title + "' can not be launched:\n" + message;
     }
@@ -157,12 +161,12 @@ data::ActivitySeries::sptr IActivityLauncher::createMainActivity() const
     info = activity::extension::Activity::getDefault()->getInfo(m_mainActivityId);
 
     data::ActivitySeries::sptr actSeries = data::ActivitySeries::New();
-    if (info.requirements.size() > 0)
+    if(info.requirements.size() > 0)
     {
         data::Composite::sptr data = actSeries->getData();
-        for (activity::extension::ActivityRequirement req : info.requirements)
+        for(activity::extension::ActivityRequirement req : info.requirements)
         {
-            if ((req.minOccurs == 0 && req.maxOccurs == 0) || req.create)
+            if((req.minOccurs == 0 && req.maxOccurs == 0) || req.create)
             {
                 (*data)[req.name] = data::factory::New(req.type);
             }
@@ -174,7 +178,7 @@ data::ActivitySeries::sptr IActivityLauncher::createMainActivity() const
     }
 
     actSeries->setModality("OT");
-    actSeries->setInstanceUID("activity." + core::tools::UUID::generateUUID() );
+    actSeries->setInstanceUID("activity." + core::tools::UUID::generateUUID());
 
     const ::boost::posix_time::ptime now = ::boost::posix_time::second_clock::local_time();
     actSeries->setDate(core::tools::getDate(now));
@@ -186,10 +190,13 @@ data::ActivitySeries::sptr IActivityLauncher::createMainActivity() const
 
 //------------------------------------------------------------------------------
 
-void IActivityLauncher::translateParameters( const data::Object::csptr& sourceObj, const ParametersType& parameters,
-                                             ReplaceMapType& replaceMap )
+void IActivityLauncher::translateParameters(
+    const data::Object::csptr& sourceObj,
+    const ParametersType& parameters,
+    ReplaceMapType& replaceMap
+)
 {
-    for(const ParametersType::value_type& param :  parameters)
+    for(const ParametersType::value_type& param : parameters)
     {
         if(!param.isSeshat())
         {
@@ -198,7 +205,7 @@ void IActivityLauncher::translateParameters( const data::Object::csptr& sourceOb
         else
         {
             std::string parameterToReplace = param.by;
-            if (parameterToReplace.substr(0, 1) == "!")
+            if(parameterToReplace.substr(0, 1) == "!")
             {
                 parameterToReplace.replace(0, 1, "@");
             }
@@ -214,6 +221,7 @@ void IActivityLauncher::translateParameters( const data::Object::csptr& sourceOb
             {
                 parameterValue = stringParameter->getValue();
             }
+
             replaceMap[param.replace] = parameterValue;
         }
     }
@@ -221,9 +229,9 @@ void IActivityLauncher::translateParameters( const data::Object::csptr& sourceOb
 
 //------------------------------------------------------------------------------
 
-void IActivityLauncher::translateParameters( const ParametersType& parameters, ReplaceMapType& replaceMap )
+void IActivityLauncher::translateParameters(const ParametersType& parameters, ReplaceMapType& replaceMap)
 {
-    for(const ParametersType::value_type& param :  parameters)
+    for(const ParametersType::value_type& param : parameters)
     {
         replaceMap[param.replace] = param.by;
     }

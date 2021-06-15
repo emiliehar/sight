@@ -65,9 +65,9 @@ namespace sight::ui::base
          <menuBar />
      </gui>
      <registry>
-         <toolBar sid="toolbar1" start="yes" />
-         <menuBar sid="menubar1" start="yes" />
-         <view sid="myView" start="yes" />
+         <toolBar sid="toolbar1" start="true" />
+         <menuBar sid="menubar1" start="true" />
+         <view sid="myView" start="true" />
      </registry>
    </service>
    @endcode
@@ -87,7 +87,7 @@ class UI_BASE_CLASS_API IFrame : public service::IService
 {
 public:
 
-    SIGHT_DECLARE_SERVICE(IFrame, service::IService)
+    SIGHT_DECLARE_SERVICE(IFrame, service::IService);
 
     /// Get widget defined for progress bar
     UI_BASE_API static ui::base::container::fwContainer::sptr getProgressWidget();

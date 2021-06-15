@@ -44,8 +44,8 @@ namespace sight::module::ui::qt::viz
  * @code{.xml}
     <service uid="..." type="sight::module::ui::qt::viz::STransformEditor" autoConnect="false">
         <inout key="matrix" uid="..."/>
-        <translation enabled="no" min="-300"/>
-        <rotation enabled="yes" min="-180" max="180" />
+        <translation enabled="false" min="-300"/>
+        <rotation enabled="true" min="-180" max="180" />
     </service>
    @endcode
  *
@@ -54,7 +54,7 @@ namespace sight::module::ui::qt::viz
  *
  * @subsection Configuration Configuration
  * - \b enabled (optional): enable/disable rotation/translation edition.
- *      Can be 'yes', 'no' or a combination of [xyz] (default: yes).
+ *      Can be 'true', 'false' or a combination of [xyz] (default: true).
  * - \b min (optional): set the minimum value for translation/rotation (default: translation=-300, rotation=-180 ).
  * - \b max (optional): set the maximum value for translation/rotation (default: translation=+300, rotation=180).
  */
@@ -65,7 +65,7 @@ Q_OBJECT;
 
 public:
 
-    SIGHT_DECLARE_SERVICE(STransformEditor, sight::ui::base::IEditor)
+    SIGHT_DECLARE_SERVICE(STransformEditor, sight::ui::base::IEditor);
 
     /// Constructor. Do nothing.
     MODULE_UI_QT_API STransformEditor() noexcept;
@@ -122,11 +122,11 @@ private:
      */
     struct SliderWidget
     {
-        QPointer<QSlider> m_slider; ///< Slider to change coefficient value.
-        QPointer<QLabel> m_labelMin; ///< Label to show the min value.
-        QPointer<QLabel> m_labelMax; ///< Label to show the max value.
+        QPointer<QSlider> m_slider;         ///< Slider to change coefficient value.
+        QPointer<QLabel> m_labelMin;        ///< Label to show the min value.
+        QPointer<QLabel> m_labelMax;        ///< Label to show the max value.
         QPointer<QLabel> m_labelDefinition; ///< Label to show the coefficient description.
-        QPointer<QLineEdit> m_sliderValue; ///< Editor to show the current value of the slider.
+        QPointer<QLineEdit> m_sliderValue;  ///< Editor to show the current value of the slider.
     };
 
     /// Array containing the different structs to regulate the transformation matrix entries.

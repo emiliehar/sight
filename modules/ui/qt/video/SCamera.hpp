@@ -37,6 +37,7 @@
 
 namespace sight::module::ui::qt
 {
+
 namespace video
 {
 
@@ -61,7 +62,7 @@ namespace video
  * @code{.xml}
     <service uid="..." type="sight::module::ui::qt::video::SCamera" >
         <inout key="camera" uid="..."/>
-        <videoSupport>yes</videoSupport>
+        <videoSupport>true</videoSupport>
         <label>Video source: </label>
     </service>
    @endcode
@@ -74,7 +75,7 @@ namespace video
     <service uid="..." type="sight::module::ui::qt::video::SCamera" >
         <inout key="cameraSeries" uid="..."/>
         <createCameraNumber>2</createCameraNumber>
-        <videoSupport>yes</videoSupport>
+        <videoSupport>true</videoSupport>
         <label>Video source: </label>
     </service>
    @endcode
@@ -84,7 +85,7 @@ namespace video
  * - \b cameraSeries [sight::data::CameraSeries]: camera series thus containing several camera.
  *
  * @subsection Configuration Configuration
- * - \b videoSupport (optional, default="no"): if we can open a video file in addition with cameras.
+ * - \b videoSupport (optional, default="false"): if we can open a video file in addition with cameras.
  * - \b createCameraNumber (optional, default="0"): number of cameras to create. If the parameter is set and the
  * camera series already contains camera data, an assertion will be raised.
  * - \b label (optional, default="Video source: "): label of the selector.
@@ -92,12 +93,11 @@ namespace video
 class MODULE_UI_QT_CLASS_API SCamera final : public QObject,
                                              public sight::ui::base::IEditor
 {
-
 Q_OBJECT
 
 public:
 
-    SIGHT_DECLARE_SERVICE(SCamera, sight::ui::base::IEditor)
+    SIGHT_DECLARE_SERVICE(SCamera, sight::ui::base::IEditor);
 
     /// Initialize signals and slots.
     MODULE_UI_QT_API SCamera();
@@ -140,7 +140,7 @@ private:
     void onChooseDevice();
 
     /// Retrieves camera objects according to the XML configuration.
-    std::vector< data::Camera::sptr > getCameras() const;
+    std::vector<data::Camera::sptr> getCameras() const;
 
     /// Combobox for camera selection.
     QPointer<QComboBox> m_devicesComboBox;
@@ -156,8 +156,8 @@ private:
 
     /// Label of the selector.
     std::string m_label {"Video source: "};
-
 };
 
 } // video
+
 } // sight::module::ui::qt

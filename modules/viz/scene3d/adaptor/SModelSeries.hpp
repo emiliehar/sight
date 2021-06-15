@@ -30,7 +30,9 @@
 
 namespace sight::data
 {
+
 class Material;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
@@ -51,7 +53,8 @@ namespace sight::module::viz::scene3d::adaptor
  * @code{.xml}
     <service type="sight::module::viz::scene3d::adaptor::SModelSeries">
         <in key="model" uid="..." />
-        <config layer="..." transform="..." material="..." autoresetcamera="yes" dynamic="no" dynamicVertices="no"
+        <config layer="..." transform="..." material="..." autoresetcamera="true" dynamic="false"
+ * dynamicVertices="false"
         queryFlags="0x40000000" />
    </service>
    @endcode
@@ -63,10 +66,13 @@ namespace sight::module::viz::scene3d::adaptor
  * - \b layer (mandatory, string): defines the modelSeries's layer
  * - \b transform (optional, string, default=""): the transformation matrix to associate to the adaptor.
  * - \b material (optional, string, default=""): the name of the base Ogre material to pass to the mesh adaptors.
- * - \b autoresetcamera (optional, yes/no, default=yes): reset the camera when this mesh is modified, "yes" or "no".
- * - \b dynamic (optional, yes/no, default=no): if the modelSeries topolgy is likely to be updated frequently. This is
+ * - \b autoresetcamera (optional, true/false, default=true): reset the camera when this mesh is modified, "true" or
+ *"false".
+ * - \b dynamic (optional, true/false, default=false): if the modelSeries topolgy is likely to be updated frequently.
+ * This is
  *      a performance hint that will choose a specific GPU memory pool accordingly.
- * - \b dynamicVertices (optional, yes/no, default=no): if the modelSeries geometry is likely to be updated frequently.
+ * - \b dynamicVertices (optional, true/false, default=false): if the modelSeries geometry is likely to be updated
+ * frequently.
  *      This is a performance hint that will choose a specific GPU memory pool accordingly.
  * - \b queryFlags (optional, uint32, default=0x40000000): Used for picking. Picked only by pickers whose mask that
  *      match the flag.
@@ -78,11 +84,10 @@ class MODULE_VIZ_SCENE3D_CLASS_API SModelSeries final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
 
     /// Generates default methods as New, dynamicCast, ...
-    SIGHT_DECLARE_SERVICE(SModelSeries, ::sight::viz::scene3d::IAdaptor)
+    SIGHT_DECLARE_SERVICE(SModelSeries, ::sight::viz::scene3d::IAdaptor);
 
     /// Initialisa slots.
     MODULE_VIZ_SCENE3D_API SModelSeries() noexcept;
@@ -129,10 +134,10 @@ private:
     void showReconstructionsOnFieldChanged();
 
     /// Defines if the camera must be reset automatically
-    bool m_autoResetCamera { true };
+    bool m_autoResetCamera {true};
 
     /// Defines the texture name.
-    std::string m_textureAdaptorUID { "" };
+    std::string m_textureAdaptorUID {""};
 
     /// Defines the material name.
     std::string m_materialTemplateName {sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
@@ -147,7 +152,7 @@ private:
     std::uint32_t m_queryFlags {::Ogre::SceneManager::ENTITY_TYPE_MASK};
 
     /// Defines if the visibility tag is present in the configuration.
-    bool m_isVisibleTag{false};
+    bool m_isVisibleTag {false};
 };
 
 //------------------------------------------------------------------------------

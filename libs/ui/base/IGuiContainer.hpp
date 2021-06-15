@@ -91,11 +91,11 @@ class ISlideViewBuilder;
        </gui>
        <registry>
            <parent wid="myView" />
-           <toolBar sid="toolbar1" start="yes" />
-           <view sid="subView3" start="yes" />
+           <toolBar sid="toolbar1" start="true" />
+           <view sid="subView3" start="true" />
            <view wid="subView4" />
            <view sid="subView5" />
-           <slideView sid="slideView1" start="yes />
+           <slideView sid="slideView1" start="true />
            <slideView wid="slideView2" />
         </registry>
    </service>
@@ -131,7 +131,7 @@ class UI_BASE_CLASS_API IGuiContainer : public service::IService
 {
 public:
 
-    SIGHT_DECLARE_SERVICE(IGuiContainer, service::IService)
+    SIGHT_DECLARE_SERVICE(IGuiContainer, service::IService);
 
     UI_BASE_API SPTR(ui::base::container::fwContainer) getContainer();
 

@@ -138,9 +138,8 @@ if(UNIX)
     endif()
 endif()
 
-if(SIGHT_BUILD_TESTS)
-    find_package(CppUnit QUIET REQUIRED)
-endif(SIGHT_BUILD_TESTS)
+# We always need CppUnit, no need to put that in subdirectories
+find_package(CppUnit QUIET REQUIRED)
 
 ########################################################################################################################
 # Default paths settings for libraries, modules and resources
@@ -154,16 +153,17 @@ else()
     set(SIGHT_MODULE_LIB_PREFIX "${CMAKE_INSTALL_LIBDIR}")
 endif()
 
-# Fixed path for multi-config builds (e.g. msvc)
-foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-    string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR} )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR} )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR} )
-endforeach()
-
 set(FWCONFIG_PACKAGE_LOCATION lib/cmake/sight)
 set_property(GLOBAL PROPERTY SIGHT_COMPONENTS "")
+
+# Define the path 'FW_SIGHT_EXTERNAL_LIBRARIES_DIR' used to find external libraries required by our applications
+setExternalLibrariesDir()
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+set(SIGHT_VCPKG_ROOT_DIR "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug")
+else()
+set(SIGHT_VCPKG_ROOT_DIR "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}")
+set(EXCLUDE_PATTERN ".*/debug/.*")
+endif()
 
 add_subdirectory(libs)
 add_subdirectory(modules)
@@ -174,8 +174,6 @@ add_subdirectory(apps)
 add_subdirectory(tutorials)
 add_subdirectory(examples)
 
-# Define the path 'FW_SIGHT_EXTERNAL_LIBRARIES_DIR' used to find external libraries required by our applications
-setExternalLibrariesDir()
 
 ########################################################################################################################
 # Export and install targets
@@ -184,21 +182,10 @@ setExternalLibrariesDir()
 # the SIGHT_COMPONENTS global property contains all components, but unsorted. We can't use them as is.
 get_property(SIGHT_COMPONENTS GLOBAL PROPERTY SIGHT_COMPONENTS)
 
-# For now, use a hardcoded list, we may compute this later from SIGHT_COMPONENTS 
-set(SIGHT_COMPONENTS "core;data;activity;service;atoms;geometry_eigen;geometry_data;geometry_glm;geometry_vision;io_base;io_itk;io_zip;io_vtk;io_session;io_session_obj;filter_vision;filter_image;filter_dicom;ui_history;ui_base;ui_qml;ui_qt;ui_dicom;io_dicom;io_atoms;io_igtl;io_http;io_patch;io_opencv;io_dimse;viz_base;viz_qt3d;viz_scene2d;viz_scene3d;module_memory;module_appXml;module_sync;module_activity;module_debug;module_service;module_data;module_filter_image;module_filter_point;module_filter_vision;module_filter_mesh;module_geometry_vision;module_geometry_base;module_geometry_generator;module_io_video;module_io_dimse;module_io_itk;module_io_vtk;module_io_vision;module_io_atoms;module_io_igtl;module_io_dicomweb;module_io_document;module_io_matrix;module_io_dicom;module_navigation_calibration;module_navigation_optics;module_ui_debug;module_ui_viz;module_ui_dicom;module_ui_console;module_ui_base;module_ui_qml;module_ui_qt;module_ui_history;module_viz_scene3dQt;module_viz_scene2d;module_viz_scene3d;module_viz_sample;module_viz_qt3d;module_ui_icons;module_ui_flaticons;module_io_activity;config_ui_activity;config_ui_datamanager;config_viz_scene2d;config_viz_scene3d;activity_navigation_calibration;geometry_vtk;activity_io_dicom;activity_io_dicomweb;activity_viz_negato;utest;utestData")
-
-# PCL is only supported on Ubuntu with VTK 7
-if(${VTK_MAJOR_VERSION} VERSION_LESS "8")
-  list(APPEND SIGHT_COMPONENTS "module_io_pcl")
-endif()
-
-if(SIGHT_ENABLE_OPENVSLAM)
-  list(APPEND SIGHT_COMPONENTS "navigation_openvslam" "module_navigation_openvslam")
-endif()
-
-if(SIGHT_ENABLE_REALSENSE)
-  list(APPEND SIGHT_COMPONENTS "module_io_realsense")
-endif()
+# Use the ordered list of components
+order_sight_components("${SIGHT_COMPONENTS}" SIGHT_ORDERED_COMPONENTS)
+message("-- Sight Components: ${SIGHT_ORDERED_COMPONENTS}")
+set(SIGHT_COMPONENTS "${SIGHT_ORDERED_COMPONENTS}")
 
 configure_file(${CMAKE_SOURCE_DIR}/cmake/build/sightConfig.cmake.in
                ${CMAKE_BINARY_DIR}/cmake/sightConfig.cmake @ONLY)

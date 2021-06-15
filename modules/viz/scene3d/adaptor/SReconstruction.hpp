@@ -34,10 +34,12 @@ namespace sight::data
 {
 
 class Mesh;
+
 }
 
 namespace sight::module::viz::scene3d::adaptor
 {
+
 /**
  * @brief This adaptor displays a reconstruction.
  *
@@ -53,7 +55,7 @@ namespace sight::module::viz::scene3d::adaptor
  * @code{.xml}
     <service type="sight::module::viz::scene3d::adaptor::SReconstruction">
         <in key="reconstruction" uid="..." />
-        <config layer="..." transform="..." autoresetcamera="yes" queryFlags="0x40000000" />
+        <config layer="..." transform="..." autoresetcamera="true" queryFlags="0x40000000" />
    </service>
    @endcode
  *
@@ -63,7 +65,8 @@ namespace sight::module::viz::scene3d::adaptor
  * @subsection Configuration Configuration:
  * - \b layer (mandatory, string): defines the mesh's layer.
  * - \b transform (optional, string, default=""): the transformation matrix to associate to the adaptor.
- * - \b autoresetcamera (optional, yes/no, default=yes): reset the camera when this mesh is modified, "yes" or "no".
+ * - \b autoresetcamera (optional, true/false, default=true): reset the camera when this mesh is modified, "true" or
+ *"false".
  * - \b queryFlags (optional, unit32, default=0x40000000): Used for picking. Picked only by pickers whose mask that
  *      match the flag.
  */
@@ -71,11 +74,10 @@ class MODULE_VIZ_SCENE3D_CLASS_API SReconstruction final :
     public sight::viz::scene3d::IAdaptor,
     public sight::viz::scene3d::ITransformable
 {
-
 public:
 
     /// Generates default methods as New, dynamicCast, ...
-    SIGHT_DECLARE_SERVICE(SReconstruction, ::sight::viz::scene3d::IAdaptor)
+    SIGHT_DECLARE_SERVICE(SReconstruction, ::sight::viz::scene3d::IAdaptor);
 
     /// Initialise slots.
     MODULE_VIZ_SCENE3D_API SReconstruction() noexcept;
@@ -151,19 +153,19 @@ private:
     sight::viz::scene3d::IAdaptor::wptr m_meshAdaptor;
 
     /// Defines if the camera has to be reset automatically.
-    bool m_autoResetCamera { true };
+    bool m_autoResetCamera {true};
 
     /// Defines the material name.
-    std::string m_materialTemplateName {sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME };
+    std::string m_materialTemplateName {sight::viz::scene3d::Material::DEFAULT_MATERIAL_TEMPLATE_NAME};
 
     /// Defines if the mesh changes dynamically.
-    bool m_isDynamic { false };
+    bool m_isDynamic {false};
 
     /// Defines if the vertices change dynamically.
-    bool m_isDynamicVertices { false };
+    bool m_isDynamicVertices {false};
 
     /// Defines the mask used for picking request.
-    std::uint32_t m_queryFlags { ::Ogre::SceneManager::ENTITY_TYPE_MASK };
+    std::uint32_t m_queryFlags {::Ogre::SceneManager::ENTITY_TYPE_MASK};
 };
 
 //------------------------------------------------------------------------------

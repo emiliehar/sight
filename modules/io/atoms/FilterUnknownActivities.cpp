@@ -50,7 +50,7 @@ void FilterUnknownActivities::apply(const SPTR(sight::atoms::Object)& atom)
 {
     SIGHT_ASSERT("Unable to filter atom : invalid object", atom);
 
-    const std::string expName    = "::sight::data::SeriesDB"; // expected classname
+    const std::string expName    = "sight::data::SeriesDB"; // expected classname
     const std::string& classname = sight::io::atoms::patch::helper::getClassname(atom);
     SIGHT_THROW_IF(
         "Unable to filter atom of class '" << classname << "'. Expected class is '" + expName + "'",

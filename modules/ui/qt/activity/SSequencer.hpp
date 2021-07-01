@@ -45,14 +45,14 @@ namespace activity
  * The order of the activities is given in the configuration.
  *
  * ActivitySeries are created for each activity using the data produced by the previous activities. This activities are
- * stored in the current SeriesDB. By default all the data are stored, you can to backward and forward as you want in
+ * stored in the current SeriesDB. By default all the data are stored, you can backward and forward as you want in
  * the existing activities. Using the tag 'clearActivities', you can remove the last activities when going backward to
  * force the user to re-generate the data.
  *
  * @warning If an activity can not be launched with the existing parameters, the signal 'dataRequired' is emitted. It
  * can be connected to an activity wizard to add the missing data, or you can supplied 'requirementOverrides' composite.
  *
- * @note If the inout SeriesDB already contains activities, their are parsed and the sequencer open on the last
+ * @note If the inout SeriesDB already contains activities, they are parsed and the sequencer open on the last
  * activities. Be careful to store them in the right order.
  *
  * @warning If the SeriesDB contains other series (or unkonwn activities), they are removed with a simple log error.
@@ -80,7 +80,7 @@ namespace activity
         <activity id="..." name="..." />
         <activity id="..." name="..." />
         <activity id="..." name="..." />
-        <clearActivities>false</cleanActivities>
+        <clearActivities>false</clearActivities>
         <clear>#FFFFFF</clear>
         <theme>#FF00FF</theme>
         <accent>#FF00FF</accent>

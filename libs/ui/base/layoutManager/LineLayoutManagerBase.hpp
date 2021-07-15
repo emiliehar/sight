@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -81,6 +81,7 @@ public:
         bool m_isSpacer;
         bool m_useScrollBar;
         std::string m_toolTip;
+        std::string m_styleSheet;
 
         /// Background color. Use an empty string to use the default background color, else, set an hexadecimal value.
         std::string m_backgroundColor;
@@ -102,7 +103,9 @@ public:
               <layout type="ui::base::LineLayoutManager" >
                     <orientation value="horizontal" />
                     <view proportion="0" minWidth="30" />
-                    <view proportion="0" minWidth="50" />
+                    <view proportion="0" minWidth="50">
+                        <styleSheet>background-color: blue;</stylesheet>
+                    </view>
                     <spacer />
                </layout>
            </gui>
@@ -131,6 +134,7 @@ public:
      *   - \b visible  {true | false} : define if the view is visible or not.
      *   - \b toolTip : string that will be displayed next to the mouse pointer when it lies over the view.
      *   - \b backgroundColor (optional) : (hexa) background color.
+     *   - \b styleSheet (optional): view style
      */
 
     UI_BASE_API void initialize(ConfigurationType configuration) override;

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -104,6 +104,11 @@ void TabLayoutManager::createLayout(ui::base::container::fwContainer::sptr paren
             << (static_cast<float>(rgba[3]) / 255.f) * 100 << "%); } ";
             const QString style = QString::fromStdString(ss.str());
             widget->setStyleSheet(style + qApp->styleSheet());
+        }
+
+        if(!viewInfo.m_styleSheet.empty())
+        {
+            widget->setStyleSheet(QString::fromStdString(viewInfo.m_styleSheet));
         }
 
         ui::qt::container::QtContainer::sptr subContainer = ui::qt::container::QtContainer::New();

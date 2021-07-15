@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -112,6 +112,11 @@ void CardinalLayoutManager::createLayout(ui::base::container::fwContainer::sptr 
                 widget->setStyleSheet(style + qApp->styleSheet());
             }
 
+            if(!viewInfo.m_styleSheet.empty())
+            {
+                widget->setStyleSheet(QString::fromStdString(viewInfo.m_styleSheet));
+            }
+
             if(viewInfo.m_useScrollBar)
             {
                 scrollArea = new QScrollArea(m_qtWindow);
@@ -199,6 +204,24 @@ void CardinalLayoutManager::createLayout(ui::base::container::fwContainer::sptr 
                     std::max(viewInfo.m_minSize.second, 0)
                 );
                 dockWidget->setTitleBarWidget(widget);
+            }
+
+            if(!viewInfo.m_backgroundColor.empty())
+            {
+                std::uint8_t rgba[4];
+                data::tools::Color::hexaStringToRGBA(viewInfo.m_backgroundColor, rgba);
+                std::stringstream ss;
+                ss << "QWidget { background-color: rgba(" << static_cast<short>(rgba[0]) << ','
+                << static_cast<short>(rgba[1]) << ','
+                << static_cast<short>(rgba[2]) << ','
+                << (static_cast<float>(rgba[3]) / 255.f) * 100 << "%); } ";
+                const QString style = QString::fromStdString(ss.str());
+                dockWidget->setStyleSheet(style + qApp->styleSheet());
+            }
+
+            if(!viewInfo.m_styleSheet.empty())
+            {
+                dockWidget->setStyleSheet(QString::fromStdString(viewInfo.m_styleSheet));
             }
 
             if(viewInfo.m_useScrollBar)

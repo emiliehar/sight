@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2019 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -70,6 +70,9 @@ public:
         bool m_isSelect;
         bool m_useScrollBar;
 
+        /// View stylesheet, if not empty it override the default style
+        std::string m_styleSheet;
+
         /// Background color. Use an empty string to use the default background color, else, set an hexadecimal value.
         std::string m_backgroundColor;
     };
@@ -90,7 +93,9 @@ public:
                <layout type="ui::base::TabLayoutManager" >
                    <view caption="TabView1" />
                    <view caption="TabView2" selected="true" border="10" />
-                   <view caption="TabView3"  />
+                   <view caption="TabView3" >
+                        <styleSheet>background-color: blue;</stylesheet>
+                   </view>
                </layout>
            </gui>
            <registry>
@@ -111,6 +116,9 @@ public:
      *   - \b minWidth  : minimal width of the view.
      *   - \b minHeight : minimal height of the view.
      *   - \b selected  {true | false}: define if the tab is the current one.
+     *   - \b styleSheet (optional): view style. It is recommanded to change the style in the global qss file (see
+     * flatdark.qss in module/ui/qt)
+
      */
     UI_BASE_API void initialize(ConfigurationType configuration) override;
 

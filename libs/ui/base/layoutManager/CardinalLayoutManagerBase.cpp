@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -169,6 +169,12 @@ void CardinalLayoutManagerBase::initialize(ConfigurationType configuration)
                 );
                 vi.m_backgroundColor = hexaColor;
             }
+        }
+
+        if(view->hasConfigurationElement("styleSheet"))
+        {
+            const auto styleConfig = view->findConfigurationElement("styleSheet");
+            vi.m_styleSheet = styleConfig->getValue();
         }
 
         m_views.push_back(vi);

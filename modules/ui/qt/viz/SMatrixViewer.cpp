@@ -151,7 +151,7 @@ void SMatrixViewer::updateFromMatrix()
         for(unsigned int j = 0 ; j < 4 ; ++j)
         {
             const int index = static_cast<int>(i * 4 + j);
-            m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j)));
+            m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j), 10));
         }
     }
 }

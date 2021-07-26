@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -179,6 +179,7 @@ void SWriter::configuring()
             "<xmlattr>.version",
             sight::io::patch::semantic::PatchLoader::getCurrentVersion()
         );
+        m_exportedVersion = m_version;
         m_useAtomsPatcher = true;
     }
 }

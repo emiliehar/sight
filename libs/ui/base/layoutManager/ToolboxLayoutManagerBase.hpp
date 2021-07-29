@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2019 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -71,6 +71,9 @@ public:
         bool m_expanded;
         bool m_useScrollBar;
 
+        /// View stylesheet, if not empty it override the default style
+        std::string m_styleSheet;
+
         /// Background color. Use `default` to use the default background color, else, set an hexadecimal value.
         std::string m_backgroundColor;
     };
@@ -91,7 +94,9 @@ public:
                <layout type="ui::base::ToolboxLayoutManager">
                    <view caption="My view 1" expanded="true" />
                    <view caption="My view 2" expanded="true" />
-                   <view caption="My view 3" expanded="false" />
+                   <view caption="My view 3" expanded="false" >
+                       <styleSheet>background-color: blue;</stylesheet>
+                   </view>
                    <spacer />
                </layout>
            </gui>
@@ -116,6 +121,9 @@ public:
      *   - \b visible  {true | false} : define if the view is visible or not.
      *   - \b expanded  {true |false } : define if the view is expanded or not.
      *   - \b useScrollBar  {true | false} : define if the view use scrollbar or not.
+     *   - \b styleSheet (optional): view style. It is recommanded to change the style in the global qss file (see
+     * flatdark.qss in module/ui/qt)
+
      */
     UI_BASE_API void initialize(ConfigurationType configuration) override;
 

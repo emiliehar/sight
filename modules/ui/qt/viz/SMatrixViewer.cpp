@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2017-2021 IRCAD France
- * Copyright (C) 2017-2018 IHU Strasbourg
+ * Copyright (C) 2017-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -35,6 +35,8 @@
 #include <QString>
 #include <QVBoxLayout>
 
+#include <iomanip>
+
 namespace sight::module::ui::qt
 {
 
@@ -45,8 +47,7 @@ static const service::IService::KeyType s_MATRIX_INPUT = "matrix";
 
 // ------------------------------------------------------------------------------
 
-SMatrixViewer::SMatrixViewer() noexcept :
-    m_title("matrix")
+SMatrixViewer::SMatrixViewer() noexcept
 {
 }
 
@@ -62,7 +63,21 @@ void SMatrixViewer::configuring()
 {
     sight::ui::base::IGuiContainer::initialize();
 
-    m_title = this->getConfigTree().get<std::string>("title", "matrix");
+    const auto config = this->getConfigTree();
+
+    m_title = config.get<std::string>("title", "matrix");
+    const std::string displayMode = config.get("display", "matrix");
+    if(displayMode == "line")
+    {
+        m_displayMode = Display::LINE;
+    }
+    else
+    {
+        m_displayMode = Display::MATRIX;
+        SIGHT_ASSERT("Only 'matrix' and 'line' values are managed for 'display' option.", displayMode == "matrix");
+    }
+
+    m_precision = config.get<int>("precision", m_precision);
 }
 
 // ------------------------------------------------------------------------------
@@ -75,23 +90,41 @@ void SMatrixViewer::starting()
     QBoxLayout* mainLayout = new QBoxLayout(QBoxLayout::TopToBottom);
     mainLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    QPointer<QLabel> description = new QLabel(QString::fromStdString(m_title));
-
-    mainLayout->addWidget(description);
-
-    QGridLayout* gridLayout = new QGridLayout();
-
-    for(unsigned int i = 0 ; i < 4 ; ++i)
+    if(!m_title.empty())
     {
-        for(unsigned int j = 0 ; j < 4 ; ++j)
+        QPointer<QLabel> description = new QLabel(QString::fromStdString(m_title));
+        mainLayout->addWidget(description);
+    }
+
+    if(m_displayMode == Display::MATRIX)
+    {
+        QGridLayout* gridLayout = new QGridLayout();
+
+        for(int i = 0 ; i < 4 ; ++i)
+        {
+            for(int j = 0 ; j < 4 ; ++j)
+            {
+                QLabel* label = new QLabel("");
+                m_matrixLabels.push_back(label);
+                gridLayout->addWidget(label, i, j);
+            }
+        }
+
+        mainLayout->addLayout(gridLayout);
+    }
+    else
+    {
+        QHBoxLayout* layout = new QHBoxLayout();
+
+        for(int i = 0 ; i < 16 ; ++i)
         {
             QLabel* label = new QLabel("");
             m_matrixLabels.push_back(label);
-            gridLayout->addWidget(label, i, j);
+            layout->addWidget(label, 1);
         }
-    }
 
-    mainLayout->addLayout(gridLayout);
+        mainLayout->addLayout(layout);
+    }
 
     qtContainer->setLayout(mainLayout);
 
@@ -116,12 +149,21 @@ void SMatrixViewer::updating()
 
 void SMatrixViewer::updateFromMatrix()
 {
-    auto matrix = this->getInput<data::Matrix4>(s_MATRIX_INPUT);
+    auto matrix = this->getLockedInput<data::Matrix4>(s_MATRIX_INPUT);
     for(unsigned int i = 0 ; i < 4 ; ++i)
     {
         for(unsigned int j = 0 ; j < 4 ; ++j)
         {
-            m_matrixLabels[i * 4 + j]->setText(QString("%1").arg(matrix->getCoefficient(i, j)));
+            const int index = static_cast<int>(i * 4 + j);
+
+            if(m_precision >= 0)
+            {
+                m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j), 0, 'f', m_precision));
+            }
+            else
+            {
+                m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j)));
+            }
         }
     }
 }
@@ -134,7 +176,8 @@ void SMatrixViewer::clearLabels()
     {
         for(unsigned int j = 0 ; j < 4 ; ++j)
         {
-            m_matrixLabels[i * 4 + j]->setText(QString(""));
+            const int index = static_cast<int>(i * 4 + j);
+            m_matrixLabels[index]->setText(QString(""));
         }
     }
 }

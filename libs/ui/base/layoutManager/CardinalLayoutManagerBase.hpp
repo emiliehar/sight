@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2019 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -85,6 +85,9 @@ public:
         bool m_useScrollBar;
         std::string m_toolTip;
 
+        /// View stylesheet, if not empty it override the default style
+        std::string m_styleSheet;
+
         /// Background color. When given an empty string, a default background is used. To use another color, set an
         /// hexadecimal value (it has to start with "#").
         std::string m_backgroundColor;
@@ -106,7 +109,9 @@ public:
                <layout type="ui::base::CardinalLayoutManager" >
                    <view caption="CardinalView1" align="center" />
                    <view caption="CardinalView2" align="right" minWidth="400" />
-                   <view caption="CardinalView3" align="bottom" minHeight="400" />
+                   <view caption="CardinalView3" align="bottom" minHeight="400" >
+                       <styleSheet>background-color: blue;</stylesheet>
+                   </view>
                </layout>
            </gui>
            <registry>
@@ -131,6 +136,9 @@ public:
      *   - \b visible  {true | false} : define if the view is visible or not.
      *   - \b toolTip : string that will be displayed next to the mouse pointer when it lies over the view.
      *   - \b backgroundColor (optional) : (hexadecimal format starting with "#") background color.
+     *   - \b styleSheet (optional): view style. It is recommanded to change the style in the global qss file (see
+     * flatdark.qss in module/ui/qt)
+
      */
 
     UI_BASE_API void initialize(ConfigurationType configuration) override;

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -57,7 +57,7 @@
 namespace sight::viz::scene3d
 {
 
-static std::set<std::string> s_moduleWithResourcesNames;
+static std::vector<std::string> s_moduleWithResourcesNames;
 
 ::Ogre::OverlaySystem* Utils::s_overlaySystem                                 = nullptr;
 viz::scene3d::factory::R2VBRenderable* Utils::s_R2VBRenderableFactory         = nullptr;
@@ -136,7 +136,11 @@ void Utils::loadResources()
 void Utils::addResourcesPath(const std::string& moduleName)
 {
     SIGHT_ASSERT("Empty resource path", !moduleName.empty());
-    s_moduleWithResourcesNames.insert(moduleName);
+    const auto it = std::find(s_moduleWithResourcesNames.begin(), s_moduleWithResourcesNames.end(), moduleName);
+    if(it == s_moduleWithResourcesNames.end())
+    {
+        s_moduleWithResourcesNames.push_back(moduleName);
+    }
 }
 
 //------------------------------------------------------------------------------

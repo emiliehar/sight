@@ -48,6 +48,7 @@ namespace viz
         <in key="matrix" uid="..." />
         <title>matrix name</title>
         <display>matrix|line</display>
+        <precision>5</precision>
     </service>
    @endcode
 
@@ -57,6 +58,8 @@ namespace viz
  * @subsection Configuration Configuration
  * - \b title (optional): defines the displayed title on top of the matrix viewer (default: matrix).
  * - \b display (optional): define how to display the matrix (matrix: 4x4 values, line: 16 value) (default: matrix)
+ * - \b precision (optional): define the precision of the output values (number of decimals) (default: -1, the converted
+ * choose the best number of decimals)
  */
 
 class MODULE_UI_QT_CLASS_API SMatrixViewer : public QObject,
@@ -110,9 +113,13 @@ private:
 
     std::string m_title {"matrix"}; ///< Title of the matrix that will be displayed
 
+    /// matrix display mode (matrix or line)
     Display m_displayMode {Display::MATRIX};
 
     QVector<QPointer<QLabel> > m_matrixLabels; ///< Labels for matrix's elements
+
+    /// number of decimals to display
+    int m_precision {-1};
 };
 
 } //namespace viz

@@ -35,6 +35,8 @@
 #include <QString>
 #include <QVBoxLayout>
 
+#include <iomanip>
+
 namespace sight::module::ui::qt
 {
 
@@ -74,6 +76,8 @@ void SMatrixViewer::configuring()
         m_displayMode = Display::MATRIX;
         SIGHT_ASSERT("Only 'matrix' and 'line' values are managed for 'display' option.", displayMode == "matrix");
     }
+
+    m_precision = config.get<int>("precision", m_precision);
 }
 
 // ------------------------------------------------------------------------------
@@ -116,7 +120,7 @@ void SMatrixViewer::starting()
         {
             QLabel* label = new QLabel("");
             m_matrixLabels.push_back(label);
-            layout->addWidget(label);
+            layout->addWidget(label, 1);
         }
 
         mainLayout->addLayout(layout);
@@ -151,7 +155,15 @@ void SMatrixViewer::updateFromMatrix()
         for(unsigned int j = 0 ; j < 4 ; ++j)
         {
             const int index = static_cast<int>(i * 4 + j);
-            m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j), 10));
+
+            if(m_precision >= 0)
+            {
+                m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j), 0, 'f', m_precision));
+            }
+            else
+            {
+                m_matrixLabels[index]->setText(QString("%1").arg(matrix->getCoefficient(i, j)));
+            }
         }
     }
 }

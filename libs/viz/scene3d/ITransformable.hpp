@@ -54,7 +54,7 @@ public:
      * @param _parentNode The parent node of the created node.
      * @return The node matching m_transformId.
      */
-    VIZ_SCENE3D_API ::Ogre::SceneNode* getTransformNode(::Ogre::SceneNode* const _parentNode);
+    VIZ_SCENE3D_API ::Ogre::SceneNode* getTransformNode(::Ogre::SceneNode* const _parentNode, bool create = true);
 
     /**
      * @brief Retrieve the node matching the given node name.
@@ -64,7 +64,8 @@ public:
      */
     VIZ_SCENE3D_API static ::Ogre::SceneNode* getTransformNode(
         const std::string& _name,
-        ::Ogre::SceneNode* const _parentNode
+        ::Ogre::SceneNode* const _parentNode,
+        bool create = true
     );
 
     /// The xml attribute to retrieve the transform's id.

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2017-2021 IRCAD France
- * Copyright (C) 2017-2020 IHU Strasbourg
+ * Copyright (C) 2017-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -353,8 +353,11 @@ void SAxis::stopping()
     sceneMgr->destroyManualObject(m_zCone);
 
     ::Ogre::SceneNode* const rootSceneNode = sceneMgr->getRootSceneNode();
-    ::Ogre::SceneNode* const transformNode = this->getTransformNode(rootSceneNode);
-    transformNode->removeAndDestroyChild(this->getID() + "_mainNode");
+    ::Ogre::SceneNode* const transformNode = this->getTransformNode(rootSceneNode, false);
+    if(transformNode)
+    {
+        transformNode->removeAndDestroyChild(this->getID() + "_mainNode");
+    }
 
     this->unregisterServices();
     m_material.reset();

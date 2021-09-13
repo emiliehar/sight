@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2018-2021 IRCAD France
- * Copyright (C) 2018-2020 IHU Strasbourg
+ * Copyright (C) 2018-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -285,8 +285,9 @@ private:
      * @brief SLOT: resets the hightlights the selected landmark.
      * @param _groupName group name of the landmark.
      * @param _index index of the point relative to the group.
+     * @param _visible if true, show the landmarks
      */
-    void deselectPoint(std::string _groupName, size_t _index);
+    void deselectPoint(std::string _groupName, size_t _index, bool _visible = true);
 
     /**
      * @brief Manages the highting of the landmarks at the given index (must be run in a thread).

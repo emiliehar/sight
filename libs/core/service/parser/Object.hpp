@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -23,7 +23,7 @@
 #pragma once
 
 #include "service/config.hpp"
-#include <service/IAppConfigManager.hpp>
+#include <service/AppConfigManager.hpp>
 #include <service/IXMLParser.hpp>
 
 #include <core/tools/Object.hpp>
@@ -62,7 +62,7 @@ protected:
     bool refObjectValidator(core::runtime::ConfigurationElement::csptr _cfgElement);
     void updating() override;
 
-    std::vector<service::IAppConfigManager::sptr> m_ctmContainer;
+    std::vector<service::AppConfigManager::sptr> m_ctmContainer;
 };
 
 } //namespace parser

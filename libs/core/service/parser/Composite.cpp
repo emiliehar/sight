@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -120,7 +120,7 @@ void Composite::createConfig(core::tools::Object::sptr _obj)
                 );
 
                 // Create and manage object config
-                service::IAppConfigManager::sptr ctm = service::IAppConfigManager::New();
+                service::AppConfigManager::sptr ctm = service::AppConfigManager::New();
                 ctm->service::IAppConfigManager::setConfig(elem);
 
                 m_ctmContainer.push_back(ctm);
@@ -143,7 +143,7 @@ void Composite::createConfig(core::tools::Object::sptr _obj)
 
 void Composite::startConfig()
 {
-    for(service::IAppConfigManager::sptr ctm : m_ctmContainer)
+    for(service::AppConfigManager::sptr ctm : m_ctmContainer)
     {
         ctm->start();
     }
@@ -153,7 +153,7 @@ void Composite::startConfig()
 
 void Composite::updateConfig()
 {
-    for(service::IAppConfigManager::sptr ctm : m_ctmContainer)
+    for(service::AppConfigManager::sptr ctm : m_ctmContainer)
     {
         ctm->update();
     }
@@ -163,7 +163,7 @@ void Composite::updateConfig()
 
 void Composite::stopConfig()
 {
-    BOOST_REVERSE_FOREACH(service::IAppConfigManager::sptr ctm, m_ctmContainer)
+    BOOST_REVERSE_FOREACH(service::AppConfigManager::sptr ctm, m_ctmContainer)
     {
         ctm->stop();
     }
@@ -173,7 +173,7 @@ void Composite::stopConfig()
 
 void Composite::destroyConfig()
 {
-    BOOST_REVERSE_FOREACH(service::IAppConfigManager::sptr ctm, m_ctmContainer)
+    BOOST_REVERSE_FOREACH(service::AppConfigManager::sptr ctm, m_ctmContainer)
     {
         ctm->destroy();
     }

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -107,7 +107,7 @@ private:
      */
 
     /// AppConfig manager, used to launch the config
-    service::IAppConfigManager::sptr m_configMgr;
+    service::AppConfigManager::sptr m_configMgr;
 
     std::string m_proxychannel; ///< Name of the channel used to connect stopConfig slot to the config frame closing.
 };

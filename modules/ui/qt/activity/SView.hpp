@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2017-2021 IRCAD France
- * Copyright (C) 2017-2019 IHU Strasbourg
+ * Copyright (C) 2017-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -30,7 +30,7 @@
 
 #include <data/ActivitySeries.hpp>
 
-#include <service/IAppConfigManager.hpp>
+#include <service/AppConfigManager.hpp>
 
 #include <ui/base/view/IActivityView.hpp>
 
@@ -122,7 +122,7 @@ private:
     void launchActivity(data::ActivitySeries::sptr activitySeries) override;
 
     /// Helper to launch activity configuration
-    service::IAppConfigManager::sptr m_configManager;
+    service::AppConfigManager::sptr m_configManager;
 
     /// WID used to register the activity container
     std::string m_wid;

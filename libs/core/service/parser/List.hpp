@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -23,7 +23,7 @@
 #pragma once
 
 #include "service/config.hpp"
-#include <service/IAppConfigManager.hpp>
+#include <service/AppConfigManager.hpp>
 #include <service/IXMLParser.hpp>
 
 #include <core/runtime/ConfigurationElement.hpp>
@@ -84,7 +84,7 @@ private:
     /// To verify some conditions in xml file
     bool refObjectValidator(core::runtime::ConfigurationElement::sptr _cfgElement);
 
-    std::vector<service::IAppConfigManager::sptr> m_ctmContainer;
+    std::vector<service::AppConfigManager::sptr> m_ctmContainer;
 };
 
 } //namespace parser

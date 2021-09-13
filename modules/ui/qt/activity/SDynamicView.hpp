@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2019 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -35,7 +35,7 @@
 
 #include <data/ActivitySeries.hpp>
 
-#include <service/IAppConfigManager.hpp>
+#include <service/AppConfigManager.hpp>
 
 #include <ui/base/view/IActivityView.hpp>
 #include <ui/qt/container/QtContainer.hpp>
@@ -167,7 +167,7 @@ private:
     struct SDynamicViewInfo
     {
         ::sight::ui::qt::container::QtContainer::sptr container;
-        service::IAppConfigManager::sptr helper;
+        service::AppConfigManager::sptr helper;
         std::string wid;
         std::string title;
         bool closable;

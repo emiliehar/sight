@@ -268,7 +268,7 @@ void SSequencer::goTo(int index)
 {
     if(index < 0 || index >= static_cast<int>(m_activityIds.size()))
     {
-        SIGHT_ERROR("no activity to launch at index " << index)
+        SIGHT_ERROR("No activity to launch at index " << index)
         return;
     }
 
@@ -290,12 +290,12 @@ void SSequencer::goTo(int index)
             return;
         }
 
-        for(size_t i = index + 1 ; i < seriesDB->size() ; ++i)
+        for(int i = index + 1 ; i < static_cast<int>(seriesDB->size()) ; ++i)
         {
             this->disableActivity(i);
         }
 
-        this->clearLastActivities(seriesDB, index);
+        this->removeLastActivities(seriesDB, static_cast<size_t>(index));
     }
     else if(m_currentActivity >= 0)
     {

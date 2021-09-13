@@ -261,7 +261,7 @@ data::ActivitySeries::sptr IActivitySequencer::getActivity(
 
 //------------------------------------------------------------------------------
 
-void IActivitySequencer::clearLastActivities(const data::SeriesDB::sptr& seriesDB, size_t index)
+void IActivitySequencer::removeLastActivities(const data::SeriesDB::sptr& seriesDB, size_t index)
 {
     if(seriesDB->size() > index)
     {

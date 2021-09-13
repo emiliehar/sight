@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2017-2021 IRCAD France
- * Copyright (C) 2017-2020 IHU Strasbourg
+ * Copyright (C) 2017-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -157,6 +157,7 @@ void SView::launchActivity(data::ActivitySeries::sptr activitySeries)
         replaceMap["GENERIC_UID"] = genericUidAdaptor;
         try
         {
+            SIGHT_INFO("Launch activity: '" + info.appConfig.id + "'.");
             m_configManager->setConfig(info.appConfig.id, replaceMap);
             m_configManager->launch();
 

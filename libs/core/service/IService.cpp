@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -587,6 +587,7 @@ IService::SharedFutureType IService::startSlot()
 
 IService::SharedFutureType IService::internalStart(bool _async)
 {
+    SIGHT_INFO("Starting service '" + this->getID() + "' [" + this->getClassname() + "]");
     SIGHT_FATAL_IF("Service " << this->getID() << " already started", m_globalState != STOPPED);
 
     this->connectToConfig();
@@ -641,6 +642,7 @@ IService::SharedFutureType IService::stopSlot()
 
 IService::SharedFutureType IService::internalStop(bool _async)
 {
+    SIGHT_INFO("Stopping service '" + this->getID() + "' [" + this->getClassname() + "]");
     SIGHT_FATAL_IF("Service " << this->getID() << " already stopped", m_globalState != STARTED);
 
     this->autoDisconnect();
@@ -695,6 +697,7 @@ IService::SharedFutureType IService::swapKeySlot(const KeyType& _key, data::Obje
 
 IService::SharedFutureType IService::internalSwapKey(const KeyType& _key, data::Object::sptr _obj, bool _async)
 {
+    SIGHT_INFO("Swapping service '" + this->getID() + "' [" + this->getClassname() + "]");
     SIGHT_FATAL_IF(
         "Service " << this->getID() << " is not STARTED, no swapping with Object "
         << (_obj ? _obj->getID() : "nullptr"),
@@ -1146,8 +1149,6 @@ void IService::registerObject(
     }
     else
     {
-        SIGHT_WARN("object '" + key + "' is already registered, it will be overridden");
-
         ObjectServiceConfig& objConfig = *itr;
         objConfig.m_key         = key;
         objConfig.m_access      = access;

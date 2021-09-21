@@ -40,8 +40,8 @@ namespace sight::module::viz::scene3d::adaptor
 
 static const std::string s_EXTRUDED_MESHES_INOUT = "extrudedMeshes";
 
-static const core::com::Slots::SlotKeyType s_ENABLE_TOOL_SLOT      = "enableTool";
-static const core::com::Slots::SlotKeyType s_DELETE_LAST_MESH_SLOT = "deleteLastMesh";
+static const core::com::Slots::SlotKeyType s_ENABLE_TOOL_SLOT       = "enableTool";
+static const core::com::Slots::SlotKeyType s_DELETE_LAST_MESH_SLOT  = "deleteLastMesh";
 static const core::com::Slots::SlotKeyType s_CANCEL_LAST_CLICK_SLOT = "cancelLastClick";
 
 static const core::com::Slots::SlotKeyType s_TOOL_DISABLED_SIG = "toolDisabled";
@@ -330,7 +330,7 @@ void SShapeExtruder::deleteLastMesh()
 
 void SShapeExtruder::cancelLastClick()
 {
-    if (m_toolEnableState)
+    if(m_toolEnableState)
     {
         // Remove the last clicked point.
         if(m_lassoToolPositions.size() > 0)

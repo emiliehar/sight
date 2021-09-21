@@ -54,6 +54,7 @@ namespace sight::module::viz::scene3d::adaptor
  * @section Slots Slots
  * - \b enableTool(bool): enable or disable the tool, it will be automatically disabled when interactions are finished.
  * - \b deleteLastMesh(): delete the last extruded mesh.
+ * - \b cancelLastClick(): cancel the last point clicked during the extrusion
  *
  * @section Signal Signals
  * - \b toolDisabled(): sent when interactions are finished.
@@ -200,6 +201,9 @@ private:
 
     /// Deletes the last extruded mesh.
     void deleteLastMesh();
+
+    /// Cancel the last clicked point during the extrusion
+    void cancelLastClick();
 
     /**
      * @brief Gets the near and far position of the intersection between the ray starting from the camera

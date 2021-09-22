@@ -44,6 +44,7 @@ static const core::com::Slots::SlotKeyType s_ENABLE_TOOL_SLOT       = "enableToo
 static const core::com::Slots::SlotKeyType s_DELETE_LAST_MESH_SLOT  = "deleteLastMesh";
 static const core::com::Slots::SlotKeyType s_CANCEL_LAST_CLICK_SLOT = "cancelLastClick";
 
+static const core::com::Slots::SlotKeyType s_TOOL_ENABLED_SIG = "toolEnabled";
 static const core::com::Slots::SlotKeyType s_TOOL_DISABLED_SIG = "toolDisabled";
 
 static const std::string s_PRIORITY_CONFIG   = "priority";
@@ -158,6 +159,7 @@ SShapeExtruder::SShapeExtruder() noexcept
     newSlot(s_ENABLE_TOOL_SLOT, &SShapeExtruder::enableTool, this);
     newSlot(s_DELETE_LAST_MESH_SLOT, &SShapeExtruder::deleteLastMesh, this);
     newSlot(s_CANCEL_LAST_CLICK_SLOT, &SShapeExtruder::cancelLastClick, this);
+    m_toolEnabledSig = this->newSignal<core::com::Signal<void()> >(s_TOOL_ENABLED_SIG);
     m_toolDisabledSig = this->newSignal<core::com::Signal<void()> >(s_TOOL_DISABLED_SIG);
 }
 
@@ -275,6 +277,15 @@ void SShapeExtruder::enableTool(bool _enable)
     this->getRenderService()->makeCurrent();
 
     m_toolEnableState = _enable;
+
+    if(_enable)
+    {
+        m_toolEnabledSig->asyncEmit();
+    }
+    else
+    {
+        m_toolDisabledSig->asyncEmit();
+    }
 
     // Stop the lasso interaction.
     m_interactionEnableState = false;

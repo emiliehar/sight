@@ -57,6 +57,7 @@ namespace sight::module::viz::scene3d::adaptor
  * - \b cancelLastClick(): cancel the last point clicked during the extrusion
  *
  * @section Signal Signals
+ * - \b toolEnabled(): sent when interactions are enabled.
  * - \b toolDisabled(): sent when interactions are finished.
  *
  * @section XML XML Configuration
@@ -350,6 +351,9 @@ private:
 
     /// Contains the last lasso line, this line is drawn between the last position and the current mouse position.
     ::Ogre::ManualObject* m_lastLassoLine {nullptr};
+
+    /// Contains the signal sent when interactions are enabled.
+    core::com::Signal<void()>::sptr m_toolEnabledSig;
 
     /// Contains the signal sent when interactions are finished.
     core::com::Signal<void()>::sptr m_toolDisabledSig;

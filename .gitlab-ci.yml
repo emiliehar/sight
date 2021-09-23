@@ -140,18 +140,41 @@ build:linux-20.10-release-clang:
     CC: "/usr/lib/ccache/clang"
     CXX: "/usr/lib/ccache/clang++"
 
-# build:linux-21.04-release-gcc:
-#   extends: .linux_build
-#   image: "${SIGHT_CI_UBUNTU21_04}:dev"
-#   variables:
-#     BUILD_TYPE: "Release"
-#     SIGHT_BUILD_DOC: "OFF"
-#     SIGHT_BUILD_PACKAGE: "OFF"
-#     CC: "/usr/lib/ccache/gcc"
-#     CXX: "/usr/lib/ccache/g++"
+build:linux-21.04-debug-gcc:
+  extends: .linux_build
+  image: "${SIGHT_CI_UBUNTU21_04}:dev"
+  variables:
+    BUILD_TYPE: "Debug"
+    SIGHT_BUILD_DOC: "OFF"
+    SIGHT_BUILD_PACKAGE: "OFF"
+    SIGHT_IGNORE_UNSTABLE_TESTS: 1
+    CC: "/usr/lib/ccache/gcc"
+    CXX: "/usr/lib/ccache/g++"
+
+build:linux-21.04-release-gcc:
+  extends: .linux_build
+  image: "${SIGHT_CI_UBUNTU21_04}:dev"
+  variables:
+    BUILD_TYPE: "Release"
+    SIGHT_BUILD_DOC: "OFF"
+    SIGHT_BUILD_PACKAGE: "ON"
+    SIGHT_IGNORE_UNSTABLE_TESTS: 1
+    CC: "/usr/lib/ccache/gcc"
+    CXX: "/usr/lib/ccache/g++"
+
+build:linux-21.04-release-clang:
+  extends: .linux_build
+  image: "${SIGHT_CI_UBUNTU21_04}:dev"
+  variables:
+    BUILD_TYPE: "Release"
+    SIGHT_BUILD_DOC: "OFF"
+    SIGHT_BUILD_PACKAGE: "OFF"
+    SIGHT_IGNORE_UNSTABLE_TESTS: 1
+    CC: "/usr/lib/ccache/clang"
+    CXX: "/usr/lib/ccache/clang++"
 
 .linux_deploy:
-  image: "${SIGHT_CI_UBUNTU20_10}:dev"
+  image: "${SIGHT_CI_UBUNTU21_04}:dev"
   variables:
     BUILD_TYPE: "Release"
   stage: deploy
@@ -185,7 +208,7 @@ build:linux-20.10-release-clang:
 deploy:linux-debug:
   extends: .linux_deploy
   dependencies:
-    - build:linux-20.10-debug-gcc
+    - build:linux-21.04-debug-gcc
   variables:
     BUILD_TYPE: "Debug"
   only:
@@ -196,7 +219,7 @@ deploy:linux-debug:
 deploy_manual:linux-debug:
   extends: .linux_deploy
   dependencies:
-    - build:linux-20.10-debug-gcc
+    - build:linux-21.04-debug-gcc
   variables:
     BUILD_TYPE: "Debug"
   when: manual
@@ -204,7 +227,7 @@ deploy_manual:linux-debug:
 deploy:linux-release:
   extends: .linux_deploy
   dependencies:
-    - build:linux-20.10-release-gcc
+    - build:linux-21.04-release-gcc
   variables:
     BUILD_TYPE: "Release"
   only:
@@ -215,16 +238,16 @@ deploy:linux-release:
 deploy_manual:linux-release:
   extends: .linux_deploy
   dependencies:
-    - build:linux-20.10-release-gcc
+    - build:linux-21.04-release-gcc
   variables:
     BUILD_TYPE: "Release"
   when: manual
 
 pages:
-  image: "${SIGHT_CI_UBUNTU20_10}:dev"
+  image: "${SIGHT_CI_UBUNTU21_04}:dev"
   stage: deploy
   dependencies:
-    - build:linux-20.10-release-gcc
+    - build:linux-21.04-release-gcc
   script:
     - mv .build/Documentation/Doxygen/html/ public/
   artifacts:

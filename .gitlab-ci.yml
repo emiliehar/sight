@@ -115,7 +115,7 @@ build:linux-20.10-debug-gcc:
   variables:
     BUILD_TYPE: "Debug"
     SIGHT_BUILD_DOC: "OFF"
-    SIGHT_BUILD_PACKAGE: "ON"
+    SIGHT_BUILD_PACKAGE: "OFF"
     SIGHT_IGNORE_UNSTABLE_TESTS: 1
     CC: "/usr/lib/ccache/gcc"
     CXX: "/usr/lib/ccache/g++"
@@ -124,8 +124,8 @@ build:linux-20.10-release-gcc:
   extends: .linux_build
   variables:
     BUILD_TYPE: "Release"
-    SIGHT_BUILD_DOC: "ON"
-    SIGHT_BUILD_PACKAGE: "ON"
+    SIGHT_BUILD_DOC: "OFF"
+    SIGHT_BUILD_PACKAGE: "OFF"
     SIGHT_IGNORE_UNSTABLE_TESTS: 1
     CC: "/usr/lib/ccache/gcc"
     CXX: "/usr/lib/ccache/g++"
@@ -146,7 +146,7 @@ build:linux-21.04-debug-gcc:
   variables:
     BUILD_TYPE: "Debug"
     SIGHT_BUILD_DOC: "OFF"
-    SIGHT_BUILD_PACKAGE: "OFF"
+    SIGHT_BUILD_PACKAGE: "ON"
     SIGHT_IGNORE_UNSTABLE_TESTS: 1
     CC: "/usr/lib/ccache/gcc"
     CXX: "/usr/lib/ccache/g++"
@@ -156,7 +156,7 @@ build:linux-21.04-release-gcc:
   image: "${SIGHT_CI_UBUNTU21_04}:dev"
   variables:
     BUILD_TYPE: "Release"
-    SIGHT_BUILD_DOC: "OFF"
+    SIGHT_BUILD_DOC: "ON"
     SIGHT_BUILD_PACKAGE: "ON"
     SIGHT_IGNORE_UNSTABLE_TESTS: 1
     CC: "/usr/lib/ccache/gcc"

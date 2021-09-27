@@ -357,6 +357,9 @@ private:
 
     /// Contains the signal sent when interactions are finished.
     core::com::Signal<void()>::sptr m_toolDisabledSig;
+
+    /// Contains the last found position of the mouse pointer.
+    int m_x, m_y;
 };
 
 //------------------------------------------------------------------------------

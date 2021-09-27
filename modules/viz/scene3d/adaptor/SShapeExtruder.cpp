@@ -209,6 +209,10 @@ void SShapeExtruder::starting()
         std::dynamic_pointer_cast<sight::viz::scene3d::interactor::IInteractor>(this->getSptr());
     layer->addInteractor(interactor, m_priority);
 
+    // Initialize the mouse pointer position.
+    m_x = 0;
+    m_y = 0;
+
     // Create entities.
     ::Ogre::SceneManager* const sceneMng = this->getSceneManager();
 
@@ -343,6 +347,15 @@ void SShapeExtruder::cancelLastClick()
 {
     if(m_toolEnableState)
     {
+        this->getRenderService()->makeCurrent();
+
+        // Cancel others interactions.
+        const sight::viz::scene3d::Layer::sptr layer = this->getLayer();
+        layer->cancelFurtherInteraction();
+
+        // Get the last mouse position found in the world space.
+        const auto toolNearFarPos = this->getNearFarRayPositions(m_x, m_y);
+
         // Remove the last clicked point.
         if(m_lassoToolPositions.size() > 0)
         {
@@ -362,6 +375,10 @@ void SShapeExtruder::cancelLastClick()
             m_interactionEnableState = false;
             m_lastLassoLine->clear();
             m_lasso->clear();
+
+            // Send a render request.
+            this->requestRender();
+
             return;
         }
 
@@ -381,7 +398,7 @@ void SShapeExtruder::cancelLastClick()
 
         m_lastLassoLine->colour(m_lineColor);
         m_lastLassoLine->position(m_lassoToolPositions.back());
-//        m_lastLassoLine->position(std::get<0>(toolNearFarPos));
+        m_lastLassoLine->position(std::get<0>(toolNearFarPos));
 
         m_lastLassoLine->end();
 
@@ -616,6 +633,10 @@ void SShapeExtruder::mouseMoveEvent(MouseButton _button, Modifier, int _x, int _
         // Cancel others interactions.
         const sight::viz::scene3d::Layer::sptr layer = this->getLayer();
         layer->cancelFurtherInteraction();
+
+        // Update the last found position of the mouse pointer.
+        m_x = _x;
+        m_y = _y;
 
         // Get the clicked point in the world space.
         const auto toolNearFarPos = this->getNearFarRayPositions(_x, _y);

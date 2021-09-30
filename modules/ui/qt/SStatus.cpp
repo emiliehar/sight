@@ -46,12 +46,14 @@ namespace sight::module::ui::qt
 {
 
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_GREEN_SLOT      = "changeToGreen";
-const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_RED_SLOT        = "changeToRed";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_ORANGE_SLOT     = "changeToOrange";
+const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_RED_SLOT        = "changeToRed";
+const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_BLACK_SLOT      = "changeToBlack";
 const core::com::Slots::SlotKeyType SStatus::s_TOGGLE_GREEN_RED_SLOT     = "toggleGreenRed";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_GREEN_SLOT  = "changeNthToGreen";
-const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_RED_SLOT    = "changeNthToRed";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_ORANGE_SLOT = "changeNthToOrange";
+const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_RED_SLOT    = "changeNthToRed";
+const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_BLACK_SLOT  = "changeNthToBlack";
 const core::com::Slots::SlotKeyType SStatus::s_TOGGLE_NTH_GREEN_RED_SLOT = "toggleNthGreenRed";
 
 //-----------------------------------------------------------------------------
@@ -63,12 +65,14 @@ SStatus::SStatus() noexcept :
     m_height(20)
 {
     newSlot(s_CHANGE_TO_GREEN_SLOT, &SStatus::changeToGreen, this);
-    newSlot(s_CHANGE_TO_RED_SLOT, &SStatus::changeToRed, this);
     newSlot(s_CHANGE_TO_ORANGE_SLOT, &SStatus::changeToOrange, this);
+    newSlot(s_CHANGE_TO_RED_SLOT, &SStatus::changeToRed, this);
+    newSlot(s_CHANGE_TO_BLACK_SLOT, &SStatus::changeToBlack, this);
     newSlot(s_TOGGLE_GREEN_RED_SLOT, &SStatus::toggleGreenRed, this);
     newSlot(s_CHANGE_NTH_TO_GREEN_SLOT, &SStatus::changeNthToGreen, this);
-    newSlot(s_CHANGE_NTH_TO_RED_SLOT, &SStatus::changeNthToRed, this);
     newSlot(s_CHANGE_NTH_TO_ORANGE_SLOT, &SStatus::changeNthToOrange, this);
+    newSlot(s_CHANGE_NTH_TO_RED_SLOT, &SStatus::changeNthToRed, this);
+    newSlot(s_CHANGE_NTH_TO_BLACK_SLOT, &SStatus::changeNthToBlack, this);
     newSlot(s_TOGGLE_NTH_GREEN_RED_SLOT, &SStatus::toggleNthGreenRed, this);
 }
 
@@ -127,8 +131,9 @@ void SStatus::configuring()
     const auto config = this->getConfigTree();
 
     m_greenTooltip  = config.get<std::string>("green", "");
-    m_redTooltip    = config.get<std::string>("red", "");
     m_orangeTooltip = config.get<std::string>("orange", "");
+    m_redTooltip    = config.get<std::string>("red", "");
+    m_blackTooltip  = config.get<std::string>("black", "");
     m_layout        = config.get<std::string>("layout", "horizontal");
     SIGHT_ASSERT(
         "Value for element 'layout' should be 'horizontal' or 'vertical'.",
@@ -238,6 +243,21 @@ void SStatus::changeToGreen()
 
 //------------------------------------------------------------------------------
 
+void SStatus::changeToOrange()
+{
+    for(QVector<QPointer<QLabel> >::Iterator it = m_indicator.begin() ; it != m_indicator.end() ; ++it)
+    {
+        (*it)->setStyleSheet(
+            "background-color: orange; border-radius: " + QString(
+                m_isCircular ? "10px;" : "0"
+            ) + ";"
+        );
+        (*it)->setToolTip(QString::fromStdString(m_orangeTooltip));
+    }
+}
+
+//------------------------------------------------------------------------------
+
 void SStatus::changeToRed()
 {
     for(QVector<QPointer<QLabel> >::Iterator it = m_indicator.begin() ; it != m_indicator.end() ; ++it)
@@ -252,16 +272,15 @@ void SStatus::changeToRed()
 
 //------------------------------------------------------------------------------
 
-void SStatus::changeToOrange()
+void SStatus::changeToBlack()
 {
     for(QVector<QPointer<QLabel> >::Iterator it = m_indicator.begin() ; it != m_indicator.end() ; ++it)
     {
         (*it)->setStyleSheet(
-            "background-color: orange; border-radius: " + QString(
-                m_isCircular ? "10px;" : "0"
-            ) + ";"
+            "background-color: black; border-radius: " + QString(m_isCircular ? "10px;" : "0")
+            + ";"
         );
-        (*it)->setToolTip(QString::fromStdString(m_orangeTooltip));
+        (*it)->setToolTip(QString::fromStdString(m_blackTooltip));
     }
 }
 
@@ -300,6 +319,25 @@ void SStatus::changeNthToGreen(const int index)
 
 //------------------------------------------------------------------------------
 
+void SStatus::changeNthToOrange(const int index)
+{
+    SIGHT_INFO_IF(
+        "Index(" << index << ") must be in vector range [0:" << m_indicator.size() - 1 << "]",
+        index < 0 || index >= m_count
+    );
+
+    if(index >= 0 && index < m_count)
+    {
+        m_indicator.at(index)->setStyleSheet(
+            "background-color: orange; border-radius: "
+            + QString(m_isCircular ? "10px;" : "0") + ";"
+        );
+        m_indicator.at(index)->setToolTip(QString::fromStdString(m_orangeTooltip));
+    }
+}
+
+//------------------------------------------------------------------------------
+
 void SStatus::changeNthToRed(const int index)
 {
     SIGHT_INFO_IF(
@@ -319,7 +357,7 @@ void SStatus::changeNthToRed(const int index)
 
 //------------------------------------------------------------------------------
 
-void SStatus::changeNthToOrange(const int index)
+void SStatus::changeNthToBlack(const int index)
 {
     SIGHT_INFO_IF(
         "Index(" << index << ") must be in vector range [0:" << m_indicator.size() - 1 << "]",
@@ -329,10 +367,10 @@ void SStatus::changeNthToOrange(const int index)
     if(index >= 0 && index < m_count)
     {
         m_indicator.at(index)->setStyleSheet(
-            "background-color: orange; border-radius: "
+            "background-color: black; border-radius: "
             + QString(m_isCircular ? "10px;" : "0") + ";"
         );
-        m_indicator.at(index)->setToolTip(QString::fromStdString(m_orangeTooltip));
+        m_indicator.at(index)->setToolTip(QString::fromStdString(m_blackTooltip));
     }
 }
 

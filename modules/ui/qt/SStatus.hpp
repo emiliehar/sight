@@ -109,12 +109,14 @@ public:
      *@{
      */
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_GREEN_SLOT;
-    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_ORANGE_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_RED_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_BLACK_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_GREEN_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_GREEN_SLOT;
-    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_ORANGE_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_RED_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_BLACK_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_NTH_GREEN_RED_SLOT;
 /** @} */
 
@@ -148,10 +150,13 @@ protected:
     void changeToGreen();
 
     /// SLOT : change label color
+    void changeToOrange();
+
+    /// SLOT : change label color
     void changeToRed();
 
     /// SLOT : change label color
-    void changeToOrange();
+    void changeToBlack();
 
     /// SLOT : change label color (true = green, false = red)
     void toggleGreenRed(const bool green);
@@ -160,10 +165,13 @@ protected:
     void changeNthToGreen(const int index);
 
     /// SLOT : change nth label color
+    void changeNthToOrange(const int index);
+
+    /// SLOT : change nth label color
     void changeNthToRed(const int index);
 
     /// SLOT : change nth label color
-    void changeNthToOrange(const int index);
+    void changeNthToBlack(const int index);
 
     /// SLOT : change nth label color (true = green, false = red)
     void toggleNthGreenRed(const int index, const bool green);
@@ -177,8 +185,9 @@ private:
     QVector<QPointer<QLabel> > m_labelStatus;
 
     std::string m_greenTooltip;  ///< Tooltip for green status
-    std::string m_redTooltip;    ///< Tooltip for red status
     std::string m_orangeTooltip; ///< Tooltip for orange status
+    std::string m_redTooltip;    ///< Tooltip for red status
+    std::string m_blackTooltip;    ///< Tooltip for black status
     std::string m_layout;        ///< Layout orientation
 
     bool m_isCircular; ///< label is a circle if true (else it's a square)

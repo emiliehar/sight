@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020 IHU Strasbourg
+ * Copyright (C) 2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -150,6 +150,8 @@ void SDisplayTestNotifications::configuring()
 
 void SDisplayTestNotifications::updating()
 {
+    static std::size_t count  = 0;
+    const std::string message = "Notification Test " + std::to_string(++count) + "!";
     if(m_useSNotifier)
     {
         // Mode 1: You use the SNotifier service that will display for you the notifications, you need to emit the
@@ -163,7 +165,7 @@ void SDisplayTestNotifications::updating()
                 service::IService::s_SUCCESS_NOTIFIED_SIG
             );
 
-            notif->asyncEmit("Notification Test !");
+            notif->asyncEmit(message);
         }
         else if(m_type == ::dial::NotificationDialog::Type::FAILURE)
         {
@@ -171,7 +173,7 @@ void SDisplayTestNotifications::updating()
                 service::IService::s_FAILURE_NOTIFIED_SIG
             );
 
-            notif->asyncEmit("Notification Test !");
+            notif->asyncEmit(message);
         }
         else
         {
@@ -179,7 +181,7 @@ void SDisplayTestNotifications::updating()
                 service::IService::s_INFO_NOTIFIED_SIG
             );
 
-            notif->asyncEmit("Notification Test !");
+            notif->asyncEmit(message);
         }
     }
     else
@@ -188,44 +190,44 @@ void SDisplayTestNotifications::updating()
         if(m_displayAll)
         {
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::TOP_LEFT
             );
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::TOP_RIGHT
             );
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::CENTERED_TOP
             );
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::CENTERED
             );
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::BOTTOM_LEFT
             );
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::BOTTOM_RIGHT
             );
             ::dial::NotificationDialog::show(
-                "Notification Test !",
+                message,
                 m_type,
                 ::dial::NotificationDialog::Position::CENTERED_BOTTOM
             );
         }
         else
         {
-            ::dial::NotificationDialog::show("Notification Test !", m_type, m_position);
+            ::dial::NotificationDialog::show(message, m_type, m_position);
         }
     }
 }

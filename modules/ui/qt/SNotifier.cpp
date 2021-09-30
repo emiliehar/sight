@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020 IHU Strasbourg
+ * Copyright (C) 2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -32,9 +32,15 @@
 namespace sight::module::ui::qt
 {
 
-static const core::com::Slots::SlotKeyType s_POP_INFO_SLOT    = "popInfo";
-static const core::com::Slots::SlotKeyType s_POP_SUCCESS_SLOT = "popSuccess";
-static const core::com::Slots::SlotKeyType s_POP_FAILURE_SLOT = "popFailure";
+static const core::com::Slots::SlotKeyType s_POP_INFO_SLOT               = "popInfo";
+static const core::com::Slots::SlotKeyType s_POP_SUCCESS_SLOT            = "popSuccess";
+static const core::com::Slots::SlotKeyType s_POP_FAILURE_SLOT            = "popFailure";
+static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_INFO_SLOT    = "showPermanentInfo";
+static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_SUCCESS_SLOT = "showPermanentSuccess";
+static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_FAILURE_SLOT = "showPermanentFailure";
+static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_INFO_SLOT    = "hidePermanentInfo";
+static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_SUCCESS_SLOT = "hidePermanentSuccess";
+static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_FAILURE_SLOT = "hidePermanentFailure";
 
 static const core::com::Slots::SlotKeyType s_SET_ENUM_PARAMETER_SLOT = "setEnumParameter";
 
@@ -47,13 +53,18 @@ SNotifier::SNotifier() noexcept
     m_positionMap["TOP_LEFT"]        = sight::ui::base::dialog::NotificationDialog::Position::TOP_LEFT;
     m_positionMap["CENTERED_TOP"]    = sight::ui::base::dialog::NotificationDialog::Position::CENTERED_TOP;
     m_positionMap["CENTERED"]        = sight::ui::base::dialog::NotificationDialog::Position::CENTERED;
-    m_positionMap["BOTTOM_RIGHT"]    = sight::ui::base::dialog::NotificationDialog::Position::BOTTOM_RIGHT;
-    m_positionMap["BOTTOM_LEFT"]     = sight::ui::base::dialog::NotificationDialog::Position::BOTTOM_LEFT;
+    m_positionMap["BOTTOM_RIGHT"]    = sight::ui::base::dialog::NotificationDialog::Position::BOTTOM_LEFT;
     m_positionMap["CENTERED_BOTTOM"] = sight::ui::base::dialog::NotificationDialog::Position::CENTERED_BOTTOM;
 
     newSlot(s_POP_INFO_SLOT, &SNotifier::popInfo, this);
     newSlot(s_POP_SUCCESS_SLOT, &SNotifier::popSuccess, this);
     newSlot(s_POP_FAILURE_SLOT, &SNotifier::popFailure, this);
+    newSlot(s_SHOW_PERMANENT_INFO_SLOT, &SNotifier::showPermanentInfo, this);
+    newSlot(s_SHOW_PERMANENT_SUCCESS_SLOT, &SNotifier::showPermanentSuccess, this);
+    newSlot(s_SHOW_PERMANENT_FAILURE_SLOT, &SNotifier::showPermanentFailure, this);
+    newSlot(s_HIDE_PERMANENT_INFO_SLOT, &SNotifier::hidePermanentInfo, this);
+    newSlot(s_HIDE_PERMANENT_SUCCESS_SLOT, &SNotifier::hidePermanentSuccess, this);
+    newSlot(s_HIDE_PERMANENT_FAILURE_SLOT, &SNotifier::hidePermanentFailure, this);
     newSlot(s_SET_ENUM_PARAMETER_SLOT, &SNotifier::setEnumParameter, this);
 }
 
@@ -95,8 +106,6 @@ void SNotifier::configuring()
 
 void SNotifier::starting()
 {
-    m_popups.resize(m_maxStackedNotifs);
-
     if(!m_parentContainerID.empty())
     {
         auto container = ::sight::ui::base::GuiRegistry::getSIDContainer(m_parentContainerID);
@@ -171,33 +180,60 @@ void SNotifier::popFailure(std::string _message)
 
 //-----------------------------------------------------------------------------
 
-void SNotifier::showNotification(const std::string& _message, sight::ui::base::dialog::INotificationDialog::Type _type)
+void SNotifier::showPermanentInfo(std::string _message)
 {
-    size_t indexOfCurrentNotif = 0;
-    bool foundAPlace           = false;
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::INFO, true);
+}
 
-    // Find the first free place.
-    for(size_t i = 0 ; i < m_popups.size() ; ++i)
+//------------------------------------------------------------------------------
+
+void SNotifier::showPermanentSuccess(std::string _message)
+{
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::SUCCESS, true);
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::showPermanentFailure(std::string _message)
+{
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::FAILURE, true);
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::hidePermanentInfo()
+{
+    this->hidePermanentNotification(sight::ui::base::dialog::INotificationDialog::Type::INFO);
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::hidePermanentSuccess()
+{
+    this->hidePermanentNotification(sight::ui::base::dialog::INotificationDialog::Type::SUCCESS);
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::hidePermanentFailure()
+{
+    this->hidePermanentNotification(sight::ui::base::dialog::INotificationDialog::Type::FAILURE);
+}
+
+//-----------------------------------------------------------------------------
+
+void SNotifier::showNotification(
+    const std::string& _message,
+    sight::ui::base::dialog::INotificationDialog::Type _type,
+    bool permanent
+)
+{
+    // If the maximum number of notification is reached, remove the oldest one.
+    if(m_popups.size() >= m_maxStackedNotifs)
     {
-        // No popup or a recently hidden popup.
-        if(m_popups[i] == nullptr || !m_popups[i]->isVisible())
-        {
-            m_popups[i].reset();
-            indexOfCurrentNotif = i;
-            foundAPlace         = true;
-            break;
-        }
-    }
-
-    // No place found, find the oldest (use the indexQueue).
-    if(!foundAPlace)
-    {
-        indexOfCurrentNotif = m_indexQueue.front(); // Oldest index.
-        m_indexQueue.pop();                         // Remove it.
-
-        //Remove the oldest one.
-        m_popups[indexOfCurrentNotif]->close();
-        m_popups[indexOfCurrentNotif].reset();
+        auto notif = m_popups.front();
+        notif->close();
+        this->onNotificationClosed(notif);
     }
 
     std::string messageToShow;
@@ -219,18 +255,85 @@ void SNotifier::showNotification(const std::string& _message, sight::ui::base::d
     notif->setMessage(messageToShow);
     notif->setType(_type);
     notif->setPosition(m_notifcationsPosition);
-    notif->setIndex(static_cast<unsigned int>(indexOfCurrentNotif));
-    notif->setDuration(m_durationInMs);
-    notif->show();
-
-    m_popups[indexOfCurrentNotif] = notif;
-
-    if(m_indexQueue.size() == m_maxStackedNotifs)
+    notif->setIndex(static_cast<unsigned int>(m_popups.size()));
+    if(permanent)
     {
-        m_indexQueue.pop();
+        // if duration < 0, the notification will not be removed automatically
+        notif->setDuration(-1);
+        switch(_type)
+        {
+            case sight::ui::base::dialog::INotificationDialog::Type::INFO:
+                m_permanentInfoNotif.push(notif);
+                break;
+
+            case sight::ui::base::dialog::INotificationDialog::Type::SUCCESS:
+                m_permanentSuccessNotif.push(notif);
+                break;
+
+            case sight::ui::base::dialog::INotificationDialog::Type::FAILURE:
+                m_permanentFailureNotif.push(notif);
+                break;
+
+            default:
+                SIGHT_FATAL("Type is not managed");
+        }
+    }
+    else
+    {
+        notif->setDuration(m_durationInMs);
     }
 
-    m_indexQueue.push(indexOfCurrentNotif);
+    notif->setClosedCallback(std::bind(&SNotifier::onNotificationClosed, this, notif));
+    notif->show();
+
+    m_popups.push_back(notif);
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::hidePermanentNotification(sight::ui::base::dialog::NotificationDialog::Type _type)
+{
+    sight::ui::base::dialog::NotificationDialog::sptr notif;
+    switch(_type)
+    {
+        case sight::ui::base::dialog::INotificationDialog::Type::INFO:
+            notif = m_permanentInfoNotif.front();
+            m_permanentInfoNotif.pop();
+            break;
+
+        case sight::ui::base::dialog::INotificationDialog::Type::SUCCESS:
+            notif = m_permanentSuccessNotif.front();
+            m_permanentSuccessNotif.pop();
+            break;
+
+        case sight::ui::base::dialog::INotificationDialog::Type::FAILURE:
+            notif = m_permanentFailureNotif.front();
+            m_permanentFailureNotif.pop();
+            break;
+
+        default:
+            SIGHT_FATAL("Type is not managed");
+    }
+
+    notif->close();
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::onNotificationClosed(sight::ui::base::dialog::NotificationDialog::sptr notif)
+{
+    // remove the notification from the container
+    const auto notifItr = std::find(m_popups.begin(), m_popups.end(), notif);
+    if(notifItr != m_popups.end())
+    {
+        m_popups.erase(notifItr);
+
+        // move all the remaining notifications one index lower
+        for(auto popup : m_popups)
+        {
+            popup->moveDown();
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------

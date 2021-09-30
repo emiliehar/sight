@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020 IHU Strasbourg
+ * Copyright (C) 2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -115,29 +115,75 @@ private:
     void setEnumParameter(std::string _val, std::string _key);
 
     /**
-     * @brief Slot pop info notification
+     * @brief Slot: pop info notification
      * @param _message text of the notification
      */
     void popInfo(std::string _message);
 
     /**
-     * @brief Slot pop success notification
+     * @brief Slot: pop success notification
      * @param _message text of the notification
      */
     void popSuccess(std::string _message);
 
     /**
-     * @brief Slot pop failure notification
+     * @brief Slot: pop failure notification
      * @param _message text of the notification
      */
     void popFailure(std::string _message);
+
+    /**
+     * @brief Slot: display info notification until 'hidePermanentInfo' is called
+     * @param _message text of the notification
+     */
+    void showPermanentInfo(std::string _message);
+
+    /**
+     * @brief Slot: display success notification until 'hidePermanentSuccess' is called
+     * @param _message text of the notification
+     */
+    void showPermanentSuccess(std::string _message);
+
+    /**
+     * @brief Slot: display failure notification until 'hidePermanentFailure' is called
+     * @param _message text of the notification
+     */
+    void showPermanentFailure(std::string _message);
+
+    /**
+     * @brief Slot: remove info notification
+     * @param _message text of the notification
+     */
+    void hidePermanentInfo();
+
+    /**
+     * @brief Slot: remove success notification
+     * @param _message text of the notification
+     */
+    void hidePermanentSuccess();
+
+    /**
+     * @brief Slot: remove failure notification
+     * @param _message text of the notification
+     */
+    void hidePermanentFailure();
 
     /**
      * @brief Queue the notification and display it (called by popInfo/Success/Failure Slot).
      * @param _message message to display.
      * @param _type type of the notification.
      */
-    void showNotification(const std::string& _message, sight::ui::base::dialog::NotificationDialog::Type _type);
+    void showNotification(
+        const std::string& _message,
+        sight::ui::base::dialog::NotificationDialog::Type _type,
+        bool permanent = false
+    );
+
+    /// Hide the oldest permanent message
+    void hidePermanentNotification(sight::ui::base::dialog::NotificationDialog::Type _type);
+
+    /// Called when a notification is closed
+    void onNotificationClosed(sight::ui::base::dialog::NotificationDialog::sptr notif);
 
     /// Max number of displayed notifications.
     std::uint8_t m_maxStackedNotifs {3};
@@ -156,10 +202,12 @@ private:
     std::string m_defaultMessage = "Notification";
 
     /// Vector of displayed NotificationDialog, resized with "m_maxStackedNotifs" at start.
-    std::vector<sight::ui::base::dialog::NotificationDialog::sptr> m_popups {};
+    std::list<sight::ui::base::dialog::NotificationDialog::sptr> m_popups {};
 
-    /// Queue of index in m_popups to remove oldest if m_maxStackedNotifs is reached.
-    std::queue<size_t> m_indexQueue;
+    /// Queue of permanent notifications
+    std::queue<sight::ui::base::dialog::NotificationDialog::sptr> m_permanentInfoNotif;
+    std::queue<sight::ui::base::dialog::NotificationDialog::sptr> m_permanentSuccessNotif;
+    std::queue<sight::ui::base::dialog::NotificationDialog::sptr> m_permanentFailureNotif;
 
     /// fwContainer where notifications will be displayed in, nullptr by default.
     sight::ui::base::container::fwContainer::csptr m_containerWhereToDisplayNotifs {nullptr};

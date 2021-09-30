@@ -40,9 +40,11 @@ namespace sight::module::viz::scene3d::adaptor
 
 static const std::string s_EXTRUDED_MESHES_INOUT = "extrudedMeshes";
 
-static const core::com::Slots::SlotKeyType s_ENABLE_TOOL_SLOT      = "enableTool";
-static const core::com::Slots::SlotKeyType s_DELETE_LAST_MESH_SLOT = "deleteLastMesh";
+static const core::com::Slots::SlotKeyType s_ENABLE_TOOL_SLOT       = "enableTool";
+static const core::com::Slots::SlotKeyType s_DELETE_LAST_MESH_SLOT  = "deleteLastMesh";
+static const core::com::Slots::SlotKeyType s_CANCEL_LAST_CLICK_SLOT = "cancelLastClick";
 
+static const core::com::Slots::SlotKeyType s_TOOL_ENABLED_SIG  = "toolEnabled";
 static const core::com::Slots::SlotKeyType s_TOOL_DISABLED_SIG = "toolDisabled";
 
 static const std::string s_PRIORITY_CONFIG   = "priority";
@@ -156,6 +158,8 @@ SShapeExtruder::SShapeExtruder() noexcept
 {
     newSlot(s_ENABLE_TOOL_SLOT, &SShapeExtruder::enableTool, this);
     newSlot(s_DELETE_LAST_MESH_SLOT, &SShapeExtruder::deleteLastMesh, this);
+    newSlot(s_CANCEL_LAST_CLICK_SLOT, &SShapeExtruder::cancelLastClick, this);
+    m_toolEnabledSig  = this->newSignal<core::com::Signal<void()> >(s_TOOL_ENABLED_SIG);
     m_toolDisabledSig = this->newSignal<core::com::Signal<void()> >(s_TOOL_DISABLED_SIG);
 }
 
@@ -204,6 +208,10 @@ void SShapeExtruder::starting()
     const sight::viz::scene3d::interactor::IInteractor::sptr interactor =
         std::dynamic_pointer_cast<sight::viz::scene3d::interactor::IInteractor>(this->getSptr());
     layer->addInteractor(interactor, m_priority);
+
+    // Initialize the mouse pointer position.
+    m_x = 0;
+    m_y = 0;
 
     // Create entities.
     ::Ogre::SceneManager* const sceneMng = this->getSceneManager();
@@ -274,6 +282,15 @@ void SShapeExtruder::enableTool(bool _enable)
 
     m_toolEnableState = _enable;
 
+    if(_enable)
+    {
+        m_toolEnabledSig->asyncEmit();
+    }
+    else
+    {
+        m_toolDisabledSig->asyncEmit();
+    }
+
     // Stop the lasso interaction.
     m_interactionEnableState = false;
 
@@ -321,6 +338,72 @@ void SShapeExtruder::deleteLastMesh()
             service::IService::s_FAILURE_NOTIFIED_SIG
         );
         notif->asyncEmit("No extrusion to delete.");
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+void SShapeExtruder::cancelLastClick()
+{
+    if(m_toolEnableState)
+    {
+        this->getRenderService()->makeCurrent();
+
+        // Cancel others interactions.
+        const sight::viz::scene3d::Layer::sptr layer = this->getLayer();
+        layer->cancelFurtherInteraction();
+
+        // Get the last mouse position found in the world space.
+        const auto toolNearFarPos = this->getNearFarRayPositions(m_x, m_y);
+
+        // Remove the last clicked point.
+        if(m_lassoToolPositions.size() > 0)
+        {
+            m_lassoEdgePositions.pop_back();
+            do
+            {
+                m_lassoToolPositions.pop_back();
+                m_lassoNearPositions.pop_back();
+                m_lassoFarPositions.pop_back();
+            }
+            while(m_lassoToolPositions.size() > 0 && m_lassoToolPositions.back() != m_lassoEdgePositions.back());
+        }
+
+        // Clear the last line if it's empty.
+        if(m_lassoToolPositions.size() == 0)
+        {
+            m_interactionEnableState = false;
+            m_lastLassoLine->clear();
+            m_lasso->clear();
+
+            // Send a render request.
+            this->requestRender();
+
+            return;
+        }
+
+        // Draw the lasso.
+        this->drawLasso();
+
+        // Draw the last lasso line.
+        m_lastLassoLine->clear();
+
+        SIGHT_ASSERT("Lasso positions must have at east one point", m_lassoToolPositions.size() > 0);
+
+        m_lastLassoLine->begin(
+            m_materialAdaptor->getMaterialName(),
+            ::Ogre::RenderOperation::OT_LINE_STRIP,
+            sight::viz::scene3d::RESOURCE_GROUP
+        );
+
+        m_lastLassoLine->colour(m_lineColor);
+        m_lastLassoLine->position(m_lassoToolPositions.back());
+        m_lastLassoLine->position(std::get<0>(toolNearFarPos));
+
+        m_lastLassoLine->end();
+
+        // Send a render request.
+        this->requestRender();
     }
 }
 
@@ -550,6 +633,10 @@ void SShapeExtruder::mouseMoveEvent(MouseButton _button, Modifier, int _x, int _
         // Cancel others interactions.
         const sight::viz::scene3d::Layer::sptr layer = this->getLayer();
         layer->cancelFurtherInteraction();
+
+        // Update the last found position of the mouse pointer.
+        m_x = _x;
+        m_y = _y;
 
         // Get the clicked point in the world space.
         const auto toolNearFarPos = this->getNearFarRayPositions(_x, _y);

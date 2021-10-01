@@ -292,7 +292,7 @@ void SLandmarks::removeGroup(std::string _groupName)
         if(name.find(_groupName) != std::string::npos)
         {
             // Stop the thread if it already run since we are deleting data.
-            this->deselectPoint(_groupName, (*objectIt)->m_index, false);
+            this->removePointSelection(_groupName, (*objectIt)->m_index, false);
 
             m_transNode->removeAndDestroyChild((*objectIt)->m_node);
             sceneMgr->destroyManualObject((*objectIt)->m_object);
@@ -415,7 +415,7 @@ void SLandmarks::removePoint(std::string _groupName, size_t _index)
         if(name.find(_groupName) != std::string::npos && (*objectIt)->m_index == _index)
         {
             // Stop the thread if it already run since we are deleting data.
-            this->deselectPoint(_groupName, _index, false);
+            this->removePointSelection(_groupName, _index, false);
 
             m_transNode->removeAndDestroyChild((*objectIt)->m_node);
             sceneMgr->destroyManualObject((*objectIt)->m_object);
@@ -581,7 +581,14 @@ void SLandmarks::selectPoint(std::string _groupName, size_t _index)
 
 //------------------------------------------------------------------------------
 
-void SLandmarks::deselectPoint(std::string _groupName, size_t _index, bool _visible)
+void SLandmarks::deselectPoint(std::string _groupName, size_t _index)
+{
+    this->removePointSelection(_groupName, _index, true);
+}
+
+//------------------------------------------------------------------------------
+
+void SLandmarks::removePointSelection(std::string _groupName, size_t _index, bool _visible)
 {
     // Make the context as current.
     this->getRenderService()->makeCurrent();

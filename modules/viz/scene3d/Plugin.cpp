@@ -73,7 +73,7 @@ void SightOgreListener::messageLogged(
         switch(_lml)
         {
             case ::Ogre::LML_TRIVIAL:
-                SIGHT_INFO(_message);
+                SIGHT_DEBUG(_message);
                 break;
 
             case ::Ogre::LML_NORMAL:

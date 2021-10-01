@@ -587,7 +587,7 @@ IService::SharedFutureType IService::startSlot()
 
 IService::SharedFutureType IService::internalStart(bool _async)
 {
-    SIGHT_INFO("Starting service '" + this->getID() + "' [" + this->getClassname() + "]");
+    SIGHT_DEBUG("Starting service '" + this->getID() + "' [" + this->getClassname() + "]");
     SIGHT_FATAL_IF("Service " << this->getID() << " already started", m_globalState != STOPPED);
 
     this->connectToConfig();
@@ -642,7 +642,7 @@ IService::SharedFutureType IService::stopSlot()
 
 IService::SharedFutureType IService::internalStop(bool _async)
 {
-    SIGHT_INFO("Stopping service '" + this->getID() + "' [" + this->getClassname() + "]");
+    SIGHT_DEBUG("Stopping service '" + this->getID() + "' [" + this->getClassname() + "]");
     SIGHT_FATAL_IF("Service " << this->getID() << " already stopped", m_globalState != STARTED);
 
     this->autoDisconnect();
@@ -697,7 +697,7 @@ IService::SharedFutureType IService::swapKeySlot(const KeyType& _key, data::Obje
 
 IService::SharedFutureType IService::internalSwapKey(const KeyType& _key, data::Object::sptr _obj, bool _async)
 {
-    SIGHT_INFO("Swapping service '" + this->getID() + "' [" + this->getClassname() + "]");
+    SIGHT_DEBUG("Swapping service '" + this->getID() + "' [" + this->getClassname() + "]");
     SIGHT_FATAL_IF(
         "Service " << this->getID() << " is not STARTED, no swapping with Object "
         << (_obj ? _obj->getID() : "nullptr"),

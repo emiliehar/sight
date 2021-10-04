@@ -318,25 +318,40 @@ void SNotifier::hidePermanentNotification(sight::ui::base::dialog::NotificationD
     switch(_type)
     {
         case sight::ui::base::dialog::INotificationDialog::Type::INFO:
-            notif = m_permanentInfoNotif.front();
-            m_permanentInfoNotif.pop();
+            if(!m_permanentInfoNotif.empty())
+            {
+                notif = m_permanentInfoNotif.front();
+                m_permanentInfoNotif.pop();
+            }
+
             break;
 
         case sight::ui::base::dialog::INotificationDialog::Type::SUCCESS:
-            notif = m_permanentSuccessNotif.front();
-            m_permanentSuccessNotif.pop();
+            if(!m_permanentSuccessNotif.empty())
+            {
+                notif = m_permanentSuccessNotif.front();
+                m_permanentSuccessNotif.pop();
+            }
+
             break;
 
         case sight::ui::base::dialog::INotificationDialog::Type::FAILURE:
-            notif = m_permanentFailureNotif.front();
-            m_permanentFailureNotif.pop();
+            if(!m_permanentFailureNotif.empty())
+            {
+                notif = m_permanentFailureNotif.front();
+                m_permanentFailureNotif.pop();
+            }
+
             break;
 
         default:
             SIGHT_FATAL("Type is not managed");
     }
 
-    notif->close();
+    if(notif)
+    {
+        notif->close();
+    }
 }
 
 //------------------------------------------------------------------------------

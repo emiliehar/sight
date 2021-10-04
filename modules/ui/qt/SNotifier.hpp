@@ -33,12 +33,27 @@ namespace sight::module::ui::qt
 
 /**
  * @brief SNotifier is a general service used to display notification in a centralized way.
+ *
  * SNotifier needs to be connected to [Success/Failure/Info]Notified signals implemented in IService.
+ * When it's connected to pop[Info|Success|Failure], the popup will disapear ofter the defined duration. When it's
+ * connected to showPermanent[Info|Success|Failure], it will not disapear until hidePermanent[Info|Success|Failure] is
+ * called.
  *
  * @section Slots Slots
- * - \b popInfo(): Adds an INFO popup in the queue & display it.
- * - \b popFailure(): Adds a FAILURE popup in the queue & display it.
- * - \b popSuccess():Adds a SUCCESS popup in the queue & display it.
+ * - \b popInfo(): Adds an INFO popup in the queue & display it, the popup will disapper after the defined duration.
+ * - \b popFailure(): Adds a FAILURE popup in the queue & display it, the popup will disapper after the defined
+ * duration.
+ * - \b popSuccess(): Adds a SUCCESS popup in the queue & display it, the popup will disapper after the defined
+ * duration.
+ * - \b showPermanentInfo(): Adds a INFO popup in the queue & display it, the popup will not disappear until
+ *'hidePermanentInfo()' is called.
+ * - \b showPermanentSuccess(): Adds a SUCCESS popup in the queue & display it, the popup will not disappear until
+ *'hidePermanentSuccess()' is called.
+ * - \b showPermanentFailure(): Adds a FAILURE popup in the queue & display it, the popup will not disappear until
+ *'hidePermanentFailure()' is called.
+ * - \b hidePermanentInfo(): remove the oldest permanent INFO popup.
+ * - \b hidePermanentSuccess(): remove the oldest permanent SUCCESS popup.
+ * - \b hidePermanentFailure(): remove the oldest permanent FAILURE popup.
  * - \b setEnumParameter(std::string value, std::string key): Changes the position of notifications (key "position"),
  * accepted values are the same than the "position" tag in the XML configuration.
  *

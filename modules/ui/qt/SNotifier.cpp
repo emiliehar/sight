@@ -127,6 +127,27 @@ void SNotifier::starting()
 
 void SNotifier::stopping()
 {
+    while(!m_permanentInfoNotif.empty())
+    {
+        auto notif = m_permanentInfoNotif.front();
+        notif->close();
+        m_permanentInfoNotif.pop();
+    }
+
+    while(!m_permanentSuccessNotif.empty())
+    {
+        auto notif = m_permanentSuccessNotif.front();
+        notif->close();
+        m_permanentSuccessNotif.pop();
+    }
+
+    while(!m_permanentFailureNotif.empty())
+    {
+        auto notif = m_permanentFailureNotif.front();
+        notif->close();
+        m_permanentFailureNotif.pop();
+    }
+
     m_popups.clear();
 }
 

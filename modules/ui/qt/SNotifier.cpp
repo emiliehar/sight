@@ -32,15 +32,13 @@
 namespace sight::module::ui::qt
 {
 
-static const core::com::Slots::SlotKeyType s_POP_INFO_SLOT               = "popInfo";
-static const core::com::Slots::SlotKeyType s_POP_SUCCESS_SLOT            = "popSuccess";
-static const core::com::Slots::SlotKeyType s_POP_FAILURE_SLOT            = "popFailure";
-static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_INFO_SLOT    = "showPermanentInfo";
-static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_SUCCESS_SLOT = "showPermanentSuccess";
-static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_FAILURE_SLOT = "showPermanentFailure";
-static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_INFO_SLOT    = "hidePermanentInfo";
-static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_SUCCESS_SLOT = "hidePermanentSuccess";
-static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_FAILURE_SLOT = "hidePermanentFailure";
+static const core::com::Slots::SlotKeyType s_POP_INFO_SLOT                    = "popInfo";
+static const core::com::Slots::SlotKeyType s_POP_SUCCESS_SLOT                 = "popSuccess";
+static const core::com::Slots::SlotKeyType s_POP_FAILURE_SLOT                 = "popFailure";
+static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_INFO_SLOT         = "showPermanentInfo";
+static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_SUCCESS_SLOT      = "showPermanentSuccess";
+static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_FAILURE_SLOT      = "showPermanentFailure";
+static const core::com::Slots::SlotKeyType s_HIDE_PERMANENT_NOTIFICATION_SLOT = "hidePermanentNotification";
 
 static const core::com::Slots::SlotKeyType s_SET_ENUM_PARAMETER_SLOT = "setEnumParameter";
 
@@ -59,13 +57,24 @@ SNotifier::SNotifier() noexcept
     newSlot(s_POP_INFO_SLOT, &SNotifier::popInfo, this);
     newSlot(s_POP_SUCCESS_SLOT, &SNotifier::popSuccess, this);
     newSlot(s_POP_FAILURE_SLOT, &SNotifier::popFailure, this);
-    newSlot(s_SHOW_PERMANENT_INFO_SLOT, &SNotifier::showPermanentInfo, this);
-    newSlot(s_SHOW_PERMANENT_SUCCESS_SLOT, &SNotifier::showPermanentSuccess, this);
-    newSlot(s_SHOW_PERMANENT_FAILURE_SLOT, &SNotifier::showPermanentFailure, this);
-    newSlot(s_HIDE_PERMANENT_INFO_SLOT, &SNotifier::hidePermanentInfo, this);
-    newSlot(s_HIDE_PERMANENT_SUCCESS_SLOT, &SNotifier::hidePermanentSuccess, this);
-    newSlot(s_HIDE_PERMANENT_FAILURE_SLOT, &SNotifier::hidePermanentFailure, this);
     newSlot(s_SET_ENUM_PARAMETER_SLOT, &SNotifier::setEnumParameter, this);
+
+    const unsigned int index = 0;
+    std::function<void(std::string)> infoTask(
+        std::bind(&SNotifier::showPermanentInfo, this, index, std::placeholders::_1));
+    auto infoSlot = core::com::newSlot(infoTask);
+    this->m_slots(s_SHOW_PERMANENT_INFO_SLOT, infoSlot);
+    std::function<void(std::string)> successTask(
+        std::bind(&SNotifier::showPermanentSuccess, this, index, std::placeholders::_1));
+    auto successSlot = core::com::newSlot(successTask);
+    this->m_slots(s_SHOW_PERMANENT_SUCCESS_SLOT, successSlot);
+    std::function<void(std::string)> failureTask(
+        std::bind(&SNotifier::showPermanentFailure, this, index, std::placeholders::_1));
+    auto failureSlot = core::com::newSlot(failureTask);
+    this->m_slots(s_SHOW_PERMANENT_FAILURE_SLOT, failureSlot);
+    std::function<void()> hideTask(std::bind(&SNotifier::hidePermanentNotification, this, index));
+    auto slot = core::com::newSlot(hideTask);
+    this->m_slots(s_HIDE_PERMANENT_NOTIFICATION_SLOT, slot);
 }
 
 //-----------------------------------------------------------------------------
@@ -100,6 +109,35 @@ void SNotifier::configuring()
     m_maxStackedNotifs = configTree.get<std::uint8_t>("maxNotifications", m_maxStackedNotifs);
 
     m_parentContainerID = configTree.get<std::string>("parent.<xmlattr>.uid", m_parentContainerID);
+
+    // Create slots for permanent messages
+    m_nbPermanents = configTree.get<unsigned int>("nbPermanents", m_nbPermanents);
+    for(unsigned int i = 1 ; i <= m_nbPermanents ; ++i)
+    {
+        const std::string infoName    = s_SHOW_PERMANENT_INFO_SLOT + std::to_string(i);
+        const std::string successName = s_SHOW_PERMANENT_SUCCESS_SLOT + std::to_string(i);
+        const std::string failureName = s_SHOW_PERMANENT_FAILURE_SLOT + std::to_string(i);
+        const std::string hideName    = s_HIDE_PERMANENT_NOTIFICATION_SLOT + std::to_string(i);
+        std::function<void(std::string)> infoTask(
+            std::bind(&SNotifier::showPermanentInfo, this, i, std::placeholders::_1));
+        auto infoSlot = core::com::newSlot(infoTask);
+        infoSlot->setWorker(m_associatedWorker);
+        this->m_slots(infoName, infoSlot);
+        std::function<void(std::string)> successTask(
+            std::bind(&SNotifier::showPermanentSuccess, this, i, std::placeholders::_1));
+        auto successSlot = core::com::newSlot(successTask);
+        successSlot->setWorker(m_associatedWorker);
+        this->m_slots(successName, successSlot);
+        std::function<void(std::string)> failureTask(
+            std::bind(&SNotifier::showPermanentFailure, this, i, std::placeholders::_1));
+        auto failureSlot = core::com::newSlot(failureTask);
+        failureSlot->setWorker(m_associatedWorker);
+        this->m_slots(failureName, failureSlot);
+        std::function<void()> hideTask(std::bind(&SNotifier::hidePermanentNotification, this, i));
+        auto slot = core::com::newSlot(hideTask);
+        slot->setWorker(m_associatedWorker);
+        this->m_slots(hideName, slot);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -121,32 +159,25 @@ void SNotifier::starting()
             m_containerWhereToDisplayNotifs = container;
         }
     }
+
+    m_permanentNotifs.resize(m_nbPermanents + 1);
 }
 
 //-----------------------------------------------------------------------------
 
 void SNotifier::stopping()
 {
-    while(!m_permanentInfoNotif.empty())
+    for(auto list : m_permanentNotifs)
     {
-        auto notif = m_permanentInfoNotif.front();
-        notif->close();
-        m_permanentInfoNotif.pop();
+        while(!list.empty())
+        {
+            auto notif = list.front();
+            notif->close();
+            list.pop();
+        }
     }
 
-    while(!m_permanentSuccessNotif.empty())
-    {
-        auto notif = m_permanentSuccessNotif.front();
-        notif->close();
-        m_permanentSuccessNotif.pop();
-    }
-
-    while(!m_permanentFailureNotif.empty())
-    {
-        auto notif = m_permanentFailureNotif.front();
-        notif->close();
-        m_permanentFailureNotif.pop();
-    }
+    m_permanentNotifs.clear();
 
     m_popups.clear();
 }
@@ -201,44 +232,23 @@ void SNotifier::popFailure(std::string _message)
 
 //-----------------------------------------------------------------------------
 
-void SNotifier::showPermanentInfo(std::string _message)
+void SNotifier::showPermanentInfo(unsigned int index, std::string _message)
 {
-    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::INFO, true);
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::INFO, true, index);
 }
 
 //------------------------------------------------------------------------------
 
-void SNotifier::showPermanentSuccess(std::string _message)
+void SNotifier::showPermanentSuccess(unsigned int index, std::string _message)
 {
-    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::SUCCESS, true);
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::SUCCESS, true, index);
 }
 
 //------------------------------------------------------------------------------
 
-void SNotifier::showPermanentFailure(std::string _message)
+void SNotifier::showPermanentFailure(unsigned int index, std::string _message)
 {
-    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::FAILURE, true);
-}
-
-//------------------------------------------------------------------------------
-
-void SNotifier::hidePermanentInfo()
-{
-    this->hidePermanentNotification(sight::ui::base::dialog::INotificationDialog::Type::INFO);
-}
-
-//------------------------------------------------------------------------------
-
-void SNotifier::hidePermanentSuccess()
-{
-    this->hidePermanentNotification(sight::ui::base::dialog::INotificationDialog::Type::SUCCESS);
-}
-
-//------------------------------------------------------------------------------
-
-void SNotifier::hidePermanentFailure()
-{
-    this->hidePermanentNotification(sight::ui::base::dialog::INotificationDialog::Type::FAILURE);
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::FAILURE, true, index);
 }
 
 //-----------------------------------------------------------------------------
@@ -246,13 +256,14 @@ void SNotifier::hidePermanentFailure()
 void SNotifier::showNotification(
     const std::string& _message,
     sight::ui::base::dialog::INotificationDialog::Type _type,
-    bool permanent
+    bool _permanent,
+    unsigned int _index
 )
 {
     // If the maximum number of notification is reached, remove the oldest one.
-    if(m_popups.size() >= m_maxStackedNotifs)
+    if(m_popups.size() >= m_maxStackedNotifs && !m_tempPopups.empty())
     {
-        auto notif = m_popups.front();
+        auto notif = m_tempPopups.front();
         notif->close();
         this->onNotificationClosed(notif);
     }
@@ -277,31 +288,16 @@ void SNotifier::showNotification(
     notif->setType(_type);
     notif->setPosition(m_notifcationsPosition);
     notif->setIndex(static_cast<unsigned int>(m_popups.size()));
-    if(permanent)
+    if(_permanent)
     {
         // if duration < 0, the notification will not be removed automatically
         notif->setDuration(-1);
-        switch(_type)
-        {
-            case sight::ui::base::dialog::INotificationDialog::Type::INFO:
-                m_permanentInfoNotif.push(notif);
-                break;
-
-            case sight::ui::base::dialog::INotificationDialog::Type::SUCCESS:
-                m_permanentSuccessNotif.push(notif);
-                break;
-
-            case sight::ui::base::dialog::INotificationDialog::Type::FAILURE:
-                m_permanentFailureNotif.push(notif);
-                break;
-
-            default:
-                SIGHT_FATAL("Type is not managed");
-        }
+        m_permanentNotifs[_index].push(notif);
     }
     else
     {
         notif->setDuration(m_durationInMs);
+        m_tempPopups.push_back(notif);
     }
 
     notif->setClosedCallback(std::bind(&SNotifier::onNotificationClosed, this, notif));
@@ -312,44 +308,12 @@ void SNotifier::showNotification(
 
 //------------------------------------------------------------------------------
 
-void SNotifier::hidePermanentNotification(sight::ui::base::dialog::NotificationDialog::Type _type)
+void SNotifier::hidePermanentNotification(unsigned int index)
 {
-    sight::ui::base::dialog::NotificationDialog::sptr notif;
-    switch(_type)
+    if(!m_permanentNotifs[index].empty())
     {
-        case sight::ui::base::dialog::INotificationDialog::Type::INFO:
-            if(!m_permanentInfoNotif.empty())
-            {
-                notif = m_permanentInfoNotif.front();
-                m_permanentInfoNotif.pop();
-            }
-
-            break;
-
-        case sight::ui::base::dialog::INotificationDialog::Type::SUCCESS:
-            if(!m_permanentSuccessNotif.empty())
-            {
-                notif = m_permanentSuccessNotif.front();
-                m_permanentSuccessNotif.pop();
-            }
-
-            break;
-
-        case sight::ui::base::dialog::INotificationDialog::Type::FAILURE:
-            if(!m_permanentFailureNotif.empty())
-            {
-                notif = m_permanentFailureNotif.front();
-                m_permanentFailureNotif.pop();
-            }
-
-            break;
-
-        default:
-            SIGHT_FATAL("Type is not managed");
-    }
-
-    if(notif)
-    {
+        auto notif = m_permanentNotifs[index].front();
+        m_permanentNotifs[index].pop();
         notif->close();
     }
 }
@@ -370,6 +334,8 @@ void SNotifier::onNotificationClosed(sight::ui::base::dialog::NotificationDialog
             popup->moveDown();
         }
     }
+
+    m_tempPopups.remove(notif);
 }
 
 //-----------------------------------------------------------------------------

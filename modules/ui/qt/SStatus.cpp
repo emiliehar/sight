@@ -112,7 +112,7 @@ void SStatus::starting()
 
     qtContainer->setLayout(layout);
 
-    this->changeToRed();
+    this->changeToGrey();
 }
 
 //------------------------------------------------------------------------------

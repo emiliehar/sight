@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2019 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -187,7 +187,7 @@ private:
     std::string m_greenTooltip;  ///< Tooltip for green status
     std::string m_orangeTooltip; ///< Tooltip for orange status
     std::string m_redTooltip;    ///< Tooltip for red status
-    std::string m_blackTooltip;    ///< Tooltip for black status
+    std::string m_blackTooltip;  ///< Tooltip for black status
     std::string m_layout;        ///< Layout orientation
 
     bool m_isCircular; ///< label is a circle if true (else it's a square)

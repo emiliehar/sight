@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2019 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -39,8 +39,8 @@ namespace sight::module::ui::qt
 /**
  * @brief   SStatus service shows a colored square (red, orange, green) representing a status.
  *
- * @note To change the status color, you should call the slots 'changeToGreen', * 'changeToOrange', 'changeToRed'
- * or 'toggleGreenRed'.
+ * @note To change the status color, you should call the slots 'changeToGreen', 'changeToOrange', 'changeToRed'
+ * 'changeToGrey' or 'toggleGreenRed'.
  *
  * @brief Configures the status tooltip
  *
@@ -58,9 +58,10 @@ namespace sight::module::ui::qt
             <labelStatus>SCP Server</labelStatus>
             <labelStatus>TCP Server</labelStatus>
        </labels>
-       <red>Stopped</red>
        <green>Tracking</green>
        <orange>Started</orange>
+       <red>Stopped</red>
+       <grey>Undetected</grey>
    </service>
    @endcode
  * - \b form (optional, 'square' by default): the form of the indicator
@@ -72,22 +73,25 @@ namespace sight::module::ui::qt
  * - \b labels (optional): the description associated to the indicators when count > 1
  *   - \b labelStatus (optional): the description associated to each indicator
  * - \b labelStatus (optional): the description associated to the indicator when count = 1 or is missing
- * - \b red (optional): the description associated to the red status
  * - \b green (optional): the description associated to the green status
  * - \b orange (optional): the description associated to the orange status
+ * - \b grey (optional): the description associated to the grey status
  *
  * @section Slots Slots
  * - \b changeToGreen(): This slot allows to change the indicator color to green. If there is more than one status, it
  * changes them all.
+ * - \b changeToOrange(): This slot allows to change the indicator color to orange. If there is more than one status, it
+ * changes them all.
  * - \b changeToRed(): This slot allows to change the indicator color to red. If there is more than one status, it
  * changes them all.
- * - \b changeToOrange(): This slot allows to change the indicator color to orange. If there is more than one status, it
+ * - \b changeToGrey(): This slot allows to change the indicator color to grey. If there is more than one status, it
  * changes them all.
  * - \b toggleGreenRed(bool): This slot allows to change the indicator color to green or red. If there is more than one,
  * it toggle them all.
  * - \b changeNthToGreen(int): This slot allows to change the indicator color to green for the ith status.
- * - \b changeNthToRed(int): This slot allows to change the indicator color to red for the ith status.
  * - \b changeNthToOrange(int): This slot allows to change the indicator color to orange for the ith status.
+ * - \b changeNthToRed(int): This slot allows to change the indicator color to red for the ith status.
+ * - \b changeNthToGrey(int): This slot allows to change the indicator color to grey for the ith status.
  * - \b toggleNthGreenRed(int,bool): This slot allows to change the indicator color to green or red for the ith
  * status.
  */
@@ -109,12 +113,14 @@ public:
      *@{
      */
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_GREEN_SLOT;
-    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_ORANGE_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_RED_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_GREY_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_GREEN_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_GREEN_SLOT;
-    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_ORANGE_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_RED_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_GREY_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_NTH_GREEN_RED_SLOT;
 /** @} */
 
@@ -148,10 +154,13 @@ protected:
     void changeToGreen();
 
     /// SLOT : change label color
+    void changeToOrange();
+
+    /// SLOT : change label color
     void changeToRed();
 
     /// SLOT : change label color
-    void changeToOrange();
+    void changeToGrey();
 
     /// SLOT : change label color (true = green, false = red)
     void toggleGreenRed(const bool green);
@@ -160,10 +169,13 @@ protected:
     void changeNthToGreen(const int index);
 
     /// SLOT : change nth label color
+    void changeNthToOrange(const int index);
+
+    /// SLOT : change nth label color
     void changeNthToRed(const int index);
 
     /// SLOT : change nth label color
-    void changeNthToOrange(const int index);
+    void changeNthToGrey(const int index);
 
     /// SLOT : change nth label color (true = green, false = red)
     void toggleNthGreenRed(const int index, const bool green);
@@ -177,8 +189,9 @@ private:
     QVector<QPointer<QLabel> > m_labelStatus;
 
     std::string m_greenTooltip;  ///< Tooltip for green status
-    std::string m_redTooltip;    ///< Tooltip for red status
     std::string m_orangeTooltip; ///< Tooltip for orange status
+    std::string m_redTooltip;    ///< Tooltip for red status
+    std::string m_greyTooltip;   ///< Tooltip for grey status
     std::string m_layout;        ///< Layout orientation
 
     bool m_isCircular; ///< label is a circle if true (else it's a square)

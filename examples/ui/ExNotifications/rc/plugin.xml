@@ -121,8 +121,8 @@ are already displayed and where they are displayed on screen.
                 <parent uid="mainview" /> <!-- Parent container where notifications will be displayed, use the xmlattr uid hack to generate the generic_uid prefix of "maiview" -->
                 <message>Default Message</message><!-- Default message printed if empty string is emitted in notify* signals -->
                 <position>TOP_RIGHT</position><!-- Default position for ALL notifications (overriden by setEnumParameter slot) -->
-                <maxNotifications>3</maxNotifications> <!-- Maximum number of queued notifications -->
-                <duration>3000</duration><!-- Time the notifications are displayed on screen ( + 1sec for fade in & fade out effects) -->
+                <maxNotifications>5</maxNotifications> <!-- Maximum number of queued notifications -->
+                <duration>8000</duration><!-- Time the notifications are displayed on screen ( + 1sec for fade in & fade out effects) -->
             </service>
 
             <service uid="::sight::module::ui::qtChangerSrv" type="sight::module::ui::qt::SStyleSelector" />

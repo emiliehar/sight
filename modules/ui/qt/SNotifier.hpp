@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020 IHU Strasbourg
+ * Copyright (C) 2020-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -33,12 +33,32 @@ namespace sight::module::ui::qt
 
 /**
  * @brief SNotifier is a general service used to display notification in a centralized way.
+ *
  * SNotifier needs to be connected to [Success/Failure/Info]Notified signals implemented in IService.
+ * When it's connected to pop[Info|Success|Failure], the popup will disapear ofter the defined duration. When it's
+ * connected to showPermanent[Info|Success|Failure], it will not disapear until hidePermanent[Info|Success|Failure] is
+ * called.
+ * You can define multiple queues of permanent message, so you can easily connect the signals to show/hide the
+ * notification.
+ * For that, defines the number of queues you want ('nbPermanents') and add the queue number after the signal (ex.
+ * showPermanentInfo2)
  *
  * @section Slots Slots
- * - \b popInfo(): Adds an INFO popup in the queue & display it.
- * - \b popFailure(): Adds a FAILURE popup in the queue & display it.
- * - \b popSuccess():Adds a SUCCESS popup in the queue & display it.
+ * - \b popInfo(): Adds an INFO popup in the queue & display it, the popup will disapper after the defined duration.
+ * - \b popFailure(): Adds a FAILURE popup in the queue & display it, the popup will disapper after the defined
+ * duration.
+ * - \b popSuccess(): Adds a SUCCESS popup in the queue & display it, the popup will disapper after the defined
+ * duration.
+ * - \b showPermanentInfo(): Adds a INFO popup in the queue & display it, the popup will not disappear until
+ *'hidePermanentNotification()' is called.
+ * - \b showPermanentSuccess(): Adds a SUCCESS popup in the queue & display it, the popup will not disappear until
+ *'hidePermanentNotification()' is called.
+ * - \b showPermanentFailure(): Adds a FAILURE popup in the queue & display it, the popup will not disappear until
+ *'hidePermanentNotification()' is called.
+ * - \b hidePermanentNotification(): remove the oldest permanent popup from queue 0.
+ * - \b hidePermanentNotification(): remove the oldest permanent popup from queue 1.
+ * - \b hidePermanentNotification(): remove the oldest permanent popup from queue N (N is the number of permanent queue
+ * defined with 'nbPermanents'.
  * - \b setEnumParameter(std::string value, std::string key): Changes the position of notifications (key "position"),
  * accepted values are the same than the "position" tag in the XML configuration.
  *
@@ -50,6 +70,7 @@ namespace sight::module::ui::qt
             <maxNotifications>3</maxNotifications>
             <position>TOP_RIGHT</position>
             <duration>3000</duration>
+            <nbPermanents>3</nbPermanents>
             <parent uid="myContainerID"/>
         </service>
    @endcode
@@ -70,6 +91,7 @@ namespace sight::module::ui::qt
  *
  * - \b duration (optional): Duration in ms of the notification (+ 1 sec for fadein & fadeout effects) (default:
  * 3000ms).
+ * - \b nbPermanents (optional, default 1): number of slots used for permanenet messages
  * - \b parent (optional): UID of the gui Container where the notifications will be displayed (default the whole app),
  * NOTE: we use the xml attribute "uid" to resolve "${GENERIC_UID}_" prefixes.
  */
@@ -115,29 +137,71 @@ private:
     void setEnumParameter(std::string _val, std::string _key);
 
     /**
-     * @brief Slot pop info notification
+     * @brief Slot: pop info notification
      * @param _message text of the notification
      */
     void popInfo(std::string _message);
 
     /**
-     * @brief Slot pop success notification
+     * @brief Slot: pop success notification
      * @param _message text of the notification
      */
     void popSuccess(std::string _message);
 
     /**
-     * @brief Slot pop failure notification
+     * @brief Slot: pop failure notification
      * @param _message text of the notification
      */
     void popFailure(std::string _message);
+
+    /**
+     * @brief Slot: display info notification until 'hidePermanentNotification' is called
+     * @param _index index of the
+     * @param _message text of the notification
+     */
+    void showPermanentInfo(unsigned int _index, std::string _message);
+
+    /**
+     * @brief Slot: display success notification until 'hidePermanentNotification' is called
+     * @param _message text of the notification
+     */
+    void showPermanentSuccess(unsigned int _index, std::string _message);
+
+    /**
+     * @brief Slot: display failure notification until 'hidePermanentNotification' is called
+     * @param _message text of the notification
+     */
+    void showPermanentFailure(unsigned int _index, std::string _message);
+
+    /**
+     * @brief Slot: remove permanent notification
+     */
+    void hidePermanentNotification(unsigned int _index);
 
     /**
      * @brief Queue the notification and display it (called by popInfo/Success/Failure Slot).
      * @param _message message to display.
      * @param _type type of the notification.
      */
-    void showNotification(const std::string& _message, sight::ui::base::dialog::NotificationDialog::Type _type);
+    void showNotification(
+        const std::string& _message,
+        sight::ui::base::dialog::NotificationDialog::Type _type,
+        bool permanent     = false,
+        unsigned int index = 1
+    );
+
+    /**
+     * @brief display info notification until 'hidePermanentInfo' is called
+     * @param _message text of the notification
+     */
+    void showPermanent(
+        unsigned int index,
+        std::string _message,
+        sight::ui::base::dialog::NotificationDialog::Type _type
+    );
+
+    /// Called when a notification is closed
+    void onNotificationClosed(sight::ui::base::dialog::NotificationDialog::sptr notif);
 
     /// Max number of displayed notifications.
     std::uint8_t m_maxStackedNotifs {3};
@@ -155,17 +219,22 @@ private:
     /// Default message (if message in slot are empty), the default message can be configured in xml.
     std::string m_defaultMessage = "Notification";
 
-    /// Vector of displayed NotificationDialog, resized with "m_maxStackedNotifs" at start.
-    std::vector<sight::ui::base::dialog::NotificationDialog::sptr> m_popups {};
+    /// Vector of displayed NotificationDialog.
+    std::list<sight::ui::base::dialog::NotificationDialog::sptr> m_popups {};
 
-    /// Queue of index in m_popups to remove oldest if m_maxStackedNotifs is reached.
-    std::queue<size_t> m_indexQueue;
+    /// Vector of displayed non permanent NotificationDialog.
+    std::list<sight::ui::base::dialog::NotificationDialog::sptr> m_tempPopups {};
+
+    /// Queue of permanent notifications
+    std::vector<std::queue<sight::ui::base::dialog::NotificationDialog::sptr> > m_permanentNotifs;
 
     /// fwContainer where notifications will be displayed in, nullptr by default.
     sight::ui::base::container::fwContainer::csptr m_containerWhereToDisplayNotifs {nullptr};
 
     /// Parent containner ID (SID or WID), empty by default.
     std::string m_parentContainerID;
+
+    unsigned int m_nbPermanents {1};
 };
 
 } //namespace sight::module::ui::qt

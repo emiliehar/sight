@@ -322,20 +322,23 @@ void SNotifier::hidePermanentNotification(unsigned int index)
 
 void SNotifier::onNotificationClosed(sight::ui::base::dialog::NotificationDialog::sptr notif)
 {
-    // remove the notification from the container
-    const auto notifItr = std::find(m_popups.begin(), m_popups.end(), notif);
-    if(notifItr != m_popups.end())
+    if(this->getStatus() == service::IService::STARTED)
     {
-        m_popups.erase(notifItr);
-
-        // move all the remaining notifications one index lower
-        for(auto popup : m_popups)
+        // remove the notification from the container
+        const auto notifItr = std::find(m_popups.begin(), m_popups.end(), notif);
+        if(notifItr != m_popups.end())
         {
-            popup->moveDown();
-        }
-    }
+            // move all the following notifications one index lower
+            for(auto it = notifItr ; it != m_popups.end() ; ++it)
+            {
+                (*it)->moveDown();
+            }
 
-    m_tempPopups.remove(notif);
+            m_popups.erase(notifItr);
+        }
+
+        m_tempPopups.remove(notif);
+    }
 }
 
 //-----------------------------------------------------------------------------

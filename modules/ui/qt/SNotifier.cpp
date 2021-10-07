@@ -51,7 +51,8 @@ SNotifier::SNotifier() noexcept
     m_positionMap["TOP_LEFT"]        = sight::ui::base::dialog::NotificationDialog::Position::TOP_LEFT;
     m_positionMap["CENTERED_TOP"]    = sight::ui::base::dialog::NotificationDialog::Position::CENTERED_TOP;
     m_positionMap["CENTERED"]        = sight::ui::base::dialog::NotificationDialog::Position::CENTERED;
-    m_positionMap["BOTTOM_RIGHT"]    = sight::ui::base::dialog::NotificationDialog::Position::BOTTOM_LEFT;
+    m_positionMap["BOTTOM_RIGHT"]    = sight::ui::base::dialog::NotificationDialog::Position::BOTTOM_RIGHT;
+    m_positionMap["BOTTOM_LEFT"]     = sight::ui::base::dialog::NotificationDialog::Position::BOTTOM_LEFT;
     m_positionMap["CENTERED_BOTTOM"] = sight::ui::base::dialog::NotificationDialog::Position::CENTERED_BOTTOM;
 
     newSlot(s_POP_INFO_SLOT, &SNotifier::popInfo, this);

@@ -48,12 +48,12 @@ namespace sight::module::ui::qt
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_GREEN_SLOT      = "changeToGreen";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_ORANGE_SLOT     = "changeToOrange";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_RED_SLOT        = "changeToRed";
-const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_BLACK_SLOT      = "changeToGrey";
+const core::com::Slots::SlotKeyType SStatus::s_CHANGE_TO_GREY_SLOT       = "changeToGrey";
 const core::com::Slots::SlotKeyType SStatus::s_TOGGLE_GREEN_RED_SLOT     = "toggleGreenRed";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_GREEN_SLOT  = "changeNthToGreen";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_ORANGE_SLOT = "changeNthToOrange";
 const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_RED_SLOT    = "changeNthToRed";
-const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_BLACK_SLOT  = "changeNthToGrey";
+const core::com::Slots::SlotKeyType SStatus::s_CHANGE_NTH_TO_GREY_SLOT   = "changeNthToGrey";
 const core::com::Slots::SlotKeyType SStatus::s_TOGGLE_NTH_GREEN_RED_SLOT = "toggleNthGreenRed";
 
 //-----------------------------------------------------------------------------
@@ -67,12 +67,12 @@ SStatus::SStatus() noexcept :
     newSlot(s_CHANGE_TO_GREEN_SLOT, &SStatus::changeToGreen, this);
     newSlot(s_CHANGE_TO_ORANGE_SLOT, &SStatus::changeToOrange, this);
     newSlot(s_CHANGE_TO_RED_SLOT, &SStatus::changeToRed, this);
-    newSlot(s_CHANGE_TO_BLACK_SLOT, &SStatus::changeToGrey, this);
+    newSlot(s_CHANGE_TO_GREY_SLOT, &SStatus::changeToGrey, this);
     newSlot(s_TOGGLE_GREEN_RED_SLOT, &SStatus::toggleGreenRed, this);
     newSlot(s_CHANGE_NTH_TO_GREEN_SLOT, &SStatus::changeNthToGreen, this);
     newSlot(s_CHANGE_NTH_TO_ORANGE_SLOT, &SStatus::changeNthToOrange, this);
     newSlot(s_CHANGE_NTH_TO_RED_SLOT, &SStatus::changeNthToRed, this);
-    newSlot(s_CHANGE_NTH_TO_BLACK_SLOT, &SStatus::changeNthToGrey, this);
+    newSlot(s_CHANGE_NTH_TO_GREY_SLOT, &SStatus::changeNthToGrey, this);
     newSlot(s_TOGGLE_NTH_GREEN_RED_SLOT, &SStatus::toggleNthGreenRed, this);
 }
 

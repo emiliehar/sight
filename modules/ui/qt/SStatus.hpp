@@ -115,12 +115,12 @@ public:
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_GREEN_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_ORANGE_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_RED_SLOT;
-    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_BLACK_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_TO_GREY_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_GREEN_RED_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_GREEN_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_ORANGE_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_RED_SLOT;
-    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_BLACK_SLOT;
+    MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_CHANGE_NTH_TO_GREY_SLOT;
     MODULE_UI_QT_API static const core::com::Slots::SlotKeyType s_TOGGLE_NTH_GREEN_RED_SLOT;
 /** @} */
 

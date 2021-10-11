@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2017-2021 IRCAD France
- * Copyright (C) 2017-2020 IHU Strasbourg
+ * Copyright (C) 2017-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -635,6 +635,9 @@ void SLandmarks::onRemoveSelection()
             const size_t index           = static_cast<size_t>(itemParent->indexOfChild(item));
             const std::string& groupName = itemParent->text(0).toStdString();
 
+            SIGHT_INFO(
+                "[" << this->getID() << "] remove landmark '" << groupName << "[" << index << "]'"
+            );
             landmarks->removePoint(groupName, index);
             itemParent->removeChild(item);
 
@@ -651,6 +654,7 @@ void SLandmarks::onRemoveSelection()
         {
             const std::string& groupName = item->text(0).toStdString();
 
+            SIGHT_INFO("[" << this->getID() << "] remove landmark group '" << groupName << "'");
             landmarks->removeGroup(groupName);
             delete m_treeWidget->takeTopLevelItem(topLevelIndex);
 
@@ -746,6 +750,10 @@ void SLandmarks::pick(data::tools::PickingInfo _info)
                 groupName = item->text(0).toStdString();
             }
 
+            SIGHT_INFO(
+                "[" << this->getID() << "] add landmark '" << groupName << "' (" << newPoint[0]
+                << "," << newPoint[1] << "," << newPoint[2] << ")"
+            );
             data::mt::ObjectWriteLock lock(landmarks);
             landmarks->addPoint(groupName, newPoint);
             lock.unlock();
@@ -801,6 +809,7 @@ void SLandmarks::pick(data::tools::PickingInfo _info)
                 {
                     this->removeGroup(foundGroupname);
 
+                    SIGHT_INFO("[" << this->getID() << "] remove landmark group '" << foundGroupname << "'");
                     lock.upgrade();
                     landmarks->removeGroup(foundGroupname);
                     lock.downgrade();
@@ -815,6 +824,10 @@ void SLandmarks::pick(data::tools::PickingInfo _info)
                 }
                 else
                 {
+                    SIGHT_INFO(
+                        "[" << this->getID() << "] remove landmark '" << foundGroupname << "' (" << pickedPos[0]
+                        << "," << pickedPos[1] << "," << pickedPos[2] << ")"
+                    );
                     lock.upgrade();
                     landmarks->removePoint(foundGroupname, foundIndex);
                     lock.downgrade();

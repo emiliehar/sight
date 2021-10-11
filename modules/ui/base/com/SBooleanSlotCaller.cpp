@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -50,6 +50,8 @@ SBooleanSlotCaller::~SBooleanSlotCaller() noexcept
 
 void SBooleanSlotCaller::updating()
 {
+    SIGHT_INFO("[" + this->getID() + "] updated with parameter '" + (this->getIsActive() ? "true" : "false") + "'.");
+
     for(SlotInfoType info : m_slotInfos)
     {
         HasSlotIDType HasSlotId               = info.first;

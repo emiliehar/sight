@@ -59,6 +59,8 @@ namespace sight::module::viz::scene3d::adaptor
  * @section Signal Signals
  * - \b toolEnabled(): sent when interactions are enabled.
  * - \b toolDisabled(): sent when interactions are finished.
+ * - \b pointListEmpty(): sent when the point list is empty.
+ * - \b pointListNotEmpty(): sent when the point list is not empty.
  *
  * @section XML XML Configuration
  * @code{.xml}
@@ -357,6 +359,12 @@ private:
 
     /// Contains the signal sent when interactions are finished.
     core::com::Signal<void()>::sptr m_toolDisabledSig;
+
+    /// Contains the signal sent when the point list is empty.
+    core::com::Signal<void()>::sptr m_pointListEmpty;
+
+    /// Contains the signal sent when the point list is not empty.
+    core::com::Signal<void()>::sptr m_pointListNotEmpty;
 
     /// Contains the last found position of the mouse pointer.
     int m_x, m_y;

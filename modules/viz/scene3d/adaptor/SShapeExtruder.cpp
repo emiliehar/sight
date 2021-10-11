@@ -46,6 +46,8 @@ static const core::com::Slots::SlotKeyType s_CANCEL_LAST_CLICK_SLOT = "cancelLas
 
 static const core::com::Slots::SlotKeyType s_TOOL_ENABLED_SIG  = "toolEnabled";
 static const core::com::Slots::SlotKeyType s_TOOL_DISABLED_SIG = "toolDisabled";
+static const core::com::Slots::SlotKeyType s_PL_EMPTY_SIG      = "pointListEmpty";
+static const core::com::Slots::SlotKeyType s_PL_NOT_EMPTY_SIG  = "pointListNotEmpty";
 
 static const std::string s_PRIORITY_CONFIG   = "priority";
 static const std::string s_EXTRUDE_CONFIG    = "extrude";
@@ -159,8 +161,10 @@ SShapeExtruder::SShapeExtruder() noexcept
     newSlot(s_ENABLE_TOOL_SLOT, &SShapeExtruder::enableTool, this);
     newSlot(s_DELETE_LAST_MESH_SLOT, &SShapeExtruder::deleteLastMesh, this);
     newSlot(s_CANCEL_LAST_CLICK_SLOT, &SShapeExtruder::cancelLastClick, this);
-    m_toolEnabledSig  = this->newSignal<core::com::Signal<void()> >(s_TOOL_ENABLED_SIG);
-    m_toolDisabledSig = this->newSignal<core::com::Signal<void()> >(s_TOOL_DISABLED_SIG);
+    m_toolEnabledSig    = this->newSignal<core::com::Signal<void()> >(s_TOOL_ENABLED_SIG);
+    m_toolDisabledSig   = this->newSignal<core::com::Signal<void()> >(s_TOOL_DISABLED_SIG);
+    m_pointListEmpty    = this->newSignal<core::com::Signal<void()> >(s_PL_EMPTY_SIG);
+    m_pointListNotEmpty = this->newSignal<core::com::Signal<void()> >(s_PL_NOT_EMPTY_SIG);
 }
 
 //-----------------------------------------------------------------------------
@@ -240,6 +244,9 @@ void SShapeExtruder::starting()
     m_materialAdaptor->start();
     m_materialAdaptor->getMaterialFw()->setHasVertexColor(true);
     m_materialAdaptor->update();
+
+    // Send signal for an empty PL
+    m_pointListEmpty->asyncEmit();
 }
 
 //-----------------------------------------------------------------------------
@@ -272,6 +279,9 @@ void SShapeExtruder::stopping()
     const sight::viz::scene3d::interactor::IInteractor::sptr interactor =
         std::dynamic_pointer_cast<sight::viz::scene3d::interactor::IInteractor>(this->getSptr());
     layer->removeInteractor(interactor);
+
+    // Send signal for an empty PL
+    m_pointListEmpty->asyncEmit();
 }
 
 //-----------------------------------------------------------------------------
@@ -304,6 +314,9 @@ void SShapeExtruder::enableTool(bool _enable)
 
     // Send a render request.
     this->requestRender();
+
+    // Send signal for an empty PL
+    m_pointListEmpty->asyncEmit();
 }
 
 //-----------------------------------------------------------------------------
@@ -339,6 +352,9 @@ void SShapeExtruder::deleteLastMesh()
         );
         notif->asyncEmit("No extrusion to delete.");
     }
+
+    // Send signal for an empty PL
+    m_pointListEmpty->asyncEmit();
 }
 
 //-----------------------------------------------------------------------------
@@ -378,6 +394,9 @@ void SShapeExtruder::cancelLastClick()
 
             // Send a render request.
             this->requestRender();
+
+            // Send signal for an empty PL
+            m_pointListEmpty->asyncEmit();
 
             return;
         }
@@ -523,6 +542,9 @@ void SShapeExtruder::buttonPressEvent(MouseButton _button, Modifier, int _x, int
                 m_lassoNearPositions.push_back(std::get<1>(toolNearFarPos));
                 m_lassoFarPositions.push_back(std::get<2>(toolNearFarPos));
                 m_lassoEdgePositions.push_back(std::get<0>(toolNearFarPos));
+
+                // Send signal for a PL not empty
+                m_pointListNotEmpty->asyncEmit();
             }
             else
             {
@@ -550,6 +572,10 @@ void SShapeExtruder::buttonPressEvent(MouseButton _button, Modifier, int _x, int
                 m_interactionEnableState = false;
                 m_lastLassoLine->clear();
                 m_lasso->clear();
+
+                // Send signal for an empty PL
+                m_pointListEmpty->asyncEmit();
+
                 return;
             }
         }

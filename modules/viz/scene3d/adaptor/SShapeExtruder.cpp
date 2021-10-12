@@ -369,9 +369,6 @@ void SShapeExtruder::cancelLastClick()
         const sight::viz::scene3d::Layer::sptr layer = this->getLayer();
         layer->cancelFurtherInteraction();
 
-        // Get the last mouse position found in the world space.
-        const auto toolNearFarPos = this->getNearFarRayPositions(m_x, m_y);
-
         // Remove the last clicked point.
         if(m_lassoToolPositions.size() > 0)
         {
@@ -414,6 +411,9 @@ void SShapeExtruder::cancelLastClick()
             ::Ogre::RenderOperation::OT_LINE_STRIP,
             sight::viz::scene3d::RESOURCE_GROUP
         );
+
+        // Get the last mouse position found in the world space.
+        const auto toolNearFarPos = this->getNearFarRayPositions(m_x, m_y);
 
         m_lastLassoLine->colour(m_lineColor);
         m_lastLassoLine->position(m_lassoToolPositions.back());

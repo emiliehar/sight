@@ -69,7 +69,6 @@ public:
     {
         QPropertyAnimation* a = new QPropertyAnimation(this, "pos");
         a->setDuration(500);
-        a->setStartValue(this->pos());
         a->setEndValue(m_position(this->parentWidget()));
         a->setEasingCurve(QEasingCurve::OutBack);
         a->start(QPropertyAnimation::DeleteWhenStopped);

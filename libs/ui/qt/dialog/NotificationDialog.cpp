@@ -208,7 +208,7 @@ void NotificationDialog::close() const
 
 void NotificationDialog::moveDown()
 {
-    if(m_index > 0)
+    if(m_msgContainer && m_index > 0)
     {
         --m_index;
         auto position = this->computePosition();

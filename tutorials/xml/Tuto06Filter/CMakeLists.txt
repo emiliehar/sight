@@ -10,6 +10,7 @@ add_dependencies(Tuto06Filter
                  module_io_vtk
                  module_viz_sample
                  module_filter_image
+                 module_filter_imageItk
 )
 
 moduleParam(module_ui_qt

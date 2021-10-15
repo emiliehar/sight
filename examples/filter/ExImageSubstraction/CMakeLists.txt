@@ -12,7 +12,7 @@ add_dependencies(ExImageSubstraction
                  module_ui_flaticons
                  module_io_vtk
                  module_io_matrix
-                 module_filter_image
+                 module_filter_imageItk
                  module_data
 )
 

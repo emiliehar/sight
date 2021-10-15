@@ -1,0 +1,84 @@
+<plugin id="sight::module::filter::imageItk" library="true" >
+
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SAutomaticRegistration</service>
+         <object>sight::data::Image</object>
+         <desc>Service computing a rigid transform matching an image to another.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SBitwiseAnd</service>
+         <object>sight::data::Image</object>
+         <desc>Implements the AND bitwise operator pixel-wise between two images.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SFlip</service>
+         <object key="source">sight::data::Image</object>
+         <object key="target">sight::data::Image</object>
+         <desc>Service flipping an input image along x or y or z axis.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SImageCenter</service>
+         <desc>Service computing the center of a 3D image, it outputs the translation going from origin to the center.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SImagesSubstract</service>
+         <desc>Compute the substraction of two images.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SLabelGeometryImage</service>
+         <object>sight::data::Image</object>
+         <desc>Gets centroids of shapes from a labeled image and adds them as a 'landmark' field to it.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SLabelImageToBinaryImage</service>
+         <desc>Service extracting a binary mask from an image with labels.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IRegisterer</type>
+         <service>sight::module::filter::imageItk::SMIPMatchingRegistration</service>
+         <desc>This service uses a fast registration algorithm to quickly register two images together if the transform</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SMatrixRegressor</service>
+         <object>sight::data::Vector</object>
+         <desc>Service computing the matrix that best fits a list of matrices.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SPlaneSlicer</service>
+         <desc>Operator computing a 2D slice from a 3D image.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SPropagator</service>
+         <object>sight::data::Image</object>
+         <desc>Service placing seeds and propagating from them in an image.</desc>
+    </extension>
+
+    <extension implements="::sight::service::extension::Factory">
+         <type>sight::service::IOperator</type>
+         <service>sight::module::filter::imageItk::SResampler</service>
+         <object>sight::data::Image</object>
+         <desc>Service applying a transform to an image and outputing the resampled image.</desc>
+    </extension>
+
+</plugin>

@@ -24,7 +24,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-namespace sight::io::session
+namespace sight::core::session
 {
 
 namespace ut
@@ -50,4 +50,4 @@ public:
 
 } // namespace ut
 
-} // namespace sight::io::session
+} // namespace sight::core::session

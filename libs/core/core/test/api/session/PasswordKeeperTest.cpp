@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -22,12 +22,12 @@
 
 #include "PasswordKeeperTest.hpp"
 
-#include <io/session/PasswordKeeper.hpp>
+#include <core/session/PasswordKeeper.hpp>
 
 // Registers the fixture into the 'registry'
-CPPUNIT_TEST_SUITE_REGISTRATION(::sight::io::session::ut::PasswordKeeperTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(::sight::core::session::ut::PasswordKeeperTest);
 
-namespace sight::io::session
+namespace sight::core::session
 {
 
 namespace ut
@@ -46,7 +46,7 @@ void PasswordKeeperTest::tearDown()
 {
     // Clean up after the test run.
     // Reset global static password
-    io::session::PasswordKeeper::setGlobalPassword("");
+    core::session::PasswordKeeper::setGlobalPassword("");
 }
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ void PasswordKeeperTest::globalTest()
 {
     {
         // Set a dummy "abc" global password
-        const io::session::PasswordKeeper globalKeeper;
+        const core::session::PasswordKeeper globalKeeper;
         globalKeeper.setGlobalPassword("abc");
 
         // Verify the hash as "abc" have a well known sha256 hash (so never use abc as a password..)
@@ -67,7 +67,7 @@ void PasswordKeeperTest::globalTest()
 
     {
         // Test that we can get the "abc" password back, even with an other PasswordKeeper
-        const io::session::PasswordKeeper globalKeeper;
+        const core::session::PasswordKeeper globalKeeper;
         CPPUNIT_ASSERT_EQUAL(core::crypto::secure_string("abc"), globalKeeper.getGlobalPassword());
         CPPUNIT_ASSERT(globalKeeper.checkGlobalPassword("abc"));
     }
@@ -79,7 +79,7 @@ void PasswordKeeperTest::localTest()
 {
     {
         // Set a dummy "abc" global password
-        io::session::PasswordKeeper localKeeper;
+        core::session::PasswordKeeper localKeeper;
         localKeeper.setPassword("abc");
 
         // Verify the hash as "abc" have a well known sha256 hash (so never use abc as a password..)
@@ -91,11 +91,11 @@ void PasswordKeeperTest::localTest()
 
     {
         // Test that we can NOT get the "abc" password back with an other PasswordKeeper
-        const io::session::PasswordKeeper localKeeper;
+        const core::session::PasswordKeeper localKeeper;
         CPPUNIT_ASSERT(!localKeeper.checkPassword("abc"));
     }
 }
 
 } // namespace ut
 
-} // namespace sight::io::session
+} // namespace sight::core::session

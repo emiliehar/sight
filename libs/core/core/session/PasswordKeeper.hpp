@@ -22,16 +22,15 @@
 
 #pragma once
 
-#include "io/session/config.hpp"
-
+#include "core/config.hpp"
 #include <core/crypto/secure_string.hpp>
 #include <core/macros.hpp>
 
-namespace sight::io::session
+namespace sight::core::session
 {
 
 /// Class designed to hold and check in a somewhat secure way a global password and "instance" passwords.
-class IO_SESSION_CLASS_API PasswordKeeper final
+class CORE_CLASS_API PasswordKeeper final
 {
 public:
 
@@ -44,38 +43,38 @@ public:
     PasswordKeeper& operator=(PasswordKeeper&&)      = delete;
 
     /// Default constructor
-    IO_SESSION_API PasswordKeeper() noexcept;
+    CORE_API PasswordKeeper() noexcept;
 
     /// Default destructor
-    IO_SESSION_API ~PasswordKeeper() noexcept;
+    CORE_API ~PasswordKeeper() noexcept;
 
     /// Gets the global password hash
-    IO_SESSION_API static core::crypto::secure_string getGlobalPasswordHash();
+    CORE_API static core::crypto::secure_string getGlobalPasswordHash();
 
     /// Gets the global password
-    IO_SESSION_API static core::crypto::secure_string getGlobalPassword();
+    CORE_API static core::crypto::secure_string getGlobalPassword();
 
     /// Sets the global password
     /// @param password the new global password
-    IO_SESSION_API static void setGlobalPassword(const core::crypto::secure_string& password);
+    CORE_API static void setGlobalPassword(const core::crypto::secure_string& password);
 
     /// Returns true if the password matches
     /// @param password the password to verify against global stored password
-    IO_SESSION_API static bool checkGlobalPassword(const core::crypto::secure_string& password);
+    CORE_API static bool checkGlobalPassword(const core::crypto::secure_string& password);
 
     /// Gets the password
-    IO_SESSION_API core::crypto::secure_string getPasswordHash() const;
+    CORE_API core::crypto::secure_string getPasswordHash() const;
 
     /// Gets the password
-    IO_SESSION_API core::crypto::secure_string getPassword() const;
+    CORE_API core::crypto::secure_string getPassword() const;
 
     /// Sets the password
     /// @param password the new password
-    IO_SESSION_API void setPassword(const core::crypto::secure_string& password);
+    CORE_API void setPassword(const core::crypto::secure_string& password);
 
     /// Returns true if the password matches
     /// @param password the password to verify against stored password
-    IO_SESSION_API bool checkPassword(const core::crypto::secure_string& password) const;
+    CORE_API bool checkPassword(const core::crypto::secure_string& password) const;
 
 private:
 
@@ -84,4 +83,4 @@ private:
     std::unique_ptr<PasswordKeeperImpl> m_pimpl;
 };
 
-} // namespace sight::io::session
+} // namespace sight::core::session

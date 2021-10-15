@@ -1,6 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2021 IRCAD France
+ * Copyright (C) 2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -27,7 +28,7 @@
 #include <iomanip>
 #include <mutex>
 
-namespace sight::io::session
+namespace sight::core::session
 {
 
 // Protects password concurent access
@@ -169,4 +170,4 @@ bool PasswordKeeper::checkGlobalPassword(const core::crypto::secure_string& pass
     return core::crypto::decrypt(s_password, computeGlobalPasswordKey()) == password;
 }
 
-} // namespace sight::io::session
+} // namespace sight::core::session

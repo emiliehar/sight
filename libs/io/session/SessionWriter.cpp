@@ -1,6 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2021 IRCAD France
+ * Copyright (C) 2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -23,7 +24,7 @@
 
 #include "detail/SessionSerializer.hpp"
 
-#include "PasswordKeeper.hpp"
+#include <core/session/PasswordKeeper.hpp>
 
 #include <io/base/writer/registry/macros.hpp>
 
@@ -46,7 +47,7 @@ public:
     /// Constructor
     inline SessionWriterImpl(SessionWriter* const sessionWriter) :
         m_SessionWriter(sessionWriter),
-        m_password(std::make_unique<PasswordKeeper>())
+        m_password(std::make_unique<core::session::PasswordKeeper>())
     {
     }
 
@@ -84,7 +85,7 @@ private:
     SessionWriter* const m_SessionWriter;
 
     /// Keep the password in a vault
-    const std::unique_ptr<PasswordKeeper> m_password;
+    const std::unique_ptr<core::session::PasswordKeeper> m_password;
 };
 
 SessionWriter::SessionWriter(base::writer::IObjectWriter::Key key) :

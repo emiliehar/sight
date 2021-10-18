@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -24,12 +24,11 @@
 
 #include <core/crypto/SHA256.hpp>
 #include <core/runtime/profile/Profile.hpp>
+#include <core/session/PasswordKeeper.hpp>
 #include <core/tools/Os.hpp>
 
 #include <data/Composite.hpp>
 #include <data/String.hpp>
-
-#include <io/session/PasswordKeeper.hpp>
 
 #include <service/macros.hpp>
 #include <service/registry/ObjectService.hpp>
@@ -50,7 +49,7 @@ void setPassword(const core::crypto::secure_string& password)
     if(password.empty())
     {
         // Remove the password
-        io::session::PasswordKeeper::setGlobalPassword("");
+        core::session::PasswordKeeper::setGlobalPassword("");
 
         // Remove the password hash
         data::Composite::sptr prefs = getPreferences();
@@ -63,10 +62,10 @@ void setPassword(const core::crypto::secure_string& password)
     else
     {
         // Save the global password
-        io::session::PasswordKeeper::setGlobalPassword(password);
+        core::session::PasswordKeeper::setGlobalPassword(password);
 
         // Save the password hash to preferences
-        setPreference(s_PASSWORD_HASH_KEY, std::string(io::session::PasswordKeeper::getGlobalPasswordHash()));
+        setPreference(s_PASSWORD_HASH_KEY, std::string(core::session::PasswordKeeper::getGlobalPasswordHash()));
         savePreferences();
     }
 }
@@ -75,7 +74,7 @@ void setPassword(const core::crypto::secure_string& password)
 
 const core::crypto::secure_string getPassword()
 {
-    return io::session::PasswordKeeper::getGlobalPassword();
+    return core::session::PasswordKeeper::getGlobalPassword();
 }
 
 //----------------------------------------------------------------------------
@@ -88,12 +87,12 @@ bool checkPassword(const core::crypto::secure_string& password)
     {
         // No password hash is stored in the preferences or there is no preferences
         // We must check against s_password
-        return io::session::PasswordKeeper::checkGlobalPassword(password);
+        return core::session::PasswordKeeper::checkGlobalPassword(password);
     }
     else if(core::crypto::hash(password) == passwordHash)
     {
         // Store the verified password
-        io::session::PasswordKeeper::setGlobalPassword(password);
+        core::session::PasswordKeeper::setGlobalPassword(password);
 
         return true;
     }

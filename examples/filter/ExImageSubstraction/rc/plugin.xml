@@ -381,7 +381,7 @@
                 <sliceIndex>axial</sliceIndex>
             </service>
 
-            <service uid="imageSubstractSrv" type="sight::module::filter::image::SImagesSubstract" >
+            <service uid="imageSubstractSrv" type="sight::module::filter::imageItk::SImagesSubstract" >
                 <in key="image1" uid="image1" />
                 <in key="image2" uid="image2" />
                 <inout key="result" uid="imageResult" />

@@ -285,9 +285,16 @@ private:
      * @brief SLOT: resets the hightlights the selected landmark.
      * @param _groupName group name of the landmark.
      * @param _index index of the point relative to the group.
+     */
+    void deselectPoint(std::string _groupName, size_t _index);
+
+    /**
+     * @brief resets the hightlights the selected landmark.
+     * @param _groupName group name of the landmark.
+     * @param _index index of the point relative to the group.
      * @param _visible if true, show the landmarks
      */
-    void deselectPoint(std::string _groupName, size_t _index, bool _visible = true);
+    void removePointSelection(std::string _groupName, size_t _index, bool _visible);
 
     /**
      * @brief Manages the highting of the landmarks at the given index (must be run in a thread).

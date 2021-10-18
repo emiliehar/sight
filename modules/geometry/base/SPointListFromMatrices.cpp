@@ -88,10 +88,7 @@ void SPointListFromMatrices::updating()
 
     for(size_t j = 0 ; j < numMatrices ; ++j)
     {
-        const auto mat = this->getLockedInput<data::Matrix4>(
-            s_MATRICES_INPUT,
-            j
-        );
+        const auto mat                   = this->getLockedInput<data::Matrix4>(s_MATRICES_INPUT, j);
         data::Matrix4::TMCoefArray coefs = mat->getCoefficients();
 
         //extract translation
@@ -101,10 +98,18 @@ void SPointListFromMatrices::updating()
         if(m_append)
         {
             label = std::to_string(pointList->getPoints().size());
+            SIGHT_INFO(
+                "[" << pointList->getID() << "] add point ("
+                << coefs[3] << ", " << coefs[7] << ", " << coefs[11] << ")"
+            );
         }
         else
         {
             label = std::to_string(j);
+            SIGHT_INFO(
+                "[" << pointList->getID() << "] set point ("
+                << coefs[3] << ", " << coefs[7] << ", " << coefs[11] << ")"
+            );
         }
 
         data::String::sptr fwLabel = data::String::New(label);

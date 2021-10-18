@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -89,10 +89,12 @@ void SSignal::updating()
 {
     if(this->confirmAction())
     {
+        SIGHT_INFO("[" + this->getID() + "] updated.")
         m_sigTriggered->asyncEmit(this->getIsActive());
     }
     else
     {
+        SIGHT_INFO("[" + this->getID() + "] cancelled.")
         m_sigCancelled->asyncEmit(this->getIsActive());
     }
 }

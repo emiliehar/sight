@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -286,7 +286,7 @@ void SIGHT_TRACE_DEPRECATED();
  * @brief Use this macro when deprecating a function to warn the developer.
  */
 #define FW_DEPRECATED(oldFnName, newFnName, version) \
-    SIGHT_ERROR( \
+    SIGHT_DEBUG( \
         "[DEPRECATED] '" << oldFnName << "' is deprecated and will be removed in '" << version << "', use '" \
         << newFnName << "' instead. It is still used by '" + this->getClassname() + "'." \
     );
@@ -295,7 +295,7 @@ void SIGHT_TRACE_DEPRECATED();
  * @brief Use this macro when deprecating a function to warn the developer.
  */
 #define FW_DEPRECATED_IF(oldFnName, newFnName, version, condition) \
-    SIGHT_ERROR_IF( \
+    SIGHT_DEBUG_IF( \
         "[DEPRECATED] '" << oldFnName << "' is deprecated and will be removed in '" << version << "', use '" \
         << newFnName << "' instead. It is still used by '" + this->getClassname() + "'.", \
         ondition \
@@ -305,13 +305,13 @@ void SIGHT_TRACE_DEPRECATED();
  * @brief Use this macro when deprecating a function to warn the developer.
  */
 #define FW_DEPRECATED_MSG(message, version) \
-    SIGHT_ERROR("[DEPRECATED] " << message << " It will be removed in '" << version << "'");
+    SIGHT_DEBUG("[DEPRECATED] " << message << " It will be removed in '" << version << "'");
 
 /**
  * @brief Use this macro when deprecating a service key to warn the developer.
  */
 #define FW_DEPRECATED_KEY(newKey, access, version) \
-    SIGHT_ERROR( \
+    SIGHT_DEBUG( \
         "[DEPRECATED] The key '" << newKey << "' is not correctly set. Please correct the configuration to " \
                                               "set an '" << access << "' key named '" << newKey << "'. The support of the old key will be removed " \
                                                                                                    "in '" << version << "'." \

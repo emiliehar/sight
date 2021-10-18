@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2015-2021 IRCAD France
- * Copyright (C) 2015-2020 IHU Strasbourg
+ * Copyright (C) 2015-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -59,7 +59,7 @@ TransferFunction::TransferFunction()
     TEXTURE_SIZE        = static_cast<std::uint32_t>(max);
     TEXTURE_PIXEL_COUNT = static_cast<std::uint32_t>(max);
 
-    SIGHT_INFO("Use a 1D texture of size : " << TEXTURE_SIZE);
+    SIGHT_DEBUG("Use a 1D texture of size : " << TEXTURE_SIZE);
 }
 
 //-----------------------------------------------------------------------------

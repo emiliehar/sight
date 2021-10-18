@@ -396,6 +396,11 @@ QPushButton:hover
     background: rgb(82, 88, 103);
 }
 
+QPushButton:focus
+{
+    background: rgb(82, 88, 103);
+}
+
 QPushButton:pressed,
 QPushButton:checked
 {

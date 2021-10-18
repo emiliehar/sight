@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -73,7 +73,7 @@ void SightOgreListener::messageLogged(
         switch(_lml)
         {
             case ::Ogre::LML_TRIVIAL:
-                SIGHT_INFO(_message);
+                SIGHT_DEBUG(_message);
                 break;
 
             case ::Ogre::LML_NORMAL:
@@ -81,7 +81,7 @@ void SightOgreListener::messageLogged(
                 break;
 
             case ::Ogre::LML_WARNING:
-                SIGHT_WARN(_message);
+                SIGHT_DEBUG(_message);
                 break;
 
             case ::Ogre::LML_CRITICAL:

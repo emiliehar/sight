@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -144,7 +144,7 @@ void SDisplayCalibrationInfo::displayImage(size_t idx)
             service::extension::AppConfig::getDefault()->getAdaptedTemplateConfig(strConfig, replaceMap, true);
 
         // Launch configuration
-        m_configMgr = service::IAppConfigManager::New();
+        m_configMgr = service::AppConfigManager::New();
         m_configMgr->service::IAppConfigManager::setConfig(config);
         m_configMgr->launch();
 

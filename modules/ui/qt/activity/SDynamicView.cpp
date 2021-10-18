@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -245,7 +245,7 @@ void SDynamicView::launchTab(SDynamicViewInfo& info)
     std::string genericUidAdaptor = service::extension::AppConfig::getUniqueIdentifier(info.viewConfigID);
     info.replaceMap["GENERIC_UID"] = genericUidAdaptor;
 
-    service::IAppConfigManager::sptr helper = service::IAppConfigManager::New();
+    service::AppConfigManager::sptr helper = service::AppConfigManager::New();
 
     try
     {

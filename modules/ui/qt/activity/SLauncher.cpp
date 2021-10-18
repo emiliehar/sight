@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -43,8 +43,8 @@
 #include <data/String.hpp>
 #include <data/Vector.hpp>
 
+#include <service/AppConfigManager.hpp>
 #include <service/extension/AppConfig.hpp>
-#include <service/IAppConfigManager.hpp>
 #include <service/macros.hpp>
 
 #include <ui/base/dialog/MessageDialog.hpp>
@@ -466,7 +466,7 @@ void SLauncher::buildActivity(
         ActivityMsg::ReplaceMapType replaceMap = msg.getReplaceMap();
         replaceMap["GENERIC_UID"] = service::extension::AppConfig::getUniqueIdentifier();
 
-        service::IAppConfigManager::sptr helper = service::IAppConfigManager::New();
+        service::AppConfigManager::sptr helper = service::AppConfigManager::New();
         helper->setConfig(viewConfigID, replaceMap);
         helper->launch();
         helper->stopAndDestroy();

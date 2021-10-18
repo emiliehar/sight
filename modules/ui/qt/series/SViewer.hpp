@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2019 IHU Strasbourg
+ * Copyright (C) 2012-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -24,7 +24,7 @@
 
 #include "modules/ui/qt/config.hpp"
 
-#include <service/IAppConfigManager.hpp>
+#include <service/AppConfigManager.hpp>
 #include <service/IController.hpp>
 
 #include <map>
@@ -130,7 +130,7 @@ private:
     typedef std::map<std::string, SeriesConfigInfo> SeriesConfigMapType;
 
     /// Config manager
-    service::IAppConfigManager::sptr m_configTemplateManager;
+    service::AppConfigManager::sptr m_configTemplateManager;
 
     /// Stores the wid of the view where the config will install its windows.
     std::string m_parentView;

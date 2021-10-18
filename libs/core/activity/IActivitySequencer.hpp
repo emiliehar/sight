@@ -93,7 +93,7 @@ protected:
      * @param seriesDB Series DB containing all the activities
      * @param index the activity in index and all the following will be removed
      */
-    ACTIVITY_API void clearLastActivities(
+    ACTIVITY_API void removeLastActivities(
         const data::SeriesDB::sptr& seriesDB,
         size_t index
     );

@@ -28,10 +28,19 @@ namespace sight::module::viz::scene3d::adaptor
 static const std::string s_PRIORITY_CONFIG              = "priority";
 static const std::string s_LAYER_ORDER_DEPENDANT_CONFIG = "layerOrderDependant";
 
+static const core::com::Slots::SlotKeyType s_RESET_CAMERA_SLOT      = "resetCamera";
+static const core::com::Slots::SlotKeyType s_LEFT_TO_RIGHT_SLOT     = "translateLeftToRightButton";
+static const core::com::Slots::SlotKeyType s_LEFT_TO_MIDDLE_SLOT    = "translateLeftToMiddleButton";
+static const core::com::Slots::SlotKeyType s_RESET_INTERACTION_SLOT = "resetDefaultInteraction";
+
 //-----------------------------------------------------------------------------
 
 STrackballCamera::STrackballCamera() noexcept
 {
+    newSlot(s_RESET_CAMERA_SLOT, &STrackballCamera::resetCamera, this);
+    newSlot(s_LEFT_TO_RIGHT_SLOT, &STrackballCamera::translateLeftToRightButton, this);
+    newSlot(s_LEFT_TO_MIDDLE_SLOT, &STrackballCamera::translateLeftToMiddleButton, this);
+    newSlot(s_RESET_INTERACTION_SLOT, &STrackballCamera::resetDefaultInteraction, this);
 }
 
 //-----------------------------------------------------------------------------
@@ -78,6 +87,36 @@ void STrackballCamera::stopping()
 {
     const auto layer = this->getLayer();
     layer->removeInteractor(m_trackball);
+}
+
+//------------------------------------------------------------------------------
+
+void STrackballCamera::resetCamera()
+{
+    m_trackball->resetCameraCoordinates();
+}
+
+//------------------------------------------------------------------------------
+
+void STrackballCamera::translateLeftToRightButton()
+{
+    m_trackball->setInteractionMode(sight::viz::scene3d::interactor::TrackballInteractor::InteractionMode::LEFT_TO_RIGHT);
+}
+
+//------------------------------------------------------------------------------
+
+void STrackballCamera::translateLeftToMiddleButton()
+{
+    m_trackball->setInteractionMode(
+        sight::viz::scene3d::interactor::TrackballInteractor::InteractionMode::LEFT_TO_MIDDLE
+    );
+}
+
+//------------------------------------------------------------------------------
+
+void STrackballCamera::resetDefaultInteraction()
+{
+    m_trackball->setInteractionMode(sight::viz::scene3d::interactor::TrackballInteractor::InteractionMode::DEFAULT);
 }
 
 //-----------------------------------------------------------------------------

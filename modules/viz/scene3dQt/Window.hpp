@@ -134,6 +134,9 @@ private:
     /// Manages when window is moved.
     void moveEvent(QMoveEvent*) override;
 
+    /// Manages when window is touched.
+    void touchEvent(QTouchEvent*) override;
+
     /// Manages generic events.
     bool event(QEvent* _event) override;
 
@@ -188,6 +191,8 @@ private:
 
     /// Defines the last size sent to Ogre. In hidpi
     QSize m_ogreSize;
+
+    core::HiResClock::HiResClockType m_lastTouchPressedTimestamp {0};
 
 private Q_SLOTS:
 

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -46,6 +46,13 @@ public:
 
     /// Destroys the trackball.
     VIZ_SCENE3D_API ~TrackballInteractor() override;
+
+    enum class InteractionMode
+    {
+        DEFAULT,
+        LEFT_TO_RIGHT,
+        LEFT_TO_MIDDLE
+    };
 
     /**
      * @brief Moves the camera according to the pressed button.
@@ -99,6 +106,12 @@ public:
     /// Recomputes the mouse's scale and focus point from the updated scene length.
     VIZ_SCENE3D_API void setSceneLength(float _sceneLength) override;
 
+    /// Moves the camera backwards to see the whole scene.
+    void resetCameraCoordinates();
+
+    /// Set the interaction mode to simulae right or middle mouse button with left button
+    void setInteractionMode(InteractionMode _mode);
+
 private:
 
     /**
@@ -138,6 +151,9 @@ private:
 
     /// Timer used to animate the camera.
     core::thread::Timer::sptr m_timer;
+
+    /// Interaction mode
+    InteractionMode m_interactionMode {InteractionMode::DEFAULT};
 };
 
 } // namespace sight::viz::scene3d::interactor

@@ -60,14 +60,15 @@ const core::com::Slots::SlotKeyType s_NEXT_SLOT       = "next";
 const core::com::Slots::SlotKeyType s_PREVIOUS_SLOT   = "previous";
 const core::com::Slots::SlotKeyType s_SEND_INFO_SLOT  = "sendInfo";
 
-static const std::string s_CLEAR_ACTIVITIES_CONFIG = "clearActivities";
-static const std::string s_THEME_CONFIG            = "theme";
-static const std::string s_CLEAR_CONFIG            = "clear";
-static const std::string s_ACCENT_CONFIG           = "accent";
-static const std::string s_FOREGROUND_CONFIG       = "foreground";
-static const std::string s_BACKGROUND_CONFIG       = "background";
-static const std::string s_PRIMARY_CONFIG          = "primary";
-static const std::string s_ELEVATION_CONFIG        = "elevation";
+static const std::string s_CLEAR_ACTIVITIES_CONFIG   = "clearActivities";
+static const std::string s_SHOW_REQUIRED_DATA_CONFIG = "showRequiredData";
+static const std::string s_THEME_CONFIG              = "theme";
+static const std::string s_CLEAR_CONFIG              = "clear";
+static const std::string s_ACCENT_CONFIG             = "accent";
+static const std::string s_FOREGROUND_CONFIG         = "foreground";
+static const std::string s_BACKGROUND_CONFIG         = "background";
+static const std::string s_PRIMARY_CONFIG            = "primary";
+static const std::string s_ELEVATION_CONFIG          = "elevation";
 
 //------------------------------------------------------------------------------
 
@@ -106,7 +107,8 @@ void SSequencer::configuring()
         m_activityNames.push_back(it->second.get<std::string>("<xmlattr>.name", ""));
     }
 
-    m_clearActivities = config.get<bool>(s_CLEAR_ACTIVITIES_CONFIG, m_clearActivities);
+    m_clearActivities  = config.get<bool>(s_CLEAR_ACTIVITIES_CONFIG, m_clearActivities);
+    m_showRequiredData = config.get<bool>(s_SHOW_REQUIRED_DATA_CONFIG, m_showRequiredData);
 
     m_theme      = config.get<std::string>(s_THEME_CONFIG, m_theme);
     m_clear      = config.get<std::string>(s_CLEAR_CONFIG, m_clear);
@@ -252,13 +254,13 @@ void SSequencer::updating()
         }
 
         // launch the last series
-        this->goTo(m_currentActivity);
+        this->slot(s_GO_TO_SLOT)->asyncRun(m_currentActivity);
     }
     else
     {
         // launch the first activity
         this->enableActivity(0);
-        this->goTo(0);
+        this->slot(s_GO_TO_SLOT)->asyncRun(0);
     }
 }
 
@@ -306,10 +308,7 @@ void SSequencer::goTo(int index)
 
     data::ActivitySeries::sptr activity = this->getActivity(seriesDB, newIdx, m_slotUpdate);
 
-    bool ok = true;
-    std::string errorMsg;
-
-    std::tie(ok, errorMsg) = this->validateActivity(activity);
+    const auto [ok, errorMsg] = this->validateActivity(activity);
     if(ok)
     {
         m_sigActivityCreated->asyncEmit(activity);
@@ -321,7 +320,11 @@ void SSequencer::goTo(int index)
     }
     else
     {
-        sight::ui::base::dialog::MessageDialog::show("Activity not valid", errorMsg);
+        if(m_showRequiredData)
+        {
+            sight::ui::base::dialog::MessageDialog::show("Activity not valid", errorMsg);
+        }
+
         m_sigDataRequired->asyncEmit(activity);
     }
 }

@@ -17,6 +17,9 @@
         <param name="SHAPE_EXTRUDER_REVERT_RECEIVER_CHANNEL" />
         <param name="AXIS_VISIBILITY_RECEIVER_CHANNEL" />
         <param name="PICKER_SENDER_CHANNEL" />
+        <param name="DEFAULT_INTERACTION_CHANNEL" />
+        <param name="WL_INTERACTION_CHANNEL" />
+        <param name="DRAG_INTERACTION_CHANNEL" />
         <param name="modelSeries" />
         <param name="image" />
         <param name="volumeTF" />
@@ -647,6 +650,30 @@
         <connect>
             <signal>shapeExtruderAdp/failureNotified</signal>
             <slot>notifierSrv/popFailure</slot>
+        </connect>
+
+        <connect channel="${DEFAULT_INTERACTION_CHANNEL}">
+            <slot>trackballInteractorAdp/resetDefaultInteraction</slot>
+            <slot>axialNegatoCameraAdp/resetDefaultInteraction</slot>
+            <slot>frontalNegatoCameraAdp/resetDefaultInteraction</slot>
+            <slot>sagittalNegatoCameraAdp/resetDefaultInteraction</slot>
+            <slot>3DNegatoAdp/resetDefaultInteraction</slot>
+        </connect>
+
+        <connect channel="${WL_INTERACTION_CHANNEL}">
+            <slot>trackballInteractorAdp/translateLeftToRightButton</slot>
+            <slot>axialNegatoCameraAdp/translateLeftToRightButton</slot>
+            <slot>frontalNegatoCameraAdp/translateLeftToRightButton</slot>
+            <slot>sagittalNegatoCameraAdp/translateLeftToRightButton</slot>
+            <slot>3DNegatoAdp/translateLeftToRightButton</slot>
+        </connect>
+
+        <connect channel="${DRAG_INTERACTION_CHANNEL}">
+            <slot>trackballInteractorAdp/translateLeftToMiddleButton</slot>
+            <slot>axialNegatoCameraAdp/translateLeftToMiddleButton</slot>
+            <slot>frontalNegatoCameraAdp/translateLeftToMiddleButton</slot>
+            <slot>sagittalNegatoCameraAdp/translateLeftToMiddleButton</slot>
+            <slot>3DNegatoAdp/translateLeftToMiddleButton</slot>
         </connect>
 
         <!-- ******************************* Start/Stop services ***************************************** -->

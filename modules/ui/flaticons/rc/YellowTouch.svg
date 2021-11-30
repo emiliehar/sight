@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="130"
+   height="130"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="YellowTouch.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1774"
+     inkscape:window-height="946"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="3.0417044"
+     inkscape:cx="27.108813"
+     inkscape:cy="84.874848"
+     inkscape:window-x="2640"
+     inkscape:window-y="259"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg12"
+     inkscape:document-rotation="0" />
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g1663"
+     transform="matrix(5.1588375,0,0,5.1588375,1.7017443,4.1681258)"
+     style="fill:#ffc66d;fill-opacity:1;stroke:#b66f00;stroke-width:0.38768424;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+    <g
+       id="g1661"
+       style="fill:#ffc66d;fill-opacity:1;stroke:#b66f00;stroke-width:0.38768424;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <path
+         d="M 8.79,9.24 V 5.5 c 0,-1.38 1.12,-2.5 2.5,-2.5 1.38,0 2.5,1.12 2.5,2.5 v 3.74 c 1.21,-0.81 2,-2.18 2,-3.74 0,-2.49 -2.01,-4.5 -4.5,-4.5 -2.49,0 -4.5,2.01 -4.5,4.5 0,1.56 0.79,2.93 2,3.74 z m 5.5,2.47 C 14.01,11.57 13.71,11.5 13.4,11.5 h -0.61 v -6 C 12.79,4.67 12.12,4 11.29,4 10.46,4 9.79,4.67 9.79,5.5 V 16.24 L 6.35,15.52 c -0.37,-0.08 -0.76,0.04 -1.03,0.31 -0.43,0.44 -0.43,1.14 0,1.58 l 4.01,4.01 C 9.71,21.79 10.22,22 10.75,22 h 6.1 c 1,0 1.84,-0.73 1.98,-1.72 l 0.63,-4.47 c 0.12,-0.85 -0.32,-1.69 -1.09,-2.07 z"
+         id="path1659"
+         style="fill:#ffc66d;fill-opacity:1;stroke:#b66f00;stroke-width:0.38768424;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

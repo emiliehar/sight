@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -58,6 +58,9 @@ namespace sight::module::viz::scene3d::adaptor
  * - \b toggleVisibility(): toggle whether the negato is shown or not.
  * - \b show(): shows the negato.
  * - \b hide(): hides the negato.
+ * - \b translateLeftToRightButton(): use left mouse button as right button (usefull for touch interaction)
+ * - \b translateLeftToMiddleButton(): use left mouse button as middle button (usefull for touch interaction)
+ * - \b resetDefaultInteraction(): reset the default interaction button
  *
  * @section XML XML Configuration
  * @code{.xml}
@@ -145,6 +148,13 @@ protected:
 
 private:
 
+    enum class InteractionMode
+    {
+        DEFAULT,
+        LEFT_TO_RIGHT,
+        LEFT_TO_MIDDLE
+    };
+
     /// Update the displayed transfer function.
     void updateTF();
 
@@ -202,6 +212,15 @@ private:
 
     /// SLOT: updates the image slice type.
     void changeSliceType(int, int);
+
+    /// SLOT: use left mouse button as right button (usefull for touch interaction)
+    void translateLeftToRightButton();
+
+    /// SLOT: use left mouse button as middle button (usefull for touch interaction)
+    void translateLeftToMiddleButton();
+
+    /// SLOT: reset the default interaction button
+    void resetDefaultInteraction();
 
     /**
      * @brief SLOT: updates the image slice index.
@@ -284,6 +303,9 @@ private:
     /// Defines the signal sent when a voxel is picked using the left mouse button.
     using PickedVoxelSigType = core::com::Signal<void (std::string)>;
     PickedVoxelSigType::sptr m_pickedVoxelSignal {nullptr};
+
+    /// Interaction mode
+    InteractionMode m_interactionMode {InteractionMode::DEFAULT};
 };
 
 //------------------------------------------------------------------------------

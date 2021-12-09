@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2019-2021 IRCAD France
- * Copyright (C) 2019-2020 IHU Strasbourg
+ * Copyright (C) 2019-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -38,6 +38,9 @@ namespace sight::module::viz::scene3d::adaptor
 static const core::com::Slots::SlotKeyType s_RESET_CAMERA_SLOT       = "resetCamera";
 static const core::com::Slots::SlotKeyType s_CHANGE_ORIENTATION_SLOT = "changeOrientation";
 static const core::com::Slots::SlotKeyType s_MOVE_BACK_SLOT          = "moveBack";
+static const core::com::Slots::SlotKeyType s_LEFT_TO_RIGHT_SLOT      = "translateLeftToRightButton";
+static const core::com::Slots::SlotKeyType s_LEFT_TO_MIDDLE_SLOT     = "translateLeftToMiddleButton";
+static const core::com::Slots::SlotKeyType s_RESET_INTERACTION_SLOT  = "resetDefaultInteraction";
 
 static const service::IService::KeyType s_IMAGE_INOUT = "image";
 static const service::IService::KeyType s_TF_INOUT    = "tf";
@@ -55,6 +58,9 @@ SNegato2DCamera::SNegato2DCamera() noexcept :
     newSlot(s_RESET_CAMERA_SLOT, &SNegato2DCamera::resetCamera, this);
     newSlot(s_CHANGE_ORIENTATION_SLOT, &SNegato2DCamera::changeOrientation, this);
     newSlot(s_MOVE_BACK_SLOT, &SNegato2DCamera::moveBack, this);
+    newSlot(s_LEFT_TO_RIGHT_SLOT, &SNegato2DCamera::translateLeftToRightButton, this);
+    newSlot(s_LEFT_TO_MIDDLE_SLOT, &SNegato2DCamera::translateLeftToMiddleButton, this);
+    newSlot(s_RESET_INTERACTION_SLOT, &SNegato2DCamera::resetDefaultInteraction, this);
 }
 
 //-----------------------------------------------------------------------------
@@ -157,7 +163,7 @@ service::IService::KeyConnectionsMap SNegato2DCamera::getAutoConnections() const
 
 //-----------------------------------------------------------------------------
 
-void SNegato2DCamera::wheelEvent(Modifier, int _delta, int _x, int _y)
+void SNegato2DCamera::wheelEvent(Modifier modifier, int _delta, int _x, int _y)
 {
     const auto layer = this->getLayer();
 
@@ -167,8 +173,8 @@ void SNegato2DCamera::wheelEvent(Modifier, int _delta, int _x, int _y)
         auto* const camera         = layer->getDefaultCamera();
         auto* const camNode        = camera->getParentNode();
 
-        constexpr float mouseWheelScale = 0.05f;
-        const float zoomAmount          = static_cast<float>(-_delta) * mouseWheelScale;
+        const float mouseWheelScale = static_cast<bool>(modifier & Modifier::ALT) ? 5.f : 0.05f;
+        const float zoomAmount      = static_cast<float>(-_delta) * mouseWheelScale;
 
         // Compute the mouse's position in the camera's view.
         const ::Ogre::Vector3 screenPos(static_cast< ::Ogre::Real>(_x),
@@ -201,7 +207,9 @@ void SNegato2DCamera::wheelEvent(Modifier, int _delta, int _x, int _y)
 
 void SNegato2DCamera::mouseMoveEvent(IInteractor::MouseButton _button, Modifier, int _x, int _y, int _dx, int _dy)
 {
-    if(m_isInteracting && _button == MouseButton::MIDDLE)
+    if(m_isInteracting
+       && (_button == MouseButton::MIDDLE
+           || (m_interactionMode == InteractionMode::LEFT_TO_MIDDLE && _button == LEFT)))
     {
         const auto layer = this->getLayer();
 
@@ -222,7 +230,8 @@ void SNegato2DCamera::mouseMoveEvent(IInteractor::MouseButton _button, Modifier,
 
         camNode->translate(mousePosView - previousMousePosView);
     }
-    else if(m_isInteracting && _button == MouseButton::RIGHT)
+    else if(m_isInteracting && (_button == MouseButton::RIGHT
+                                || (m_interactionMode == InteractionMode::LEFT_TO_RIGHT && _button == LEFT)))
     {
         const double dx = static_cast<double>(_x - m_initialPos[0]);
         const double dy = static_cast<double>(m_initialPos[1] - _y);
@@ -236,11 +245,14 @@ void SNegato2DCamera::mouseMoveEvent(IInteractor::MouseButton _button, Modifier,
 void SNegato2DCamera::buttonPressEvent(IInteractor::MouseButton _button, Modifier, int _x, int _y)
 {
     const auto layer = this->getLayer();
-    if(_button == MouseButton::MIDDLE)
+    if(_button == MouseButton::MIDDLE
+       || (m_interactionMode == InteractionMode::LEFT_TO_MIDDLE && _button == LEFT))
     {
         m_isInteracting = IInteractor::isInLayer(_x, _y, layer, m_layerOrderDependant);
     }
-    else if(_button == MouseButton::RIGHT && IInteractor::isInLayer(_x, _y, layer, m_layerOrderDependant))
+    else if((_button == MouseButton::RIGHT
+             || (m_interactionMode == InteractionMode::LEFT_TO_RIGHT && _button == LEFT))
+            && IInteractor::isInLayer(_x, _y, layer, m_layerOrderDependant))
     {
         m_isInteracting = true;
 
@@ -434,6 +446,27 @@ void SNegato2DCamera::updateWindowing(double _dw, double _dl)
             sig->asyncEmit(newWindow, newLevel);
         }
     }
+}
+
+//------------------------------------------------------------------------------
+
+void SNegato2DCamera::translateLeftToRightButton()
+{
+    m_interactionMode = InteractionMode::LEFT_TO_RIGHT;
+}
+
+//------------------------------------------------------------------------------
+
+void SNegato2DCamera::translateLeftToMiddleButton()
+{
+    m_interactionMode = InteractionMode::LEFT_TO_MIDDLE;
+}
+
+//------------------------------------------------------------------------------
+
+void SNegato2DCamera::resetDefaultInteraction()
+{
+    m_interactionMode = InteractionMode::DEFAULT;
 }
 
 //-----------------------------------------------------------------------------

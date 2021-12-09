@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2019-2021 IRCAD France
- * Copyright (C) 2019-2020 IHU Strasbourg
+ * Copyright (C) 2019-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -50,6 +50,9 @@ namespace sight::module::viz::scene3d::adaptor
  * - \b resetCamera(): zooms out the camera to see the whole scene.
  * - \b changeOrientation(int,int): sets the camera's orientation to one of the image's axes.
  * - \b moveBack(): moves the camera backwards outside the scene's bounding box.
+ * - \b translateLeftToRightButton(): use left mouse button as right button (usefull for touch interaction)
+ * - \b translateLeftToMiddleButton(): use left mouse button as middle button (usefull for touch interaction)
+ * - \b resetDefaultInteraction(): reset the default interaction button
  *
  * @section XML XML Configuration
  * @code{.xml}
@@ -173,10 +176,26 @@ protected:
 
 private:
 
+    enum class InteractionMode
+    {
+        DEFAULT,
+        LEFT_TO_RIGHT,
+        LEFT_TO_MIDDLE
+    };
+
     using Orientation = data::helper::MedicalImage::Orientation;
 
     /// SLOT: resets the camera's zoom.
     void resetCamera();
+
+    /// SLOT: use left mouse button as right button (usefull for touch interaction)
+    void translateLeftToRightButton();
+
+    /// SLOT: use left mouse button as middle button (usefull for touch interaction)
+    void translateLeftToMiddleButton();
+
+    /// SLOT: reset the default interaction button
+    void resetDefaultInteraction();
 
     /**
      * @brief SLOT: sets the camera's orientation to one of the image's axes.
@@ -211,6 +230,9 @@ private:
 
     /// Defines the mouse position at the time the windowing interaction started.
     ::Ogre::Vector2i m_initialPos {-1, -1};
+
+    /// Interaction mode
+    InteractionMode m_interactionMode {InteractionMode::DEFAULT};
 };
 
 } // namespace sight::module::viz::scene3d::adaptor.

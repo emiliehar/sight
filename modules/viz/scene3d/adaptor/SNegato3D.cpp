@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -50,10 +50,13 @@
 namespace sight::module::viz::scene3d::adaptor
 {
 
-static const core::com::Slots::SlotKeyType s_NEWIMAGE_SLOT       = "newImage";
-static const core::com::Slots::SlotKeyType s_SLICETYPE_SLOT      = "sliceType";
-static const core::com::Slots::SlotKeyType s_SLICEINDEX_SLOT     = "sliceIndex";
-static const core::com::Slots::SlotKeyType s_UPDATE_OPACITY_SLOT = "updateOpacity";
+static const core::com::Slots::SlotKeyType s_NEWIMAGE_SLOT          = "newImage";
+static const core::com::Slots::SlotKeyType s_SLICETYPE_SLOT         = "sliceType";
+static const core::com::Slots::SlotKeyType s_SLICEINDEX_SLOT        = "sliceIndex";
+static const core::com::Slots::SlotKeyType s_UPDATE_OPACITY_SLOT    = "updateOpacity";
+static const core::com::Slots::SlotKeyType s_LEFT_TO_RIGHT_SLOT     = "translateLeftToRightButton";
+static const core::com::Slots::SlotKeyType s_LEFT_TO_MIDDLE_SLOT    = "translateLeftToMiddleButton";
+static const core::com::Slots::SlotKeyType s_RESET_INTERACTION_SLOT = "resetDefaultInteraction";
 
 static const core::com::Signals::SignalKeyType s_PICKED_VOXEL_SIG = "pickedVoxel";
 
@@ -85,6 +88,9 @@ SNegato3D::SNegato3D() noexcept :
     newSlot(s_SLICETYPE_SLOT, &SNegato3D::changeSliceType, this);
     newSlot(s_SLICEINDEX_SLOT, &SNegato3D::changeSliceIndex, this);
     newSlot(s_UPDATE_OPACITY_SLOT, &SNegato3D::setPlanesOpacity, this);
+    newSlot(s_LEFT_TO_RIGHT_SLOT, &SNegato3D::translateLeftToRightButton, this);
+    newSlot(s_LEFT_TO_MIDDLE_SLOT, &SNegato3D::translateLeftToMiddleButton, this);
+    newSlot(s_RESET_INTERACTION_SLOT, &SNegato3D::resetDefaultInteraction, this);
 
     m_pickedVoxelSignal = newSignal<PickedVoxelSigType>(s_PICKED_VOXEL_SIG);
 }
@@ -525,11 +531,12 @@ void SNegato3D::mouseMoveEvent(MouseButton _button, Modifier, int _x, int _y, in
 {
     if(m_pickedPlane)
     {
-        if(_button == MouseButton::MIDDLE)
+        if(_button == MouseButton::MIDDLE || (m_interactionMode == InteractionMode::LEFT_TO_MIDDLE && _button == LEFT))
         {
             this->moveSlices(_x, _y);
         }
-        else if(_button == MouseButton::RIGHT)
+        else if(_button == MouseButton::RIGHT
+                || (m_interactionMode == InteractionMode::LEFT_TO_RIGHT && _button == LEFT))
         {
             const double dx = static_cast<double>(_x - m_initialPos[0]);
             const double dy = static_cast<double>(m_initialPos[1] - _y);
@@ -552,11 +559,12 @@ void SNegato3D::buttonPressEvent(MouseButton _button, Modifier, int _x, int _y)
     m_pickedPlane.reset();
     m_pickingCross->setVisible(false);
 
-    if(_button == MouseButton::MIDDLE)
+    if(_button == MouseButton::MIDDLE || (m_interactionMode == InteractionMode::LEFT_TO_MIDDLE && _button == LEFT))
     {
         this->moveSlices(_x, _y);
     }
-    else if(_button == MouseButton::RIGHT)
+    else if(_button == MouseButton::RIGHT
+            || (m_interactionMode == InteractionMode::LEFT_TO_RIGHT && _button == LEFT))
     {
         if(this->getPickedSlices(_x, _y) != std::nullopt)
         {
@@ -752,6 +760,27 @@ void SNegato3D::updateWindowing(double _dw, double _dl)
             sig->asyncEmit(newWindow, newLevel);
         }
     }
+}
+
+//------------------------------------------------------------------------------
+
+void SNegato3D::translateLeftToRightButton()
+{
+    m_interactionMode = InteractionMode::LEFT_TO_RIGHT;
+}
+
+//------------------------------------------------------------------------------
+
+void SNegato3D::translateLeftToMiddleButton()
+{
+    m_interactionMode = InteractionMode::LEFT_TO_MIDDLE;
+}
+
+//------------------------------------------------------------------------------
+
+void SNegato3D::resetDefaultInteraction()
+{
+    m_interactionMode = InteractionMode::DEFAULT;
 }
 
 } // namespace sight::module::viz::scene3d::adaptor.

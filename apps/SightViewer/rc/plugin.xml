@@ -262,6 +262,10 @@
                         <menuItem name="Hide/show distance" icon="sight::module::ui::flaticons/Distance.svg" style="check" />
                         <separator/>
                         <menuItem name="Show/hide axis" icon="sight::module::ui::flaticons/Axis.svg" style="check" />
+                        <separator />
+                        <menuItem name="Default interaction" icon="sight::module::ui::flaticons/YellowTouch.svg" style="radio" />
+                        <menuItem name="Windowing interaction" icon="sight::module::ui::flaticons/BlueContrast.svg" style="radio" />
+                        <menuItem name="Drag interaction" icon="sight::module::ui::flaticons/CubeDrag.svg" style="radio" />
                     </layout>
                 </gui>
                 <registry>
@@ -281,6 +285,9 @@
                     <menuItem sid="removeDistanceAct" start="true" />
                     <menuItem sid="hideDistanceAct" start="true" />
                     <menuItem sid="axisVisibilityAct" start="true" />
+                    <menuItem sid="defaultInteractionAct" start="true" />
+                    <menuItem sid="windowingInteractionAct" start="true" />
+                    <menuItem sid="dragInteractionAct" start="true" />
                 </registry>
             </service>
 
@@ -442,6 +449,10 @@
                 <state executable="false" />
             </service>
 
+            <service uid="defaultInteractionAct" type="sight::module::ui::base::com::SSignal" />
+            <service uid="windowingInteractionAct" type="sight::module::ui::base::com::SSignal" />
+            <service uid="dragInteractionAct" type="sight::module::ui::base::com::SSignal" />
+
             <!-- ************************ Configuration launchers ********************************* -->
 
             <service uid="ogreGenericSceneCfg" type="sight::service::SConfigController" >
@@ -462,6 +473,9 @@
                 <parameter replace="SHAPE_EXTRUDER_REVERT_RECEIVER_CHANNEL" by="SHAPE_EXTRUDER_REVERT_SENDER_CHANNEL" />
                 <parameter replace="AXIS_VISIBILITY_RECEIVER_CHANNEL" by="AXIS_VISIBILITY_SENDER_CHANNEL" />
                 <parameter replace="PICKER_SENDER_CHANNEL" by="PICKER_RECEIVER_CHANNEL" />
+                <parameter replace="DEFAULT_INTERACTION_CHANNEL" by="DEFAULT_INTERACTION_CHANNEL" />
+                <parameter replace="WL_INTERACTION_CHANNEL" by="WL_INTERACTION_CHANNEL" />
+                <parameter replace="DRAG_INTERACTION_CHANNEL" by="DRAG_INTERACTION_CHANNEL" />
                 <inout key="modelSeries" uid="modelSeries" />
                 <inout key="image" uid="image" />
                 <inout key="volumeTF" uid="volumeTF" />
@@ -689,6 +703,18 @@
             <!-- Manage landmarks -->
             <connect channel="PICKER_RECEIVER_CHANNEL" >
                 <slot>landmarksParameterSrv/pick</slot>
+            </connect>
+
+            <connect channel="DEFAULT_INTERACTION_CHANNEL" >
+                <signal>defaultInteractionAct/triggered</signal>
+            </connect>
+
+            <connect channel="WL_INTERACTION_CHANNEL" >
+                <signal>windowingInteractionAct/triggered</signal>
+            </connect>
+
+            <connect channel="DRAG_INTERACTION_CHANNEL" >
+                <signal>dragInteractionAct/triggered</signal>
             </connect>
 
             <!-- ******************************* Start/Stop services ***************************************** -->

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2014-2021 IRCAD France
- * Copyright (C) 2014-2020 IHU Strasbourg
+ * Copyright (C) 2014-2021 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -64,15 +64,15 @@ void TrackballInteractor::mouseMoveEvent(MouseButton button, Modifier, int, int,
 {
     if(m_mouseMove)
     {
-        if(button == LEFT)
+        if(button == LEFT && (m_interactionMode == InteractionMode::DEFAULT))
         {
             cameraRotate(dx, dy);
         }
-        else if(button == MIDDLE)
+        else if(button == MIDDLE || (m_interactionMode == InteractionMode::LEFT_TO_MIDDLE && button == LEFT))
         {
             cameraTranslate(dx, dy);
         }
-        else if(button == RIGHT)
+        else if(button == RIGHT || (m_interactionMode == InteractionMode::LEFT_TO_RIGHT && button == LEFT))
         {
             ::Ogre::Camera* const camera = m_layer.lock()->getDefaultCamera();
             const ::Ogre::Vector3 transVec(0.f, 0.f, static_cast<float>(dy));
@@ -310,6 +310,23 @@ void TrackballInteractor::updateCameraFocalLength()
     ::Ogre::Camera* const camera                   =
         sceneManager->getCamera(viz::scene3d::Layer::s_DEFAULT_CAMERA_NAME);
     camera->setFocalLength(focalLength);
+}
+
+// ----------------------------------------------------------------------------
+
+void TrackballInteractor::resetCameraCoordinates()
+{
+    if(auto layer = m_layer.lock())
+    {
+        layer->resetCameraCoordinates();
+    }
+}
+
+//------------------------------------------------------------------------------
+
+void TrackballInteractor::setInteractionMode(InteractionMode _mode)
+{
+    m_interactionMode = _mode;
 }
 
 // ----------------------------------------------------------------------------

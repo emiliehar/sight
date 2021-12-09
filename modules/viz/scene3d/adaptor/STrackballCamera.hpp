@@ -41,6 +41,12 @@ namespace sight::module::viz::scene3d::adaptor
  * @warning may not work as intended when used at the same time as `module::viz::scene3d::adaptor::Camera` on the same
  * layer.
  *
+ * @section Slots Slots
+ * - \b resetCamera(): reset the camera position
+ * - \b translateLeftToRightButton(): use left mouse button as right button (usefull for touch interaction)
+ * - \b translateLeftToMiddleButton(): use left mouse button as middle button (usefull for touch interaction)
+ * - \b resetDefaultInteraction(): reset the default interaction button
+ *
  * @section XML XML Configuration
  * @code{.xml}
     <service type="sight::module::viz::scene3d::adaptor::STrackballCamera">
@@ -81,6 +87,18 @@ protected:
     MODULE_VIZ_SCENE3D_API void stopping() override;
 
 private:
+
+    /// SLOT: resets the camera's zoom.
+    void resetCamera();
+
+    /// SLOT: use left mouse button as right button (usefull for touch interaction)
+    void translateLeftToRightButton();
+
+    /// SLOT: use left mouse button as middle button (usefull for touch interaction)
+    void translateLeftToMiddleButton();
+
+    /// SLOT: reset the default interaction button
+    void resetDefaultInteraction();
 
     /// Contains the interaction handler.
     std::shared_ptr<sight::viz::scene3d::interactor::TrackballInteractor> m_trackball;

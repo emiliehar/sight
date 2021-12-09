@@ -81,6 +81,7 @@ namespace activity
         <activity id="..." name="..." />
         <activity id="..." name="..." />
         <clearActivities>false</clearActivities>
+        <showRequiredData>true</showRequiredData>
         <clear>#FFFFFF</clear>
         <theme>#FF00FF</theme>
         <accent>#FF00FF</accent>
@@ -105,6 +106,7 @@ namespace activity
  *          used
  * - \b clearActivities (optional, default: false): define if the activities and their requirements should be removed
  * when going backward.
+ * - \b showRequiredData (optional, default true): display a dialog with le list of the required additionnal data
  * - \b theme (optional, light/dark): the global theme used by the sequencer.
  * - \b clear (optional): the color of the opengl background scene.
  * - \b accent (optional): the accent color used by the sequencer.
@@ -212,6 +214,9 @@ private:
     std::string m_background;
     std::string m_primary;
     std::string m_elevation;
+
+    /// Define if the service display a dialog when additionnal data are required
+    bool m_showRequiredData {true};
 };
 
 } // namespace activity

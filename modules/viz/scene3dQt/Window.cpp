@@ -475,15 +475,18 @@ void Window::wheelEvent(QWheelEvent* _e)
     // Only manage vertical wheel scroll.
     info.delta = static_cast<int>(_e->angleDelta().y() * this->devicePixelRatio());
 
-    info.x         = static_cast<int>(_e->x() * this->devicePixelRatio());
-    info.y         = static_cast<int>(_e->y() * this->devicePixelRatio());
-    info.dx        = 0;
-    info.dy        = 0;
-    info.modifiers = convertModifiers(_e->modifiers());
+    if(info.delta != 0)
+    {
+        info.x         = static_cast<int>(_e->x() * this->devicePixelRatio());
+        info.y         = static_cast<int>(_e->y() * this->devicePixelRatio());
+        info.dx        = 0;
+        info.dy        = 0;
+        info.modifiers = convertModifiers(_e->modifiers());
 
-    Q_EMIT interacted(info);
+        Q_EMIT interacted(info);
 
-    this->requestRender();
+        this->requestRender();
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -518,6 +521,150 @@ void Window::mouseReleaseEvent(QMouseEvent* _e)
     Q_EMIT interacted(info);
 
     this->requestRender();
+}
+
+// ----------------------------------------------------------------------------
+
+void Window::touchEvent(QTouchEvent* _e)
+{
+    const auto points = _e->touchPoints();
+
+    if(points.count() == 1)
+    {
+        bool pointProcessed = false;
+        const auto point    = points.front();
+
+        if(point.state() == Qt::TouchPointPressed)
+        {
+            // save timestamp
+            m_lastTouchPressedTimestamp = core::HiResClock::getTimeInMilliSec();
+        }
+        else if(point.state() == Qt::TouchPointReleased)
+        {
+            // if timestamp > 0 & elapseed_time > 2s simulate CTRL+click
+            if(m_lastTouchPressedTimestamp > 0)
+            {
+                const core::HiResClock::HiResClockType currentTimestamp = core::HiResClock::getTimeInMilliSec();
+
+                if(currentTimestamp - m_lastTouchPressedTimestamp > 1000 && point.lastPos() == point.pos())
+                {
+                    sight::viz::scene3d::IWindowInteractor::InteractionInfo info;
+                    info.interactionType = sight::viz::scene3d::IWindowInteractor::InteractionInfo::BUTTONPRESS;
+
+                    // Only manage vertical wheel scroll.
+                    info.delta     = 0;
+                    info.x         = static_cast<int>(point.pos().x() * this->devicePixelRatio());
+                    info.y         = static_cast<int>(point.pos().y() * this->devicePixelRatio());
+                    info.dx        = 0;
+                    info.dy        = 0;
+                    info.modifiers = sight::viz::scene3d::interactor::IInteractor::Modifier::CONTROL;
+
+                    Q_EMIT interacted(info);
+
+                    this->requestRender();
+                    pointProcessed              = true;
+                    m_lastTouchPressedTimestamp = 0;
+                }
+            }
+        }
+        else
+        {
+            // reset timestamp
+            m_lastTouchPressedTimestamp = 0;
+        }
+
+        if(!pointProcessed)
+        {
+            _e->ignore();
+        }
+    }
+    // manage pinch with 2 fingers
+    else if(points.count() == 2)
+    {
+        const auto p1 = points[0].pos();
+        const auto p2 = points[1].pos();
+
+        const auto lastP1 = points[0].lastPos();
+        const auto lastP2 = points[1].lastPos();
+
+        const auto center = QPointF((p2.x() + p1.x()) / 2., (p2.y() + p1.y()) / 2.);
+
+        const double distLastPoints =
+            std::sqrt(
+                (lastP2.x() - lastP1.x()) * (lastP2.x() - lastP1.x()) + (lastP2.y() - lastP1.y())
+                * (lastP2.y() - lastP1.y())
+            );
+        const double disPoints =
+            std::sqrt((p2.x() - p1.x()) * (p2.x() - p1.x()) + (p2.y() - p1.y()) * (p2.y() - p1.y()));
+
+        const int delta = static_cast<int>(disPoints - distLastPoints);
+
+        if(delta != 0)
+        {
+            sight::viz::scene3d::IWindowInteractor::InteractionInfo info;
+            info.interactionType = sight::viz::scene3d::IWindowInteractor::InteractionInfo::WHEELMOVE;
+
+            // Only manage vertical wheel scroll.
+            info.delta     = 2 * delta;
+            info.x         = static_cast<int>(center.x() * this->devicePixelRatio());
+            info.y         = static_cast<int>(center.y() * this->devicePixelRatio());
+            info.dx        = 0;
+            info.dy        = 0;
+            info.modifiers = sight::viz::scene3d::interactor::IInteractor::Modifier::ALT;
+
+            Q_EMIT interacted(info);
+
+            this->requestRender();
+        }
+
+        _e->accept();
+    }
+    else if(points.size() == 3)
+    {
+        sight::viz::scene3d::IWindowInteractor::InteractionInfo info;
+        info.button = sight::viz::scene3d::interactor::IInteractor::MIDDLE;
+
+        QPointF p, lastP;
+        bool pressed  = false;
+        bool released = false;
+
+        for(const auto& point : points)
+        {
+            p        += point.pos();
+            lastP    += point.lastPos();
+            pressed  |= point.state() == Qt::TouchPointPressed;
+            released |= point.state() == Qt::TouchPointReleased;
+        }
+
+        p      /= 3;
+        lastP  /= 3;
+        info.x  = static_cast<int>(p.x() * this->devicePixelRatio());
+        info.y  = static_cast<int>(p.y() * this->devicePixelRatio());
+        info.dx = static_cast<int>((lastP.x() - p.x()) * this->devicePixelRatio());
+        info.dy = static_cast<int>((lastP.y() - p.y()) * this->devicePixelRatio());
+
+        if(_e->type() == QEvent::TouchBegin || pressed)
+        {
+            info.interactionType = sight::viz::scene3d::IWindowInteractor::InteractionInfo::BUTTONPRESS;
+        }
+        else if(_e->type() == QEvent::TouchUpdate && !released)
+        {
+            info.interactionType = sight::viz::scene3d::IWindowInteractor::InteractionInfo::MOUSEMOVE;
+        }
+        else
+        {
+            info.interactionType = sight::viz::scene3d::IWindowInteractor::InteractionInfo::BUTTONRELEASE;
+        }
+
+        Q_EMIT interacted(info);
+
+        this->requestRender();
+        _e->accept();
+    }
+    else
+    {
+        _e->ignore();
+    }
 }
 
 // ----------------------------------------------------------------------------

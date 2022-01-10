@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2016-2021 IRCAD France
- * Copyright (C) 2016-2020 IHU Strasbourg
+ * Copyright (C) 2016-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -83,7 +83,7 @@ void SlideBar::init()
 
     // window flags to have a frameless dialog that can be displayed over an openGL widget
     this->setWindowFlags(
-        Qt::Tool
+        Qt::Dialog
         | Qt::FramelessWindowHint
         | Qt::NoDropShadowWindowHint
     );
@@ -342,6 +342,13 @@ bool SlideBar::eventFilter(QObject* _obj, QEvent* _event)
     }
 
     return QObject::eventFilter(_obj, _event);
+}
+
+//-----------------------------------------------------------------------------
+
+void SlideBar::moveEvent(QMoveEvent* event)
+{
+    this->updatePosition();
 }
 
 //-----------------------------------------------------------------------------

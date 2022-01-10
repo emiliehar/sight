@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2016-2021 IRCAD France
- * Copyright (C) 2016-2021 IHU Strasbourg
+ * Copyright (C) 2016-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -112,6 +112,8 @@ public:
 private:
 
     bool eventFilter(QObject* _obj, QEvent* _event) override;
+
+    void moveEvent(QMoveEvent* event) override;
 
     /// Initializes the widget by settings flags and attributes.
     void init();

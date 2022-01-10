@@ -38,8 +38,6 @@ stages:
       else
         export EXTRA_BRANCH="${CI_COMMIT_REF_NAME}"
       fi
-    # Reset the modified time of all files to improve ccache performance
-    - /usr/lib/git-core/git-restore-mtime --force --skip-missing --commit-time
 
 lint:sheldon:
   extends: .linux_before
@@ -65,6 +63,8 @@ lint:sheldon:
   dependencies: []
   stage: build
   script:
+    # Reset the modified time of all files to improve ccache performance
+    - /usr/lib/git-core/git-restore-mtime --force --skip-missing --commit-time
     # Print CCache statistics
     - ccache -s
     # Launch CMake

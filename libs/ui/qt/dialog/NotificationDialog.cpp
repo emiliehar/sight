@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020-2021 IHU Strasbourg
+ * Copyright (C) 2020-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -142,7 +142,7 @@ void NotificationDialog::show()
     // Creates the main translucent auto-movable container.
     m_msgContainer = new Container(position, m_parent);
     m_msgContainer->setGraphicsEffect(effect);
-    m_msgContainer->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    m_msgContainer->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
     m_msgContainer->setAttribute(Qt::WA_TranslucentBackground);
     m_msgContainer->setContentsMargins(0, 0, 0, 0);
     m_msgContainer->setMinimumSize(static_cast<int>(m_size[0]), static_cast<int>(m_size[1]));

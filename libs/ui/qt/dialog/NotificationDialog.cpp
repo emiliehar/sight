@@ -102,6 +102,12 @@ void NotificationDialog::show()
                 "background-color:#E74C3C;color:white;font-weight: bold;font-size: 16px;border-radius: 10px"
             );
         }
+        else if(m_notificationType == INotificationDialog::Type::WARNING)
+        {
+            m_msgBox->setStyleSheet(
+                "background-color:#F1C232;color:white;font-weight: bold;font-size: 16px;border-radius: 10px"
+            );
+        }
         else // INFO by default.
         {
             m_msgBox->setStyleSheet(
@@ -118,6 +124,10 @@ void NotificationDialog::show()
         else if(m_notificationType == INotificationDialog::Type::FAILURE)
         {
             m_msgBox->setObjectName("NotificationDialog_Failure");
+        }
+        else if(m_notificationType == INotificationDialog::Type::WARNING)
+        {
+            m_msgBox->setObjectName("NotificationDialog_Warning");
         }
         else // INFO by default.
         {

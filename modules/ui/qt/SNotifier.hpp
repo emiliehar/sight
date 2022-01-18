@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020-2021 IHU Strasbourg
+ * Copyright (C) 2020-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -149,6 +149,12 @@ private:
     void popSuccess(std::string _message);
 
     /**
+     * @brief Slot: pop warning notification
+     * @param _message text of the notification
+     */
+    void popWarning(std::string _message);
+
+    /**
      * @brief Slot: pop failure notification
      * @param _message text of the notification
      */
@@ -166,6 +172,12 @@ private:
      * @param _message text of the notification
      */
     void showPermanentSuccess(unsigned int _index, std::string _message);
+
+    /**
+     * @brief Slot: display warning notification until 'hidePermanentNotification' is called
+     * @param _message text of the notification
+     */
+    void showPermanentWarning(unsigned int _index, std::string _message);
 
     /**
      * @brief Slot: display failure notification until 'hidePermanentNotification' is called

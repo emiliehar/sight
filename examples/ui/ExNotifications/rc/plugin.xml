@@ -84,7 +84,7 @@ are already displayed and where they are displayed on screen.
 
             <service uid="typeAct" type="sight::module::ui::qt::SParameters" >
                 <parameters>
-                    <param type="enum" name="Type" key="type" defaultValue="INFO" values="INFO,SUCCESS,FAILURE" />
+                    <param type="enum" name="Type" key="type" defaultValue="INFO" values="INFO,SUCCESS,WARNING,FAILURE" />
                 </parameters>
             </service>
 
@@ -138,6 +138,11 @@ are already displayed and where they are displayed on screen.
             <connect>
                 <signal>testNotifierSrv/successNotified</signal>
                 <slot>notifierSrv/popSuccess</slot>
+            </connect>
+
+            <connect>
+                <signal>testNotifierSrv/warningNotified</signal>
+                <slot>notifierSrv/popWarning</slot>
             </connect>
 
             <connect>

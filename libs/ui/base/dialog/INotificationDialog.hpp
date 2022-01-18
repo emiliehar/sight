@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2021 IRCAD France
- * Copyright (C) 2021 IHU Strasbourg
+ * Copyright (C) 2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -50,6 +50,7 @@ public:
         INFO = 0,
         SUCCESS,
         FAILURE,
+        WARNING,
         NONE,
         DEFAULT = INFO
     };

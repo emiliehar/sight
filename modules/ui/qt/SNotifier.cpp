@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020-2021 IHU Strasbourg
+ * Copyright (C) 2020-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -34,6 +34,7 @@ namespace sight::module::ui::qt
 
 static const core::com::Slots::SlotKeyType s_POP_INFO_SLOT                    = "popInfo";
 static const core::com::Slots::SlotKeyType s_POP_SUCCESS_SLOT                 = "popSuccess";
+static const core::com::Slots::SlotKeyType s_POP_WARNING_SLOT                 = "popWarning";
 static const core::com::Slots::SlotKeyType s_POP_FAILURE_SLOT                 = "popFailure";
 static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_INFO_SLOT         = "showPermanentInfo";
 static const core::com::Slots::SlotKeyType s_SHOW_PERMANENT_SUCCESS_SLOT      = "showPermanentSuccess";
@@ -57,6 +58,7 @@ SNotifier::SNotifier() noexcept
 
     newSlot(s_POP_INFO_SLOT, &SNotifier::popInfo, this);
     newSlot(s_POP_SUCCESS_SLOT, &SNotifier::popSuccess, this);
+    newSlot(s_POP_WARNING_SLOT, &SNotifier::popWarning, this);
     newSlot(s_POP_FAILURE_SLOT, &SNotifier::popFailure, this);
     newSlot(s_SET_ENUM_PARAMETER_SLOT, &SNotifier::setEnumParameter, this);
 
@@ -226,6 +228,13 @@ void SNotifier::popSuccess(std::string _message)
 
 //-----------------------------------------------------------------------------
 
+void SNotifier::popWarning(std::string _message)
+{
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::WARNING);
+}
+
+//-----------------------------------------------------------------------------
+
 void SNotifier::popFailure(std::string _message)
 {
     this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::FAILURE);
@@ -243,6 +252,13 @@ void SNotifier::showPermanentInfo(unsigned int index, std::string _message)
 void SNotifier::showPermanentSuccess(unsigned int index, std::string _message)
 {
     this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::SUCCESS, true, index);
+}
+
+//------------------------------------------------------------------------------
+
+void SNotifier::showPermanentWarning(unsigned int index, std::string _message)
+{
+    this->showNotification(_message, sight::ui::base::dialog::INotificationDialog::Type::WARNING, true, index);
 }
 
 //------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2020 IHU Strasbourg
+ * Copyright (C) 2012-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -233,6 +233,9 @@ public:
 
     SERVICE_API static const core::com::Signals::SignalKeyType s_SUCCESS_NOTIFIED_SIG;
     typedef core::com::Signal<void (std::string)> SuccessNotifiedSignalType;
+
+    SERVICE_API static const core::com::Signals::SignalKeyType s_WARNING_NOTIFIED_SIG;
+    typedef core::com::Signal<void (std::string)> WarningNotifiedSignalType;
 
     SERVICE_API static const core::com::Signals::SignalKeyType s_FAILURE_NOTIFIED_SIG;
     typedef core::com::Signal<void (std::string)> FailureNotifiedSignalType;

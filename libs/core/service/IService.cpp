@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2009-2021 IRCAD France
- * Copyright (C) 2012-2021 IHU Strasbourg
+ * Copyright (C) 2012-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -50,6 +50,7 @@ const core::com::Signals::SignalKeyType IService::s_SWAPPED_SIG          = "swap
 const core::com::Signals::SignalKeyType IService::s_STOPPED_SIG          = "stopped";
 const core::com::Signals::SignalKeyType IService::s_INFO_NOTIFIED_SIG    = "infoNotified";
 const core::com::Signals::SignalKeyType IService::s_SUCCESS_NOTIFIED_SIG = "successNotified";
+const core::com::Signals::SignalKeyType IService::s_WARNING_NOTIFIED_SIG = "warningNotified";
 const core::com::Signals::SignalKeyType IService::s_FAILURE_NOTIFIED_SIG = "failureNotified";
 
 const core::com::Slots::SlotKeyType IService::s_START_SLOT   = "start";
@@ -72,6 +73,7 @@ IService::IService() :
     newSignal<StoppedSignalType>(s_STOPPED_SIG);
     newSignal<InfoNotifiedSignalType>(s_INFO_NOTIFIED_SIG);
     newSignal<SuccessNotifiedSignalType>(s_SUCCESS_NOTIFIED_SIG);
+    newSignal<WarningNotifiedSignalType>(s_WARNING_NOTIFIED_SIG);
     newSignal<FailureNotifiedSignalType>(s_FAILURE_NOTIFIED_SIG);
 
     m_slotStart   = newSlot(s_START_SLOT, &IService::startSlot, this);

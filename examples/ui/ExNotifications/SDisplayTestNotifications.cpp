@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2020-2021 IRCAD France
- * Copyright (C) 2020-2021 IHU Strasbourg
+ * Copyright (C) 2020-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -103,6 +103,10 @@ void SDisplayTestNotifications::setEnumParameter(std::string _val, std::string _
         {
             m_type = ::dial::NotificationDialog::Type::INFO;
         }
+        else if(_val == "WARNING")
+        {
+            m_type = ::dial::NotificationDialog::Type::WARNING;
+        }
         else if(_val == "FAILURE")
         {
             m_type = ::dial::NotificationDialog::Type::FAILURE;
@@ -171,6 +175,14 @@ void SDisplayTestNotifications::updating()
         {
             auto notif = this->signal<service::IService::FailureNotifiedSignalType>(
                 service::IService::s_FAILURE_NOTIFIED_SIG
+            );
+
+            notif->asyncEmit(message);
+        }
+        else if(m_type == ::dial::NotificationDialog::Type::WARNING)
+        {
+            auto notif = this->signal<service::IService::WarningNotifiedSignalType>(
+                service::IService::s_WARNING_NOTIFIED_SIG
             );
 
             notif->asyncEmit(message);

@@ -958,23 +958,6 @@ function(sight_create_package_targets SIGHT_COMPONENTS SIGHT_IMPORTED_COMPONENTS
         get_target_property(APP_BINARY_DIR ${APP} BINARY_DIR)
         set(IMPORTED_RC_DIRS "")
         set(IMPORTED_LIBS "")
-        
-        findTargetDependencies(${APP} "${SIGHT_IMPORTED_COMPONENTS}" IMPORTED_DEPENDS)
-        foreach(DEP ${IMPORTED_DEPENDS})
-            get_target_property(CONFIG ${DEP} IMPORTED_CONFIGURATIONS)
-            get_target_property(LIB ${DEP} IMPORTED_LOCATION_${CONFIG})
-            if(LIB)
-                list(APPEND IMPORTED_LIBS ${LIB})
-            endif()
-
-            get_target_property(RC_DIR ${DEP} SIGHT_MODULE_RC_DIR)
-            if(RC_DIR)
-                list(APPEND IMPORTED_RC_DIRS ${RC_DIR})
-            endif()
-        endforeach()
-
-        list(REMOVE_DUPLICATES IMPORTED_RC_DIRS)
-        list(REMOVE_DUPLICATES IMPORTED_LIBS)
 
         # Add an install target for every app
         add_custom_target(${APP}_install
@@ -982,6 +965,35 @@ function(sight_create_package_targets SIGHT_COMPONENTS SIGHT_IMPORTED_COMPONENTS
         )
         add_dependencies(${APP}_install ${APP})
         
+        findTargetDependencies(${APP} "${SIGHT_COMPONENTS}" DEPENDS)
+        foreach(DEP ${DEPENDS})
+            if(NOT ${DEP} MATCHES "_obj")
+                add_dependencies(${APP}_install ${DEP}_install) 
+            endif()
+        endforeach()
+
+        set(DEPS ${APP} ${DEPENDS})
+        # Find all the imported dependencies
+        foreach(DEP ${DEPS})
+            findTargetDependencies(${DEP} "${SIGHT_IMPORTED_COMPONENTS}" IMPORTED_DEPENDS)
+            foreach(DEPDEP ${IMPORTED_DEPENDS})
+                get_target_property(CONFIG ${DEPDEP} IMPORTED_CONFIGURATIONS)
+                get_target_property(LIB ${DEPDEP} IMPORTED_LOCATION_${CONFIG})
+                if(LIB)
+                    list(APPEND IMPORTED_LIBS ${LIB})
+                endif()
+
+                get_target_property(RC_DIR ${DEPDEP} SIGHT_MODULE_RC_DIR)
+                if(RC_DIR)
+                    list(APPEND IMPORTED_RC_DIRS ${RC_DIR})
+                endif()
+            endforeach()
+        endforeach()
+
+
+        list(REMOVE_DUPLICATES IMPORTED_RC_DIRS)
+        list(REMOVE_DUPLICATES IMPORTED_LIBS)
+
         if(IMPORTED_RC_DIRS OR IMPORTED_LIBS)
             configure_file(${FWCMAKE_RESOURCE_PATH}/install/install_imported.cmake.in ${APP_BINARY_DIR}/install_imported.cmake @ONLY)
 
@@ -992,13 +1004,6 @@ function(sight_create_package_targets SIGHT_COMPONENTS SIGHT_IMPORTED_COMPONENTS
             )
             add_dependencies(${APP}_install ${APP}_install_imported)
         endif()
-
-        findTargetDependencies(${APP} "${SIGHT_COMPONENTS}" DEPENDS)
-        foreach(DEP ${DEPENDS})
-            if(NOT ${DEP} MATCHES "_obj")
-                add_dependencies(${APP}_install ${DEP}_install) 
-            endif()
-        endforeach()
         
         # Add a fixup target for every app
         if(WIN32)

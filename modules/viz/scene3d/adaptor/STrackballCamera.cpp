@@ -1,7 +1,7 @@
 /************************************************************************
  *
  * Copyright (C) 2019-2021 IRCAD France
- * Copyright (C) 2019-2021 IHU Strasbourg
+ * Copyright (C) 2019-2022 IHU Strasbourg
  *
  * This file is part of Sight.
  *
@@ -21,6 +21,8 @@
  ***********************************************************************/
 
 #include "modules/viz/scene3d/adaptor/STrackballCamera.hpp"
+
+#include <core/com/Slots.hxx>
 
 namespace sight::module::viz::scene3d::adaptor
 {
